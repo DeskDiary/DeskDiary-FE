@@ -1,17 +1,16 @@
-import React from 'react';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import {
-  Container,
   Avatar,
-  Typography,
   Box,
-  TextField,
-  FormControlLabel,
-  Checkbox,
   Button,
-  Grid,
+  Checkbox,
+  Container,
   CssBaseline,
+  FormControlLabel,
+  TextField,
+  Typography
 } from '@mui/material';
-// import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 type SigninProps = {};
@@ -39,7 +38,7 @@ const Signin: React.FC<SigninProps> = () => {
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            {/* <LockOutlinedIcon /> */}
+            <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign in
