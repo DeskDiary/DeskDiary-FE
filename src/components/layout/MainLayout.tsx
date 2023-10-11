@@ -21,7 +21,7 @@ const Wrap = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  padding-top: 60px;
+  padding-top: 76px;
   padding-bottom: 200px;
 `;
 export default MainLayout;

@@ -1,5 +1,5 @@
 {
-  "users": [
+  "join": [
     {
       "id": 1,
       "email": "email@email.com",
@@ -17,6 +17,12 @@
       "password": "asd@23",
       "nickname": "asd",
       "id": 3
+    },
+    {
+      "email": "dlap@asd.asd",
+      "password": "123",
+      "nickname": "123",
+      "id": 4
     }
   ]
 }

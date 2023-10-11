@@ -17,10 +17,10 @@ const SideLayout: React.FC<SideLayoutProps> = () => {
 const Wrap = styled.div`
   min-height: calc(100vh - 260px);
   position: relative;
-  width: 100%;
+  width: 100vw;
   display: flex;
   justify-content: center;
-  padding-top: 60px;
-  padding-bottom: 200px;
+  padding-top: 76px;
+
 `;
 export default SideLayout;

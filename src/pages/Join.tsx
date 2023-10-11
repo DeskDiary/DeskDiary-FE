@@ -4,71 +4,115 @@ import { toast } from 'sonner';
 import { useRecoilState } from 'recoil';
 import { userAtom } from '../recoil/UserAtom';
 import axios from 'axios';
-import {
-  validateEmail,
-  validatePassword,
-  validateNickname,
-} from '../utils/validation';
+import { Link } from 'react-router-dom';
 
 type JoinProps = {};
 
 const Join: React.FC<JoinProps> = () => {
   const [user, setUser] = useRecoilState(userAtom);
-  const [confitmPassword, setConfirmPassword] = useState('');
+  const [confitmPassword, setConfitmPassword] = useState('');
+  const [isPasswordMatch, setIsPasswordMatch] = useState(false);
+
+  const blurConfirmHandler = async () => {
+    if (confitmPassword !== user.password) {
+      setIsPasswordMatch(true);
+      return;
+    } else {
+      setIsPasswordMatch(false);
+    }
+  };
 
   const onSubmitJoin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // 유효성 검사
-    // 이메일 유효성 검사
-    if (!validateEmail(user.email)) {
-      console.log('Email validation failed.');
-      toast.error('올바른 이메일 형식을 입력해주세요.');
-      return;
-    }
+    toast.promise(
+      axios.post(`${process.env.REACT_APP_SERVER_URL!}/join`, user),
+      {
+        loading: '회원가입을 요청 중입니다',
+        success: () => {
+          return '회원가입 완료';
+        },
+        error: ({ response }) => {
+          if (
+            response.status === 400 &&
+            response.data.message.includes('이메일이 이미')
+          ) {
+            return "이메일이 이미 사용중입니다.";
+          }
 
-    // 비밀번호 유효성 검사
-    if (!validatePassword(user.password)) {
-      toast.error(
-        '비밀번호는 영문 + 숫자 + 특수기호 포함 6글자 이상 20글자 이내로 작성해주세요.',
-      );
-      return;
-    }
+          if (
+            response.status === 400 &&
+            response.data.message.includes('이메일이 형식이')
+          ) {
+            return "이메일 형식이 아닙니다";
+          }
 
-    // 비밀번호 확인
-    if (confitmPassword !== user.password) {
-      toast.error('비밀번호가 일치하지 않습니다.');
-      return;
-    }
+          if (
+            response.status === 400 &&
+            response.data.message.includes('이메일이 비어')
+          ) {
+            return "이메일이 비어 있으면 안됩니다.";
+          }
 
-    // 닉네임 유효성 검사
-    if (!validateNickname(user.nickname)) {
-      console.log('Nickname validation failed.');
-      toast.error(
-        '닉네임은 문자로 이루어진 2~8글자로 설정해주세요.',
-      );
-      return;
-    }
+          if (
+            response.status === 400 &&
+            response.data.message.includes('이메일은 소문자로')
+          ) {
+            return "이메일은 소문자로 작성해야 합니다.";
+          }
 
-    try {
-      await axios.post('http://localhost:4000/users', user);
-      toast.success('회원가입 성공!');
-      setUser({ email: '', password: '', nickname: '' }); // 초기화
-    } catch (error) {
-      toast.error('회원가입 실패!');
-    }
+          if (
+            response.status === 400 &&
+            response.data.message.includes('닉네임이 비어 있으면 안됩니다.')
+          ) {
+            return "닉네임이 비어 있으면 안됩니다.";
+          }
+
+          if (
+            response.status === 400 &&
+            response.data.message.includes('닉네임은 한글, 알파벳, 숫자만 포함해야 합니다')
+          ) {
+            return "닉네임은 한글, 알파벳, 숫자만 포함해야 합니다";
+          }
+
+          if (
+            response.status === 400 &&
+            response.data.message.includes('비밀번호가 비어 있으면 안됩니다.')
+          ) {
+            return "비밀번호가 비어 있으면 안됩니다.";
+          }
+
+          if (
+            response.status === 400 &&
+            response.data.message.includes('비밀번호는 대문자, 소문자, 숫자, 특수문자를 각각 하나 이상 포함해야 합니다')
+          ) {
+            return "비밀번호는 대문자, 소문자, 숫자, 특수문자를 각각 하나 이상 포함해야 합니다";
+          }
+
+          if (
+            response.status === 400 &&
+            response.data.message.includes('비밀번호는 8자 이상이어야 합니다')
+          ) {
+            return '비밀번호는 8자 이상이어야 합니다';
+          }
+
+          return '회원가입에 실패햇습니다. 관리자에게 문의해주세요.';
+        },
+        finally: () => {},
+      },
+    );
   };
 
   return (
     <JoinForm onSubmit={onSubmitJoin}>
       <JoinContainer>
-        <Title>JOIN</Title>
-        <JoinList gap="20px">
+        <Title>회원가입</Title>
+        <JoinList gap="40px" align="start">
           <Joincontent align="start">
             <JoinLabel>이메일</JoinLabel>
             <JoinInput
               type="email"
-              placeholder="이메일 입력 해 주세요"
+              placeholder="예시 ) deskdiary@deskdiary.com"
               onChange={e => setUser({ ...user, email: e.target.value })}
             />
           </Joincontent>
@@ -77,7 +121,7 @@ const Join: React.FC<JoinProps> = () => {
             <JoinLabel>비밀번호</JoinLabel>
             <JoinInput
               type="password"
-              placeholder="비밀번호를 입력 해 주세요"
+              placeholder="영어 대소문자,숫자,특수문자 포함 8~16자"
               onChange={e => setUser({ ...user, password: e.target.value })}
             />
           </Joincontent>
@@ -87,23 +131,35 @@ const Join: React.FC<JoinProps> = () => {
             <JoinInput
               type="password"
               placeholder="비밀번호를 한 번 더 입력해주세요"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setConfirmPassword(e.target.value)
-              }
+              onChange={e => setConfitmPassword(e.target.value)}
+              onBlur={blurConfirmHandler}
             />
+            {isPasswordMatch ? (
+              <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>
+            ) : null}
           </Joincontent>
 
           <Joincontent align="start">
             <JoinLabel>닉네임</JoinLabel>
             <JoinInput
               type="text"
-              placeholder="닉네임를 입력 해 주세요"
+              placeholder="4~12자"
               onChange={e => setUser({ ...user, nickname: e.target.value })}
             />
           </Joincontent>
+
+          <Joincontent row justify="start">
+            <AgreeCheck type="checkbox"></AgreeCheck>
+            <AgreeLink to="/">개인정보 이용 동의 체크체크체크체크</AgreeLink>
+          </Joincontent>
         </JoinList>
       </JoinContainer>
-      <button type="submit">회원가입</button>
+      <JoinButton type="submit">JOIN</JoinButton>
+      <SocialLoginText>SNS 계정으로 시작하기</SocialLoginText>
+      <SocialLoginGroup row gap="30px">
+        <SocialLoginLink to="/">카카오</SocialLoginLink>
+        <SocialLoginLink to="/">구글</SocialLoginLink>
+      </SocialLoginGroup>
     </JoinForm>
   );
 };
@@ -122,45 +178,153 @@ const FlexContainer = styled.div<{
   width: 300px;
 `;
 
+const ErrorMessage = styled.div`
+  width: 400px;
+  padding: 10px;
+  color: var(--system-error, #d32f2f);
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: Noto Sans;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 123.5%; /* 18.525px */
+  letter-spacing: 0.25px;
+
+  top: 85px;
+
+  position: absolute;
+`;
+
+const SocialLoginLink = styled(Link)`
+  width: 72px;
+  height: 72px;
+  background-color: #999;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 130px;
+`;
+
+const SocialLoginText = styled(FlexContainer)`
+  margin-top: 40px;
+  height: 48px;
+`;
+
+const SocialLoginGroup = styled(FlexContainer)``;
+
+const JoinButton = styled.button`
+  width: 400px;
+  height: 60px;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  background: rgba(153, 153, 153, 0.5);
+  border: none;
+  margin-top: 12px;
+
+  color: #fff;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: Pretendard;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 123.5%; /* 29.64px */
+  letter-spacing: 0.25px;
+`;
+
+const AgreeLink = styled(Link)`
+  color: #000;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: Pretendard;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 123.5%; /* 18.525px */
+  letter-spacing: 0.25px;
+`;
+
+const AgreeCheck = styled.input`
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: white;
+  border: 1px solid #9e9e9e;
+  display: inline-block;
+  margin: 0 8px 0 0;
+
+  // 체크했을 때의 스타일
+  &:checked {
+    background-color: #9e9e9e;
+  }
+`;
+
 const JoinForm = styled.form`
-  display: flex-direction;
+  display: flex;
   flex-direction: column;
   align-items: center;
-`
+  justify-content: start;
+  width: 582px;
+  background: rgba(237, 237, 237, 0.5);
+  height: 100%;
+`;
 
-const Joincontent = styled(FlexContainer)``;
+const Joincontent = styled(FlexContainer)`
+  position: relative;
+  z-index: 0;
+`;
 
 const JoinInput = styled.input`
-  width: calc(100% - 20px);
-  height: 40px;
-  border-radius: 0%;
-  border: 1.5px solid black;
-  padding: 0 10px;
+  width: 370px;
+  height: 28px;
+  border-radius: 5px;
+  border: 1px solid var(--gray-07, #757575);
+  background: #fff;
+  padding: 10px 15px;
   font-size: 15px;
 
   &:focus {
-    outline: 1.5px solid greenyellow;
+    outline: 1.5px solid gray;
     border: none;
   }
 `;
 
 const JoinLabel = styled.div`
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 10px;
+  width: 400px;
+  padding: 10px;
+
+  color: var(--gray-07, #757575);
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: Noto Sans;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 123.5%; /* 18.525px */
+  letter-spacing: 0.25px;
 `;
 
 const JoinList = styled(FlexContainer)`
-  margin-top: 30px;
+  margin-top: 79px;
+  width: 100%;
 `;
 
 const JoinContainer = styled(FlexContainer)`
-  margin-top: 50px;
+  width: 400px;
 `;
 
 const Title = styled.div`
-  font-size: 40px;
-  font-weight: bold;
+  color: #000;
+  text-align: center;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: Pretendard;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 0.25px;
+  width: 100%;
+  margin-top: 108px;
 `;
 
 export default Join;
