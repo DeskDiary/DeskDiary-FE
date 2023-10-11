@@ -1,17 +1,19 @@
 import React from 'react';
-import Router from './shared/Router';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import GlobalStyle from './GlobalStyle';
-import Toaster from "./toast";
+import Router from './shared/Router';
+import Toaster from './toast';
 
 type AppProps = {};
 
+const queryClient = new QueryClient();
 const App: React.FC<AppProps> = () => {
   return (
-    <section>
+    <QueryClientProvider client={queryClient}>
       <Toaster position="top-center" />
       <GlobalStyle />
       <Router />
-    </section>
+    </QueryClientProvider>
   );
 };
 export default App;
