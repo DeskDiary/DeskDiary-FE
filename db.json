@@ -23,6 +23,18 @@
       "password": "123",
       "nickname": "123",
       "id": 4
+    },
+    {
+      "email": "",
+      "password": "",
+      "nickname": "",
+      "id": 5
+    },
+    {
+      "email": "",
+      "password": "asd",
+      "nickname": "",
+      "id": 6
     }
   ]
 }

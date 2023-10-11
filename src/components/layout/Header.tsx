@@ -113,9 +113,9 @@ const NavHeader = styled(FlexContainer)`
   height: 76px;
   background-color: white;
   box-shadow: 0px 2px 6px 0px #e8e8e8;
-  z-index: 50;
+  z-index: 100;
 
-  position: relative;
+  position: fixed;
   top: 0;
   left: 0;
 `;

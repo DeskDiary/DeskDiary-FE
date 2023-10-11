@@ -37,56 +37,60 @@ const Join: React.FC<JoinProps> = () => {
             response.status === 400 &&
             response.data.message.includes('이메일이 이미')
           ) {
-            return "이메일이 이미 사용중입니다.";
+            return '이메일이 이미 사용중입니다.';
           }
 
           if (
             response.status === 400 &&
             response.data.message.includes('이메일이 형식이')
           ) {
-            return "이메일 형식이 아닙니다";
+            return '이메일 형식이 아닙니다';
           }
 
           if (
             response.status === 400 &&
             response.data.message.includes('이메일이 비어')
           ) {
-            return "이메일이 비어 있으면 안됩니다.";
+            return '이메일이 비어 있으면 안됩니다.';
           }
 
           if (
             response.status === 400 &&
             response.data.message.includes('이메일은 소문자로')
           ) {
-            return "이메일은 소문자로 작성해야 합니다.";
+            return '이메일은 소문자로 작성해야 합니다.';
           }
 
           if (
             response.status === 400 &&
             response.data.message.includes('닉네임이 비어 있으면 안됩니다.')
           ) {
-            return "닉네임이 비어 있으면 안됩니다.";
+            return '닉네임이 비어 있으면 안됩니다.';
           }
 
           if (
             response.status === 400 &&
-            response.data.message.includes('닉네임은 한글, 알파벳, 숫자만 포함해야 합니다')
+            response.data.message.includes(
+              '닉네임은 한글, 알파벳, 숫자만 포함해야 합니다',
+            )
           ) {
-            return "닉네임은 한글, 알파벳, 숫자만 포함해야 합니다";
+            return '닉네임은 한글, 알파벳, 숫자만 포함해야 합니다';
           }
 
           if (
             response.status === 400 &&
             response.data.message.includes('비밀번호가 비어 있으면 안됩니다.')
           ) {
-            return "비밀번호가 비어 있으면 안됩니다.";
+            return '비밀번호가 비어 있으면 안됩니다.';
           }
 
           if (
             response.status === 400 &&
-            response.data.message.includes('비밀번호는 대문자, 소문자, 숫자, 특수문자를 각각 하나 이상 포함해야 합니다')
+            response.data.message.includes(
+              '비밀번호는 대문자, 소문자, 숫자, 특수문자를 각각 하나 이상 포함해야 합니다',
+            )
           ) {
-            return "비밀번호는 대문자, 소문자, 숫자, 특수문자를 각각 하나 이상 포함해야 합니다";
+            return '비밀번호는 대문자, 소문자, 숫자, 특수문자를 각각 하나 이상 포함해야 합니다';
           }
 
           if (
@@ -107,7 +111,7 @@ const Join: React.FC<JoinProps> = () => {
     <JoinForm onSubmit={onSubmitJoin}>
       <JoinContainer>
         <Title>회원가입</Title>
-        <JoinList gap="40px" align="start">
+        <JoinList align="start">
           <Joincontent align="start">
             <JoinLabel>이메일</JoinLabel>
             <JoinInput
@@ -115,6 +119,11 @@ const Join: React.FC<JoinProps> = () => {
               placeholder="예시 ) deskdiary@deskdiary.com"
               onChange={e => setUser({ ...user, email: e.target.value })}
             />
+            <Relative>
+              {isPasswordMatch ? (
+                <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>
+              ) : null}
+            </Relative>
           </Joincontent>
 
           <Joincontent align="start">
@@ -124,6 +133,11 @@ const Join: React.FC<JoinProps> = () => {
               placeholder="영어 대소문자,숫자,특수문자 포함 8~16자"
               onChange={e => setUser({ ...user, password: e.target.value })}
             />
+            <Relative>
+              {isPasswordMatch ? (
+                <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>
+              ) : null}
+            </Relative>
           </Joincontent>
 
           <Joincontent align="start">
@@ -134,9 +148,11 @@ const Join: React.FC<JoinProps> = () => {
               onChange={e => setConfitmPassword(e.target.value)}
               onBlur={blurConfirmHandler}
             />
-            {isPasswordMatch ? (
-              <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>
-            ) : null}
+            <Relative>
+              {isPasswordMatch ? (
+                <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>
+              ) : null}
+            </Relative>
           </Joincontent>
 
           <Joincontent align="start">
@@ -146,12 +162,17 @@ const Join: React.FC<JoinProps> = () => {
               placeholder="4~12자"
               onChange={e => setUser({ ...user, nickname: e.target.value })}
             />
+            <Relative>
+              {isPasswordMatch ? (
+                <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>
+              ) : null}
+            </Relative>
           </Joincontent>
 
-          <Joincontent row justify="start">
+          <AgreeBox row justify="start">
             <AgreeCheck type="checkbox"></AgreeCheck>
             <AgreeLink to="/">개인정보 이용 동의 체크체크체크체크</AgreeLink>
-          </Joincontent>
+          </AgreeBox>
         </JoinList>
       </JoinContainer>
       <JoinButton type="submit">JOIN</JoinButton>
@@ -191,9 +212,10 @@ const ErrorMessage = styled.div`
   letter-spacing: 0.25px;
 
   top: 85px;
-
-  position: absolute;
 `;
+
+const AgreeBox = styled(FlexContainer)`
+height: 48px;`;
 
 const SocialLoginLink = styled(Link)`
   width: 72px;
@@ -271,9 +293,11 @@ const JoinForm = styled.form`
 `;
 
 const Joincontent = styled(FlexContainer)`
-  position: relative;
-  z-index: 0;
 `;
+
+const Relative = styled.div`
+  height: 40px;
+`
 
 const JoinInput = styled.input`
   width: 370px;
