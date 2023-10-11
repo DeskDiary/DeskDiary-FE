@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES2016",
+    "target": "es6",
     "lib": [
       "dom",
       "dom.iterable",
@@ -22,5 +22,5 @@
   },
   "include": [
     "src"
-  ]
+, "utils"  ]
 }

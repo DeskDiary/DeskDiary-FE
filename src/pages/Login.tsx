@@ -13,9 +13,9 @@ import {
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-type SigninProps = {};
+type LoginProps = {};
 
-const Signin: React.FC<SigninProps> = () => {
+const Login: React.FC<LoginProps> = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // 이벤트의 기본 동작 ( 리렌더링 ) 차단
     const data = new FormData(event.currentTarget); // form 내의 데이터를 읽어온다. name 속성을 키로 그 값들을 가지고 있다.
@@ -95,4 +95,4 @@ const Signin: React.FC<SigninProps> = () => {
     </div>
   );
 };
-export default Signin;
+export default Login;
