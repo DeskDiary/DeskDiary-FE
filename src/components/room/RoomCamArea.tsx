@@ -8,9 +8,6 @@ const RoomCamArea = (props: Props) => {
     { id: 2, nickname: '심심해요' },
     { id: 3, nickname: '바나나마스터' },
     { id: 4, nickname: '닉네임' },
-    { id: 5, nickname: '입니다' },
-    { id: 6, nickname: '흠' },
-    { id: 7, nickname: '그렇군' },
 
   ];
 
@@ -57,7 +54,7 @@ const CameraIcon = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%); /* 아이콘을 가운데 정렬 */
-  z-index: 1; /* 다른 내용 위에 표시하기 위해 z-index 설정 */
+  /* z-index: 1; 다른 내용 위에 표시하기 위해 z-index 설정 */
 `;
 const CameraUserInfo = styled.div`
   display: flex;
