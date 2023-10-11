@@ -1,12 +1,16 @@
 import React from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import Router from './shared/Router';
 
-type AppProps = {
-  
-};
+type AppProps = {};
 
-const App:React.FC<AppProps> = () => {
-  
-  return <Router />
-}
+const queryClient = new QueryClient();
+
+const App: React.FC<AppProps> = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Router />
+    </QueryClientProvider>
+  );
+};
 export default App;

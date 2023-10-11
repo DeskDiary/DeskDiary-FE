@@ -1,39 +1,51 @@
-import styled from "@emotion/styled"
-import RoomCamArea from "../components/room/RoomCamArea"
-import RoomHeader from "../components/room/RoomHeader"
+import styled from '@emotion/styled';
+import { useState } from 'react';
+import RoomCamArea from '../components/room/RoomCamArea';
+import RoomHeader from '../components/room/RoomHeader';
+import CamAndMicSetting from './CamAndMicSetting';
 
-type Props = {}
+type RoomProps = {};
 
-const Room = (props: Props) => {
+const Room: React.FC<RoomProps> = () => {
+  const [settingsComplete, setSettingsComplete] = useState<boolean>(false);
+
   return (
     <div>
-      <RoomHeader />
-      <Area>
-        {/* 캠이 들어갈 곳 */}
-        <CamAreaDiv>
-          <RoomCamArea />
-        </CamAreaDiv> 
-        {/* 채팅이 들어갈 곳 */}
-        <ChattingAreaDiv>채팅이 들어갈 곳</ChattingAreaDiv> 
-      </Area>
-      
+      {settingsComplete ? (
+        <>
+          {' '}
+          <RoomHeader />
+          <Area>
+            {/* 캠이 들어갈 곳 */}
+            <CamAreaDiv>
+              <RoomCamArea />
+            </CamAreaDiv>
+            {/* 채팅이 들어갈 곳 */}
+            <ChattingAreaDiv>채팅이 들어갈 곳</ChattingAreaDiv>
+          </Area>
+        </>
+      ) : (
+        <>
+        <CamAndMicSetting />
+        </>
+      )}
     </div>
-  )
-}
+  );
+};
 
 const Area = styled.div`
   display: flex;
   height: calc(100vh - 96px);
-`
+`;
 const CamAreaDiv = styled.div`
   width: 70%;
   padding-top: 61px;
   margin-left: 40px;
   /* margin-right: 20px; */
-`
+`;
 const ChattingAreaDiv = styled.div`
   width: 30%;
   background-color: beige;
-`
+`;
 
-export default Room
+export default Room;
