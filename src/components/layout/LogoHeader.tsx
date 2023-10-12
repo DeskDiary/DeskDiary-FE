@@ -12,7 +12,7 @@ const LogoHeader: React.FC<LogoHeaderProps> = () => {
       <NavContent justify="space-between">
         <Logo>
           <Link to="/">
-            <img src="/images/Logo.png" />
+            <LogoImg src="/images/logo.png" />
           </Link>
         </Logo>
       </NavContent>
@@ -31,6 +31,10 @@ const FlexContainer = styled.div<{
   align-items: ${props => (props.align ? props.align : 'center')};
   justify-content: ${props => (props.justify ? props.justify : 'center')};
   gap: ${props => props.gap || '0'};
+`;
+
+const LogoImg = styled.img`
+  width: 136px;
 `;
 
 const NavHeader = styled(FlexContainer)`

@@ -13,8 +13,8 @@ const Router = () => {
           <Route path="/mypage" element={<Mypage />} />
         </Route>
         <Route element={<SideLayout />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/join" element={<Join />} />
+          <Route path="/auth/login" element={<Login />} />
+          <Route path="/auth/join" element={<Join />} />
         </Route>
         <Route path="*" element={<Error />} />
       </Routes>

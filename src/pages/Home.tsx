@@ -9,9 +9,9 @@ const Home = () => {
 
   return (
     <div>
-        <Link to={`/login`}>LOGIN</Link>
+        <Link to={`/auth/login`}>LOGIN</Link>
         <br />
-        <Link to={`/join`}>JOIN</Link>
+        <Link to={`/auth/join`}>JOIN</Link>
         <br />
         <Link to={`/room`}>ROOM 입장</Link>
         <br />

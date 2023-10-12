@@ -11,100 +11,95 @@ type JoinProps = {};
 const Join: React.FC<JoinProps> = () => {
   const [user, setUser] = useRecoilState(userAtom);
   const [confitmPassword, setConfitmPassword] = useState('');
-  const [isPasswordMatch, setIsPasswordMatch] = useState(false);
+  const [isAgreeChecked, setIsAgreeChecked] = useState(false);
+
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [nicknameError, setNicknameError] = useState<string | null>(null);
+  const [matchPasswordError, setMatchPasswordError] = useState<string | null>(
+    null,
+  );
+
+  const onClickAgree = () => {
+    setIsAgreeChecked(!isAgreeChecked)
+    
+  }
+
+  const clickButton = () => {
+    console.log(isAgreeChecked);
+  }
 
   const blurConfirmHandler = async () => {
     if (confitmPassword !== user.password) {
-      setIsPasswordMatch(true);
-      return;
+      setMatchPasswordError('비밀번호가 일치하지 않습니다.');
     } else {
-      setIsPasswordMatch(false);
+      setMatchPasswordError(null);
     }
+    return;
+  };
+
+  const blurHandler = async () => {
+    setEmailError(null);
+    setPasswordError(null);
+    setNicknameError(null);
   };
 
   const onSubmitJoin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    toast.promise(
-      axios.post(`${process.env.REACT_APP_SERVER_URL!}/join`, user),
-      {
-        loading: '회원가입을 요청 중입니다',
-        success: () => {
-          return '회원가입 완료';
-        },
-        error: ({ response }) => {
-          if (
-            response.status === 400 &&
-            response.data.message.includes('이메일이 이미')
-          ) {
-            return '이메일이 이미 사용중입니다.';
+    axios
+      .post(`${process.env.REACT_APP_SERVER_URL!}/auth/join`, user)
+      .then(response => {
+        alert('회원가입 성공');
+      })
+      .catch(error => {
+        if (error.response) {
+          const message = error.response.data.message;
+          console.log(message);
+          if (message.includes('이메일이 이미')) {
+            setEmailError('이메일이 이미 사용중입니다.');
+          }
+
+          if (message.includes('이메일이 형식이')) {
+            setEmailError('이메일 형식이 아닙니다');
+            console.log(message);
+          }
+
+          if (message.includes('이메일이 비어')) {
+            setEmailError('이메일이 비어 있으면 안됩니다.');
+          }
+
+          if (message.includes('닉네임이 비어 있으면 안됩니다.')) {
+            setNicknameError('닉네임이 비어 있으면 안됩니다.');
           }
 
           if (
-            response.status === 400 &&
-            response.data.message.includes('이메일이 형식이')
+            message.includes('닉네임은 한글, 알파벳, 숫자만 포함해야 합니다')
           ) {
-            return '이메일 형식이 아닙니다';
+            setNicknameError('닉네임은 특수문자가 포함될 수 없습니다.');
+          }
+
+          if (message.includes('비밀번호가 비어 있으면 안됩니다.')) {
+            setPasswordError('비밀번호가 비어 있으면 안됩니다.');
           }
 
           if (
-            response.status === 400 &&
-            response.data.message.includes('이메일이 비어')
-          ) {
-            return '이메일이 비어 있으면 안됩니다.';
-          }
-
-          if (
-            response.status === 400 &&
-            response.data.message.includes('이메일은 소문자로')
-          ) {
-            return '이메일은 소문자로 작성해야 합니다.';
-          }
-
-          if (
-            response.status === 400 &&
-            response.data.message.includes('닉네임이 비어 있으면 안됩니다.')
-          ) {
-            return '닉네임이 비어 있으면 안됩니다.';
-          }
-
-          if (
-            response.status === 400 &&
-            response.data.message.includes(
-              '닉네임은 한글, 알파벳, 숫자만 포함해야 합니다',
-            )
-          ) {
-            return '닉네임은 한글, 알파벳, 숫자만 포함해야 합니다';
-          }
-
-          if (
-            response.status === 400 &&
-            response.data.message.includes('비밀번호가 비어 있으면 안됩니다.')
-          ) {
-            return '비밀번호가 비어 있으면 안됩니다.';
-          }
-
-          if (
-            response.status === 400 &&
-            response.data.message.includes(
+            message.includes(
               '비밀번호는 대문자, 소문자, 숫자, 특수문자를 각각 하나 이상 포함해야 합니다',
             )
           ) {
-            return '비밀번호는 대문자, 소문자, 숫자, 특수문자를 각각 하나 이상 포함해야 합니다';
+            setPasswordError(
+              '비밀번호는 대문자, 소문자, 숫자, 특수문자를 각각 하나 이상 포함한 8자 이상 이어야 합니다',
+            );
           }
 
-          if (
-            response.status === 400 &&
-            response.data.message.includes('비밀번호는 8자 이상이어야 합니다')
-          ) {
-            return '비밀번호는 8자 이상이어야 합니다';
+          if (message.includes('비밀번호는 8자 이상이어야 합니다')) {
+            setPasswordError('비밀번호는 8자 이상이어야 합니다');
           }
 
           return '회원가입에 실패햇습니다. 관리자에게 문의해주세요.';
-        },
-        finally: () => {},
-      },
-    );
+        }
+      });
   };
 
   return (
@@ -115,14 +110,13 @@ const Join: React.FC<JoinProps> = () => {
           <Joincontent align="start">
             <JoinLabel>이메일</JoinLabel>
             <JoinInput
-              type="email"
+              type="text"
               placeholder="예시 ) deskdiary@deskdiary.com"
               onChange={e => setUser({ ...user, email: e.target.value })}
+              onBlur={() => setEmailError(null)}
             />
             <Relative>
-              {isPasswordMatch ? (
-                <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>
-              ) : null}
+              {emailError ? <ErrorMessage>{emailError}</ErrorMessage> : null}
             </Relative>
           </Joincontent>
 
@@ -132,10 +126,11 @@ const Join: React.FC<JoinProps> = () => {
               type="password"
               placeholder="영어 대소문자,숫자,특수문자 포함 8~16자"
               onChange={e => setUser({ ...user, password: e.target.value })}
+              onBlur={() => setPasswordError(null)}
             />
             <Relative>
-              {isPasswordMatch ? (
-                <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>
+              {passwordError ? (
+                <ErrorMessage>{passwordError}</ErrorMessage>
               ) : null}
             </Relative>
           </Joincontent>
@@ -149,8 +144,8 @@ const Join: React.FC<JoinProps> = () => {
               onBlur={blurConfirmHandler}
             />
             <Relative>
-              {isPasswordMatch ? (
-                <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>
+              {matchPasswordError ? (
+                <ErrorMessage>{matchPasswordError}</ErrorMessage>
               ) : null}
             </Relative>
           </Joincontent>
@@ -161,21 +156,22 @@ const Join: React.FC<JoinProps> = () => {
               type="text"
               placeholder="4~12자"
               onChange={e => setUser({ ...user, nickname: e.target.value })}
+              onBlur={() => setNicknameError(null)}
             />
             <Relative>
-              {isPasswordMatch ? (
-                <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>
+              {nicknameError ? (
+                <ErrorMessage>{nicknameError}</ErrorMessage>
               ) : null}
             </Relative>
           </Joincontent>
 
           <AgreeBox row justify="start">
-            <AgreeCheck type="checkbox"></AgreeCheck>
+            <AgreeCheck type="checkbox" onClick={onClickAgree}></AgreeCheck>
             <AgreeLink to="/">개인정보 이용 동의 체크체크체크체크</AgreeLink>
           </AgreeBox>
         </JoinList>
       </JoinContainer>
-      <JoinButton type="submit">JOIN</JoinButton>
+      <JoinButton type="submit" disabled={!isAgreeChecked}>JOIN</JoinButton>
       <SocialLoginText>SNS 계정으로 시작하기</SocialLoginText>
       <SocialLoginGroup row gap="30px">
         <SocialLoginLink to="/">카카오</SocialLoginLink>
@@ -204,7 +200,6 @@ const ErrorMessage = styled.div`
   padding: 10px;
   color: var(--system-error, #d32f2f);
   font-feature-settings: 'clig' off, 'liga' off;
-  font-family: Noto Sans;
   font-size: 15px;
   font-style: normal;
   font-weight: 400;
@@ -215,7 +210,8 @@ const ErrorMessage = styled.div`
 `;
 
 const AgreeBox = styled(FlexContainer)`
-height: 48px;`;
+  height: 48px;
+`;
 
 const SocialLoginLink = styled(Link)`
   width: 72px;
@@ -235,30 +231,30 @@ const SocialLoginText = styled(FlexContainer)`
 
 const SocialLoginGroup = styled(FlexContainer)``;
 
-const JoinButton = styled.button`
+const JoinButton = styled.button<{ disabled: boolean }>`
   width: 400px;
   height: 60px;
   padding: 10px;
   justify-content: center;
   align-items: center;
-  background: rgba(153, 153, 153, 0.5);
+  /* background-color: rgba(153, 153, 153, 0.5); */
   border: none;
   margin-top: 12px;
-
   color: #fff;
   font-feature-settings: 'clig' off, 'liga' off;
-  font-family: Pretendard;
   font-size: 24px;
   font-style: normal;
   font-weight: 500;
   line-height: 123.5%; /* 29.64px */
   letter-spacing: 0.25px;
+
+  background-color: rgba(153, 153, 153, ${props => (props.disabled ? '0.5' : '1.0')});
+  cursor: ${props => (props.disabled ? '' : 'pointer')};
 `;
 
 const AgreeLink = styled(Link)`
   color: #000;
   font-feature-settings: 'clig' off, 'liga' off;
-  font-family: Pretendard;
   font-size: 15px;
   font-style: normal;
   font-weight: 400;
@@ -275,7 +271,6 @@ const AgreeCheck = styled.input`
   border: 1px solid #9e9e9e;
   display: inline-block;
   margin: 0 8px 0 0;
-
   // 체크했을 때의 스타일
   &:checked {
     background-color: #9e9e9e;
@@ -292,16 +287,15 @@ const JoinForm = styled.form`
   height: 100%;
 `;
 
-const Joincontent = styled(FlexContainer)`
-`;
+const Joincontent = styled(FlexContainer)``;
 
 const Relative = styled.div`
   height: 40px;
-`
+`;
 
 const JoinInput = styled.input`
-  width: 370px;
-  height: 28px;
+  width: 368px;
+  height: 26px;
   border-radius: 5px;
   border: 1px solid var(--gray-07, #757575);
   background: #fff;
@@ -309,18 +303,15 @@ const JoinInput = styled.input`
   font-size: 15px;
 
   &:focus {
-    outline: 1.5px solid gray;
-    border: none;
+    outline-color: #00C5FF;
   }
 `;
 
 const JoinLabel = styled.div`
-  width: 400px;
+  width: 380px;
   padding: 10px;
-
   color: var(--gray-07, #757575);
   font-feature-settings: 'clig' off, 'liga' off;
-  font-family: Noto Sans;
   font-size: 15px;
   font-style: normal;
   font-weight: 400;
@@ -329,7 +320,7 @@ const JoinLabel = styled.div`
 `;
 
 const JoinList = styled(FlexContainer)`
-  margin-top: 79px;
+  margin-top: 12px;
   width: 100%;
 `;
 
@@ -341,7 +332,6 @@ const Title = styled.div`
   color: #000;
   text-align: center;
   font-feature-settings: 'clig' off, 'liga' off;
-  font-family: Pretendard;
   font-size: 32px;
   font-style: normal;
   font-weight: 400;

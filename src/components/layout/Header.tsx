@@ -60,8 +60,8 @@ const Header: React.FC<HeaderProps> = () => {
               </div>
             ) : (
               <>
-                <Link to="/login">LOGIN</Link>
-                <Link to="/join">JOIN</Link>
+                <Link to="/auth/login">LOGIN</Link>
+                <Link to="/auth/join">JOIN</Link>
               </>
             )}
           </User>
