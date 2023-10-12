@@ -1,5 +1,5 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
+import Goal from '../components/layout/Goal';
 
 const Home = () => {
 
@@ -16,6 +16,7 @@ const Home = () => {
         <Link to={`/room`}>ROOM 입장</Link>
         <br />
         <div onClick={createRoomButton}>방 만들기</div>
+        <Goal />
     </div>
   );
 };

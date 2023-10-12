@@ -1,17 +1,6 @@
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import {
-  Avatar,
-  Box,
-  Button,
-  Checkbox,
-  Container,
-  CssBaseline,
-  FormControlLabel,
-  TextField,
-  Typography
-} from '@mui/material';
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import XIcon from '../images/Vector.svg';
 
 type LoginProps = {};
 
@@ -25,74 +14,202 @@ const Login: React.FC<LoginProps> = () => {
     });
   };
 
+  const inputClear = () => {
+    alert(`x클릭`);
+  };
+
+  const [idSaveCheckButton, setIdSaveCheckButton] = useState<boolean>(false);
+  console.log(idSaveCheckButton);
+  const handleCheckChange = () => {
+    console.log('클릭됨')
+    setIdSaveCheckButton(!idSaveCheckButton);
+  };
+
   return (
-    <div>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
-          >
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign In
-            </Button>
-            <div className="flex flex-row items-center justify-between text-xs">
-              <div>
-                <Link to={'/'} className='text-gray-500'>Forgot password?</Link>
-              </div>
-              <div>
-                <Link to={'/signup'} className='text-gray-500'>{"Don't have an account? Sign Up"}</Link>
-              </div>
-            </div>
-          </Box>
-        </Box>
-      </Container>
-    </div>
+    <LoginForm>
+      <Title>로그인</Title>
+      <InputDiv>
+        <Ptag>ID</Ptag>
+        <InputBox>
+          <InputTag type="email" placeholder="이메일을 입력해주세요." />
+          <img src={XIcon} alt="clear" onClick={inputClear} />
+        </InputBox>
+        <Ptag>등록되지 않은 이메일입니다.</Ptag>
+      </InputDiv>
+      <InputDiv>
+        <Ptag>PW</Ptag>
+        <InputBox>
+          <InputTag type="password" placeholder="비밀번호를 입력해주세요." />
+          <img src={XIcon} alt="clear" onClick={inputClear} />
+        </InputBox>
+        <Ptag>비밀번호를 확인해주세요.</Ptag>
+      </InputDiv>
+      <IdSaveBox>
+        <IdDiv>
+          <input
+            type="checkbox"
+            value="idSave"
+            checked={idSaveCheckButton}
+            onChange={handleCheckChange}
+          />
+          <p>아이디 저장</p>
+        </IdDiv>
+        <div>
+          <p>비밀번호 찾기</p>
+        </div>
+      </IdSaveBox>
+      <LogInButton>LOGIN</LogInButton>
+      <Ptag2>SNS 계정으로 로그인</Ptag2>
+      <SNSDiv>
+        <SNSButton>카카오</SNSButton>
+        <SNSButton>구굴</SNSButton>
+      </SNSDiv>
+      <Ptag2>아직 회원이 아니신가요?</Ptag2>
+      <JoinButton>JOIN</JoinButton>
+    </LoginForm>
   );
 };
+
+const LoginForm = styled.div`
+  width: 582px;
+  height: calc(100vh - 76px);
+  /* opacity: 0.5; */
+  background: #ededed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Title = styled.div`
+  width: 400px;
+  color: #000;
+  text-align: center;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: Pretendard;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 0.25px;
+  margin-left: auto;
+  margin-right: auto;
+`;
+
+const InputDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 400px;
+`;
+
+const Ptag = styled.div`
+  display: flex;
+  width: 380px;
+  padding: 10px;
+  align-items: center;
+  gap: 10px;
+  height: 19px;
+  font-size: 15px;
+`;
+
+const InputBox = styled.div`
+  display: flex;
+  width: 370px;
+  height: 28px;
+  padding: 10px 15px;
+  align-items: center;
+  gap: 10px;
+  border-radius: 5px;
+  border: 1px solid var(--gray-07, #757575);
+  background: #fff;
+`;
+
+const InputTag = styled.input`
+  color: black;
+  border: none;
+  width: 100%;
+  &:focus {
+    outline: none;
+  }
+`;
+
+const IdSaveBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  gap: 204px;
+`;
+
+const IdDiv = styled.div`
+  display: flex;
+  gap: 8px;
+`;
+
+const LogInButton = styled.div`
+  display: flex;
+  width: 380px;
+  height: 40px;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  opacity: 0.5;
+  background: #999;
+  color: #fff;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: Pretendard;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 123.5%; /* 29.64px */
+  letter-spacing: 0.25px;
+`;
+
+const Ptag2 = styled.div`
+  display: flex;
+  width: 380px;
+  height: 48px;
+  justify-content: center;
+  align-items: center;
+  gap: 204px;
+`;
+
+const SNSDiv = styled.div`
+  display: flex;
+  gap: 30px;
+  margin-bottom: 36px;
+`;
+const SNSButton = styled.div`
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background-color: #999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const JoinButton = styled.div`
+  display: flex;
+  width: 380px;
+  height: 40px;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  background: #999;
+  color: #fff;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: Pretendard;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 123.5%; /* 29.64px */
+  letter-spacing: 0.25px;
+`;
+
 export default Login;
