@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Error, Home, Room, Join, Login, Mypage } from '../pages';
 import MainLayout from '../components/layout/MainLayout';
 import SideLayout from '../components/layout/SideLayout';
+import { Error, Home, Join, Login, Mypage, Room } from '../pages';
 
 const Router = () => {
   return (
