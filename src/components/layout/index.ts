@@ -1,5 +1,5 @@
-import Header from './Header';
-import Footer from './Footer';
-import LogoHeader from './LogoHeader';
+import Header from './main/Header';
+import Footer from './main/Footer';
+import AuthHeader from './auth/AuthHeader';
 
-export { Header, Footer, LogoHeader };
+export { Header, Footer, AuthHeader };
