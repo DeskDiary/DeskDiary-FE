@@ -1,22 +1,37 @@
+import axios from 'axios';
 import React, { useState } from 'react';
+import { useMutation } from 'react-query';
 import styled from 'styled-components';
 import XIcon from '../images/Vector.svg';
 
 type LoginProps = {};
 
 const Login: React.FC<LoginProps> = () => {
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
+  console.log(serverUrl);
+  const loginMutation = useMutation(
+    async (formData: FormData) => {
+      const response = await axios.post(`${serverUrl}auth/login`, formData);
+      return response.data; // 여기서는 로그인 API에서 반환한 데이터를 반환
+    }
+  );
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // 이벤트의 기본 동작 ( 리렌더링 ) 차단
-    const data = new FormData(event.currentTarget); // form 내의 데이터를 읽어온다. name 속성을 키로 그 값들을 가지고 있다.
+    const formData = new FormData(event.currentTarget);
+    // form 내의 데이터를 읽어온다. name 속성을 키로 그 값들을 가지고 있다.
     console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+      email: formData.get('email'),
+      password: formData.get('password'),
     });
+    loginMutation.mutate(formData);
   };
 
   const inputClear = () => {
     alert(`x클릭`);
   };
+
+  
 
   const [idSaveCheckButton, setIdSaveCheckButton] = useState<boolean>(false);
   console.log(idSaveCheckButton);
@@ -26,12 +41,12 @@ const Login: React.FC<LoginProps> = () => {
   };
 
   return (
-    <LoginForm>
+    <LoginForm onSubmit={handleSubmit}>
       <Title>로그인</Title>
       <InputDiv>
         <Ptag>ID</Ptag>
         <InputBox>
-          <InputTag type="email" placeholder="이메일을 입력해주세요." />
+          <InputTag type="email" placeholder="이메일을 입력해주세요." name='email' />
           <img src={XIcon} alt="clear" onClick={inputClear} />
         </InputBox>
         <Ptag>등록되지 않은 이메일입니다.</Ptag>
@@ -39,7 +54,7 @@ const Login: React.FC<LoginProps> = () => {
       <InputDiv>
         <Ptag>PW</Ptag>
         <InputBox>
-          <InputTag type="password" placeholder="비밀번호를 입력해주세요." />
+          <InputTag type="password" placeholder="비밀번호를 입력해주세요." name='password' />
           <img src={XIcon} alt="clear" onClick={inputClear} />
         </InputBox>
         <Ptag>비밀번호를 확인해주세요.</Ptag>
@@ -58,7 +73,7 @@ const Login: React.FC<LoginProps> = () => {
           <p>비밀번호 찾기</p>
         </div>
       </IdSaveBox>
-      <LogInButton>LOGIN</LogInButton>
+      <LogInButton type='submit'>LOGIN</LogInButton>
       <Ptag2>SNS 계정으로 로그인</Ptag2>
       <SNSDiv>
         <SNSButton>카카오</SNSButton>
@@ -70,7 +85,7 @@ const Login: React.FC<LoginProps> = () => {
   );
 };
 
-const LoginForm = styled.div`
+const LoginForm = styled.form`
   width: 582px;
   height: calc(100vh - 76px);
   /* opacity: 0.5; */
@@ -148,7 +163,7 @@ const IdDiv = styled.div`
   gap: 8px;
 `;
 
-const LogInButton = styled.div`
+const LogInButton = styled.button`
   display: flex;
   width: 380px;
   height: 40px;
