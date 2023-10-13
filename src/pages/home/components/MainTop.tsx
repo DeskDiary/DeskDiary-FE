@@ -3,11 +3,17 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Link, useNavigate, NavLink } from 'react-router-dom';
 import { toast } from 'sonner';
 import styled from '@emotion/styled';
+import CreateRoomModal from './CreateRoomModal';
 
-type HeaderProps = {};
+type MainTopProps = {};
 
-const Header: React.FC<HeaderProps> = () => {
+const MainTop: React.FC<MainTopProps> = () => {
   const [isFocused, setIsFocused] = useState(false);
+  const [openCreateRoom, setOpenCreateRoom] = useState(true);
+
+  const onClickCreateRoomButton = () => {
+    setOpenCreateRoom(!openCreateRoom);
+  };
 
   const clickSearch = () => {
     setIsFocused(true);
@@ -22,7 +28,7 @@ const Header: React.FC<HeaderProps> = () => {
   };
 
   return (
-    <NavHeader justify='start'>
+    <NavHeader justify="start">
       <Search isFocused={isFocused} justify="space-between">
         <SearchInput
           onFocus={clickSearch}
@@ -34,7 +40,10 @@ const Header: React.FC<HeaderProps> = () => {
         </SearchButton>
       </Search>
 
-      <CreateRoomBtton type="button">방만들기</CreateRoomBtton>
+      <CreateRoomBtton type="button" onClick={onClickCreateRoomButton}>
+        방만들기
+      </CreateRoomBtton>
+      {openCreateRoom && <CreateRoomModal />}
     </NavHeader>
   );
 };
@@ -58,6 +67,7 @@ const CreateRoomBtton = styled.button`
   padding: 10px;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 
   margin-left: 241px;
 
@@ -75,8 +85,7 @@ const CreateRoomBtton = styled.button`
 `;
 
 const NavHeader = styled(FlexContainer)`
-  width: 100vw;
-  margin-left: 224px;
+  width: calc(100vw - 200px);
   margin-top: 28px;
 `;
 
@@ -117,4 +126,4 @@ const SearchButton = styled.div`
   cursor: pointer;
 `;
 
-export default Header;
+export default MainTop;

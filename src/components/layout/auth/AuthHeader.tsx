@@ -3,6 +3,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Link, useNavigate, NavLink } from 'react-router-dom';
 import { toast } from 'sonner';
 import styled from '@emotion/styled';
+import logo from '../../../images/logo.png';
 
 type LogoHeaderProps = {};
 
@@ -12,7 +13,7 @@ const LogoHeader: React.FC<LogoHeaderProps> = () => {
       <NavContent justify="space-between">
         <Logo>
           <Link to="/">
-            <LogoImg src="/images/logo.png" />
+            <LogoImg src={logo} />
           </Link>
         </Logo>
       </NavContent>

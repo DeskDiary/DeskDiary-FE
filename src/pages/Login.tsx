@@ -9,10 +9,26 @@ type LoginProps = {};
 const Login: React.FC<LoginProps> = () => {
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   console.log(serverUrl);
+
   const loginMutation = useMutation(
     async (formData: FormData) => {
-      const response = await axios.post(`${serverUrl}auth/login`, formData);
-      return response.data; // 여기서는 로그인 API에서 반환한 데이터를 반환
+      try {
+        const url = `${serverUrl}auth/login`;
+        console.log(url);
+
+        const requestBody = {
+          email: formData.get('email'),
+          password: formData.get('password'),
+        };
+
+        const response = await axios.post(url, requestBody);
+        console.log('response',response)
+        console.log('formData',formData)
+        
+        // return response.data; // 여기서는 로그인 API에서 반환한 데이터를 반환
+      } catch (error) {
+        console.error(error);
+      }
     }
   );
 
