@@ -25,10 +25,6 @@ const Join: React.FC<JoinProps> = () => {
     
   }
 
-  const clickButton = () => {
-    console.log(isAgreeChecked);
-  }
-
   const blurConfirmHandler = async () => {
     if (confitmPassword !== user.password) {
       setMatchPasswordError('비밀번호가 일치하지 않습니다.');
@@ -36,12 +32,6 @@ const Join: React.FC<JoinProps> = () => {
       setMatchPasswordError(null);
     }
     return;
-  };
-
-  const blurHandler = async () => {
-    setEmailError(null);
-    setPasswordError(null);
-    setNicknameError(null);
   };
 
   const onSubmitJoin = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -271,7 +261,7 @@ const AgreeCheck = styled.input`
   border: 1px solid #9e9e9e;
   display: inline-block;
   margin: 0 8px 0 0;
-  // 체크했을 때의 스타일
+  //체크했을 때의 스타일
   &:checked {
     background-color: #9e9e9e;
   }

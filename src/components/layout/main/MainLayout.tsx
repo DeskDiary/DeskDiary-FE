@@ -1,7 +1,8 @@
 import React from 'react';
-import { Header, Footer } from './index';
+import { Header, Footer } from '../index';
 import { Outlet } from 'react-router-dom';
 import styled from '@emotion/styled';
+import SideMenu from './SideMenu';
 
 type MainLayoutProps = {};
 
@@ -9,8 +10,8 @@ const MainLayout: React.FC<MainLayoutProps> = () => {
   return (
     <Wrap>
       <Header></Header>
+      <SideMenu></SideMenu>
       <Outlet />
-      <Footer></Footer>
     </Wrap>
   );
 };

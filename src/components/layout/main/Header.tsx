@@ -117,7 +117,7 @@ const NavHeader = styled(FlexContainer)`
 
   position: fixed;
   top: 0;
-  left: 0;
+  left: 224px;
 `;
 
 const NavContent = styled(FlexContainer)`
