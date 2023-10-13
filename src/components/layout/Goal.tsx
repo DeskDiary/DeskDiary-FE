@@ -1,15 +1,28 @@
-import React from 'react';
+import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-
 type GoalProps = {};
 
 const Goal: React.FC<GoalProps> = () => {
+  const [current, setCurrent] = useState<number>(110);
+
   return (
     <GoalDiv>
       <Title>오늘의 책상 목표</Title>
-      <Content>목표의 40%(시간)이나 해냈어요.</Content>
+      <Content>목표의 {current}%(시간)이나 해냈어요.</Content>
       <GoalGraph>
-        <CurrentGraph></CurrentGraph>
+        <FlagOutlinedIcon
+          style={{
+            fontSize: '50px',
+            position: 'absolute',
+            right: '27px',
+            top: '-44px',
+            color: '#337CCF'
+          }}
+        />
+
+        <CurrentGraph width={Math.min(current * 6.5, 714)}>
+        </CurrentGraph>
       </GoalGraph>
     </GoalDiv>
   );
@@ -44,14 +57,16 @@ const Content = styled.p`
 
 const GoalGraph = styled.div`
   width: 100%;
-  background: #A9A9A9;
+  background: #a9a9a9;
   height: 18px;
-`
+  position: relative;
+`;
 
-const CurrentGraph = styled.div`
-  width: calc(40 * 7px);
-  background: #5B5B5B;
+const CurrentGraph = styled.div<{ width: number }>`
+  width: ${props => `${props.width}px`};
+  background: #5b5b5b;
   height: 18px;
-`
+  position: relative;
+`;
 
 export default Goal;

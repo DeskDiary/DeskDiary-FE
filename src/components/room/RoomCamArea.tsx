@@ -40,14 +40,17 @@ const Cameras = styled.div`
   display: flex;
   gap: 30px;
   flex-wrap: wrap;
+  justify-content: center;
 `;
 
 const Camera = styled.div`
-  width: 263px;
-  height: 213px;
+  /* max-width: 100%; */
+  flex: 2;
+  min-width: 40%;
+  aspect-ratio: 16/9;
   background: rgba(217, 217, 217, 1);
   padding: 10px;
-  position: relative; /* 부모 요소를 기준으로 위치 지정 */
+  position: relative; 
 `;
 const CameraIcon = styled.div`
   position: absolute;

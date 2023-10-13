@@ -1,5 +1,6 @@
 import AgoraRTC from 'agora-rtc-sdk-ng';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import {
@@ -30,6 +31,8 @@ const CamAndMicSetting: React.FC<CamAndMicSettingProps> = () => {
   const choiceMicHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setChoiceMic(e.target.value);
   };
+
+  const navigate = useNavigate();
 
   const startCameraTest = async () => {
     try {
@@ -171,7 +174,7 @@ const CamAndMicSetting: React.FC<CamAndMicSettingProps> = () => {
             <input type="text" value="역시이상호" readOnly />
           </div>
 
-          <button>방 입장하기</button>
+          <button onClick={() => {navigate('/room/1')}}>방 입장하기</button>
         </UserInfoArea>
       </AllSettingsArea>
 
