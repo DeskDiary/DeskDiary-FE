@@ -1,20 +1,46 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
+import { useNavigate } from 'react-router';
 import styled from 'styled-components';
+import { getCookie, setTokenCookie } from '../auth/cookie';
 import XIcon from '../images/Vector.svg';
 
 type LoginProps = {};
 
 const Login: React.FC<LoginProps> = () => {
+  const navigate = useNavigate();
+  const token = getCookie('token');
+  useEffect(() => {
+    if (token) {
+      alert('이미 로그인했습니다.');
+      navigate(-1);
+    }
+  }, [token, navigate]);
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   console.log(serverUrl);
-  const loginMutation = useMutation(
-    async (formData: FormData) => {
-      const response = await axios.post(`${serverUrl}auth/login`, formData);
-      return response.data; // 여기서는 로그인 API에서 반환한 데이터를 반환
+
+  const loginMutation = useMutation(async (formData: FormData) => {
+    try {
+      const url = `${serverUrl}auth/login`;
+      console.log(url);
+
+      const requestBody = {
+        email: formData.get('email'),
+        password: formData.get('password'),
+      };
+
+      const response = await axios.post(url, requestBody);
+      const token = response.headers.authorization.split(' ')[1];
+      console.log(token);
+      setTokenCookie(token);
+      alert(`로그인 성공`);
+      navigate('/')
+      // return response.data; // 여기서는 로그인 API에서 반환한 데이터를 반환
+    } catch (error) {
+      console.error(error);
     }
-  );
+  });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // 이벤트의 기본 동작 ( 리렌더링 ) 차단
@@ -31,12 +57,14 @@ const Login: React.FC<LoginProps> = () => {
     alert(`x클릭`);
   };
 
-  
+  // useEffect(() => {
+
+  // }, [])
 
   const [idSaveCheckButton, setIdSaveCheckButton] = useState<boolean>(false);
   console.log(idSaveCheckButton);
   const handleCheckChange = () => {
-    console.log('클릭됨')
+    console.log('클릭됨');
     setIdSaveCheckButton(!idSaveCheckButton);
   };
 
@@ -46,7 +74,11 @@ const Login: React.FC<LoginProps> = () => {
       <InputDiv>
         <Ptag>ID</Ptag>
         <InputBox>
-          <InputTag type="email" placeholder="이메일을 입력해주세요." name='email' />
+          <InputTag
+            type="email"
+            placeholder="이메일을 입력해주세요."
+            name="email"
+          />
           <img src={XIcon} alt="clear" onClick={inputClear} />
         </InputBox>
         <Ptag>등록되지 않은 이메일입니다.</Ptag>
@@ -54,7 +86,11 @@ const Login: React.FC<LoginProps> = () => {
       <InputDiv>
         <Ptag>PW</Ptag>
         <InputBox>
-          <InputTag type="password" placeholder="비밀번호를 입력해주세요." name='password' />
+          <InputTag
+            type="password"
+            placeholder="비밀번호를 입력해주세요."
+            name="password"
+          />
           <img src={XIcon} alt="clear" onClick={inputClear} />
         </InputBox>
         <Ptag>비밀번호를 확인해주세요.</Ptag>
@@ -73,7 +109,7 @@ const Login: React.FC<LoginProps> = () => {
           <p>비밀번호 찾기</p>
         </div>
       </IdSaveBox>
-      <LogInButton type='submit'>LOGIN</LogInButton>
+      <LogInButton type="submit">LOGIN</LogInButton>
       <Ptag2>SNS 계정으로 로그인</Ptag2>
       <SNSDiv>
         <SNSButton>카카오</SNSButton>
