@@ -60,8 +60,8 @@ const Header: React.FC<HeaderProps> = () => {
               </div>
             ) : (
               <>
-                <Link to="/login">LOGIN</Link>
-                <Link to="/join">JOIN</Link>
+                <Link to="/auth/login">LOGIN</Link>
+                <Link to="/auth/join">JOIN</Link>
               </>
             )}
           </User>
@@ -117,7 +117,7 @@ const NavHeader = styled(FlexContainer)`
 
   position: fixed;
   top: 0;
-  left: 0;
+  left: 224px;
 `;
 
 const NavContent = styled(FlexContainer)`

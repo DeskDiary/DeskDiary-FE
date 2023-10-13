@@ -16,7 +16,7 @@
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "@types/react-query": "^1.2.9",
-    "agora-rtc-sdk-ng": "^4.19.0",
+    "agora-rtc-sdk-ng": "^4.19.1",
     "axios": "^1.5.1",
     "chart.js": "^4.4.0",
     "json-server": "^0.17.4",

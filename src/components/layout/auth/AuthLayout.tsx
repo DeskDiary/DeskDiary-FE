@@ -1,5 +1,5 @@
 import React from 'react';
-import { LogoHeader } from './index';
+import { AuthHeader } from '../index';
 import { Outlet } from 'react-router-dom';
 import styled from '@emotion/styled';
 
@@ -8,7 +8,7 @@ type SideLayoutProps = {};
 const SideLayout: React.FC<SideLayoutProps> = () => {
   return (
     <Wrap>
-      <LogoHeader />
+      <AuthHeader />
       <Outlet />
     </Wrap>
   );

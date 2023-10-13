@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import MainLayout from '../components/layout/MainLayout';
-import SideLayout from '../components/layout/SideLayout';
-import { Error, Home, Join, Login, Mypage, Room } from '../pages';
+import { Error, Home, Room, Join, Login, Mypage } from '../pages';
+import MainLayout from '../components/layout/main/MainLayout';
+import SideLayout from '../components/layout/auth/AuthLayout';
 
 const Router = () => {
   return (
@@ -13,8 +13,8 @@ const Router = () => {
           <Route path="/mypage" element={<Mypage />} />
         </Route>
         <Route element={<SideLayout />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/join" element={<Join />} />
+          <Route path="/auth/login" element={<Login />} />
+          <Route path="/auth/join" element={<Join />} />
         </Route>
         <Route path="*" element={<Error />} />
       </Routes>
