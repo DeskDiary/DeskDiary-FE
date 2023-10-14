@@ -131,13 +131,14 @@ const Home = () => {
       </Info>
       <List column align="start">
         <ListTitle>내가 참여했던 방</ListTitle>
-        <JoinedRooms>
+        <JoinedRooms to="/room">
           {rooms.map(room => {
             return <RoomCard key={room.id} room={room} />;
           })}
           {/* <RoomCard /> */}
         </JoinedRooms>
       </List>
+      <Link to="/join">회원가입</Link>
     </Container>
   );
 };
@@ -183,7 +184,7 @@ const ListTitle = styled.div`
   letter-spacing: 0.25px;
 `;
 
-const JoinedRooms = styled.div`
+const JoinedRooms = styled(Link)`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 16px;

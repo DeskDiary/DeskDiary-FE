@@ -9,6 +9,10 @@ const GlobalStyle = createGlobalStyle`
 
   *{
     font-family: Pretendard;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 123.5%; /* 29.64px */
+    letter-spacing: 0.25px;
   }
 
 

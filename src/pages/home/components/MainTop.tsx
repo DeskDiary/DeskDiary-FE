@@ -9,7 +9,7 @@ type MainTopProps = {};
 
 const MainTop: React.FC<MainTopProps> = () => {
   const [isFocused, setIsFocused] = useState(false);
-  const [openCreateRoom, setOpenCreateRoom] = useState(true);
+  const [openCreateRoom, setOpenCreateRoom] = useState(false);
 
   const onClickCreateRoomButton = () => {
     setOpenCreateRoom(!openCreateRoom);
@@ -43,7 +43,7 @@ const MainTop: React.FC<MainTopProps> = () => {
       <CreateRoomBtton type="button" onClick={onClickCreateRoomButton}>
         방만들기
       </CreateRoomBtton>
-      {openCreateRoom && <CreateRoomModal />}
+      {openCreateRoom && <CreateRoomModal setOpenCreateRoom={setOpenCreateRoom}/>}
     </NavHeader>
   );
 };
