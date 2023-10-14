@@ -34,7 +34,7 @@ const AsmrPlayer: React.FC<AsmrPlayerProps> = () => {
           );
         })}
       </AsmrList>
-      <AudioPlayer src={audioSrc} onPlay={e => console.log('onPlay')} />
+      <AudioPlayer src={audioSrc} onPlay={() => console.log('onPlay')} />
     </Body>
   );
 };
