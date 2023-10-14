@@ -5,7 +5,7 @@ import { useRecoilState } from 'recoil';
 import { userAtom } from '../recoil/UserAtom';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import checked from '../images/Radiobutton.png'
+import checked from '../images/Radiobutton.png';
 
 type JoinProps = {};
 
@@ -22,9 +22,8 @@ const Join: React.FC<JoinProps> = () => {
   );
 
   const onClickAgree = () => {
-    setIsAgreeChecked(!isAgreeChecked)
-    
-  }
+    setIsAgreeChecked(!isAgreeChecked);
+  };
 
   const blurConfirmHandler = async () => {
     if (confitmPassword !== user.password) {
@@ -47,48 +46,41 @@ const Join: React.FC<JoinProps> = () => {
         if (error.response) {
           const message = error.response.data.message;
           console.log(message);
-          if (message.includes('이메일이 이미')) {
-            setEmailError('이메일이 이미 사용중입니다.');
-          }
 
-          if (message.includes('이메일이 형식이')) {
-            setEmailError('이메일 형식이 아닙니다');
-            console.log(message);
-          }
-
-          if (message.includes('이메일이 비어')) {
-            setEmailError('이메일이 비어 있으면 안됩니다.');
-          }
-
-          if (message.includes('닉네임이 비어 있으면 안됩니다.')) {
-            setNicknameError('닉네임이 비어 있으면 안됩니다.');
-          }
-
-          if (
-            message.includes('닉네임은 한글, 알파벳, 숫자만 포함해야 합니다')
-          ) {
-            setNicknameError('닉네임은 특수문자가 포함될 수 없습니다.');
-          }
-
-          if (message.includes('비밀번호가 비어 있으면 안됩니다.')) {
-            setPasswordError('비밀번호가 비어 있으면 안됩니다.');
-          }
-
-          if (
-            message.includes(
+          switch (true) {
+            case message.includes('이메일이 이미'):
+              setEmailError('이메일이 이미 사용중입니다.');
+              break;
+            case message.includes('이메일이 형식이'):
+              setEmailError('이메일 형식이 아닙니다');
+              break;
+            case message.includes('이메일이 비어'):
+              setEmailError('이메일이 비어 있으면 안됩니다.');
+              break;
+            case message.includes('닉네임이 비어 있으면 안됩니다.'):
+              setNicknameError('닉네임이 비어 있으면 안됩니다.');
+              break;
+            case message.includes(
+              '닉네임은 한글, 알파벳, 숫자만 포함해야 합니다',
+            ):
+              setNicknameError('닉네임은 특수문자가 포함될 수 없습니다.');
+              break;
+            case message.includes('비밀번호가 비어 있으면 안됩니다.'):
+              setPasswordError('비밀번호가 비어 있으면 안됩니다.');
+              break;
+            case message.includes(
               '비밀번호는 대문자, 소문자, 숫자, 특수문자를 각각 하나 이상 포함해야 합니다',
-            )
-          ) {
-            setPasswordError(
-              '비밀번호는 대문자, 소문자, 숫자, 특수문자를 각각 하나 이상 포함한 8자 이상 이어야 합니다',
-            );
+            ):
+              setPasswordError(
+                '비밀번호는 대문자, 소문자, 숫자, 특수문자를 각각 하나 이상 포함한 8자 이상 이어야 합니다',
+              );
+              break;
+            case message.includes('비밀번호는 8자 이상이어야 합니다'):
+              setPasswordError('비밀번호는 8자 이상이어야 합니다');
+              break;
+            default:
+              return '회원가입에 실패했습니다. 관리자에게 문의해주세요.';
           }
-
-          if (message.includes('비밀번호는 8자 이상이어야 합니다')) {
-            setPasswordError('비밀번호는 8자 이상이어야 합니다');
-          }
-
-          return '회원가입에 실패햇습니다. 관리자에게 문의해주세요.';
         }
       });
   };
@@ -162,11 +154,40 @@ const Join: React.FC<JoinProps> = () => {
           </AgreeBox>
         </JoinList>
       </JoinContainer>
-      <JoinButton type="submit" disabled={!isAgreeChecked}>JOIN</JoinButton>
+      <JoinButton type="submit" disabled={!isAgreeChecked}>
+        JOIN
+      </JoinButton>
       <SocialLoginText>SNS 계정으로 시작하기</SocialLoginText>
       <SocialLoginGroup row gap="30px">
-        <SocialLoginLink to="/">카카오</SocialLoginLink>
+        <SocialLoginLink
+          to="/"
+          onClick={() => {
+            const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
+            const kakaoOauthURL = `https://kauth.kakao.com/oauth/authorize?response_type=code&redirect_uri=${encodeURIComponent(
+              `${SERVER_URL}/kakao-callback`,
+            )}&client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}`;
+
+            window.location.href = kakaoOauthURL;
+          }}
+        >
+          카카오
+        </SocialLoginLink>
+
         <SocialLoginLink to="/">구글</SocialLoginLink>
+        {/* <button
+          onClick={() => {
+            const SERVER_URL =
+              process.env.REACT_APP_SERVER_URL || 'http://localhost:8000';
+            const kakaoOauthURL = `https://kauth.kakao.com/oauth/authorize?response_type=code&redirect_uri=${encodeURIComponent(
+              `${SERVER_URL}/api/kakao/callback`,
+            )}&client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}`;
+            window.location.href = kakaoOauthURL;
+          }}
+          className="bg-[#FAE100] w-[320px] text-black font-semibold py-1 border-2 border-none"
+        > */}
+        {/* 카카오로 로그인
+        </button> */}
       </SocialLoginGroup>
     </JoinForm>
   );
@@ -239,7 +260,12 @@ const JoinButton = styled.button<{ disabled: boolean }>`
   line-height: 123.5%; /* 29.64px */
   letter-spacing: 0.25px;
 
-  background-color: rgba(153, 153, 153, ${props => (props.disabled ? '0.5' : '1.0')});
+  background-color: rgba(
+    153,
+    153,
+    153,
+    ${props => (props.disabled ? '0.5' : '1.0')}
+  );
   cursor: ${props => (props.disabled ? '' : 'pointer')};
 `;
 
@@ -294,7 +320,7 @@ const JoinInput = styled.input`
   font-size: 15px;
 
   &:focus {
-    outline-color: #00C5FF;
+    outline-color: #00c5ff;
   }
 `;
 
