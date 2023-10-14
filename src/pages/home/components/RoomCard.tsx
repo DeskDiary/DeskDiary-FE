@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import thumbnail from '../../../images/sample.png';
+import { Link } from 'react-router-dom';
+import EnterRoomModal from '../../EnterRoomModal';
 
 type RoomCardProps = {
   room: {
@@ -16,9 +18,12 @@ type RoomCardProps = {
 };
 
 const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
+
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <Container column justify="start">
-      <Thumbmail src={thumbnail}></Thumbmail>
+    <Container column justify='center'>
+      <Thumbmail src={thumbnail} onClick={() => setIsOpen(true)}></Thumbmail>
       <Contents justify="start" gap="9px">
         <Img></Img>
         <ContentText column justify="start">
@@ -29,6 +34,7 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
           </Tags>
         </ContentText>
       </Contents>
+      {isOpen && <EnterRoomModal setIsOpen={setIsOpen} room={room}/>}
     </Container>
   );
 };
@@ -89,5 +95,6 @@ const Thumbmail = styled.img`
 const Container = styled(FlexContainer)`
   width: 292px;
   height: 240px;
+  cursor: pointer;
 `;
 export default RoomCard;

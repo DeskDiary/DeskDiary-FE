@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Goal from './components/Goal';
 import styled from 'styled-components';
@@ -111,11 +112,10 @@ const Home = () => {
     },
   ];
 
-  const isLogged = true;
+  const isLogged = false;
 
   return (
     <Container column justify="start" align="start">
-
       <삭제></삭제>
       <MainTop />
 
@@ -131,11 +131,14 @@ const Home = () => {
       </Info>
       <List column align="start">
         <ListTitle>내가 참여했던 방</ListTitle>
-        <JoinedRooms to="/room">
+        <JoinedRooms>
           {rooms.map(room => {
-            return <RoomCard key={room.id} room={room} />;
+            return (
+              <>
+                <RoomCard key={room.id} room={room} />
+              </>
+            );
           })}
-          {/* <RoomCard /> */}
         </JoinedRooms>
       </List>
       <Link to="/join">회원가입</Link>
@@ -184,7 +187,7 @@ const ListTitle = styled.div`
   letter-spacing: 0.25px;
 `;
 
-const JoinedRooms = styled(Link)`
+const JoinedRooms = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 16px;

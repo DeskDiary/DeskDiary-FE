@@ -37,6 +37,13 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
     setSelectedUserCount(count);
   };
 
+  const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    setSelectedFiles(files);
+  };
+
   return (
     <Container>
       <BackGround />
@@ -45,6 +52,16 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
         <Thumbnanil column gap="11px">
           <ThumbnailImg src={Picture}></ThumbnailImg>
           <ThumbnailText>썸네일 등록</ThumbnailText>
+          <div className="js-upload" uk-form-custom="true">
+            <input type="file" multiple onChange={handleFileChange} />
+            <button
+              className="uk-button uk-button-default"
+              type="button"
+              tabIndex={-1}
+            >
+              Select
+            </button>
+          </div>
         </Thumbnanil>
 
         <Content column gap="15px">
@@ -168,15 +185,12 @@ const MaxUser = styled.button<{ isActive: boolean }>`
   height: 50px;
   background-color: ${props => (props.isActive ? 'black' : '#6e6e6e')};
   font-size: 24px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 123.5%;
-  letter-spacing: 0.25px;
   color: white;
   display: flex;
   justify-content: center;
   align-items: center;
   border: none;
+  cursor: pointer;
 `;
 
 const CategoryGroup = styled(FlexContainer)``;
@@ -186,15 +200,12 @@ const Category = styled.button<{ isActive: boolean }>`
   height: 50px;
   background-color: ${props => (props.isActive ? 'black' : '#6e6e6e')};
   font-size: 24px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 123.5%;
-  letter-spacing: 0.25px;
   color: white;
   display: flex;
   justify-content: center;
   align-items: center;
   border: none;
+  cursor: pointer;
 `;
 
 const Content = styled(FlexContainer)`

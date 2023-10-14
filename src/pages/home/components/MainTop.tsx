@@ -43,7 +43,9 @@ const MainTop: React.FC<MainTopProps> = () => {
       <CreateRoomBtton type="button" onClick={onClickCreateRoomButton}>
         방만들기
       </CreateRoomBtton>
-      {openCreateRoom && <CreateRoomModal setOpenCreateRoom={setOpenCreateRoom}/>}
+      {openCreateRoom && (
+        <CreateRoomModal setOpenCreateRoom={setOpenCreateRoom} />
+      )}
     </NavHeader>
   );
 };
