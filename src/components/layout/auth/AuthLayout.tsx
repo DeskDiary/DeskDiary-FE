@@ -1,7 +1,7 @@
-import React from 'react';
-import { AuthHeader } from '../index';
-import { Outlet } from 'react-router-dom';
 import styled from '@emotion/styled';
+import React from 'react';
+import { Outlet } from 'react-router-dom';
+import { AuthHeader } from '../index';
 
 type SideLayoutProps = {};
 
@@ -24,3 +24,8 @@ const Wrap = styled.div`
 
 `;
 export default SideLayout;
+
+const index = 10;
+
+const arr = Array.from({length:index}).fill(0);
+
