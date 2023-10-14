@@ -9,20 +9,19 @@ type MainLayoutProps = {};
 const MainLayout: React.FC<MainLayoutProps> = () => {
   return (
     <Wrap>
-      <Header></Header>
-      <SideMenu></SideMenu>
+      {/* <Header></Header> */}
+      {/* <SideMenu></SideMenu> */}
       <Outlet />
     </Wrap>
   );
 };
 
 const Wrap = styled.div`
-  min-height: calc(100vh - 260px);
+  min-height: calc(100vh);
   position: relative;
-  width: 100%;
+  width: 100vw;
   display: flex;
+  flex-direction: row;
   justify-content: center;
-  padding-top: 76px;
-  padding-bottom: 200px;
 `;
 export default MainLayout;

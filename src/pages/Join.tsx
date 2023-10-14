@@ -5,6 +5,7 @@ import { useRecoilState } from 'recoil';
 import { userAtom } from '../recoil/UserAtom';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import checked from '../images/Radiobutton.png'
 
 type JoinProps = {};
 
@@ -254,8 +255,8 @@ const AgreeLink = styled(Link)`
 
 const AgreeCheck = styled.input`
   appearance: none;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background-color: white;
   border: 1px solid #9e9e9e;
@@ -263,7 +264,7 @@ const AgreeCheck = styled.input`
   margin: 0 8px 0 0;
   //체크했을 때의 스타일
   &:checked {
-    background-color: #9e9e9e;
+    background: url(${checked}) no-repeat center;
   }
 `;
 

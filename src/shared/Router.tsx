@@ -15,8 +15,8 @@ const Router = () => {
           <Route path="/mypage" element={<Mypage />} />
         </Route>
         <Route element={<SideLayout />}>
-          <Route path="/auth/login" element={<Login />} />
-          <Route path="/auth/join" element={<Join />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/join" element={<Join />} />
         </Route>
         <Route path="/room" element={<CamAndMicSetting />} />
         <Route path="/room/:id" element={<Room />} />

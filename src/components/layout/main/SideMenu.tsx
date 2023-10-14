@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link, NavLink } from 'react-router-dom';
+import logo from '../../../images/logo.png';
+import profile from '../../../images/profile.png';
 
 const SideMenu = () => {
   const menus2 = [
@@ -25,7 +27,7 @@ const SideMenu = () => {
     <Container column justify="start">
       <Logo>
         <Link to="/">
-          <LogoImg src="/images/Logo.png" />
+          <LogoImg src={logo} />
         </Link>
       </Logo>
       {menus2.map((menu, index) => {
@@ -38,6 +40,10 @@ const SideMenu = () => {
           </MenuBox>
         );
       })}
+      <UserBar justify="start">
+        <Profile src={profile} />
+        <UserName>user 1</UserName>
+      </UserBar>
     </Container>
   );
 };
@@ -53,6 +59,29 @@ const FlexContainer = styled.div<{
   align-items: ${props => (props.align ? props.align : 'center')};
   justify-content: ${props => (props.justify ? props.justify : 'center')};
   gap: ${props => props.gap || '0'};
+`;
+
+const UserName = styled.div`
+  width: 128px;
+  text-align: center;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 123.5%; /* 18.525px */
+  letter-spacing: 0.25px;
+`;
+const Profile = styled.img`
+  width: 66px;
+  height: 66px;
+  flex-shrink: 0;
+  margin-left: 14px;
+`;
+
+const UserBar = styled(FlexContainer)`
+  height: 66px;
+  margin-top: auto;
+  margin-bottom: 144px;
 `;
 
 const MenuList = styled(FlexContainer)`
@@ -89,7 +118,7 @@ const MenuBox = styled(FlexContainer)`
 
 const Container = styled(FlexContainer)`
   background-color: #999;
-  width: 224px;
+  width: 200px;
   height: 100vh;
   position: fixed;
   left: 0;
@@ -99,6 +128,8 @@ const Container = styled(FlexContainer)`
 const Logo = styled(FlexContainer)`
   width: 100%;
   height: 56px;
+  margin-bottom: 342px;
+  margin-top: 20px;
 `;
 
 const LogoImg = styled.img`
