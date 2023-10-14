@@ -39,6 +39,7 @@ const Login: React.FC<LoginProps> = () => {
       // return response.data; // 여기서는 로그인 API에서 반환한 데이터를 반환
     } catch (error) {
       console.error(error);
+
     }
   });
 

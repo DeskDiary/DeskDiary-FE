@@ -1,5 +1,5 @@
 import Error from './Error';
-import Home from './Home';
+import Home from './home/Home';
 import Room from './Room';
 import Join from './Join';
 import Login from './Login';
