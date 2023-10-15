@@ -93,7 +93,7 @@ const Thumbmail = styled.img`
 `;
 
 const Container = styled(FlexContainer)`
-  width: 292px;
+  width: 100%;
   height: 240px;
   cursor: pointer;
 `;

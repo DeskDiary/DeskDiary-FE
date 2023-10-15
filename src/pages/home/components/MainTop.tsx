@@ -28,7 +28,9 @@ const MainTop: React.FC<MainTopProps> = () => {
   };
 
   return (
-    <NavHeader justify="start">
+    <NavHeader justify="space-between">
+      <Empty>　</Empty>
+
       <Search isFocused={isFocused} justify="space-between">
         <SearchInput
           onFocus={clickSearch}
@@ -40,9 +42,9 @@ const MainTop: React.FC<MainTopProps> = () => {
         </SearchButton>
       </Search>
 
-      <CreateRoomBtton type="button" onClick={onClickCreateRoomButton}>
+      <CreateRoomButton type="button" onClick={onClickCreateRoomButton}>
         방만들기
-      </CreateRoomBtton>
+      </CreateRoomButton>
       {openCreateRoom && (
         <CreateRoomModal setOpenCreateRoom={setOpenCreateRoom} />
       )}
@@ -63,62 +65,46 @@ const FlexContainer = styled.div<{
   gap: ${props => props.gap || '0'};
 `;
 
-const CreateRoomBtton = styled.button`
+const CreateRoomButton = styled.button`
   display: flex;
-  width: 292px;
+  width: 15%;
   padding: 10px;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-
-  margin-left: 241px;
-
   background-color: #e8e8e8;
   border: none;
-
-  color: #000;
-
-  font-feature-settings: 'clig' off, 'liga' off;
   font-size: 15px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 123.5%; /* 18.525px */
-  letter-spacing: 0.25px;
+
+  min-width: 100px;
+`;
+
+const Empty = styled.div`
+  width: 15%;
 `;
 
 const NavHeader = styled(FlexContainer)`
-  width: calc(100vw - 200px);
+  width: 100%;
   margin-top: 28px;
+  background-color: yellow;
 `;
 
 const Search = styled(FlexContainer)<{ isFocused: boolean }>`
-  width: 576px;
+  width: 570px;
   height: 28px;
   border-radius: 100px;
   border: 1px solid var(--gray-07, #757575);
-  padding: 10px 8px 10px 15px;
-  margin-left: 469px;
+  padding: 10px;
 `;
 
 const SearchInput = styled.input`
   width: 100%;
   height: 19px;
   border: none;
-
-  color: #000;
-
-  font-feature-settings: 'clig' off, 'liga' off;
-  font-family: Pretendard;
   font-size: 15px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 123.5%; /* 18.525px */
-  letter-spacing: 0.25px;
-
   &:focus {
     outline: none;
   }
-
   ::placeholder {
     color: rgba(0, 0, 0, 0.2);
   }

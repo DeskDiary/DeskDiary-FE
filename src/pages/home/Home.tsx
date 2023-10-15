@@ -115,7 +115,7 @@ const Home = () => {
   const isLogged = false;
 
   return (
-    <Container column justify="start" align="start">
+    <Container column justify="start">
       <삭제></삭제>
       <MainTop />
 
@@ -160,7 +160,7 @@ const FlexContainer = styled.div<{
 `;
 
 const 삭제 = styled.div`
-  width: 112px;
+  width: 10%;
   height: 100vh;
   background-color: gray;
   position: fixed;
@@ -170,11 +170,9 @@ const 삭제 = styled.div`
 
 const 삭제2 = styled.div`
   width: 746.5px;
-  margin-left: 63px;
 `;
 
 const List = styled(FlexContainer)`
-  margin-left: 78px;
   margin-top: 72px;
 `;
 
@@ -191,15 +189,35 @@ const JoinedRooms = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 16px;
+  width: 100%;
+
+  // 화면 크기에 따라 카드 개수 변경
+  @media (max-width: 1500px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 1000px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  @media (max-width: 800px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 `;
 
+
+
 const Container = styled(FlexContainer)`
-  width: calc(100vw - 200px);
-  margin-left: auto;
+  width: 70%;
+  background-color: antiquewhite;
 `;
 
 const Info = styled(FlexContainer)`
-  margin-left: 78px;
   margin-top: 31px;
+  width: 100%;
 `;
 export default Home;

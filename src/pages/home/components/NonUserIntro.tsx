@@ -16,7 +16,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 1525px;
+  width: 100%;
   height: 243px;
   background-color: #d9d9d9;
 `;

@@ -43,7 +43,7 @@ const Content = styled(FlexContainer)`
 `;
 
 const Container = styled(FlexContainer)`
-  width: 746px;
+  width: 750px;
   height: 243px;
   background-color: #d9d9d9;
   padding: 0;
