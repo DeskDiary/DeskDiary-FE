@@ -61,7 +61,7 @@ const CamAndMicSetting: React.FC<CamAndMicSettingProps> = () => {
   };
 
   const stopTest = () => {
-    console.log('테스트 종료 버튼 눌림')
+    console.log('테스트 종료 버튼 눌림');
     if (localStream) {
       localStream.getTracks().forEach(track => track.stop());
       setLocalStream(null);
@@ -174,7 +174,13 @@ const CamAndMicSetting: React.FC<CamAndMicSettingProps> = () => {
             <input type="text" value="역시이상호" readOnly />
           </div>
 
-          <button onClick={() => {navigate('/room/1')}}>방 입장하기</button>
+          <button
+            onClick={() => {
+              navigate('/room/1');
+            }}
+          >
+            방 입장하기
+          </button>
         </UserInfoArea>
       </AllSettingsArea>
 

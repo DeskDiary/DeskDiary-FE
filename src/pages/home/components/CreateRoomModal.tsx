@@ -1,10 +1,49 @@
-import React from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import styled from '@emotion/styled';
 import Picture from '../../../images/Picture.png';
 
-type CreateRoomProps = {};
+type CreateRoomProps = {
+  setOpenCreateRoom: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
-const CreateRoomModal: React.FC<CreateRoomProps> = () => {
+const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
+  const [isStudyActive, setIsStudyActive] = useState(false);
+  const [isHobbyActive, setIsHobbyActive] = useState(false);
+  const [inputText, setInputText] = useState('');
+
+  const [selectedUserCount, setSelectedUserCount] = useState<number | null>(
+    null,
+  );
+
+  const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setInputText(e.target.value);
+  };
+
+  const onClickStudy = () => {
+    setIsStudyActive(!isStudyActive);
+    if (isHobbyActive === true) {
+      setIsHobbyActive(false);
+    }
+  };
+
+  const onClickHobby = () => {
+    setIsHobbyActive(!isHobbyActive);
+    if (isStudyActive === true) {
+      setIsStudyActive(false);
+    }
+  };
+
+  const handleUserCountClick = (count: number) => {
+    setSelectedUserCount(count);
+  };
+
+  const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    setSelectedFiles(files);
+  };
+
   return (
     <Container>
       <BackGround />
@@ -13,9 +52,19 @@ const CreateRoomModal: React.FC<CreateRoomProps> = () => {
         <Thumbnanil column gap="11px">
           <ThumbnailImg src={Picture}></ThumbnailImg>
           <ThumbnailText>썸네일 등록</ThumbnailText>
+          <div className="js-upload" uk-form-custom="true">
+            <input type="file" multiple onChange={handleFileChange} />
+            <button
+              className="uk-button uk-button-default"
+              type="button"
+              tabIndex={-1}
+            >
+              Select
+            </button>
+          </div>
         </Thumbnanil>
 
-        <Content column gap="8px">
+        <Content column gap="15px">
           <Group column align="start">
             <Label>방 이름</Label>
             <RoomTitle />
@@ -24,23 +73,67 @@ const CreateRoomModal: React.FC<CreateRoomProps> = () => {
           <Group column align="start">
             <Label>목적 정하기</Label>
             <CategoryGroup gap="16px">
-              <Category>스터디</Category>
-              <Category>취미</Category>
+              <Category
+                type="button"
+                onClick={onClickStudy}
+                isActive={isStudyActive}
+              >
+                스터디
+              </Category>
+              <Category
+                type="button"
+                onClick={onClickHobby}
+                isActive={isHobbyActive}
+              >
+                취미
+              </Category>
             </CategoryGroup>
           </Group>
 
           <Group column align="start">
+            <Label>인원설정 (최대 4인 가능)</Label>
+            <CategoryGroup gap="16px">
+              {[1, 2, 3, 4].map(i => (
+                <MaxUser
+                  key={i}
+                  onClick={() => handleUserCountClick(i)}
+                  isActive={i === selectedUserCount}
+                >
+                  {i}인
+                </MaxUser>
+              ))}
+            </CategoryGroup>
+          </Group>
+
+          {/* <Group column align="start">
             <Label>상세 목적 설정 (최대 3개 설정 가능)</Label>
             <RoomTitle />
-            {/* <Tags>
+            <Tags>
               <Tag></Tag>
-            </Tags> */}
+            </Tags>
+          </Group> */}
+
+          <Group column align="start">
+            <Label>엉덩이들의 유의사항</Label>
+            <Precautions
+              value={inputText}
+              onChange={handleInputChange}
+              placeholder="사용자 입력을 받으려면 여기에 입력하세요."
+              style={{
+                width: '100%',
+                height: '100px',
+                padding: '10px',
+                borderRadius: '5px',
+              }}
+            />
           </Group>
         </Content>
 
         <Button column gap="8px">
           <CreateRoomButton>방만들기</CreateRoomButton>
-          <CancleButton>취소</CancleButton>
+          <CancleButton onClick={() => setOpenCreateRoom(false)}>
+            취소
+          </CancleButton>
         </Button>
       </ModalContent>
     </Container>
@@ -60,22 +153,59 @@ const FlexContainer = styled.div<{
   gap: ${props => props.gap || '0'};
 `;
 
-const CategoryGroup = styled(FlexContainer)``;
+/* <{ isActive: boolean }>` */
+/* background-color: ${props => (props.isActive ? 'black' : '#6e6e6e')}; */
+// const MaxUser = styled.button`
+//   width: 60px;
+//   height: 50px;
 
-const Category = styled.div`
-  display: flex;
-  width: 166px;
+//   font-size: 24px;
+//   font-style: normal;
+//   font-weight: 400;
+//   line-height: 123.5%;
+//   letter-spacing: 0.25px;
+//   color: white;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   border: none;
+// `;
+
+const Precautions = styled.textarea`
+  width: calc(100% - 20px);
+  height: 200px;
+  resize: none;
+  padding: 10px;
+  border-radius: 5px;
+  white-space: pre-line; /* 엔터를 줄 바꿈으로 해석합니다. */
+  overflow-y: auto; /* 내용이 넘치면 스크롤바가 표시되도록 설정할 수 있습니다. */
+`;
+const MaxUser = styled.button<{ isActive: boolean }>`
+  width: 60px;
   height: 50px;
+  background-color: ${props => (props.isActive ? 'black' : '#6e6e6e')};
+  font-size: 24px;
+  color: white;
+  display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #6e6e6e;
+  border: none;
+  cursor: pointer;
+`;
 
+const CategoryGroup = styled(FlexContainer)``;
+
+const Category = styled.button<{ isActive: boolean }>`
+  width: 166px;
+  height: 50px;
+  background-color: ${props => (props.isActive ? 'black' : '#6e6e6e')};
   font-size: 24px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 123.5%; /* 29.64px */
-  letter-spacing: 0.25px;
   color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  cursor: pointer;
 `;
 
 const Content = styled(FlexContainer)`
@@ -135,14 +265,19 @@ const Title = styled.div`
   height: 44px;
 `;
 
-const Button = styled(FlexContainer)``;
+const Button = styled(FlexContainer)`
+  margin-bottom: 16px;
+  margin-top: auto;
+`;
 
 const CreateRoomButton = styled.button`
   width: 510px;
   height: 50px;
   border: none;
   background-color: rgb(110, 110, 110);
+  cursor: pointer;
   color: white;
+  font-size: 24px;
 `;
 
 const CancleButton = styled.button`
@@ -150,6 +285,8 @@ const CancleButton = styled.button`
   height: 50px;
   border: none;
   background-color: rgba(110, 110, 110, 0);
+  cursor: pointer;
+  font-size: 24px;
 `;
 
 const BackGround = styled.div`
@@ -174,8 +311,6 @@ const ModalContent = styled(FlexContainer)`
   border-radius: 20px;
   z-index: 50;
   position: absolute;
-  top: 66px;
-  left: 555px;
 `;
 
 const Container = styled(FlexContainer)`
