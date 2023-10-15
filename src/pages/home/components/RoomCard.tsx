@@ -1,8 +1,10 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import thumbnail from '../../../images/sample.png';
 import { Link } from 'react-router-dom';
 import EnterRoomModal from '../../EnterRoomModal';
+import { useRecoilValue } from 'recoil';
+import { RoomAtom } from '../../../recoil/RoomAtom';
 
 type RoomCardProps = {
   room: {
@@ -18,11 +20,12 @@ type RoomCardProps = {
 };
 
 const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
-
   const [isOpen, setIsOpen] = useState(false);
 
+  const rooms = useRecoilValue(RoomAtom);
+
   return (
-    <Container column justify='center'>
+    <Container column justify="center">
       <Thumbmail src={thumbnail} onClick={() => setIsOpen(true)}></Thumbmail>
       <Contents justify="start" gap="9px">
         <Img></Img>
@@ -34,7 +37,7 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
           </Tags>
         </ContentText>
       </Contents>
-      {isOpen && <EnterRoomModal setIsOpen={setIsOpen} room={room}/>}
+      {isOpen && <EnterRoomModal setIsOpen={setIsOpen} room={room} />}
     </Container>
   );
 };

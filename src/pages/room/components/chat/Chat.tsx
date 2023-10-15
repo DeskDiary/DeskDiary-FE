@@ -1,19 +1,27 @@
 import React from 'react';
 import styled from 'styled-components';
 
-type ChatProps = {};
+type ChatProps = {
+  message: {
+    message: string;
+    user: string;
+    time: string;
+  };
+};
 
-const Chat: React.FC<ChatProps> = () => {
+const Chat: React.FC<ChatProps> = ({message}) => {
   return (
     <Container justify="start" align="start" gap="8px">
       <UserImg />
       <ChatDetails column align="start" gap="5px">
         <Metadata justify="space-between">
-          <UserName>유저 네임</UserName>
-          <Time>2023-10-15 15:10</Time>
+          <UserName>{message.user}</UserName>
+          <Time>{message.time}</Time>
         </Metadata>
 
-        <Message>메세지~!~~~!~!~!!~~!~!~!~!~!~!~!~!~!~!~sdfsdfsfsdfsdfsdfsdfsdfsdsdfsdfsfsdf!~~!~!</Message>
+        <Message>
+          {message.message}
+        </Message>
       </ChatDetails>
     </Container>
   );

@@ -86,7 +86,6 @@ const Empty = styled.div`
 const NavHeader = styled(FlexContainer)`
   width: 100%;
   margin-top: 28px;
-  background-color: yellow;
 `;
 
 const Search = styled(FlexContainer)<{ isFocused: boolean }>`

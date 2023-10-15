@@ -7,6 +7,8 @@ import DeskRecoder from './components/DeskRecoder';
 import RoomCard from './components/RoomCard';
 import thumbnail from '../../images/sample.png';
 import NonUserIntro from './components/NonUserIntro';
+import { useRecoilValue } from 'recoil';
+import { RoomAtom } from '../../recoil/RoomAtom';
 
 const Home = () => {
   const rooms = [
@@ -213,7 +215,6 @@ const JoinedRooms = styled.div`
 
 const Container = styled(FlexContainer)`
   width: 70%;
-  background-color: antiquewhite;
 `;
 
 const Info = styled(FlexContainer)`

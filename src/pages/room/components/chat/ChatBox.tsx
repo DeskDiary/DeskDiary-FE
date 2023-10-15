@@ -1,19 +1,83 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Chat from './Chat';
+import io from 'socket.io-client';
+
+const socket = io('http://localhost:5000');
 
 type ChatBoxProps = {};
 
+type MessageData = {
+  message: string;
+  user: string;
+  time: string;
+};
+
 const ChatBox: React.FC<ChatBoxProps> = () => {
+  const [username, setUserName] = useState('');
+  const [chatActive, setChatActive] = useState(false);
+  const [messages, setMessages] = useState<MessageData[]>([]);
+  const [newMessage, setNewMessage] = useState('');
+
+  useEffect(() => {
+    socket.on('received-message', (message: MessageData) => {
+      setMessages(prevMessages => [...prevMessages, message]);
+    });
+    console.log('messages', messages);
+
+    return () => {
+      socket.off('received-message');
+    };
+  }, [messages, socket]);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const now = new Date(Date.now());
+    const time = `${now.getHours()}:${now.getMinutes()}`;
+
+    const messageData = {
+      message: newMessage,
+      user: username,
+      time: time,
+    };
+
+    newMessage !== ''
+      ? socket.emit('send-message', messageData)
+      : alert('메세지를 입력해주세요');
+    setNewMessage('');
+  };
+
   return (
     <Container column justify="start">
-      <ChatList column justify="start" align="start">
-        <Chat />
+      <ChatList column justify="start" align="start" gap="15px">
+        {messages.map((message, index) => {
+          return <Chat key={index} message={message}/>;
+        })}
       </ChatList>
-      <UserText justify="start">
-        <UserInput></UserInput>
-        <SendButton></SendButton>
-      </UserText>
+      <ChatForm onSubmit={handleSubmit}>
+        <UserInput
+          value={newMessage}
+          onChange={e => setNewMessage(e.target.value)}
+        ></UserInput>
+        <SendButton type="submit"></SendButton>
+      </ChatForm>
+      <div className="w-screen h-screen flex justify-center items-center gap-2">
+            <input
+              type="text"
+              name=""
+              id=""
+              value={username}
+              onChange={(e) => setUserName(e.target.value)}
+              className="text-center px-3 py-2 outline-none border-2 rounded-md"
+            />
+            <button
+              type="submit"
+              className="bg-green-500 text-white px-3 py-2 rounded-md font-bold"
+            >
+              Start chat
+            </button>
+          </div>
     </Container>
   );
 };
@@ -50,7 +114,11 @@ const UserInput = styled.input`
   }
 `;
 
-const UserText = styled(FlexContainer)`
+const ChatForm = styled.form`
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
   width: 100%;
   padding: 10px 0;
 `;
