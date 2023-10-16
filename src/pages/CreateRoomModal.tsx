@@ -1,9 +1,9 @@
 import React, { ChangeEvent, useState } from 'react';
 import styled from '@emotion/styled';
-import Picture from '../../../images/Picture.png';
+import Picture from '../images/Picture.png';
 import { Button } from '@mui/material';
 import { useRecoilState } from 'recoil';
-import { RoomAtom } from '../../../recoil/RoomAtom';
+import { RoomAtom } from '../recoil/RoomAtom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
@@ -26,10 +26,9 @@ const VisuallyHiddenInput = styled('input')({
 
 const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
   const [room, setRoom] = useRecoilState(RoomAtom);
-  const [title, setTitle] = useState('');
   const [isStudyActive, setIsStudyActive] = useState(false);
   const [isHobbyActive, setIsHobbyActive] = useState(false);
-  const [inputText, setInputText] = useState('');
+  const [image, setImage] = useState('');
 
   const categories = ['study', 'hobby'];
   const activeStates = { study: isStudyActive, hobby: isHobbyActive };
@@ -40,7 +39,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
     null,
   );
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const onClickCategory = (category: string) => {
     if (category === 'study') {
@@ -58,7 +57,10 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
   };
 
   const createRoomInDB = async (newRoom: typeof room) => {
-    const response = await axios.post(`${process.env.REACT_APP_SERVER_URL!}/room`, newRoom);
+    const response = await axios.post(
+      `${process.env.REACT_APP_SERVER_URL!}/room`,
+      newRoom,
+    );
     if (!response.data.success) {
       throw new Error(response.data.message);
     }
@@ -66,79 +68,105 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
   };
 
   const mutation = useMutation(createRoomInDB, {
-    onSuccess: (data) => {
+    onSuccess: data => {
       alert('방만들기 성공!');
       navigate(`/room/${data.id}`);
     },
     onError: (error: any) => {
       console.log(error.message);
-    }
+    },
   });
+
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    console.log(file);
+
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        const base64 = reader.result;
+        setImage(base64 as string);
+      };
+    }
+  };
 
   const onSubmitRoom = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newRoom = {
-      title: title,
+      ...room,
+      title: room.title,
       maxHeadCount: maxUser,
       category: isStudyActive ? 'study' : 'hobby',
-      precautions: inputText,
+      precautions: room.precautions,
+      image: image,
     };
 
     mutation.mutate(newRoom);
   };
 
-  const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
+  const onSubmitRoom2 = () => {
+    const newRoom = {
+      ...room,
+      title: room.title,
+      maxHeadCount: maxUser,
+      category: isStudyActive ? 'study' : 'hobby',
+      precautions: room.precautions,
+      image: image,
+    };
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    setSelectedFiles(files);
+    console.log(newRoom);
   };
-
-  // const onSubmitRoom = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-
-  //   const newRoom = {
-  //     title: room.title,
-  //     maxHeadCount: maxUser,
-  //     category: isStudyActive ? 'study' : 'hobby', // 이런 식으로
-  //     precautions: room.precautions,
-  //   };
-
-  //   // 여기서 Recoil 상태를 업데이트!
-    
-  //   setRoom(newRoom);
-  //   navigate('/room/:id');
-  //   // axios
-  //   //   .post(`${process.env.REACT_APP_SERVER_URL!}/room`, room)
-  //   //   .then(response => {
-  //   //     alert('방만들기 성공');
-  //   //   })
-  //   //   .catch(error => {
-  //   //     if (error.response) {
-  //   //       const message = error.response.data.message;
-  //   //       console.log(message);
-  //   //     }
-  //   //   })
-  // };
 
   return (
     <Container onSubmit={onSubmitRoom}>
       <BackGround />
+
       <ModalContent column justify="start">
         <Title>방 만들기</Title>
-        <button type="button" onClick={() => console.log(room)}>확인</button>
-        <Thumbnanil column gap="11px">
-          <ThumbnailImg src={Picture}></ThumbnailImg>
-          <Button component="label" sx={{ color: 'white' }}>
+        {image}
+        <button type="button" onClick={onSubmitRoom2}>
+          확인
+        </button>
+        <Thumbnail image={image}>
+          {image ? <ThumbnailImg src={image} /> : <SampleImg src={Picture} />}
+        </Thumbnail>
+        <ThumbnailButtonGroup gap="10px">
+          <Button
+            component="label"
+            sx={{
+              color: 'gray',
+              '&:hover': {
+                backgroundColor: 'initial', // 여기서 'initial' 대신 원래 배경색을 넣어도 돼
+                boxShadow: 'none', // 그림자 효과 제거
+              },
+            }}
+          >
             썸네일 등록
-            <VisuallyHiddenInput type="file" />
+            <VisuallyHiddenInput type="file" onChange={handleFileChange} />
           </Button>
-        </Thumbnanil>
+          <Button
+            component="label"
+            sx={{
+              color: 'gray',
+              '&:hover': {
+                backgroundColor: 'initial', // 여기서 'initial' 대신 원래 배경색을 넣어도 돼
+                boxShadow: 'none', // 그림자 효과 제거
+              },
+            }}
+          >
+            삭제
+            <VisuallyHiddenInput onChange={() => setImage('')} />
+          </Button>
+        </ThumbnailButtonGroup>
 
         <Content column gap="15px">
           <Group column align="start">
             <Label>방 이름</Label>
-            <RoomTitle type="text" onChange={e => setRoom({ ...room, title: e.target.value })} />
+            <RoomTitle
+              type="text"
+              onChange={e => setRoom({ ...room, title: e.target.value })}
+            />
           </Group>
 
           <Group column align="start">
@@ -177,7 +205,6 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
           <Group column align="start">
             <Label>엉덩이들의 유의사항</Label>
             <Precautions
-              value={inputText}
               onChange={e => setRoom({ ...room, precautions: e.target.value })}
               placeholder="사용자 입력을 받으려면 여기에 입력하세요."
               style={{
@@ -212,6 +239,16 @@ const FlexContainer = styled.div<{
   align-items: ${props => (props.align ? props.align : 'center')};
   justify-content: ${props => (props.justify ? props.justify : 'center')};
   gap: ${props => props.gap || '0'};
+`;
+
+const ThumbnailButtonGroup = styled(FlexContainer)`
+  margin-top: 10px;
+`;
+
+const ThumbnailImg = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 `;
 
 const Precautions = styled.textarea`
@@ -262,8 +299,8 @@ const Label = styled.div`
 `;
 
 const RoomTitle = styled.input`
-  width: calc(100% - 30px);
-  height: 18px;
+  width: calc(100%);
+  height: 48px;
   padding: 15px;
 
   border-radius: 5px;
@@ -275,11 +312,12 @@ const Group = styled(FlexContainer)`
   width: 100%;
 `;
 
-const Thumbnanil = styled(FlexContainer)`
+const Thumbnail = styled(FlexContainer)<{ image?: string }>`
   width: 234px;
   height: 140px;
   border-radius: 10px;
-  background-color: #6e6e6e;
+  background-color: ${props => (props.image ? '' : '#6e6e6e')};
+  overflow: hidden;
 `;
 
 const ThumbnailText = styled.div`
@@ -291,7 +329,7 @@ const ThumbnailText = styled.div`
   letter-spacing: 0.25px;
 `;
 
-const ThumbnailImg = styled.img`
+const SampleImg = styled.img`
   width: 33px;
   height: 33px;
 `;

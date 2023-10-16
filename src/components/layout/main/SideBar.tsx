@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled, { createGlobalStyle, css } from 'styled-components';
 import { hobby, home, logo, study, mypage, profile } from '../../../images';
 import { Link } from 'react-router-dom';
+import { getCookie, setTokenCookie } from '../../../auth/cookie';
 
 type SideBarProps = {};
 
@@ -29,6 +30,8 @@ const navItems = [
 ];
 
 const SideBar: React.FC<SideBarProps> = () => {
+  const token = getCookie('token');
+
   return (
     <Sidebar>
       <GlobalStyle />
@@ -46,12 +49,19 @@ const SideBar: React.FC<SideBarProps> = () => {
           ))}
         </SidebarMenu>
         <User to="/login">
-          <img></img>
-          <p>유저이름</p>
-        </User>
-        <User to="/login">
-          <img></img>
-          <p>로그인이 <br /> 필요합니다.</p>
+          {token ? (
+            <>
+              <img></img>
+              <p>{}</p>
+            </>
+          ) : (
+            <>
+              <img></img>
+              <p>
+                로그인이 <br /> 필요합니다.
+              </p>
+            </>
+          )}
         </User>
       </SidebarInner>
     </Sidebar>
@@ -187,7 +197,7 @@ const Sidebar = styled.div`
       width: 200px;
     }
 
-    ${SidebarButton}  p, ${User} p {
+    ${SidebarButton} p, ${User} p {
       opacity: 1;
       /* transition: opacity 0.4s ease-in-out; */
     }

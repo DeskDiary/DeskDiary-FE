@@ -3,7 +3,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Link, useNavigate, NavLink } from 'react-router-dom';
 import { toast } from 'sonner';
 import styled from '@emotion/styled';
-import CreateRoomModal from './CreateRoomModal';
+import CreateRoomModal from '../../CreateRoomModal';
 
 type MainTopProps = {};
 

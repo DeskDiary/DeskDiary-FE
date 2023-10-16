@@ -22,7 +22,7 @@ const Login: React.FC<LoginProps> = () => {
 
   const loginMutation = useMutation(async (formData: FormData) => {
     try {
-      const url = `${serverUrl}auth/login`;
+      const url = `${serverUrl}/auth/login`;
       console.log(url);
 
       const requestBody = {
