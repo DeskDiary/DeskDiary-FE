@@ -3,6 +3,7 @@ import { Header, Footer } from '../index';
 import { Outlet } from 'react-router-dom';
 import styled from '@emotion/styled';
 import SideMenu from './SideMenu';
+import SideBar from './SideBar';
 
 type MainLayoutProps = {};
 
@@ -11,6 +12,7 @@ const MainLayout: React.FC<MainLayoutProps> = () => {
     <Wrap>
       {/* <Header></Header> */}
       {/* <SideMenu></SideMenu> */}
+      <SideBar />
       <Outlet />
     </Wrap>
   );

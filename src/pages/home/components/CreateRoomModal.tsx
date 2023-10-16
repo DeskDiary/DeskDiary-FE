@@ -1,19 +1,45 @@
 import React, { ChangeEvent, useState } from 'react';
 import styled from '@emotion/styled';
 import Picture from '../../../images/Picture.png';
+import { Button } from '@mui/material';
+import { useRecoilState } from 'recoil';
+import { RoomAtom } from '../../../recoil/RoomAtom';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 type CreateRoomProps = {
   setOpenCreateRoom: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
+const VisuallyHiddenInput = styled('input')({
+  clip: 'rect(0 0 0 0)',
+  clipPath: 'inset(50%)',
+  height: 1,
+  overflow: 'hidden',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  whiteSpace: 'nowrap',
+  width: 1,
+});
+
 const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
+  const [room, setRoom] = useRecoilState(RoomAtom);
+  const [title, setTitle] = useState('');
   const [isStudyActive, setIsStudyActive] = useState(false);
   const [isHobbyActive, setIsHobbyActive] = useState(false);
   const [inputText, setInputText] = useState('');
 
+  const categories = ['study', 'hobby'];
+  const activeStates = { study: isStudyActive, hobby: isHobbyActive };
+
+  const [maxUser, setMaxUser] = useState(1);
+
   const [selectedUserCount, setSelectedUserCount] = useState<number | null>(
     null,
   );
+
+  const navigate = useNavigate()
 
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setInputText(e.target.value);
@@ -33,8 +59,19 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
     }
   };
 
+  const onClickCategory = (category: string) => {
+    if (category === 'study') {
+      setIsStudyActive(true);
+      setIsHobbyActive(false);
+    } else if (category === 'hobby') {
+      setIsStudyActive(false);
+      setIsHobbyActive(true);
+    }
+  };
+
   const handleUserCountClick = (count: number) => {
     setSelectedUserCount(count);
+    setMaxUser(count);
   };
 
   const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
@@ -44,35 +81,56 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
     setSelectedFiles(files);
   };
 
+  const onSubmitRoom = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const newRoom = {
+      title: title,
+      maxHeadCount: maxUser,
+      category: isStudyActive ? 'study' : 'hobby', // 이런 식으로
+      precautions: inputText,
+    };
+
+    // 여기서 Recoil 상태를 업데이트!
+    
+    setRoom(prevRooms => [...prevRooms, newRoom]);
+    navigate('/room/:id');
+    // axios
+    //   .post(`${process.env.REACT_APP_SERVER_URL!}/room`, room)
+    //   .then(response => {
+    //     alert('방만들기 성공');
+    //   })
+    //   .catch(error => {
+    //     if (error.response) {
+    //       const message = error.response.data.message;
+    //       console.log(message);
+    //     }
+    //   })
+  };
+
   return (
-    <Container>
+    <Container onSubmit={onSubmitRoom}>
       <BackGround />
       <ModalContent column justify="start">
         <Title>방 만들기</Title>
+        <button type="button" onClick={() => console.log(room)}>확인</button>
         <Thumbnanil column gap="11px">
           <ThumbnailImg src={Picture}></ThumbnailImg>
-          <ThumbnailText>썸네일 등록</ThumbnailText>
-          <div className="js-upload" uk-form-custom="true">
-            <input type="file" multiple onChange={handleFileChange} />
-            <button
-              className="uk-button uk-button-default"
-              type="button"
-              tabIndex={-1}
-            >
-              Select
-            </button>
-          </div>
+          <Button component="label" sx={{ color: 'white' }}>
+            썸네일 등록
+            <VisuallyHiddenInput type="file" />
+          </Button>
         </Thumbnanil>
 
         <Content column gap="15px">
           <Group column align="start">
             <Label>방 이름</Label>
-            <RoomTitle />
+            <RoomTitle type="text" onChange={e => setTitle(e.target.value)} />
           </Group>
 
           <Group column align="start">
             <Label>목적 정하기</Label>
-            <CategoryGroup gap="16px">
+            {/* <CategoryGroup gap="16px">
               <Category
                 type="button"
                 onClick={onClickStudy}
@@ -87,6 +145,18 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
               >
                 취미
               </Category>
+            </CategoryGroup> */}
+            <CategoryGroup gap="16px">
+              {categories.map(category => (
+                <Category
+                  key={category}
+                  type="button"
+                  onClick={() => onClickCategory(category)}
+                  isActive={activeStates[category as 'study' | 'hobby']}
+                >
+                  {category === 'study' ? '스터디' : '취미'}
+                </Category>
+              ))}
             </CategoryGroup>
           </Group>
 
@@ -96,6 +166,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
               {[1, 2, 3, 4].map(i => (
                 <MaxUser
                   key={i}
+                  type="button"
                   onClick={() => handleUserCountClick(i)}
                   isActive={i === selectedUserCount}
                 >
@@ -104,14 +175,6 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
               ))}
             </CategoryGroup>
           </Group>
-
-          {/* <Group column align="start">
-            <Label>상세 목적 설정 (최대 3개 설정 가능)</Label>
-            <RoomTitle />
-            <Tags>
-              <Tag></Tag>
-            </Tags>
-          </Group> */}
 
           <Group column align="start">
             <Label>엉덩이들의 유의사항</Label>
@@ -129,12 +192,12 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
           </Group>
         </Content>
 
-        <Button column gap="8px">
+        <ButtonGroup column gap="8px">
           <CreateRoomButton>방만들기</CreateRoomButton>
-          <CancleButton onClick={() => setOpenCreateRoom(false)}>
+          <CancleButton type="button" onClick={() => setOpenCreateRoom(false)}>
             취소
           </CancleButton>
-        </Button>
+        </ButtonGroup>
       </ModalContent>
     </Container>
   );
@@ -152,24 +215,6 @@ const FlexContainer = styled.div<{
   justify-content: ${props => (props.justify ? props.justify : 'center')};
   gap: ${props => props.gap || '0'};
 `;
-
-/* <{ isActive: boolean }>` */
-/* background-color: ${props => (props.isActive ? 'black' : '#6e6e6e')}; */
-// const MaxUser = styled.button`
-//   width: 60px;
-//   height: 50px;
-
-//   font-size: 24px;
-//   font-style: normal;
-//   font-weight: 400;
-//   line-height: 123.5%;
-//   letter-spacing: 0.25px;
-//   color: white;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   border: none;
-// `;
 
 const Precautions = styled.textarea`
   width: calc(100% - 20px);
@@ -265,7 +310,7 @@ const Title = styled.div`
   height: 44px;
 `;
 
-const Button = styled(FlexContainer)`
+const ButtonGroup = styled(FlexContainer)`
   margin-bottom: 16px;
   margin-top: auto;
 `;
@@ -313,7 +358,11 @@ const ModalContent = styled(FlexContainer)`
   position: absolute;
 `;
 
-const Container = styled(FlexContainer)`
+const Container = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   position: fixed;
   top: 0;
   left: 0;

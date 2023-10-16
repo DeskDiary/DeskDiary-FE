@@ -4,6 +4,7 @@ import RoomCamArea from './components/RoomCamArea';
 import RoomHeader from './components/RoomHeader';
 import RoomSideBar from './components/RoomSideBar';
 import RoomUnderBar from './components/RoomUnderBar';
+import ChatBox from './components/chat/ChatBox';
 
 type RoomProps = {
   children?: React.ReactNode;
@@ -21,7 +22,10 @@ const Room: React.FC<RoomProps> = () => {
               <RoomCamArea />
             </CamAreaDiv>
             {/* 채팅이 들어갈 곳 */}
-            <ChattingAreaDiv><AsmrPlayer /></ChattingAreaDiv>
+            <ChattingAreaDiv>
+              {/* <AsmrPlayer /> */}
+              <ChatBox />
+            </ChattingAreaDiv>
           </Area>
         </Content>
       </Container>
@@ -33,6 +37,8 @@ const Room: React.FC<RoomProps> = () => {
 const Container = styled.div`
   display: flex;
   height: calc(100vh - 60px);
+
+  background-color: #616161;
 `;
 
 const Content = styled.div`
@@ -47,11 +53,12 @@ const Area = styled.div`
 const CamAreaDiv = styled.div`
   width: 100%;
   margin-top: 61px;
-  height: calc(100vh - (217 - 61)px);
+  height: calc(100vh - (217 - 61) px);
   margin-left: 40px;
   margin-right: 40px;
   margin-bottom: 61px;
   overflow: auto;
+
   &::-webkit-scrollbar {
     width: 0;
     background: transparent;
