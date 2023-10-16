@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { toast } from 'sonner';
 import { useRecoilState } from 'recoil';
@@ -6,6 +6,7 @@ import { userAtom } from '../recoil/UserAtom';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import checked from '../images/Radiobutton.png';
+import XIcon from '../images/Vector.svg';
 
 type JoinProps = {};
 
@@ -13,7 +14,7 @@ const Join: React.FC<JoinProps> = () => {
   const navigate = useNavigate();
 
   const [user, setUser] = useRecoilState(userAtom);
-  const [confitmPassword, setConfitmPassword] = useState('');
+  const [confirmPassword, setconfirmPassword] = useState('');
   const [isAgreeChecked, setIsAgreeChecked] = useState(false);
 
   const [emailError, setEmailError] = useState<string | null>(null);
@@ -23,12 +24,33 @@ const Join: React.FC<JoinProps> = () => {
     null,
   );
 
+  const handleClearInput = (
+    type: 'email' | 'password' | 'confirmPassword' | 'nickname',
+  ) => {
+    console.log('클릭', type);
+    switch (type) {
+      case 'email':
+        setUser(prevUser => ({ ...prevUser, email: '' }));
+        break;
+      case 'password':
+        setUser(prevUser => ({ ...prevUser, password: '' }));
+        break;
+      case 'confirmPassword':
+        console.log('클릭클릭');
+        setconfirmPassword('');
+        break;
+      case 'nickname':
+        setUser(prevUser => ({ ...prevUser, nickname: '' }));
+        break;
+    }
+  };
+
   const onClickAgree = () => {
     setIsAgreeChecked(!isAgreeChecked);
   };
 
   const blurConfirmHandler = async () => {
-    if (confitmPassword !== user.password) {
+    if (confirmPassword !== user.password) {
       setMatchPasswordError('비밀번호가 일치하지 않습니다.');
     } else {
       setMatchPasswordError(null);
@@ -95,12 +117,21 @@ const Join: React.FC<JoinProps> = () => {
         <JoinList align="start">
           <Joincontent align="start">
             <JoinLabel>이메일</JoinLabel>
-            <JoinInput
-              type="text"
-              placeholder="예시 ) deskdiary@deskdiary.com"
-              onChange={e => setUser({ ...user, email: e.target.value })}
-              onBlur={() => setEmailError(null)}
-            />
+            <InputBox>
+              <JoinInput
+                type="text"
+                placeholder="예시 ) deskdiary@deskdiary.com"
+                onChange={e => setUser({ ...user, email: e.target.value })}
+                onBlur={() => {
+                  setEmailError(null);
+                  blurConfirmHandler();
+                }}
+                value={user.email}
+              />
+              <Clear type="button" onClick={() => handleClearInput('email')}>
+                <img src={XIcon} />
+              </Clear>
+            </InputBox>
             <Relative>
               {emailError ? <ErrorMessage>{emailError}</ErrorMessage> : null}
             </Relative>
@@ -108,15 +139,22 @@ const Join: React.FC<JoinProps> = () => {
 
           <Joincontent align="start">
             <JoinLabel>비밀번호</JoinLabel>
-            <JoinInput
-              type="password"
-              placeholder="영어 대소문자,숫자,특수문자 포함 8~16자"
-              onChange={e => setUser({ ...user, password: e.target.value })}
-              onBlur={() => {
-                setPasswordError(null);
-                blurConfirmHandler();
-              }}
-            />
+            <InputBox>
+              <JoinInput
+                type="password"
+                placeholder="영어 대소문자,숫자,특수문자 포함 8~16자"
+                onChange={e => setUser({ ...user, password: e.target.value })}
+                onBlur={() => {
+                  setPasswordError(null);
+                  blurConfirmHandler();
+                }}
+                value={user.password}
+              />
+              <Clear type="button" onClick={() => handleClearInput('password')}>
+                <img src={XIcon} />
+              </Clear>
+            </InputBox>
+
             <Relative>
               {passwordError ? (
                 <ErrorMessage>{passwordError}</ErrorMessage>
@@ -126,12 +164,21 @@ const Join: React.FC<JoinProps> = () => {
 
           <Joincontent align="start">
             <JoinLabel>비밀번호 확인</JoinLabel>
-            <JoinInput
-              type="password"
-              placeholder="비밀번호를 한 번 더 입력해주세요"
-              onChange={e => setConfitmPassword(e.target.value)}
-              onBlur={blurConfirmHandler}
-            />
+            <InputBox>
+              <JoinInput
+                type="password"
+                placeholder="비밀번호를 한 번 더 입력해주세요"
+                value={confirmPassword}
+                onChange={e => setconfirmPassword(e.target.value)}
+                onBlur={blurConfirmHandler}
+              />
+              <Clear
+                type="button"
+                onClick={() => handleClearInput('confirmPassword')}
+              >
+                <img src={XIcon} />
+              </Clear>
+            </InputBox>
             <Relative>
               {matchPasswordError ? (
                 <ErrorMessage>{matchPasswordError}</ErrorMessage>
@@ -141,12 +188,18 @@ const Join: React.FC<JoinProps> = () => {
 
           <Joincontent align="start">
             <JoinLabel>닉네임</JoinLabel>
-            <JoinInput
-              type="text"
-              placeholder="4~12자"
-              onChange={e => setUser({ ...user, nickname: e.target.value })}
-              onBlur={() => setNicknameError(null)}
-            />
+            <InputBox>
+              <JoinInput
+                type="text"
+                placeholder="4~12자"
+                onChange={e => setUser({ ...user, nickname: e.target.value })}
+                onBlur={() => setNicknameError(null)}
+                value={user.nickname}
+              />
+              <Clear type="button" onClick={() => handleClearInput('nickname')}>
+                <img src={XIcon} />
+              </Clear>
+            </InputBox>
             <Relative>
               {nicknameError ? (
                 <ErrorMessage>{nicknameError}</ErrorMessage>
@@ -211,6 +264,31 @@ const FlexContainer = styled.div<{
   justify-content: ${props => (props.justify ? props.justify : 'center')};
   gap: ${props => props.gap || '0'};
   width: 300px;
+`;
+
+const Clear = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border: none;
+  cursor: pointer;
+`;
+
+const InputBox = styled.div`
+  display: flex;
+  width: 370px;
+  height: 28px;
+  padding: 10px 15px;
+  align-items: center;
+  gap: 10px;
+  border-radius: 5px;
+  border: 1px solid #757575;
+  background-color: white;
+
+  &:focus {
+    outline-color: #00c5ff;
+  }
 `;
 
 const ErrorMessage = styled.div`
@@ -306,7 +384,7 @@ const JoinForm = styled.form`
   align-items: center;
   justify-content: start;
   width: 582px;
-  background: rgba(237, 237, 237, 0.5);
+  background-color: #ededed;
   height: 100%;
 `;
 
@@ -317,16 +395,15 @@ const Relative = styled.div`
 `;
 
 const JoinInput = styled.input`
-  width: 368px;
+  width: 100%;
   height: 26px;
   border-radius: 5px;
-  border: 1px solid var(--gray-07, #757575);
+  border: none;
   background: #fff;
-  padding: 10px 15px;
   font-size: 15px;
 
   &:focus {
-    outline-color: #00c5ff;
+    outline: none;
   }
 `;
 
