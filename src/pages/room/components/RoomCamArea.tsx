@@ -8,7 +8,6 @@ const RoomCamArea = (props: Props) => {
     { id: 2, nickname: '심심해요' },
     { id: 3, nickname: '바나나마스터' },
     { id: 4, nickname: '닉네임' },
-
   ];
 
   return (
@@ -41,7 +40,6 @@ const Cameras = styled.div`
   gap: 30px;
   flex-wrap: wrap;
   justify-content: flex-start;
-  
 `;
 
 const Camera = styled.div`
@@ -50,8 +48,7 @@ const Camera = styled.div`
   aspect-ratio: 16/9;
   background: rgba(217, 217, 217, 1);
   padding: 10px;
-  position: relative; 
-  
+  position: relative;
 `;
 const CameraIcon = styled.div`
   position: absolute;

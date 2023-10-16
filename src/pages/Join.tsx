@@ -4,12 +4,14 @@ import { toast } from 'sonner';
 import { useRecoilState } from 'recoil';
 import { userAtom } from '../recoil/UserAtom';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import checked from '../images/Radiobutton.png';
 
 type JoinProps = {};
 
 const Join: React.FC<JoinProps> = () => {
+  const navigate = useNavigate();
+
   const [user, setUser] = useRecoilState(userAtom);
   const [confitmPassword, setConfitmPassword] = useState('');
   const [isAgreeChecked, setIsAgreeChecked] = useState(false);
@@ -41,6 +43,7 @@ const Join: React.FC<JoinProps> = () => {
       .post(`${process.env.REACT_APP_SERVER_URL!}/auth/join`, user)
       .then(response => {
         alert('회원가입 성공');
+        navigate('/login');
       })
       .catch(error => {
         if (error.response) {
@@ -109,7 +112,10 @@ const Join: React.FC<JoinProps> = () => {
               type="password"
               placeholder="영어 대소문자,숫자,특수문자 포함 8~16자"
               onChange={e => setUser({ ...user, password: e.target.value })}
-              onBlur={() => setPasswordError(null)}
+              onBlur={() => {
+                setPasswordError(null);
+                blurConfirmHandler();
+              }}
             />
             <Relative>
               {passwordError ? (
