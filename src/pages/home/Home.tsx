@@ -118,7 +118,7 @@ const Home = () => {
 
   return (
     <Container column justify="start">
-      <삭제></삭제>
+      {/* <삭제></삭제> */}
       <MainTop />
 
       <Info gap="33px">
