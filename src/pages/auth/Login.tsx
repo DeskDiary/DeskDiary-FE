@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
-import { getCookie, setTokenCookie } from '../auth/cookie';
-import XIcon from '../images/Vector.svg';
+import { getCookie, setTokenCookie } from '../../auth/cookie';
+import XIcon from '../../images/Vector.svg';
 
 type LoginProps = {};
 

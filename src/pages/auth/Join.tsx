@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { toast } from 'sonner';
 import { useRecoilState } from 'recoil';
-import { userAtom } from '../recoil/UserAtom';
+import { userAtom } from '../../recoil/UserAtom';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-import checked from '../images/Radiobutton.png';
-import XIcon from '../images/Vector.svg';
+import checked from '../../images/Radiobutton.png';
+import XIcon from '../../images/Vector.svg';
+
+import { useMutation } from 'react-query';
 
 type JoinProps = {};
 
@@ -58,16 +60,14 @@ const Join: React.FC<JoinProps> = () => {
     return;
   };
 
-  const onSubmitJoin = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    axios
-      .post(`${process.env.REACT_APP_SERVER_URL!}/auth/join`, user)
-      .then(response => {
+  const joinMutation = useMutation(
+    (userData: typeof user) => axios.post(`${process.env.REACT_APP_SERVER_URL!}/auth/join`, userData),
+    {
+      onSuccess: () => {
         alert('회원가입 성공');
         navigate('/login');
-      })
-      .catch(error => {
+      },
+      onError: (error: any) => {
         if (error.response) {
           const message = error.response.data.message;
           console.log(message);
@@ -104,10 +104,17 @@ const Join: React.FC<JoinProps> = () => {
               setPasswordError('비밀번호는 8자 이상이어야 합니다');
               break;
             default:
-              return '회원가입에 실패했습니다. 관리자에게 문의해주세요.';
+              console.log('회원가입에 실패했습니다. 관리자에게 문의해주세요.') 
           }
         }
-      });
+      }
+    }
+  );
+
+  const onSubmitJoin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    joinMutation.mutate(user);
   };
 
   return (

@@ -90,7 +90,7 @@ const NavHeader = styled(FlexContainer)`
 
 const Search = styled(FlexContainer)<{ isFocused: boolean }>`
   width: 570px;
-  height: 28px;
+  height: 48px;
   border-radius: 100px;
   border: 1px solid var(--gray-07, #757575);
   padding: 10px;

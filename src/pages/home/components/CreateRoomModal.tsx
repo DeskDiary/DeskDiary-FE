@@ -6,6 +6,7 @@ import { useRecoilState } from 'recoil';
 import { RoomAtom } from '../../../recoil/RoomAtom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useMutation } from 'react-query';
 
 type CreateRoomProps = {
   setOpenCreateRoom: React.Dispatch<React.SetStateAction<boolean>>;
@@ -41,24 +42,6 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
 
   const navigate = useNavigate()
 
-  const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setInputText(e.target.value);
-  };
-
-  const onClickStudy = () => {
-    setIsStudyActive(!isStudyActive);
-    if (isHobbyActive === true) {
-      setIsHobbyActive(false);
-    }
-  };
-
-  const onClickHobby = () => {
-    setIsHobbyActive(!isHobbyActive);
-    if (isStudyActive === true) {
-      setIsStudyActive(false);
-    }
-  };
-
   const onClickCategory = (category: string) => {
     if (category === 'study') {
       setIsStudyActive(true);
@@ -74,6 +57,36 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
     setMaxUser(count);
   };
 
+  const createRoomInDB = async (newRoom: typeof room) => {
+    const response = await axios.post(`${process.env.REACT_APP_SERVER_URL!}/room`, newRoom);
+    if (!response.data.success) {
+      throw new Error(response.data.message);
+    }
+    return response.data.room;
+  };
+
+  const mutation = useMutation(createRoomInDB, {
+    onSuccess: (data) => {
+      alert('방만들기 성공!');
+      navigate(`/room/${data.id}`);
+    },
+    onError: (error: any) => {
+      console.log(error.message);
+    }
+  });
+
+  const onSubmitRoom = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const newRoom = {
+      title: title,
+      maxHeadCount: maxUser,
+      category: isStudyActive ? 'study' : 'hobby',
+      precautions: inputText,
+    };
+
+    mutation.mutate(newRoom);
+  };
+
   const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -81,32 +94,32 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
     setSelectedFiles(files);
   };
 
-  const onSubmitRoom = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  // const onSubmitRoom = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
 
-    const newRoom = {
-      title: title,
-      maxHeadCount: maxUser,
-      category: isStudyActive ? 'study' : 'hobby', // 이런 식으로
-      precautions: inputText,
-    };
+  //   const newRoom = {
+  //     title: room.title,
+  //     maxHeadCount: maxUser,
+  //     category: isStudyActive ? 'study' : 'hobby', // 이런 식으로
+  //     precautions: room.precautions,
+  //   };
 
-    // 여기서 Recoil 상태를 업데이트!
+  //   // 여기서 Recoil 상태를 업데이트!
     
-    setRoom(prevRooms => [...prevRooms, newRoom]);
-    navigate('/room/:id');
-    // axios
-    //   .post(`${process.env.REACT_APP_SERVER_URL!}/room`, room)
-    //   .then(response => {
-    //     alert('방만들기 성공');
-    //   })
-    //   .catch(error => {
-    //     if (error.response) {
-    //       const message = error.response.data.message;
-    //       console.log(message);
-    //     }
-    //   })
-  };
+  //   setRoom(newRoom);
+  //   navigate('/room/:id');
+  //   // axios
+  //   //   .post(`${process.env.REACT_APP_SERVER_URL!}/room`, room)
+  //   //   .then(response => {
+  //   //     alert('방만들기 성공');
+  //   //   })
+  //   //   .catch(error => {
+  //   //     if (error.response) {
+  //   //       const message = error.response.data.message;
+  //   //       console.log(message);
+  //   //     }
+  //   //   })
+  // };
 
   return (
     <Container onSubmit={onSubmitRoom}>
@@ -125,27 +138,12 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
         <Content column gap="15px">
           <Group column align="start">
             <Label>방 이름</Label>
-            <RoomTitle type="text" onChange={e => setTitle(e.target.value)} />
+            <RoomTitle type="text" onChange={e => setRoom({ ...room, title: e.target.value })} />
           </Group>
 
           <Group column align="start">
             <Label>목적 정하기</Label>
-            {/* <CategoryGroup gap="16px">
-              <Category
-                type="button"
-                onClick={onClickStudy}
-                isActive={isStudyActive}
-              >
-                스터디
-              </Category>
-              <Category
-                type="button"
-                onClick={onClickHobby}
-                isActive={isHobbyActive}
-              >
-                취미
-              </Category>
-            </CategoryGroup> */}
+
             <CategoryGroup gap="16px">
               {categories.map(category => (
                 <Category
@@ -180,7 +178,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
             <Label>엉덩이들의 유의사항</Label>
             <Precautions
               value={inputText}
-              onChange={handleInputChange}
+              onChange={e => setRoom({ ...room, precautions: e.target.value })}
               placeholder="사용자 입력을 받으려면 여기에 입력하세요."
               style={{
                 width: '100%',
