@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { toast } from 'sonner';
-import { useRecoilState } from 'recoil';
-import { userAtom } from '../../recoil/UserAtom';
 import axios from 'axios';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import checked from '../../images/Radiobutton.png';
-import colorChecked from '../../images/colorChecked.svg';
-import XIcon from '../../images/Vector.svg';
+import { useRecoilState } from 'recoil';
 import { logo } from '../../images';
+import XIcon from '../../images/Vector.svg';
+import colorChecked from '../../images/colorChecked.svg';
+import { userAtom } from '../../recoil/UserAtom';
 
 import { useMutation } from 'react-query';
 
@@ -18,6 +16,7 @@ const Join: React.FC<JoinProps> = () => {
   const navigate = useNavigate();
 
   const [user, setUser] = useRecoilState(userAtom);
+
   const [confirmPassword, setconfirmPassword] = useState('');
   const [isAgreeChecked, setIsAgreeChecked] = useState(false);
 
@@ -153,9 +152,11 @@ const Join: React.FC<JoinProps> = () => {
               }}
               value={user.email}
             />
-            <Clear type="button" onClick={() => handleClearInput('email')}>
-              <img src={XIcon} />
-            </Clear>
+            {user.email.length !== 0 && (
+              <Clear type="button" onClick={() => handleClearInput('email')}>
+                <img src={XIcon} />
+              </Clear>
+            )}
           </InputBox>
           <Relative>
             {emailError ? <ErrorMessage>{emailError}</ErrorMessage> : null}
@@ -177,9 +178,11 @@ const Join: React.FC<JoinProps> = () => {
               }}
               value={user.password}
             />
-            <Clear type="button" onClick={() => handleClearInput('password')}>
-              <img src={XIcon} />
-            </Clear>
+            {user.password.length !== 0 && (
+              <Clear type="button" onClick={() => handleClearInput('password')}>
+                <img src={XIcon} />
+              </Clear>
+            )}
           </InputBox>
 
           <Relative>
@@ -205,12 +208,14 @@ const Join: React.FC<JoinProps> = () => {
                 handleBlurInput();
               }}
             />
-            <Clear
-              type="button"
-              onClick={() => handleClearInput('confirmPassword')}
-            >
-              <img src={XIcon} />
-            </Clear>
+            {confirmPassword.length !== 0 && (
+              <Clear
+                type="button"
+                onClick={() => handleClearInput('confirmPassword')}
+              >
+                <img src={XIcon} />
+              </Clear>
+            )}
           </InputBox>
           <Relative>
             {matchPasswordError ? (
@@ -233,9 +238,11 @@ const Join: React.FC<JoinProps> = () => {
               }}
               value={user.nickname}
             />
-            <Clear type="button" onClick={() => handleClearInput('nickname')}>
-              <img src={XIcon} />
-            </Clear>
+            {user.nickname.length !== 0 && (
+              <Clear type="button" onClick={() => handleClearInput('nickname')}>
+                <img src={XIcon} />
+              </Clear>
+            )}
           </InputBox>
           <Relative>
             {nicknameError ? (
@@ -304,7 +311,7 @@ const Clear = styled.button`
   cursor: pointer;
 `;
 
-const InputBox = styled.div<{focused:boolean}>`
+const InputBox = styled.div<{ focused: boolean }>`
   display: flex;
   width: 370px;
   height: 28px;
@@ -390,13 +397,13 @@ const AgreeCheck = styled.input`
   height: 20px;
   border-radius: 50%;
   background-color: white;
-  border: 1px solid #00C5FF;
+  border: 1px solid #00c5ff;
   display: inline-block;
   margin: 0 8px 0 0;
   //체크했을 때의 스타일
   &:checked {
     background: url(${colorChecked}) no-repeat center;
-    background-color: #00C5FF;
+    background-color: #00c5ff;
   }
 `;
 
@@ -422,8 +429,7 @@ const JoinLabel = styled.div<{ focused: boolean }>`
   letter-spacing: 0.25px;
 `;
 
-const Joincontent = styled(FlexContainer)`
-`;
+const Joincontent = styled(FlexContainer)``;
 
 const Relative = styled.div`
   height: 40px;
