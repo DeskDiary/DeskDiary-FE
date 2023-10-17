@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Goal from './components/Goal';
 import styled from 'styled-components';
-import MainTop from './components/MainTop';
+import MainTop from '../../components/MainTop';
 import DeskRecoder from './components/DeskRecoder';
 import RoomCard from './components/RoomCard';
 import thumbnail from '../../images/sample.png';
