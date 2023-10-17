@@ -1,36 +1,11 @@
 import styled from '@emotion/styled';
-import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined';
+import UserCamera from './UserCamera';
 type Props = {};
 
 const RoomCamArea = (props: Props) => {
-  const cameraList = [
-    { id: 1, nickname: '나는야성호' },
-    { id: 2, nickname: '심심해요' },
-    { id: 3, nickname: '바나나마스터' },
-    { id: 4, nickname: '닉네임' },
-  ];
-
   return (
     <Cameras>
-      {cameraList.map(item => {
-        return (
-          <Camera key={item.id}>
-            <CameraIcon>
-              <CameraAltOutlinedIcon style={{ fontSize: '50px' }} />
-            </CameraIcon>
-
-            <CameraUserInfo>
-              <CameraUserName>{item.nickname}</CameraUserName>
-              <CameraUserImg>
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Font_Awesome_5_brands_github.svg/1200px-Font_Awesome_5_brands_github.svg.png"
-                  alt=""
-                />
-              </CameraUserImg>
-            </CameraUserInfo>
-          </Camera>
-        );
-      })}
+      <UserCamera />
     </Cameras>
   );
 };
