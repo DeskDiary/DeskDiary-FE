@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled, { createGlobalStyle, css } from 'styled-components';
-import { hobby, home, logo, study, mypage, profile } from '../../../images';
-import { Link } from 'react-router-dom';
+import { hobby, home, logo, study, mypage, profile, myRecord } from '../../../images';
+import { Link, NavLink } from 'react-router-dom';
 import { getCookie, setTokenCookie } from '../../../auth/cookie';
 
 type SideBarProps = {};
@@ -23,9 +23,9 @@ const navItems = [
     url: 'room',
   },
   {
-    title: '마이페이지',
-    icon: mypage,
-    url: 'mypage',
+    title: '책상 기록',
+    icon: myRecord,
+    url: '/myrecord',
   },
 ];
 
@@ -48,27 +48,25 @@ const SideBar: React.FC<SideBarProps> = () => {
             </SidebarButton>
           ))}
         </SidebarMenu>
-        <User to="/login">
           {token ? (
-            <>
+            <User to="/mypage/:id">
               <img></img>
               <p>{}</p>
-            </>
+            </User>
           ) : (
-            <>
+            <User to="/login">
               <img></img>
               <p>
                 로그인이 <br /> 필요합니다.
               </p>
-            </>
+            </User>
           )}
-        </User>
       </SidebarInner>
     </Sidebar>
   );
 };
 
-const SidebarButton = styled(Link)`
+const SidebarButton = styled(NavLink)`
   display: flex;
   align-items: center;
   height: 60px;
@@ -82,27 +80,33 @@ const SidebarButton = styled(Link)`
   border-radius: 60px;
   opacity: 0.8;
 
+  &.active {
+    > img {
+      opacity: 1;
+    }
+    
+  }
+
   &:hover {
     background-color: #d9d9d9;
     opacity: 1;
     width: 100%;
-  }
-
-  > img {
-    opacity: 0.5;
-    border-radius: 50%;
-    margin: 0 18px 0 15px;
-    &:hover {
+    > img {
       opacity: 1;
     }
   }
 
+  > img {
+    opacity: 0.3;
+    border-radius: 50%;
+    margin: 0 18px 0 15px;
+  }
+
   > p {
     width: 100px;
-    /* overflow: hidden; */
     white-space: nowrap;
     opacity: 0;
-    transition: opacity 0.4s ease-in-out;
+    transition: opacity 0.6s ease-in-out;
   }
 `;
 
@@ -127,7 +131,7 @@ const User = styled(Link)`
     width: 100px;
     line-height: 123.5%; /* 18.525px */
     opacity: 0;
-    transition: opacity 0.4s ease-in-out;
+    transition: opacity 0.6s ease-in-out;
   }
 `;
 
@@ -199,7 +203,7 @@ const Sidebar = styled.div`
 
     ${SidebarButton} p, ${User} p {
       opacity: 1;
-      /* transition: opacity 0.4s ease-in-out; */
+      /* transition: opacity 0.7s ease-in-out; */
     }
   }
 `;

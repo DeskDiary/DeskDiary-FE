@@ -4,5 +4,6 @@ import logo from './logo.png'
 import mypage from './mypage.png'
 import profile from './profile.png'
 import study from './study.png'
+import myRecord from './myRecord.png'
 
-export { hobby, home, logo, study, mypage, profile}
+export { hobby, home, logo, study, mypage, profile, myRecord}
