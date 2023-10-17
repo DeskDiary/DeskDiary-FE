@@ -64,7 +64,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
     console.log(newRoom);
     const response = await axios.post(
       `${process.env.REACT_APP_SERVER_URL!}/room`,
-      newRoom,
+      {newRoom},
       {
         headers: {
           'Authorization': `Bearer ${token}`
@@ -104,7 +104,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
   const onSubmitRoom = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newRoom = {
-      ...room,
+      // ...room,
       title: room.title,
       maxHeadcount: maxUser,
       category: isStudyActive ? 'study' : 'hobby',

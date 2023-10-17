@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import styled, { createGlobalStyle, css } from 'styled-components';
-import { hobby, home, logo, study, mypage, profile, myRecord } from '../../../images';
+import {
+  hobby,
+  home,
+  logo,
+  study,
+  mypage,
+  profile,
+  myRecord,
+} from '../../../images';
 import { Link, NavLink } from 'react-router-dom';
 import { getCookie, setTokenCookie } from '../../../auth/cookie';
 
@@ -36,31 +44,33 @@ const SideBar: React.FC<SideBarProps> = () => {
     <Sidebar>
       <GlobalStyle />
       <SidebarInner>
-        <SidebarHeader>
-          <Logo src={logo}></Logo>
-        </SidebarHeader>
-        <SidebarMenu>
-          {navItems.map(item => (
-            <SidebarButton to={item.url}>
-              <img src={item.icon} />
+        <div>
+          <SidebarHeader>
+            <Logo src={logo}></Logo>
+          </SidebarHeader>
+          <SidebarMenu>
+            {navItems.map(item => (
+              <SidebarButton to={item.url}>
+                <img src={item.icon} />
 
-              <p>{item.title}</p>
-            </SidebarButton>
-          ))}
-        </SidebarMenu>
-          {token ? (
-            <User to="/mypage/:id">
-              <img></img>
-              <p>유저이름</p>
-            </User>
-          ) : (
-            <User to="/login">
-              <img></img>
-              <p>
-                로그인이 <br /> 필요합니다.
-              </p>
-            </User>
-          )}
+                <p>{item.title}</p>
+              </SidebarButton>
+            ))}
+          </SidebarMenu>
+        </div>
+        {token ? (
+          <User to="/mypage/:id">
+            <img></img>
+            <p>유저이름</p>
+          </User>
+        ) : (
+          <User to="/login">
+            <img></img>
+            <p>
+              로그인이 <br /> 필요합니다.
+            </p>
+          </User>
+        )}
       </SidebarInner>
     </Sidebar>
   );
@@ -69,20 +79,19 @@ const SideBar: React.FC<SideBarProps> = () => {
 const SidebarButton = styled(NavLink)`
   display: flex;
   align-items: center;
-  height: 5.5vh;
-  width: 3.2vw;
+  height: 60px;
+  width: 60px;
   background-color: transparent; // 기본 배경색을 투명으로 설정
   transition: width 0.4s, background-color 0.3s; // width와 background-color에 대한 transition 추가
 
-  font-size: 0.84vw;
+  font-size: 16px;
   text-transform: capitalize;
   line-height: 1;
-  border-radius: 3.2vw;
+  border-radius: 60px;
   opacity: 0.8;
 
   &.active {
     > img {
-      height: 3.12vh;
       opacity: 1;
     }
   }
@@ -90,22 +99,20 @@ const SidebarButton = styled(NavLink)`
   &:hover {
     background-color: #d9d9d9;
     opacity: 1;
-    width: 9.6vw;
+    width: 100%;
     > img {
       opacity: 1;
-      height: 3.12vh;
     }
   }
 
   > img {
     opacity: 0.3;
     border-radius: 50%;
-    margin: 0 0.8vw;
-    height: 3.12vh;
+    margin: 0 18px 0 15px;
   }
 
   > p {
-    width: 5.2vw;
+    width: 100px;
     white-space: nowrap;
     opacity: 0;
     transition: opacity 0.6s ease-in-out;
@@ -118,20 +125,20 @@ const User = styled(Link)`
   align-items: center;
   justify-content: start;
 
-  margin: 0.8vw;
-  margin-top: 42vh;
+  margin-left: 15px;
+  margin-bottom: 20px;
 
   > img {
-    width: 2.6vw;
-    height: 4.7vh;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     background-color: #d9d9d9;
-    margin-right: 0.8vw;
+    margin-right: 15px;
   }
 
   > p {
-    font-size: 0.8vw;
-    width: 5.2vw;
+    font-size: 15px;
+    width: 100px;
     line-height: 123.5%; /* 18.525px */
     opacity: 0;
     transition: opacity 0.6s ease-in-out;
@@ -140,16 +147,16 @@ const User = styled(Link)`
 
 const SidebarMenu = styled.div`
   display: grid;
-  gap: 4.6vh;
-  margin-top: 4.6vh;
-  margin-left: 0.4vw;
+  padding: 10px;
+  gap: 50px;
+  margin-top: 50px;
 
   ${SidebarButton} img {
     transition: width 0.3s;
   }
 
   &:hover {
-    width: 10.5vw;
+    width: 200px;
 
     ${SidebarButton} img {
       transition: 0.3s;
@@ -158,32 +165,29 @@ const SidebarMenu = styled.div`
 `;
 
 const Logo = styled.img`
-  height: 4.2vh;
+  height: 70px;
+  padding: 10px;
 `;
 
 const SidebarHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 3.8vh;
-  width: 3.6vw;
-  margin-top: 1.5vh;
-  margin-left: 0.3vw;
+  height: 72px;
+  width: 80px;
 `;
 
 const SidebarInner = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  width: 10.5vw;
+  width: 200px;
   height: 100%;
-
-  
 
   display: flex;
   flex-direction: column;
   align-items: start;
-  justify-content: start;
+  justify-content: space-between;
 `;
 
 const Sidebar = styled.div`
@@ -191,7 +195,7 @@ const Sidebar = styled.div`
   overflow: hidden;
   top: 0;
   left: 0;
-  width: 4.2vw;
+  width: 80px;
   height: 100vh;
   background: #999;
   transition: width 0.4s;
@@ -201,10 +205,10 @@ const Sidebar = styled.div`
   }
 
   &:hover {
-    width: 10.5vw;
+    width: 200px;
 
     ${SidebarHeader} {
-      width: 10.5vw;
+      width: 200px;
     }
 
     ${SidebarButton} p, ${User} p {
