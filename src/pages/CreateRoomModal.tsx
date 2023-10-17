@@ -83,7 +83,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
       navigate(`/room/${data.id}`);
     },
     onError: (error: any) => {
-      console.log(error.message);
+      console.log('error.message', error.message);
     },
   });
 

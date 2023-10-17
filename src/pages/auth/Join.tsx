@@ -34,7 +34,6 @@ const Join: React.FC<JoinProps> = () => {
   const handleClearInput = (
     type: 'email' | 'password' | 'confirmPassword' | 'nickname',
   ) => {
-    console.log('클릭', type);
     switch (type) {
       case 'email':
         setUser(prevUser => ({ ...prevUser, email: '' }));

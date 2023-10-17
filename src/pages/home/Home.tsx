@@ -7,6 +7,7 @@ import DeskRecoder from './components/DeskRecoder';
 import RoomCard from './components/RoomCard';
 import thumbnail from '../../images/sample.png';
 import NonUserIntro from './components/NonUserIntro';
+import { getCookie, setTokenCookie } from '../../auth/cookie';
 import { useRecoilValue } from 'recoil';
 import { RoomAtom } from '../../recoil/RoomAtom';
 
@@ -114,15 +115,15 @@ const Home = () => {
     },
   ];
 
-  const isLogged = false;
+  const token = getCookie('token');
 
   return (
     <Container column justify="start">
       {/* <삭제></삭제> */}
       <MainTop />
 
-      <Info gap="33px">
-        {isLogged ? (
+      <Info gap="33px" align='start'>
+        {token ? (
           <>
             <Goal />
             <DeskRecoder />
@@ -181,10 +182,6 @@ const List = styled(FlexContainer)`
 const ListTitle = styled.div`
   margin-bottom: 16px;
   font-size: 24px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 123.5%; /* 29.64px */
-  letter-spacing: 0.25px;
 `;
 
 const JoinedRooms = styled.div`
@@ -218,7 +215,7 @@ const Container = styled(FlexContainer)`
 `;
 
 const Info = styled(FlexContainer)`
-  margin-top: 31px;
+  margin-top: 30px;
   width: 100%;
 `;
 export default Home;

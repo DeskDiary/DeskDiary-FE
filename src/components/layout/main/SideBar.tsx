@@ -51,7 +51,7 @@ const SideBar: React.FC<SideBarProps> = () => {
           {token ? (
             <User to="/mypage/:id">
               <img></img>
-              <p>{}</p>
+              <p>유저이름</p>
             </User>
           ) : (
             <User to="/login">
@@ -69,41 +69,43 @@ const SideBar: React.FC<SideBarProps> = () => {
 const SidebarButton = styled(NavLink)`
   display: flex;
   align-items: center;
-  height: 60px;
-  width: 60px;
+  height: 5.5vh;
+  width: 3.2vw;
   background-color: transparent; // 기본 배경색을 투명으로 설정
   transition: width 0.4s, background-color 0.3s; // width와 background-color에 대한 transition 추가
 
-  font-size: 16px;
+  font-size: 0.84vw;
   text-transform: capitalize;
   line-height: 1;
-  border-radius: 60px;
+  border-radius: 3.2vw;
   opacity: 0.8;
 
   &.active {
     > img {
+      height: 3.12vh;
       opacity: 1;
     }
-    
   }
 
   &:hover {
     background-color: #d9d9d9;
     opacity: 1;
-    width: 100%;
+    width: 9.6vw;
     > img {
       opacity: 1;
+      height: 3.12vh;
     }
   }
 
   > img {
     opacity: 0.3;
     border-radius: 50%;
-    margin: 0 18px 0 15px;
+    margin: 0 0.8vw;
+    height: 3.12vh;
   }
 
   > p {
-    width: 100px;
+    width: 5.2vw;
     white-space: nowrap;
     opacity: 0;
     transition: opacity 0.6s ease-in-out;
@@ -116,19 +118,20 @@ const User = styled(Link)`
   align-items: center;
   justify-content: start;
 
-  margin: auto 0 130px 15px;
+  margin: 0.8vw;
+  margin-top: 42vh;
 
   > img {
-    width: 50px;
-    height: 50px;
+    width: 2.6vw;
+    height: 4.7vh;
     border-radius: 50%;
     background-color: #d9d9d9;
-    margin-right: 15px;
+    margin-right: 0.8vw;
   }
 
   > p {
-    font-size: 15px;
-    width: 100px;
+    font-size: 0.8vw;
+    width: 5.2vw;
     line-height: 123.5%; /* 18.525px */
     opacity: 0;
     transition: opacity 0.6s ease-in-out;
@@ -137,16 +140,16 @@ const User = styled(Link)`
 
 const SidebarMenu = styled.div`
   display: grid;
-  padding: 10px;
-  gap: 50px;
-  margin-top: 50px;
+  gap: 4.6vh;
+  margin-top: 4.6vh;
+  margin-left: 0.4vw;
 
   ${SidebarButton} img {
     transition: width 0.3s;
   }
 
   &:hover {
-    width: 200px;
+    width: 10.5vw;
 
     ${SidebarButton} img {
       transition: 0.3s;
@@ -155,24 +158,27 @@ const SidebarMenu = styled.div`
 `;
 
 const Logo = styled.img`
-  height: 70px;
-  padding: 10px;
+  height: 4.2vh;
 `;
 
 const SidebarHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 72px;
-  width: 80px;
+  height: 3.8vh;
+  width: 3.6vw;
+  margin-top: 1.5vh;
+  margin-left: 0.3vw;
 `;
 
 const SidebarInner = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  width: 200px;
+  width: 10.5vw;
   height: 100%;
+
+  
 
   display: flex;
   flex-direction: column;
@@ -185,8 +191,8 @@ const Sidebar = styled.div`
   overflow: hidden;
   top: 0;
   left: 0;
-  width: 80px;
-  height: 100%;
+  width: 4.2vw;
+  height: 100vh;
   background: #999;
   transition: width 0.4s;
 
@@ -195,10 +201,10 @@ const Sidebar = styled.div`
   }
 
   &:hover {
-    width: 200px;
+    width: 10.5vw;
 
     ${SidebarHeader} {
-      width: 200px;
+      width: 10.5vw;
     }
 
     ${SidebarButton} p, ${User} p {
