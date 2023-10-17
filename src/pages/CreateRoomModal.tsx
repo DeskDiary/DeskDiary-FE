@@ -7,6 +7,7 @@ import { RoomAtom } from '../recoil/RoomAtom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
+import { getCookie, setTokenCookie } from '../auth/cookie';
 
 type CreateRoomProps = {
   setOpenCreateRoom: React.Dispatch<React.SetStateAction<boolean>>;
@@ -25,6 +26,9 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
+
+  const token = getCookie('token');
+
   const [room, setRoom] = useRecoilState(RoomAtom);
   const [isStudyActive, setIsStudyActive] = useState(false);
   const [isHobbyActive, setIsHobbyActive] = useState(false);
@@ -57,9 +61,15 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
   };
 
   const createRoomInDB = async (newRoom: typeof room) => {
+    console.log(newRoom);
     const response = await axios.post(
       `${process.env.REACT_APP_SERVER_URL!}/room`,
       newRoom,
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      }
     );
     if (!response.data.success) {
       throw new Error(response.data.message);
@@ -96,10 +106,10 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
     const newRoom = {
       ...room,
       title: room.title,
-      maxHeadCount: maxUser,
+      maxHeadcount: maxUser,
       category: isStudyActive ? 'study' : 'hobby',
-      precautions: room.precautions,
-      image: image,
+      note: room.note,
+      roomThumbnail: image,
     };
 
     mutation.mutate(newRoom);
@@ -109,9 +119,9 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
     const newRoom = {
       ...room,
       title: room.title,
-      maxHeadCount: maxUser,
+      maxHeadcount: maxUser,
       category: isStudyActive ? 'study' : 'hobby',
-      precautions: room.precautions,
+      precautions: room.note,
       image: image,
     };
 
@@ -124,7 +134,6 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
 
       <ModalContent column justify="start">
         <Title>방 만들기</Title>
-        {image}
         <button type="button" onClick={onSubmitRoom2}>
           확인
         </button>
@@ -205,7 +214,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
           <Group column align="start">
             <Label>엉덩이들의 유의사항</Label>
             <Precautions
-              onChange={e => setRoom({ ...room, precautions: e.target.value })}
+              onChange={e => setRoom({ ...room, note: e.target.value })}
               placeholder="사용자 입력을 받으려면 여기에 입력하세요."
               style={{
                 width: '100%',

@@ -6,7 +6,9 @@ import { userAtom } from '../../recoil/UserAtom';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import checked from '../../images/Radiobutton.png';
+import colorChecked from '../../images/colorChecked.svg';
 import XIcon from '../../images/Vector.svg';
+import { logo } from '../../images';
 
 import { useMutation } from 'react-query';
 
@@ -25,6 +27,10 @@ const Join: React.FC<JoinProps> = () => {
   const [matchPasswordError, setMatchPasswordError] = useState<string | null>(
     null,
   );
+
+  const [focusedInput, setFocusedInput] = useState<
+    'email' | 'password' | 'confirmPassword' | 'nickname' | null
+  >(null);
 
   const handleClearInput = (
     type: 'email' | 'password' | 'confirmPassword' | 'nickname',
@@ -60,8 +66,19 @@ const Join: React.FC<JoinProps> = () => {
     return;
   };
 
+  const handleFocusInput = (
+    type: 'email' | 'password' | 'confirmPassword' | 'nickname',
+  ) => {
+    setFocusedInput(type);
+  };
+
+  const handleBlurInput = () => {
+    setFocusedInput(null);
+  };
+
   const joinMutation = useMutation(
-    (userData: typeof user) => axios.post(`${process.env.REACT_APP_SERVER_URL!}/auth/join`, userData),
+    (userData: typeof user) =>
+      axios.post(`${process.env.REACT_APP_SERVER_URL!}/auth/join`, userData),
     {
       onSuccess: () => {
         alert('회원가입 성공');
@@ -104,11 +121,11 @@ const Join: React.FC<JoinProps> = () => {
               setPasswordError('비밀번호는 8자 이상이어야 합니다');
               break;
             default:
-              console.log('회원가입에 실패했습니다. 관리자에게 문의해주세요.') 
+              console.log('회원가입에 실패했습니다. 관리자에게 문의해주세요.');
           }
         }
-      }
-    }
+      },
+    },
   );
 
   const onSubmitJoin = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -119,107 +136,119 @@ const Join: React.FC<JoinProps> = () => {
 
   return (
     <JoinForm onSubmit={onSubmitJoin}>
-      <JoinContainer>
-        <Title>회원가입</Title>
-        <JoinList align="start">
-          <Joincontent align="start">
-            <JoinLabel>이메일</JoinLabel>
-            <InputBox>
-              <JoinInput
-                type="text"
-                placeholder="예시 ) deskdiary@deskdiary.com"
-                onChange={e => setUser({ ...user, email: e.target.value })}
-                onBlur={() => {
-                  setEmailError(null);
-                  blurConfirmHandler();
-                }}
-                value={user.email}
-              />
-              <Clear type="button" onClick={() => handleClearInput('email')}>
-                <img src={XIcon} />
-              </Clear>
-            </InputBox>
-            <Relative>
-              {emailError ? <ErrorMessage>{emailError}</ErrorMessage> : null}
-            </Relative>
-          </Joincontent>
+      <Logo to="/"></Logo>
+      <Title>회원가입</Title>
+      <JoinList align="start">
+        <Joincontent align="start">
+          <JoinLabel focused={focusedInput === 'email'}>이메일</JoinLabel>
+          <InputBox focused={focusedInput === 'email'}>
+            <JoinInput
+              type="text"
+              placeholder="예시 ) deskdiary@deskdiary.com"
+              onChange={e => setUser({ ...user, email: e.target.value })}
+              onFocus={() => handleFocusInput('email')}
+              onBlur={() => {
+                setEmailError(null);
+                handleBlurInput();
+              }}
+              value={user.email}
+            />
+            <Clear type="button" onClick={() => handleClearInput('email')}>
+              <img src={XIcon} />
+            </Clear>
+          </InputBox>
+          <Relative>
+            {emailError ? <ErrorMessage>{emailError}</ErrorMessage> : null}
+          </Relative>
+        </Joincontent>
 
-          <Joincontent align="start">
-            <JoinLabel>비밀번호</JoinLabel>
-            <InputBox>
-              <JoinInput
-                type="password"
-                placeholder="영어 대소문자,숫자,특수문자 포함 8~16자"
-                onChange={e => setUser({ ...user, password: e.target.value })}
-                onBlur={() => {
-                  setPasswordError(null);
-                  blurConfirmHandler();
-                }}
-                value={user.password}
-              />
-              <Clear type="button" onClick={() => handleClearInput('password')}>
-                <img src={XIcon} />
-              </Clear>
-            </InputBox>
+        <Joincontent align="start">
+          <JoinLabel focused={focusedInput === 'password'}>비밀번호</JoinLabel>
+          <InputBox focused={focusedInput === 'password'}>
+            <JoinInput
+              type="password"
+              placeholder="영어 대소문자,숫자,특수문자 포함 8~16자"
+              onChange={e => setUser({ ...user, password: e.target.value })}
+              onFocus={() => handleFocusInput('password')}
+              onBlur={() => {
+                setPasswordError(null);
+                blurConfirmHandler();
+                handleBlurInput();
+              }}
+              value={user.password}
+            />
+            <Clear type="button" onClick={() => handleClearInput('password')}>
+              <img src={XIcon} />
+            </Clear>
+          </InputBox>
 
-            <Relative>
-              {passwordError ? (
-                <ErrorMessage>{passwordError}</ErrorMessage>
-              ) : null}
-            </Relative>
-          </Joincontent>
+          <Relative>
+            {passwordError ? (
+              <ErrorMessage>{passwordError}</ErrorMessage>
+            ) : null}
+          </Relative>
+        </Joincontent>
 
-          <Joincontent align="start">
-            <JoinLabel>비밀번호 확인</JoinLabel>
-            <InputBox>
-              <JoinInput
-                type="password"
-                placeholder="비밀번호를 한 번 더 입력해주세요"
-                value={confirmPassword}
-                onChange={e => setconfirmPassword(e.target.value)}
-                onBlur={blurConfirmHandler}
-              />
-              <Clear
-                type="button"
-                onClick={() => handleClearInput('confirmPassword')}
-              >
-                <img src={XIcon} />
-              </Clear>
-            </InputBox>
-            <Relative>
-              {matchPasswordError ? (
-                <ErrorMessage>{matchPasswordError}</ErrorMessage>
-              ) : null}
-            </Relative>
-          </Joincontent>
+        <Joincontent align="start">
+          <JoinLabel focused={focusedInput === 'confirmPassword'}>
+            비밀번호 확인
+          </JoinLabel>
+          <InputBox focused={focusedInput === 'confirmPassword'}>
+            <JoinInput
+              type="password"
+              placeholder="비밀번호를 한 번 더 입력해주세요"
+              value={confirmPassword}
+              onChange={e => setconfirmPassword(e.target.value)}
+              onFocus={() => handleFocusInput('confirmPassword')}
+              onBlur={() => {
+                blurConfirmHandler();
+                handleBlurInput();
+              }}
+            />
+            <Clear
+              type="button"
+              onClick={() => handleClearInput('confirmPassword')}
+            >
+              <img src={XIcon} />
+            </Clear>
+          </InputBox>
+          <Relative>
+            {matchPasswordError ? (
+              <ErrorMessage>{matchPasswordError}</ErrorMessage>
+            ) : null}
+          </Relative>
+        </Joincontent>
 
-          <Joincontent align="start">
-            <JoinLabel>닉네임</JoinLabel>
-            <InputBox>
-              <JoinInput
-                type="text"
-                placeholder="4~12자"
-                onChange={e => setUser({ ...user, nickname: e.target.value })}
-                onBlur={() => setNicknameError(null)}
-                value={user.nickname}
-              />
-              <Clear type="button" onClick={() => handleClearInput('nickname')}>
-                <img src={XIcon} />
-              </Clear>
-            </InputBox>
-            <Relative>
-              {nicknameError ? (
-                <ErrorMessage>{nicknameError}</ErrorMessage>
-              ) : null}
-            </Relative>
-          </Joincontent>
+        <Joincontent align="start">
+          <JoinLabel focused={focusedInput === 'nickname'}>닉네임</JoinLabel>
+          <InputBox focused={focusedInput === 'nickname'}>
+            <JoinInput
+              type="text"
+              placeholder="4~12자"
+              onFocus={() => handleFocusInput('nickname')}
+              onChange={e => setUser({ ...user, nickname: e.target.value })}
+              onBlur={() => {
+                setNicknameError(null);
+                handleBlurInput();
+              }}
+              value={user.nickname}
+            />
+            <Clear type="button" onClick={() => handleClearInput('nickname')}>
+              <img src={XIcon} />
+            </Clear>
+          </InputBox>
+          <Relative>
+            {nicknameError ? (
+              <ErrorMessage>{nicknameError}</ErrorMessage>
+            ) : null}
+          </Relative>
+        </Joincontent>
 
-          <AgreeBox row justify="start">
-            <AgreeCheck type="checkbox" onClick={onClickAgree}></AgreeCheck>
-            <AgreeLink to="/">개인정보 이용 동의 체크체크체크체크</AgreeLink>
-          </AgreeBox>
-        </JoinList>
-      </JoinContainer>
+        <AgreeBox row justify="start">
+          <AgreeCheck type="checkbox" onClick={onClickAgree}></AgreeCheck>
+          <AgreeLink to="/">개인정보 이용 동의 체크체크체크체크</AgreeLink>
+        </AgreeBox>
+      </JoinList>
       <JoinButton type="submit" disabled={!isAgreeChecked}>
         JOIN
       </JoinButton>
@@ -241,23 +270,16 @@ const Join: React.FC<JoinProps> = () => {
         </SocialLoginLink>
 
         <SocialLoginLink to="/">구글</SocialLoginLink>
-        {/* <button
-          onClick={() => {
-            const SERVER_URL =
-              process.env.REACT_APP_SERVER_URL || 'http://localhost:8000';
-            const kakaoOauthURL = `https://kauth.kakao.com/oauth/authorize?response_type=code&redirect_uri=${encodeURIComponent(
-              `${SERVER_URL}/api/kakao/callback`,
-            )}&client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}`;
-            window.location.href = kakaoOauthURL;
-          }}
-          className="bg-[#FAE100] w-[320px] text-black font-semibold py-1 border-2 border-none"
-        > */}
-        {/* 카카오로 로그인
-        </button> */}
       </SocialLoginGroup>
     </JoinForm>
   );
 };
+
+const Logo = styled(Link)`
+  background: url(${logo}) no-repeat center;
+  width: 70px;
+  height: 70px;
+`;
 
 const FlexContainer = styled.div<{
   row?: boolean;
@@ -282,7 +304,7 @@ const Clear = styled.button`
   cursor: pointer;
 `;
 
-const InputBox = styled.div`
+const InputBox = styled.div<{focused:boolean}>`
   display: flex;
   width: 370px;
   height: 28px;
@@ -290,7 +312,7 @@ const InputBox = styled.div`
   align-items: center;
   gap: 10px;
   border-radius: 5px;
-  border: 1px solid #757575;
+  border: 1px solid ${props => (props.focused ? '#00C5FF' : 'black')};
   background-color: white;
 
   &:focus {
@@ -301,13 +323,8 @@ const InputBox = styled.div`
 const ErrorMessage = styled.div`
   width: 400px;
   padding: 10px;
-  color: var(--system-error, #d32f2f);
-  font-feature-settings: 'clig' off, 'liga' off;
+  color: #d32f2f;
   font-size: 15px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 123.5%; /* 18.525px */
-  letter-spacing: 0.25px;
 
   top: 85px;
 `;
@@ -340,21 +357,18 @@ const JoinButton = styled.button<{ disabled: boolean }>`
   padding: 10px;
   justify-content: center;
   align-items: center;
-  /* background-color: rgba(153, 153, 153, 0.5); */
+
   border: none;
   margin-top: 12px;
   color: #fff;
-  font-feature-settings: 'clig' off, 'liga' off;
   font-size: 24px;
-  font-style: normal;
   font-weight: 500;
   line-height: 123.5%; /* 29.64px */
-  letter-spacing: 0.25px;
 
   background-color: rgba(
-    153,
-    153,
-    153,
+    0,
+    197,
+    255,
     ${props => (props.disabled ? '0.5' : '1.0')}
   );
   cursor: ${props => (props.disabled ? '' : 'pointer')};
@@ -376,12 +390,13 @@ const AgreeCheck = styled.input`
   height: 20px;
   border-radius: 50%;
   background-color: white;
-  border: 1px solid #9e9e9e;
+  border: 1px solid #00C5FF;
   display: inline-block;
   margin: 0 8px 0 0;
   //체크했을 때의 스타일
   &:checked {
-    background: url(${checked}) no-repeat center;
+    background: url(${colorChecked}) no-repeat center;
+    background-color: #00C5FF;
   }
 `;
 
@@ -390,12 +405,25 @@ const JoinForm = styled.form`
   flex-direction: column;
   align-items: center;
   justify-content: start;
-  width: 582px;
-  background-color: #ededed;
+  width: 400px;
   height: 100%;
+  padding: 110px 0;
 `;
 
-const Joincontent = styled(FlexContainer)``;
+const JoinLabel = styled.div<{ focused: boolean }>`
+  width: 380px;
+  padding: 10px;
+  color: ${props => (props.focused ? '#00C5FF' : 'black')};
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 123.5%; /* 18.525px */
+  letter-spacing: 0.25px;
+`;
+
+const Joincontent = styled(FlexContainer)`
+`;
 
 const Relative = styled.div`
   height: 40px;
@@ -414,25 +442,8 @@ const JoinInput = styled.input`
   }
 `;
 
-const JoinLabel = styled.div`
-  width: 380px;
-  padding: 10px;
-  color: var(--gray-07, #757575);
-  font-feature-settings: 'clig' off, 'liga' off;
-  font-size: 15px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 123.5%; /* 18.525px */
-  letter-spacing: 0.25px;
-`;
-
 const JoinList = styled(FlexContainer)`
-  margin-top: 12px;
   width: 100%;
-`;
-
-const JoinContainer = styled(FlexContainer)`
-  width: 400px;
 `;
 
 const Title = styled.div`
@@ -440,12 +451,9 @@ const Title = styled.div`
   text-align: center;
   font-feature-settings: 'clig' off, 'liga' off;
   font-size: 32px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  letter-spacing: 0.25px;
   width: 100%;
-  margin-top: 108px;
+  margin-top: 24px;
+  margin-bottom: 54px;
 `;
 
 export default Join;
