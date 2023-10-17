@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
-import { getCookie, setTokenCookie } from '../auth/cookie';
-import XIcon from '../images/Vector.svg';
+import { getCookie, setTokenCookie } from '../../auth/cookie';
+import XIcon from '../../images/Vector.svg';
 
 type LoginProps = {};
 
@@ -22,7 +22,7 @@ const Login: React.FC<LoginProps> = () => {
 
   const loginMutation = useMutation(async (formData: FormData) => {
     try {
-      const url = `${serverUrl}auth/login`;
+      const url = `${serverUrl}/auth/login`;
       console.log(url);
 
       const requestBody = {

@@ -31,7 +31,6 @@ const NoContent = styled.div`
   margin-bottom: 99px;
   margin-top: auto;
   font-size: 24px;
-  font-style: normal;
   font-weight: 500;
   line-height: 150%; /* 36px */
   letter-spacing: -0.24px;
@@ -52,7 +51,6 @@ const Container = styled(FlexContainer)`
 const Title = styled.div`
   margin: 16px auto 0 16px;
   font-size: 24px;
-  font-style: normal;
   font-weight: 500;
   line-height: 150%; /* 36px */
   letter-spacing: -0.24px;

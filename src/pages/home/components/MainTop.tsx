@@ -3,7 +3,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Link, useNavigate, NavLink } from 'react-router-dom';
 import { toast } from 'sonner';
 import styled from '@emotion/styled';
-import CreateRoomModal from './CreateRoomModal';
+import CreateRoomModal from '../../CreateRoomModal';
 
 type MainTopProps = {};
 
@@ -90,7 +90,7 @@ const NavHeader = styled(FlexContainer)`
 
 const Search = styled(FlexContainer)<{ isFocused: boolean }>`
   width: 570px;
-  height: 28px;
+  height: 48px;
   border-radius: 100px;
   border: 1px solid var(--gray-07, #757575);
   padding: 10px;

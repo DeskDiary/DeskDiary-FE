@@ -35,7 +35,7 @@ const FlexContainer = styled.div<{
 `;
 
 const LogoImg = styled.img`
-  width: 136px;
+  width: 40px;
 `;
 
 const NavHeader = styled(FlexContainer)`
