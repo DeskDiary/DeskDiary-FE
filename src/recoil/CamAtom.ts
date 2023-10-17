@@ -16,19 +16,6 @@ export const cameraListState = atom<MediaDeviceInfo[]>({
   default: [],
 });
 
-/*
-  카메라 목록 
-  [
-    {
-        "deviceId": "7dbe8291862a62b8810f223774f25779343b218eb8f5010f7299d349c05049a6",
-        "kind": "videoinput",
-        "label": "ABKO APC930 QHD WEBCAM (1bcf:5034)",
-        "groupId": "c6bac8fdd3b8a4293be76d84bd784b1dbfd7f3bb6a2d4c5479fbb5e3db9e0adf"
-    },
-    ...
-]
-*/
-
 export const micListState = atom<MediaDeviceInfo[]>({
   key: 'micListState',
   default: [],
