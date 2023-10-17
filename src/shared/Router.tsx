@@ -5,7 +5,6 @@ import MainLayout from '../components/layout/main/MainLayout';
 import { Error, Home, Join, Login, Mypage, Room } from '../pages';
 
 import CamAndMicSetting from '../pages/CamAndMicSetting';
-import KakaoCallback from '../pages/KakaoCallback';
 
 const Router = () => {
   return (
@@ -21,7 +20,6 @@ const Router = () => {
         </Route>
         <Route path="/room" element={<CamAndMicSetting />} />
         <Route path="/room/:id" element={<Room />} />
-        <Route path="/kakao-callback" element={<KakaoCallback />} />
         <Route path="*" element={<Error />} />
       </Routes>
     </BrowserRouter>

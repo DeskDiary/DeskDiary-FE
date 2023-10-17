@@ -13,7 +13,9 @@ export const getCookie = (name: string) => {
   const cookieArray = cookies.split(';');
   for (const cookie of cookieArray) {
     const [cookieName, cookieValue] = cookie.trim().split('=');
-    if (cookieName === name) {
+    console.log(cookieName, cookieValue);
+    if (cookieName === 'token') {
+      console.log(cookieValue)
       return cookieValue;
     }
   }

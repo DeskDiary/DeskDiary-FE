@@ -8,20 +8,18 @@ type SideLayoutProps = {};
 const SideLayout: React.FC<SideLayoutProps> = () => {
   return (
     <Wrap>
-      <AuthHeader />
+      {/* <AuthHeader /> */}
       <Outlet />
     </Wrap>
   );
 };
 
 const Wrap = styled.div`
-  min-height: calc(100vh - 260px);
+  min-height: 100vh;
   position: relative;
   width: 100vw;
   display: flex;
   justify-content: center;
-  padding-top: 76px;
-
 `;
 export default SideLayout;
 

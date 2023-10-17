@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import styled, { createGlobalStyle, css } from 'styled-components';
 import { hobby, home, logo, study, mypage, profile } from '../../../images';
 import { Link } from 'react-router-dom';
+import { getCookie, setTokenCookie } from '../../../auth/cookie';
 
 type SideBarProps = {};
 
 const navItems = [
   {
-    title: 'Main Home',
+    title: '홈',
     icon: home,
     url: '/',
   },
@@ -29,83 +30,105 @@ const navItems = [
 ];
 
 const SideBar: React.FC<SideBarProps> = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const token = getCookie('token');
 
   return (
-    <Sidebar isOpen={isOpen}>
+    <Sidebar>
       <GlobalStyle />
       <SidebarInner>
         <SidebarHeader>
-          <SidebarBurger type="button" onClick={() => setIsOpen(!isOpen)}>
-            <span>{isOpen ? 'Close' : 'open'}</span>
-          </SidebarBurger>
           <Logo src={logo}></Logo>
         </SidebarHeader>
         <SidebarMenu>
           {navItems.map(item => (
-            <SidebarButton to={item.url} isOpen={isOpen}>
-              <LogoBG isOpen={isOpen}>
-                <img src={item.icon} />
-              </LogoBG>
+            <SidebarButton to={item.url}>
+              <img src={item.icon} />
 
               <p>{item.title}</p>
             </SidebarButton>
           ))}
         </SidebarMenu>
+        <User to="/login">
+          {token ? (
+            <>
+              <img></img>
+              <p>{}</p>
+            </>
+          ) : (
+            <>
+              <img></img>
+              <p>
+                로그인이 <br /> 필요합니다.
+              </p>
+            </>
+          )}
+        </User>
       </SidebarInner>
     </Sidebar>
   );
 };
 
-const SidebarButton = styled(Link)<{ isOpen: boolean }>`
+const SidebarButton = styled(Link)`
   display: flex;
-  gap: 10px;
   align-items: center;
   height: 60px;
   width: 60px;
+  background-color: transparent; // 기본 배경색을 투명으로 설정
+  transition: width 0.4s, background-color 0.3s; // width와 background-color에 대한 transition 추가
+
   font-size: 16px;
   text-transform: capitalize;
   line-height: 1;
   border-radius: 60px;
   opacity: 0.8;
-  transition: width 0.4s;
 
-  ${props =>
-    props.isOpen &&
-    `&:hover {
-    background: #d9d9d9;
+  &:hover {
+    background-color: #d9d9d9;
     opacity: 1;
     width: 100%;
-  }`}
+  }
 
   > img {
     opacity: 0.5;
-    width: ${props => (props.isOpen ? '200px' : '60px')};
     border-radius: 50%;
+    margin: 0 18px 0 15px;
+    &:hover {
+      opacity: 1;
+    }
   }
 
+  > p {
+    width: 100px;
+    /* overflow: hidden; */
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out;
+  }
 `;
 
-const LogoBG = styled.div<{isOpen:boolean}>`
-  height: 60px;
-  width: 60px;
-  border-radius: 50%;
+const User = styled(Link)`
   display: flex;
-  padding: 10px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
 
-  &:hover {
-    opacity: 1;
+  margin: auto 0 130px 15px;
+
+  > img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
     background-color: #d9d9d9;
-    transition: 0.4s;
+    margin-right: 15px;
   }
 
-  ${props =>
-    props.isOpen &&
-    `&:hover {
-    background: #d9d9d9;
-    opacity: 1;
-    width: 100%;
-  }`}
+  > p {
+    font-size: 15px;
+    width: 100px;
+    line-height: 123.5%; /* 18.525px */
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out;
+  }
 `;
 
 const SidebarMenu = styled.div`
@@ -113,25 +136,31 @@ const SidebarMenu = styled.div`
   padding: 10px;
   gap: 50px;
   margin-top: 50px;
+
+  ${SidebarButton} img {
+    transition: width 0.3s;
+  }
+
+  &:hover {
+    width: 200px;
+
+    ${SidebarButton} img {
+      transition: 0.3s;
+    }
+  }
 `;
 
 const Logo = styled.img`
-  height: 60px;
-`;
-
-const SidebarBurger = styled.button`
-  width: 80px;
-  height: 75px;
-  display: grid;
-  place-items: center;
-  background-image: url(logo);
+  height: 70px;
+  padding: 10px;
 `;
 
 const SidebarHeader = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   height: 72px;
-  background-color: rgba(0, 0, 0, 0.15);
+  width: 80px;
 `;
 
 const SidebarInner = styled.div`
@@ -139,9 +168,15 @@ const SidebarInner = styled.div`
   top: 0;
   left: 0;
   width: 200px;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
 `;
 
-const Sidebar = styled.div<{ isOpen: boolean }>`
+const Sidebar = styled.div`
   position: absolute;
   overflow: hidden;
   top: 0;
@@ -151,20 +186,22 @@ const Sidebar = styled.div<{ isOpen: boolean }>`
   background: #999;
   transition: width 0.4s;
 
-  ${props =>
-    props.isOpen &&
-    `
+  ${SidebarHeader} {
+    transition: width 0.3s; // 이걸 추가해!
+  }
+
+  &:hover {
+    width: 200px;
+
+    ${SidebarHeader} {
       width: 200px;
-      
-      ${Logo}, ${SidebarButton} p {
-        opacity: 0;
-        transition: 0.3s;
-      }
-      
-      ${SidebarButton} p, ${Logo} {
-        opacity: 1;
-      }
-    `}
+    }
+
+    ${SidebarButton} p, ${User} p {
+      opacity: 1;
+      /* transition: opacity 0.4s ease-in-out; */
+    }
+  }
 `;
 
 const GlobalStyle = createGlobalStyle`
