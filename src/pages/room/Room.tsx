@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import AsmrPlayer from './components/AsmrPlayer';
 import RoomCamArea from './components/RoomCamArea';
 import RoomHeader from './components/RoomHeader';
 import RoomSideBar from './components/RoomSideBar';
@@ -11,6 +10,7 @@ type RoomProps = {
 };
 
 const Room: React.FC<RoomProps> = () => {
+  
   return (
     <>
       <Container>
