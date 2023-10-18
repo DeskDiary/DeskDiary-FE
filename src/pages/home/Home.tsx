@@ -144,7 +144,8 @@ const Home = () => {
           })}
         </JoinedRooms>
       </List>
-      <Link to="/join">회원가입</Link>
+      <Link to="/join">회원가입</Link><br /><br /><br />
+      <Link to="/login">로그인</Link>
     </Container>
   );
 };

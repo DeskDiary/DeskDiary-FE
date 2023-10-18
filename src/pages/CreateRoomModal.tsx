@@ -45,7 +45,18 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
 
   const navigate = useNavigate();
 
-  const onClickCategory = (category: string) => {
+
+  // 여기부터
+  const [formData, setFormData] = useRecoilState(RoomAtom);
+
+  const updateFormData = (field: string, value: any) => {
+    setFormData({
+      ...formData,
+      [field]: value,
+    });
+  };
+
+  const onChangeCategory = (category: string) => {
     if (category === 'study') {
       setIsStudyActive(true);
       setIsHobbyActive(false);
@@ -53,43 +64,15 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
       setIsStudyActive(false);
       setIsHobbyActive(true);
     }
-  };
+
+    updateFormData('category', category);
+  }
 
   const handleUserCountClick = (count: number) => {
     setSelectedUserCount(count);
     setMaxUser(count);
+    updateFormData('count', count)
   };
-
-  // const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
-  //   if (e.target.files) {
-  //     const file = e.target.files[0];
-  //     const reader = new FileReader();
-  //     const formData = new FormData();
-  //     formData.append('file', file);
-  //     console.log('formData', formData.get('file'))
-  //     const result = await axios.post(
-  //       `${process.env.REACT_APP_SERVER_URL!}/room/image`,
-  //       formData,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //           "Content-Type" : "multipart/form-data",
-  //         },
-  //       },
-  //     );
-  //     console.log('result', result);
-  //     reader.onloadend = () => {
-  //       if (typeof reader.result === 'string') {
-  //         setImage(reader.result);
-  //       }
-  //     };
-  //     setImage(result.data);
-
-  //     if (file) {
-  //       reader.readAsDataURL(file);
-  //     }
-  //   }
-  // };
 
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -101,62 +84,59 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
       reader.onload = () => {
         const base64 = reader.result;
         setImage(base64 as string);
+        updateFormData('file', base64 as string)
       };
     }
   };
 
-  // 방만들기 post 요청
-  const mutation = useMutation(
-    async (newRoom: typeof room) => {
+  const onSubmitRoom = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
+    // FormData 객체 생성
+    const formData = new FormData();
+
+    if (image) {
+      console.log('이미지 있음')
+      formData.append('file', image);
+    }
+    
+    formData.append('title', room.title);
+    formData.append('maxHeadcount', maxUser.toString());
+    formData.append('category', isStudyActive ? 'study' : 'hobby');
+    formData.append('note', room.note);
+
+  
+    console.log('formData title', formData.get('title'));
+    console.log('formData maxHeadcount', formData.get('maxHeadcount'));
+    console.log('formData category', formData.get('category'));
+    console.log('formData note', formData.get('note'));
+    console.log('formData file', formData.get('file'));
+
+    try {
+      console.log('try')
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`,  // JWT 토큰을 여기에 삽입해주세요
+        },
+      };
       const response = await axios.post(
         `${process.env.REACT_APP_SERVER_URL!}/room`,
-        { newRoom },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-      if (!response.data.success) {
-        throw new Error(response.data.message);
-      }
-      return response.data.room;
-    },
-    {
-      onSuccess: data => {
+        formData, config);
+
+        console.log('Room created: ', response.data);
+  
+      // 성공시 로직
+      if (response.data.createdRoom) {
+        console.log('성공')
         alert('방만들기 성공!');
-        navigate(`/room/${data.id}`);
-      },
-      onError: (error: any) => {
-        console.log('error.message', error.message);
-      },
-    },
-  );
-
-  const onSubmitRoom = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const newRoom = {
-      title: room.title,
-      maxHeadcount: maxUser,
-      category: isStudyActive ? 'study' : 'hobby',
-      note: room.note,
-      roomThumbnail: image,
-    };
-    console.log('newRoom', newRoom);
-    mutation.mutate(newRoom);
-  };
-
-  const onSubmitRoom2 = () => {
-    const newRoom = {
-      ...room,
-      title: room.title,
-      maxHeadcount: maxUser,
-      category: isStudyActive ? 'study' : 'hobby',
-      note: room.note,
-      roomThumbnail: image,
-    };
-
-    console.log(newRoom);
+        navigate(`/room`);
+      } else {
+        console.log('실패ddzz', response.data)
+      }
+    } catch (error) {
+      console.log('방 만들기 실패', error);
+    }
   };
 
   return (
@@ -165,9 +145,6 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
 
       <ModalContent col justify="start">
         <Title>방 만들기</Title>
-        <button type="button" onClick={onSubmitRoom2}>
-          확인
-        </button>
         <Thumbnail image={image}>
           {image ? <ThumbnailImg src={image} /> : <SampleImg src={Picture} />}
         </Thumbnail>
@@ -185,19 +162,8 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
             썸네일 등록
             <VisuallyHiddenInput type="file" onChange={handleFileChange} />
           </Button>
-          <Button
-            component="label"
-            sx={{
-              color: 'gray',
-              '&:hover': {
-                backgroundColor: 'initial', // 여기서 'initial' 대신 원래 배경색을 넣어도 돼
-                boxShadow: 'none', // 그림자 효과 제거
-              },
-            }}
-          >
-            삭제
-            <VisuallyHiddenInput onChange={() => setImage('')} />
-          </Button>
+          
+          <button onClick={(() => setImage(''))}>삭제</button>
         </ThumbnailButtonGroup>
 
         <Content col gap="15px">
@@ -205,7 +171,8 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
             <Label>방 이름</Label>
             <RoomTitle
               type="text"
-              onChange={e => setRoom({ ...room, title: e.target.value })}
+              // onChange={e => setRoom({ ...room, title: e.target.value })}
+              onChange={e => updateFormData('title', e.target.value)}
             />
           </Group>
 
@@ -217,7 +184,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
                 <Category
                   key={category}
                   type="button"
-                  onClick={() => onClickCategory(category)}
+                  onClick={() => onChangeCategory(category)}
                   isActive={activeStates[category as 'study' | 'hobby']}
                 >
                   {category === 'study' ? '스터디' : '취미'}
