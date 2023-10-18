@@ -5,7 +5,7 @@ import MainLayout from '../components/layout/main/MainLayout';
 import { Error, Home, Join, Login, Mypage, Room } from '../pages';
 
 import CamAndMicSetting from '../pages/CamAndMicSetting';
-import MyRecord from '../pages/myRecord/MyRecord';
+import MyRecord from '../pages/myRecord/MyDesk';
 
 const Router = () => {
   return (
@@ -14,7 +14,7 @@ const Router = () => {
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/mypage/:id" element={<Mypage />} />
-          <Route path="/myrecord" element={<MyRecord />} />
+          <Route path="/mydesk" element={<MyRecord />} />
         </Route>
         <Route element={<SideLayout />}>
           <Route path="/login" element={<Login />} />

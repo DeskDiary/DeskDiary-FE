@@ -7,9 +7,9 @@ import Goal from '../home/components/Goal';
 import { IndexKind } from 'typescript';
 import MyRecords from './components/MyRecords';
 
-type MyRecordProps = {};
+type MyDeskProps = {};
 
-const MyRecord: React.FC<MyRecordProps> = () => {
+const MyDesk: React.FC<MyDeskProps> = () => {
   const rooms = [
     {
       id: 1,
@@ -116,9 +116,9 @@ const MyRecord: React.FC<MyRecordProps> = () => {
   return (
     <Container column justify="start">
       <MainTop />
-      <MyRecordTop justify="start">
+      <MyDeskTop justify="start">
         <Goal />
-      </MyRecordTop>
+      </MyDeskTop>
 
       <MyRecords />
 
@@ -148,7 +148,7 @@ const FlexContainer = styled.div<{
   width: 100%;
 `;
 
-const MyRecordTop = styled(FlexContainer)`
+const MyDeskTop = styled(FlexContainer)`
   margin: 30px 0 24px 0;
 `;
 
@@ -191,4 +191,4 @@ const JoinedRooms = styled.div`
   }
 `;
 
-export default MyRecord;
+export default MyDesk;

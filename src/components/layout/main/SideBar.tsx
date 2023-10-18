@@ -7,7 +7,7 @@ import {
   study,
   mypage,
   profile,
-  myRecord,
+  mydesk,
 } from '../../../images';
 import { Link, NavLink } from 'react-router-dom';
 import { getCookie, setTokenCookie } from '../../../auth/cookie';
@@ -31,9 +31,9 @@ const navItems = [
     url: 'room',
   },
   {
-    title: '책상 기록',
-    icon: myRecord,
-    url: '/myrecord',
+    title: '나의 책상',
+    icon: mydesk,
+    url: '/mydesk',
   },
 ];
 
@@ -147,7 +147,7 @@ const User = styled(Link)`
 
 const SidebarMenu = styled.div`
   display: grid;
-  padding: 10px;
+  padding: 8px;
   gap: 50px;
   margin-top: 50px;
 

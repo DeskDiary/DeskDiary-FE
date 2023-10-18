@@ -399,7 +399,7 @@ const AgreeCheck = styled.input`
   border: 1px solid #00c5ff;
   display: inline-block;
   margin: 0 8px 0 0;
-  //체크했을 때의 스타일
+  //체크했을 때의post 스타일
   &:checked {
     background: url(${colorChecked}) no-repeat center;
     background-color: #00c5ff;
@@ -420,12 +420,7 @@ const JoinLabel = styled.div<{ focused: boolean }>`
   width: 380px;
   padding: 10px;
   color: ${props => (props.focused ? '#00C5FF' : 'black')};
-  font-feature-settings: 'clig' off, 'liga' off;
   font-size: 15px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 123.5%; /* 18.525px */
-  letter-spacing: 0.25px;
 `;
 
 const Joincontent = styled(FlexContainer)``;
@@ -454,7 +449,6 @@ const JoinList = styled(FlexContainer)`
 const Title = styled.div`
   color: #000;
   text-align: center;
-  font-feature-settings: 'clig' off, 'liga' off;
   font-size: 32px;
   width: 100%;
   margin-top: 24px;
