@@ -49,8 +49,8 @@ const ChatBox: React.FC<ChatBoxProps> = () => {
   };
 
   return (
-    <Container column justify="start">
-      <ChatList column justify="start" align="start" gap="15px">
+    <Container col justify="start">
+      <ChatList col justify="start" align="start" gap="15px">
         {messages.map((message, index) => {
           return <Chat key={index} message={message}/>;
         })}
@@ -83,13 +83,13 @@ const ChatBox: React.FC<ChatBoxProps> = () => {
 };
 
 const FlexContainer = styled.div<{
-  column?: boolean;
+  col?: boolean;
   align?: string;
   justify?: string;
   gap?: string;
 }>`
   display: flex;
-  flex-direction: ${props => (props.column ? 'column' : 'row')};
+  flex-direction: ${props => (props.col ? 'column' : 'row')};
   align-items: ${props => (props.align ? props.align : 'center')};
   justify-content: ${props => (props.justify ? props.justify : 'center')};
   gap: ${props => props.gap || '0'};

@@ -7,11 +7,11 @@ type MypageProps = {};
 
 const Mypage: React.FC<MypageProps> = () => {
   return (
-    <Container column justify="start" align="center">
+    <Container col justify="start" align="center">
       <MainTop />
-      <UserProfile column justify="start">
+      <UserProfile col justify="start">
         <ProfileImg></ProfileImg>
-        <UserInfo column>
+        <UserInfo col>
           <Label>이메일</Label>
           <Content>seohyeon@email.com</Content>
           <Label>닉네임</Label>
@@ -23,13 +23,13 @@ const Mypage: React.FC<MypageProps> = () => {
 };
 
 const FlexContainer = styled.div<{
-  column?: boolean;
+  col?: boolean;
   align?: string;
   justify?: string;
   gap?: string;
 }>`
   display: flex;
-  flex-direction: ${props => (props.column ? 'column' : 'row')};
+  flex-direction: ${props => (props.col ? 'column' : 'row')};
   align-items: ${props => (props.align ? props.align : 'center')};
   justify-content: ${props => (props.justify ? props.justify : 'center')};
   gap: ${props => props.gap || '0'};

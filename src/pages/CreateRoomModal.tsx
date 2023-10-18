@@ -13,6 +13,7 @@ type CreateRoomProps = {
   setOpenCreateRoom: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
+// 썸네일 등록 버튼 스타일
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
   clipPath: 'inset(50%)',
@@ -26,7 +27,6 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
-
   const token = getCookie('token');
 
   const [room, setRoom] = useRecoilState(RoomAtom);
@@ -60,32 +60,36 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
     setMaxUser(count);
   };
 
-  const createRoomInDB = async (newRoom: typeof room) => {
-    console.log(newRoom);
-    const response = await axios.post(
-      `${process.env.REACT_APP_SERVER_URL!}/room`,
-      {newRoom},
-      {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      }
-    );
-    if (!response.data.success) {
-      throw new Error(response.data.message);
-    }
-    return response.data.room;
-  };
+  // const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.files) {
+  //     const file = e.target.files[0];
+  //     const reader = new FileReader();
+  //     const formData = new FormData();
+  //     formData.append('file', file);
+  //     console.log('formData', formData.get('file'))
+  //     const result = await axios.post(
+  //       `${process.env.REACT_APP_SERVER_URL!}/room/image`,
+  //       formData,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           "Content-Type" : "multipart/form-data",
+  //         },
+  //       },
+  //     );
+  //     console.log('result', result);
+  //     reader.onloadend = () => {
+  //       if (typeof reader.result === 'string') {
+  //         setImage(reader.result);
+  //       }
+  //     };
+  //     setImage(result.data);
 
-  const mutation = useMutation(createRoomInDB, {
-    onSuccess: data => {
-      alert('방만들기 성공!');
-      navigate(`/room/${data.id}`);
-    },
-    onError: (error: any) => {
-      console.log('error.message', error.message);
-    },
-  });
+  //     if (file) {
+  //       reader.readAsDataURL(file);
+  //     }
+  //   }
+  // };
 
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -101,17 +105,44 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
     }
   };
 
+  // 방만들기 post 요청
+  const mutation = useMutation(
+    async (newRoom: typeof room) => {
+      const response = await axios.post(
+        `${process.env.REACT_APP_SERVER_URL!}/room`,
+        { newRoom },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      if (!response.data.success) {
+        throw new Error(response.data.message);
+      }
+      return response.data.room;
+    },
+    {
+      onSuccess: data => {
+        alert('방만들기 성공!');
+        navigate(`/room/${data.id}`);
+      },
+      onError: (error: any) => {
+        console.log('error.message', error.message);
+      },
+    },
+  );
+
   const onSubmitRoom = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newRoom = {
-      // ...room,
       title: room.title,
       maxHeadcount: maxUser,
       category: isStudyActive ? 'study' : 'hobby',
       note: room.note,
       roomThumbnail: image,
     };
-
+    console.log('newRoom', newRoom);
     mutation.mutate(newRoom);
   };
 
@@ -121,8 +152,8 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
       title: room.title,
       maxHeadcount: maxUser,
       category: isStudyActive ? 'study' : 'hobby',
-      precautions: room.note,
-      image: image,
+      note: room.note,
+      roomThumbnail: image,
     };
 
     console.log(newRoom);
@@ -132,7 +163,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
     <Container onSubmit={onSubmitRoom}>
       <BackGround />
 
-      <ModalContent column justify="start">
+      <ModalContent col justify="start">
         <Title>방 만들기</Title>
         <button type="button" onClick={onSubmitRoom2}>
           확인
@@ -169,8 +200,8 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
           </Button>
         </ThumbnailButtonGroup>
 
-        <Content column gap="15px">
-          <Group column align="start">
+        <Content col gap="15px">
+          <Group col align="start">
             <Label>방 이름</Label>
             <RoomTitle
               type="text"
@@ -178,7 +209,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
             />
           </Group>
 
-          <Group column align="start">
+          <Group col align="start">
             <Label>목적 정하기</Label>
 
             <CategoryGroup gap="16px">
@@ -195,7 +226,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
             </CategoryGroup>
           </Group>
 
-          <Group column align="start">
+          <Group col align="start">
             <Label>인원설정 (최대 4인 가능)</Label>
             <CategoryGroup gap="16px">
               {[1, 2, 3, 4].map(i => (
@@ -211,7 +242,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
             </CategoryGroup>
           </Group>
 
-          <Group column align="start">
+          <Group col align="start">
             <Label>엉덩이들의 유의사항</Label>
             <Precautions
               onChange={e => setRoom({ ...room, note: e.target.value })}
@@ -226,7 +257,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
           </Group>
         </Content>
 
-        <ButtonGroup column gap="8px">
+        <ButtonGroup col gap="8px">
           <CreateRoomButton>방만들기</CreateRoomButton>
           <CancleButton type="button" onClick={() => setOpenCreateRoom(false)}>
             취소
@@ -238,13 +269,13 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
 };
 
 const FlexContainer = styled.div<{
-  column?: boolean;
+  col?: boolean;
   align?: string;
   justify?: string;
   gap?: string;
 }>`
   display: flex;
-  flex-direction: ${props => (props.column ? 'column' : 'row')};
+  flex-direction: ${props => (props.col ? 'column' : 'row')};
   align-items: ${props => (props.align ? props.align : 'center')};
   justify-content: ${props => (props.justify ? props.justify : 'center')};
   gap: ${props => props.gap || '0'};
@@ -405,7 +436,7 @@ const ModalContent = styled(FlexContainer)`
 
 const Container = styled.form`
   display: flex;
-  flex-direction: column;
+  flex-direction: col;
   align-items: center;
   justify-content: center;
   position: fixed;

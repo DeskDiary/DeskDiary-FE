@@ -114,7 +114,7 @@ const MyDesk: React.FC<MyDeskProps> = () => {
   ];
 
   return (
-    <Container column justify="start">
+    <Container col justify="start">
       <MainTop />
       <MyDeskTop justify="start">
         <Goal />
@@ -122,7 +122,7 @@ const MyDesk: React.FC<MyDeskProps> = () => {
 
       <MyRecords />
 
-      <List column align="start">
+      <List col align="start">
         <ListTitle>최근에 들어간 방 목록</ListTitle>
         <JoinedRooms>
           {rooms.map(room => {
@@ -135,13 +135,13 @@ const MyDesk: React.FC<MyDeskProps> = () => {
 };
 
 const FlexContainer = styled.div<{
-  column?: boolean;
+  col?: boolean;
   align?: string;
   justify?: string;
   gap?: string;
 }>`
   display: flex;
-  flex-direction: ${props => (props.column ? 'column' : 'row')};
+  flex-direction: ${props => (props.col ? 'column' : 'row')};
   align-items: ${props => (props.align ? props.align : 'center')};
   justify-content: ${props => (props.justify ? props.justify : 'center')};
   gap: ${props => props.gap || '0'};

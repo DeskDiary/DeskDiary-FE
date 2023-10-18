@@ -53,13 +53,13 @@ const MainTop: React.FC<MainTopProps> = () => {
 };
 
 const FlexContainer = styled.div<{
-  column?: boolean;
+  isColumn?: boolean;
   align?: string;
   justify?: string;
   gap?: string;
 }>`
   display: flex;
-  flex-direction: ${props => (props.column ? 'column' : 'row')};
+  flex-direction: ${props => (props.isColumn ? 'column' : 'row')};
   align-items: ${props => (props.align ? props.align : 'center')};
   justify-content: ${props => (props.justify ? props.justify : 'center')};
   gap: ${props => props.gap || '0'};

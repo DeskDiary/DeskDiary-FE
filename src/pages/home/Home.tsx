@@ -118,7 +118,7 @@ const Home = () => {
   const token = getCookie('token');
 
   return (
-    <Container column justify="start">
+    <Container col justify="start">
       {/* <삭제></삭제> */}
       <MainTop />
 
@@ -132,7 +132,7 @@ const Home = () => {
           <NonUserIntro />
         )}
       </Info>
-      <List column align="start">
+      <List col align="start">
         <ListTitle>내가 참여했던 방</ListTitle>
         <JoinedRooms>
           {rooms.map(room => {
@@ -150,13 +150,13 @@ const Home = () => {
 };
 
 const FlexContainer = styled.div<{
-  column?: boolean;
+  col?: boolean;
   align?: string;
   justify?: string;
   gap?: string;
 }>`
   display: flex;
-  flex-direction: ${props => (props.column ? 'column' : 'row')};
+  flex-direction: ${props => (props.col ? 'column' : 'row')};
   align-items: ${props => (props.align ? props.align : 'center')};
   justify-content: ${props => (props.justify ? props.justify : 'center')};
   gap: ${props => props.gap || '0'};

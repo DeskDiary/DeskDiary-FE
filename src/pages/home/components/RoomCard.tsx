@@ -25,11 +25,11 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
   const rooms = useRecoilValue(RoomAtom);
 
   return (
-    <Container column justify="center">
+    <Container col justify="center">
       <Thumbmail src={thumbnail} onClick={() => setIsOpen(true)}></Thumbmail>
       <Contents justify="start" gap="9px">
         <Img></Img>
-        <ContentText column justify="start">
+        <ContentText col justify="start">
           <RoomTitle>{room.title}</RoomTitle>
           <Tags justify="start" align="center" gap="6">
             <Tag>#{room.category}</Tag>
@@ -43,13 +43,13 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
 };
 
 const FlexContainer = styled.div<{
-  column?: boolean;
+  col?: boolean;
   align?: string;
   justify?: string;
   gap?: string;
 }>`
   display: flex;
-  flex-direction: ${props => (props.column ? 'column' : 'row')};
+  flex-direction: ${props => (props.col ? 'column' : 'row')};
   align-items: ${props => (props.align ? props.align : 'center')};
   justify-content: ${props => (props.justify ? props.justify : 'center')};
   gap: ${props => props.gap || '0'};

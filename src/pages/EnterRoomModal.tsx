@@ -38,21 +38,21 @@ const EnterRoom: React.FC<EnterRoomModal> = ({ setIsOpen, room }) => {
   return (
     <Container>
       <BackGround />
-      <ModalContent column justify="start">
+      <ModalContent col justify="start">
         <Title>{room.title}</Title>
 
         <MediaSetupGroup>
           <MediaSetup></MediaSetup>
         </MediaSetupGroup>
 
-        <Content column gap="15px">
+        <Content col gap="15px">
 
-          <Group column align="start">
+          <Group col align="start">
             <Label>엉덩이들의 유의사항</Label>
           </Group>
         </Content>
 
-        <Button column gap="8px">
+        <Button col gap="8px">
           <EnterRoomButton to="/room/:id">들어가기</EnterRoomButton>
           <CancleButton to="/" onClick={() => setIsOpen(false)}>
             취소
@@ -64,13 +64,13 @@ const EnterRoom: React.FC<EnterRoomModal> = ({ setIsOpen, room }) => {
 };
 
 const FlexContainer = styled.div<{
-  column?: boolean;
+  col?: boolean;
   align?: string;
   justify?: string;
   gap?: string;
 }>`
   display: flex;
-  flex-direction: ${props => (props.column ? 'column' : 'row')};
+  flex-direction: ${props => (props.col ? 'column' : 'row')};
   align-items: ${props => (props.align ? props.align : 'center')};
   justify-content: ${props => (props.justify ? props.justify : 'center')};
   gap: ${props => props.gap || '0'};

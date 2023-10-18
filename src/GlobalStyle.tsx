@@ -1,6 +1,13 @@
 import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
+  /* @font-face {
+    font-family: 'Pretendard';
+    src: url('/fonts/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+  } */
+
   :root {
       --gray-01: #FAFAFA;
       --gray-02: #F5F5F5;
@@ -33,7 +40,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     width: 100vw;
     scroll-behavior: smooth;
-    overflow-y: hidden;
+    overflow-x: hidden;
   }
 
   *{
