@@ -5,26 +5,44 @@ import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { getCookie, setTokenCookie } from '../../auth/cookie';
 import XIcon from '../../images/Vector.svg';
+import logo from '../../images/logo.png';
+import 아이디저장o from '../../images/radio_button_checked.svg';
+import 아이디저장x from '../../images/radio_button_unchecked.svg';
+import 구글로그인 from '../../images/구글사진.svg';
+import 카카오로그인 from '../../images/카카오사진.svg';
 
 type LoginProps = {};
 
 const Login: React.FC<LoginProps> = () => {
   const navigate = useNavigate();
   const token = getCookie('token');
+  const [id, setId] = useState<string>('');
+  const [pw, setPw] = useState<string>('');
+  const [idSaveCheckButton, setIdSaveCheckButton] = useState<boolean>(false);
   useEffect(() => {
     if (token) {
       alert('이미 로그인했습니다.');
       navigate(-1);
     }
   }, [token, navigate]);
-  const serverUrl = process.env.REACT_APP_SERVER_URL;
-  console.log(serverUrl);
+  const getSavedIdFromLocalStorage = () => {
+    const getId = localStorage.getItem('아이디저장');
+    return getId ? getId : '';
+  };
+  useEffect(() => {
+    const getId = getSavedIdFromLocalStorage();
+    if (getId) {
+      setId(getId);
+      setIdSaveCheckButton(true);
+    }
+  }, []);
 
+  const [errorMessage, setErrorMessage] = useState<any[]>([]);
+  console.log(errorMessage);
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
   const loginMutation = useMutation(async (formData: FormData) => {
     try {
       const url = `${serverUrl}/auth/login`;
-      console.log(url);
-
       const requestBody = {
         email: formData.get('email'),
         password: formData.get('password'),
@@ -32,14 +50,19 @@ const Login: React.FC<LoginProps> = () => {
 
       const response = await axios.post(url, requestBody);
       const token = response.headers.authorization.split(' ')[1];
+      setErrorMessage([]);
       console.log(token);
       setTokenCookie(token);
+      if (idSaveCheckButton) {
+        saveIdLocalStorage(id);
+      }
       alert(`로그인 성공`);
-      navigate('/')
-      // return response.data; // 여기서는 로그인 API에서 반환한 데이터를 반환
-    } catch (error) {
+      navigate('/');
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        setErrorMessage(error.response.data.message);
+      }
       console.error(error);
-
     }
   });
 
@@ -54,23 +77,37 @@ const Login: React.FC<LoginProps> = () => {
     loginMutation.mutate(formData);
   };
 
-  const inputClear = () => {
-    alert(`x클릭`);
+  const idChangeHandler = (e: any) => {
+    setId(e.target.value);
+  };
+  const pwChangeHandler = (e: any) => {
+    setPw(e.target.value);
   };
 
-  // useEffect(() => {
+  const inputClear = (input: string) => {
+    if (input === 'id') {
+      setId('');
+    } else if (input === 'pw') {
+      setPw('');
+    }
+  };
 
-  // }, [])
+  const saveIdLocalStorage = (id: string) => {
+    localStorage.setItem('아이디저장', id);
+  };
 
-  const [idSaveCheckButton, setIdSaveCheckButton] = useState<boolean>(false);
-  console.log(idSaveCheckButton);
   const handleCheckChange = () => {
-    console.log('클릭됨');
     setIdSaveCheckButton(!idSaveCheckButton);
+    console.log(idSaveCheckButton);
+    if (idSaveCheckButton) {
+      console.log('아이디 저장 삭제');
+      localStorage.removeItem('아이디저장');
+    }
   };
 
   return (
     <LoginForm onSubmit={handleSubmit}>
+      <img src={logo} alt="" />
       <Title>로그인</Title>
       <InputDiv>
         <Ptag>ID</Ptag>
@@ -79,8 +116,19 @@ const Login: React.FC<LoginProps> = () => {
             type="email"
             placeholder="이메일을 입력해주세요."
             name="email"
+            value={id}
+            onChange={idChangeHandler}
+            autoComplete="off"
           />
-          <img src={XIcon} alt="clear" onClick={inputClear} />
+          {id.length !== 0 && (
+            <img
+              src={XIcon}
+              alt="clear"
+              onClick={() => {
+                inputClear('id');
+              }}
+            />
+          )}
         </InputBox>
         <Ptag>등록되지 않은 이메일입니다.</Ptag>
       </InputDiv>
@@ -91,33 +139,48 @@ const Login: React.FC<LoginProps> = () => {
             type="password"
             placeholder="비밀번호를 입력해주세요."
             name="password"
+            value={pw}
+            onChange={pwChangeHandler}
           />
-          <img src={XIcon} alt="clear" onClick={inputClear} />
+          {pw.length !== 0 && (
+            <img
+              src={XIcon}
+              alt="clear"
+              onClick={() => {
+                inputClear('pw');
+              }}
+            />
+          )}
         </InputBox>
         <Ptag>비밀번호를 확인해주세요.</Ptag>
       </InputDiv>
       <IdSaveBox>
         <IdDiv>
-          <input
-            type="checkbox"
-            value="idSave"
-            checked={idSaveCheckButton}
-            onChange={handleCheckChange}
-          />
+          {idSaveCheckButton ? (
+            <img src={아이디저장o} alt="" onClick={handleCheckChange} />
+          ) : (
+            <img src={아이디저장x} alt="" onClick={handleCheckChange} />
+          )}
           <p>아이디 저장</p>
         </IdDiv>
         <div>
           <p>비밀번호 찾기</p>
         </div>
       </IdSaveBox>
-      <LogInButton type="submit">LOGIN</LogInButton>
+      <LogInButton type="submit">로그인</LogInButton>
       <Ptag2>SNS 계정으로 로그인</Ptag2>
       <SNSDiv>
-        <SNSButton>카카오</SNSButton>
-        <SNSButton>구굴</SNSButton>
+        <SNSButton bgImg={카카오로그인}></SNSButton>
+        <SNSButton bgImg={구글로그인}></SNSButton>
       </SNSDiv>
       <Ptag2>아직 회원이 아니신가요?</Ptag2>
-      <JoinButton>JOIN</JoinButton>
+      <JoinButton
+        onClick={() => {
+          navigate('/join');
+        }}
+      >
+        회원가입
+      </JoinButton>
     </LoginForm>
   );
 };
@@ -125,8 +188,6 @@ const Login: React.FC<LoginProps> = () => {
 const LoginForm = styled.form`
   width: 582px;
   height: calc(100vh - 76px);
-  /* opacity: 0.5; */
-  background: #ededed;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -146,6 +207,7 @@ const Title = styled.div`
   letter-spacing: 0.25px;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 24px;
 `;
 
 const InputDiv = styled.div`
@@ -174,7 +236,7 @@ const InputBox = styled.div`
   align-items: center;
   gap: 10px;
   border-radius: 5px;
-  border: 1px solid var(--gray-07, #757575);
+  border: 2px solid var(--gray-06, #9e9e9e);
   background: #fff;
 `;
 
@@ -190,34 +252,40 @@ const InputTag = styled.input`
 const IdSaveBox = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   height: 48px;
-  gap: 204px;
+
+  width: 390px;
+  white-space: nowrap;
 `;
 
 const IdDiv = styled.div`
   display: flex;
   gap: 8px;
+  justify-content: center;
+  align-items: center;
+  font-size: 15px;
 `;
 
 const LogInButton = styled.button`
   display: flex;
-  width: 380px;
-  height: 40px;
+  width: 400px;
+  height: 60px;
   padding: 10px;
   justify-content: center;
   align-items: center;
+  border: none;
   gap: 10px;
   flex-shrink: 0;
   opacity: 0.5;
-  background: #999;
+  background: var(--primary-01, #00c5ff);
   color: #fff;
   font-feature-settings: 'clig' off, 'liga' off;
   font-family: Pretendard;
   font-size: 24px;
   font-style: normal;
   font-weight: 500;
-  line-height: 123.5%; /* 29.64px */
+  line-height: 40px;
   letter-spacing: 0.25px;
 `;
 
@@ -235,7 +303,7 @@ const SNSDiv = styled.div`
   gap: 30px;
   margin-bottom: 36px;
 `;
-const SNSButton = styled.div`
+const SNSButton = styled.div<{ bgImg: string }>`
   width: 72px;
   height: 72px;
   border-radius: 50%;
@@ -243,6 +311,7 @@ const SNSButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  background-image: url(${props => props.bgImg || ' '});
 `;
 
 const JoinButton = styled.div`
@@ -253,8 +322,7 @@ const JoinButton = styled.div`
   justify-content: center;
   align-items: center;
   gap: 10px;
-  background: #999;
-  color: #fff;
+  color: var(--primary-01, #00c5ff);
   font-feature-settings: 'clig' off, 'liga' off;
   font-family: Pretendard;
   font-size: 24px;
@@ -262,6 +330,8 @@ const JoinButton = styled.div`
   font-weight: 500;
   line-height: 123.5%; /* 29.64px */
   letter-spacing: 0.25px;
+  border: 1px solid var(--primary-01, #00c5ff);
+  background: var(--bw-whtie, #fefefe);
 `;
 
 export default Login;
