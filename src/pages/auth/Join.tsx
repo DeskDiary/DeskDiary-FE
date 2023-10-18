@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { logo } from '../../images';
-import XIcon from '../../images/Vector.svg';
-import colorChecked from '../../images/colorChecked.svg';
+import {colorChecked, unchecked, XIcon} from '../../images';
+
 import { userAtom } from '../../recoil/UserAtom';
 
 import { useMutation } from 'react-query';
@@ -250,9 +250,9 @@ const Join: React.FC<JoinProps> = () => {
           </Relative>
         </Joincontent>
 
-        <AgreeBox row justify="start">
+        <AgreeBox row justify="space-between">
           <AgreeCheck type="checkbox" onClick={onClickAgree}></AgreeCheck>
-          <AgreeLink to="/">개인정보 이용 동의 체크체크체크체크</AgreeLink>
+          <AgreeLink to="/"><span>(필수)</span>통합서비스 이용약관 및 개인정보 처리방침에 동의 합니다.</AgreeLink>
         </AgreeBox>
       </JoinList>
       <JoinButton type="submit" disabled={!isAgreeChecked}>
@@ -318,18 +318,18 @@ const InputBox = styled.div<{ focused: boolean }>`
   align-items: center;
   gap: 10px;
   border-radius: 5px;
-  border: 1px solid ${props => (props.focused ? '#00C5FF' : 'black')};
+  border: 1px solid ${props => (props.focused ? 'var(--primary-01)' : 'var(--gray-07)')};
   background-color: white;
 
   &:focus {
-    outline-color: #00c5ff;
+    outline-color: var(--primary-01);
   }
 `;
 
 const ErrorMessage = styled.div`
   width: 400px;
   padding: 10px;
-  color: #d32f2f;
+  color: var(--system-error);
   font-size: 15px;
 
   top: 85px;
@@ -337,6 +337,7 @@ const ErrorMessage = styled.div`
 
 const AgreeBox = styled(FlexContainer)`
   height: 48px;
+  width: 100%;
 `;
 
 const SocialLoginLink = styled(Link)`
@@ -381,28 +382,31 @@ const JoinButton = styled.button<{ disabled: boolean }>`
 `;
 
 const AgreeLink = styled(Link)`
-  color: #000;
-  font-feature-settings: 'clig' off, 'liga' off;
-  font-size: 15px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 123.5%; /* 18.525px */
-  letter-spacing: 0.25px;
+  font-size: 14px;
+  width: 100%;
+  color: var(--primary-01);
+  text-decoration: underline;
+  font-weight: 500;
+line-height: 123.5%;
+letter-spacing: 0.25px;
+  >span{
+    color: var(--gray-07);
+  }
 `;
 
 const AgreeCheck = styled.input`
   appearance: none;
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
   border-radius: 50%;
   background-color: white;
-  border: 1px solid #00c5ff;
+  border: 1px solid var(--primary-01);
   display: inline-block;
-  margin: 0 8px 0 0;
+  background: url(${unchecked}) no-repeat center;
   //체크했을 때의post 스타일
   &:checked {
     background: url(${colorChecked}) no-repeat center;
-    background-color: #00c5ff;
+    background-color: var(--primary-01);
   }
 `;
 
@@ -419,7 +423,7 @@ const JoinForm = styled.form`
 const JoinLabel = styled.div<{ focused: boolean }>`
   width: 380px;
   padding: 10px;
-  color: ${props => (props.focused ? '#00C5FF' : 'black')};
+  color: ${props => (props.focused ? 'var(--primary-01)' : 'var(--gray-07)')};
   font-size: 15px;
 `;
 
