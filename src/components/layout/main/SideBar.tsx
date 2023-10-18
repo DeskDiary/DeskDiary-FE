@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import styled, { createGlobalStyle, css } from 'styled-components';
-import { hobby, home, logo, study, mypage, profile, myRecord } from '../../../images';
+import {
+  hobby,
+  home,
+  logo,
+  study,
+  mypage,
+  profile,
+  mydesk,
+} from '../../../images';
 import { Link, NavLink } from 'react-router-dom';
 import { getCookie, setTokenCookie } from '../../../auth/cookie';
 
@@ -23,9 +31,9 @@ const navItems = [
     url: 'room',
   },
   {
-    title: '책상 기록',
-    icon: myRecord,
-    url: '/myrecord',
+    title: '나의 책상',
+    icon: mydesk,
+    url: '/mydesk',
   },
 ];
 
@@ -36,31 +44,33 @@ const SideBar: React.FC<SideBarProps> = () => {
     <Sidebar>
       <GlobalStyle />
       <SidebarInner>
-        <SidebarHeader>
-          <Logo src={logo}></Logo>
-        </SidebarHeader>
-        <SidebarMenu>
-          {navItems.map(item => (
-            <SidebarButton to={item.url}>
-              <img src={item.icon} />
+        <div>
+          <SidebarHeader>
+            <Logo src={logo}></Logo>
+          </SidebarHeader>
+          <SidebarMenu>
+            {navItems.map(item => (
+              <SidebarButton to={item.url}>
+                <img src={item.icon} />
 
-              <p>{item.title}</p>
-            </SidebarButton>
-          ))}
-        </SidebarMenu>
-          {token ? (
-            <User to="/mypage/:id">
-              <img></img>
-              <p>{}</p>
-            </User>
-          ) : (
-            <User to="/login">
-              <img></img>
-              <p>
-                로그인이 <br /> 필요합니다.
-              </p>
-            </User>
-          )}
+                <p>{item.title}</p>
+              </SidebarButton>
+            ))}
+          </SidebarMenu>
+        </div>
+        {token ? (
+          <User to="/mypage/:id">
+            <img></img>
+            <p>유저이름</p>
+          </User>
+        ) : (
+          <User to="/login">
+            <img></img>
+            <p>
+              로그인이 <br /> 필요합니다.
+            </p>
+          </User>
+        )}
       </SidebarInner>
     </Sidebar>
   );
@@ -84,7 +94,6 @@ const SidebarButton = styled(NavLink)`
     > img {
       opacity: 1;
     }
-    
   }
 
   &:hover {
@@ -116,7 +125,8 @@ const User = styled(Link)`
   align-items: center;
   justify-content: start;
 
-  margin: auto 0 130px 15px;
+  margin-left: 15px;
+  margin-bottom: 20px;
 
   > img {
     width: 50px;
@@ -137,7 +147,7 @@ const User = styled(Link)`
 
 const SidebarMenu = styled.div`
   display: grid;
-  padding: 10px;
+  padding: 8px;
   gap: 50px;
   margin-top: 50px;
 
@@ -177,7 +187,7 @@ const SidebarInner = styled.div`
   display: flex;
   flex-direction: column;
   align-items: start;
-  justify-content: start;
+  justify-content: space-between;
 `;
 
 const Sidebar = styled.div`
@@ -186,7 +196,7 @@ const Sidebar = styled.div`
   top: 0;
   left: 0;
   width: 80px;
-  height: 100%;
+  height: 100vh;
   background: #999;
   transition: width 0.4s;
 
