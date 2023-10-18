@@ -52,6 +52,27 @@ const GlobalStyle = createGlobalStyle`
     font-feature-settings: 'clig' off, 'liga' off;
   }
 
+   /* 스크롤바 트랙(배경) 디자인 */
+   ::-webkit-scrollbar-track {
+    background: rgba(0, 197, 255, 0.2);
+  }
+
+  /* 스크롤바 핸들 디자인 */
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0, 197, 255, 0.4);
+    border-radius: 10px;
+  }
+
+  /* 스크롤바 핸들 호버 상태 */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  /* 스크롤바의 넓이 */
+  ::-webkit-scrollbar {
+    width: 20px;
+  }
+
 
 
 `;

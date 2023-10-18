@@ -191,7 +191,7 @@ const SidebarInner = styled.div`
 `;
 
 const Sidebar = styled.div`
-  position: absolute;
+  position: fixed;
   overflow: hidden;
   top: 0;
   left: 0;

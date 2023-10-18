@@ -2,20 +2,18 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import thumbnail from '../../../images/sample.png';
 import { Link } from 'react-router-dom';
-import EnterRoomModal from '../../EnterRoomModal';
+import JoinRoomModal from '../../JoinRoomModal';
 import { useRecoilValue } from 'recoil';
 import { RoomAtom } from '../../../recoil/RoomAtom';
 
 type RoomCardProps = {
   room: {
-    id: number;
+    uuid: string;
     title: string;
     category: string;
-    nowHeadcount: number;
-    maxHeadcount: number;
-    roomThumnail: any;
-    createdAt: string;
-    updatedAt: string;
+    agoraAppId: string;
+    agoraToken: string;
+    ownerId: number;
   };
 };
 
@@ -37,7 +35,7 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
           </Tags>
         </ContentText>
       </Contents>
-      {isOpen && <EnterRoomModal setIsOpen={setIsOpen} room={room} />}
+      {isOpen && <JoinRoomModal setIsOpen={setIsOpen} room={room} />}
     </Container>
   );
 };

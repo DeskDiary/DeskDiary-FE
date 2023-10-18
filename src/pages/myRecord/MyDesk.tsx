@@ -7,7 +7,26 @@ import Goal from '../home/components/Goal';
 import { IndexKind } from 'typescript';
 import MyRecords from './components/MyRecords';
 
+import { useRecoilValue } from 'recoil';
+import { RoomAtom } from '../../recoil/RoomAtom';
+
+import { useQuery } from 'react-query';
+import axios from 'axios';
+
 type MyDeskProps = {};
+
+interface RoomResponse {
+  result: Room[];
+}
+
+interface Room {
+  uuid: string;
+  title: string;
+  category: string;
+  agoraAppId: string;
+  agoraToken: string;
+  ownerId: number;
+}
 
 const MyDesk: React.FC<MyDeskProps> = () => {
   const rooms = [
@@ -113,6 +132,19 @@ const MyDesk: React.FC<MyDeskProps> = () => {
     },
   ];
 
+  const fetchRooms = async () => {
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_SERVER_URL!}/room`,
+    );
+    console.log('fetchRooms data', data);
+    return data;
+  };
+
+  const { data, error, isLoading } = useQuery<RoomResponse, Error>(
+    'rooms',
+    fetchRooms,
+  );
+
   return (
     <Container col justify="start">
       <MainTop />
@@ -125,9 +157,13 @@ const MyDesk: React.FC<MyDeskProps> = () => {
       <List col align="start">
         <ListTitle>최근에 들어간 방 목록</ListTitle>
         <JoinedRooms>
-          {rooms.map(room => {
-            return <RoomCard key={room.id} room={room} />;
-          })}
+          {data ? (
+            data?.result.map(room => {
+              return <RoomCard key={room.uuid} room={room} />;
+            })
+          ) : (
+            <></>
+          )}
         </JoinedRooms>
       </List>
     </Container>

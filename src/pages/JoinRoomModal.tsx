@@ -12,21 +12,19 @@ import {
 } from '../recoil/CamAtom';
 import MediaSetup from './MediaSetup';
 
-type EnterRoomModal = {
+type JoinRoomModal = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   room: {
-    id: number;
+    uuid: string;
     title: string;
     category: string;
-    nowHeadcount: number;
-    maxHeadcount: number;
-    roomThumnail: any;
-    createdAt: string;
-    updatedAt: string;
+    agoraAppId: string;
+    agoraToken: string;
+    ownerId: number;
   };
 };
 
-const EnterRoom: React.FC<EnterRoomModal> = ({ setIsOpen, room }) => {
+const JoinRoomModal: React.FC<JoinRoomModal> = ({ setIsOpen, room }) => {
   const [inputText, setInputText] = useState('');
 
   const [test, setTest] = useState(true);
@@ -46,9 +44,8 @@ const EnterRoom: React.FC<EnterRoomModal> = ({ setIsOpen, room }) => {
         </MediaSetupGroup>
 
         <Content col gap="15px">
-
           <Group col align="start">
-            <Label>엉덩이들의 유의사항</Label>
+            <Label>{room.ownerId}</Label>
           </Group>
         </Content>
 
@@ -178,4 +175,4 @@ const Container = styled(FlexContainer)`
   cursor: auto;
 `;
 
-export default EnterRoom;
+export default JoinRoomModal;
