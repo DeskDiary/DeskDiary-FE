@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
 import styled, { createGlobalStyle, css } from 'styled-components';
-import { hobby, home, logo, study, mypage, profile } from '../../../images';
-import { Link } from 'react-router-dom';
+import {
+  hobby,
+  home,
+  logo,
+  study,
+  mypage,
+  profile,
+  mydesk,
+} from '../../../images';
+import { Link, NavLink } from 'react-router-dom';
 import { getCookie, setTokenCookie } from '../../../auth/cookie';
 
 type SideBarProps = {};
@@ -23,9 +31,9 @@ const navItems = [
     url: 'room',
   },
   {
-    title: '마이페이지',
-    icon: mypage,
-    url: 'mypage',
+    title: '나의 책상',
+    icon: mydesk,
+    url: '/mydesk',
   },
 ];
 
@@ -36,39 +44,39 @@ const SideBar: React.FC<SideBarProps> = () => {
     <Sidebar>
       <GlobalStyle />
       <SidebarInner>
-        <SidebarHeader>
-          <Logo src={logo}></Logo>
-        </SidebarHeader>
-        <SidebarMenu>
-          {navItems.map(item => (
-            <SidebarButton to={item.url}>
-              <img src={item.icon} />
+        <div>
+          <SidebarHeader>
+            <Logo src={logo}></Logo>
+          </SidebarHeader>
+          <SidebarMenu>
+            {navItems.map(item => (
+              <SidebarButton to={item.url}>
+                <img src={item.icon} />
 
-              <p>{item.title}</p>
-            </SidebarButton>
-          ))}
-        </SidebarMenu>
-        <User to="/login">
-          {token ? (
-            <>
-              <img></img>
-              <p>{}</p>
-            </>
-          ) : (
-            <>
-              <img></img>
-              <p>
-                로그인이 <br /> 필요합니다.
-              </p>
-            </>
-          )}
-        </User>
+                <p>{item.title}</p>
+              </SidebarButton>
+            ))}
+          </SidebarMenu>
+        </div>
+        {token ? (
+          <User to="/mypage/:id">
+            <img></img>
+            <p>유저이름</p>
+          </User>
+        ) : (
+          <User to="/login">
+            <img></img>
+            <p>
+              로그인이 <br /> 필요합니다.
+            </p>
+          </User>
+        )}
       </SidebarInner>
     </Sidebar>
   );
 };
 
-const SidebarButton = styled(Link)`
+const SidebarButton = styled(NavLink)`
   display: flex;
   align-items: center;
   height: 60px;
@@ -82,27 +90,32 @@ const SidebarButton = styled(Link)`
   border-radius: 60px;
   opacity: 0.8;
 
-  &:hover {
-    background-color: #d9d9d9;
-    opacity: 1;
-    width: 100%;
-  }
-
-  > img {
-    opacity: 0.5;
-    border-radius: 50%;
-    margin: 0 18px 0 15px;
-    &:hover {
+  &.active {
+    > img {
       opacity: 1;
     }
   }
 
+  &:hover {
+    background-color: #d9d9d9;
+    opacity: 1;
+    width: 100%;
+    > img {
+      opacity: 1;
+    }
+  }
+
+  > img {
+    opacity: 0.3;
+    border-radius: 50%;
+    margin: 0 18px 0 15px;
+  }
+
   > p {
     width: 100px;
-    /* overflow: hidden; */
     white-space: nowrap;
     opacity: 0;
-    transition: opacity 0.4s ease-in-out;
+    transition: opacity 0.6s ease-in-out;
   }
 `;
 
@@ -112,7 +125,8 @@ const User = styled(Link)`
   align-items: center;
   justify-content: start;
 
-  margin: auto 0 130px 15px;
+  margin-left: 15px;
+  margin-bottom: 20px;
 
   > img {
     width: 50px;
@@ -127,13 +141,13 @@ const User = styled(Link)`
     width: 100px;
     line-height: 123.5%; /* 18.525px */
     opacity: 0;
-    transition: opacity 0.4s ease-in-out;
+    transition: opacity 0.6s ease-in-out;
   }
 `;
 
 const SidebarMenu = styled.div`
   display: grid;
-  padding: 10px;
+  padding: 8px;
   gap: 50px;
   margin-top: 50px;
 
@@ -173,7 +187,7 @@ const SidebarInner = styled.div`
   display: flex;
   flex-direction: column;
   align-items: start;
-  justify-content: start;
+  justify-content: space-between;
 `;
 
 const Sidebar = styled.div`
@@ -182,7 +196,7 @@ const Sidebar = styled.div`
   top: 0;
   left: 0;
   width: 80px;
-  height: 100%;
+  height: 100vh;
   background: #999;
   transition: width 0.4s;
 
@@ -199,7 +213,7 @@ const Sidebar = styled.div`
 
     ${SidebarButton} p, ${User} p {
       opacity: 1;
-      /* transition: opacity 0.4s ease-in-out; */
+      /* transition: opacity 0.7s ease-in-out; */
     }
   }
 `;

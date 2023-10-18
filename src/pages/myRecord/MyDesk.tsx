@@ -1,17 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import Goal from './components/Goal';
+import React from 'react';
 import styled from 'styled-components';
 import MainTop from '../../components/MainTop';
-import DeskRecoder from './components/DeskRecoder';
-import RoomCard from './components/RoomCard';
 import thumbnail from '../../images/sample.png';
-import NonUserIntro from './components/NonUserIntro';
-import { getCookie, setTokenCookie } from '../../auth/cookie';
-import { useRecoilValue } from 'recoil';
-import { RoomAtom } from '../../recoil/RoomAtom';
+import RoomCard from '../home/components/RoomCard';
+import Goal from '../home/components/Goal';
+import { IndexKind } from 'typescript';
+import MyRecords from './components/MyRecords';
 
-const Home = () => {
+type MyDeskProps = {};
+
+const MyDesk: React.FC<MyDeskProps> = () => {
   const rooms = [
     {
       id: 1,
@@ -115,36 +113,23 @@ const Home = () => {
     },
   ];
 
-  const token = getCookie('token');
-
   return (
     <Container column justify="start">
-      {/* <삭제></삭제> */}
       <MainTop />
+      <MyDeskTop justify="start">
+        <Goal />
+      </MyDeskTop>
 
-      <Info gap="33px" align='start'>
-        {token ? (
-          <>
-            <Goal />
-            <DeskRecoder />
-          </>
-        ) : (
-          <NonUserIntro />
-        )}
-      </Info>
+      <MyRecords />
+
       <List column align="start">
-        <ListTitle>내가 참여했던 방</ListTitle>
+        <ListTitle>최근에 들어간 방 목록</ListTitle>
         <JoinedRooms>
           {rooms.map(room => {
-            return (
-              <>
-                <RoomCard key={room.id} room={room} />
-              </>
-            );
+            return <RoomCard key={room.id} room={room} />;
           })}
         </JoinedRooms>
       </List>
-      <Link to="/join">회원가입</Link>
     </Container>
   );
 };
@@ -160,28 +145,26 @@ const FlexContainer = styled.div<{
   align-items: ${props => (props.align ? props.align : 'center')};
   justify-content: ${props => (props.justify ? props.justify : 'center')};
   gap: ${props => props.gap || '0'};
+  width: 100%;
 `;
 
-const 삭제 = styled.div`
-  width: 10%;
-  height: 100vh;
-  background-color: gray;
-  position: fixed;
-  top: 0;
-  left: 0;
-`;
-
-const 삭제2 = styled.div`
-  width: 746.5px;
+const MyDeskTop = styled(FlexContainer)`
+  margin: 30px 0 24px 0;
 `;
 
 const List = styled(FlexContainer)`
   margin-top: 72px;
+  width: 100%;
 `;
 
 const ListTitle = styled.div`
   margin-bottom: 16px;
   font-size: 24px;
+`;
+
+const Container = styled(FlexContainer)`
+  width: 70%;
+  height: 100%;
 `;
 
 const JoinedRooms = styled.div`
@@ -202,20 +185,10 @@ const JoinedRooms = styled.div`
   @media (max-width: 1000px) {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   @media (max-width: 800px) {
     grid-template-columns: repeat(1, 1fr);
   }
 `;
 
-
-
-const Container = styled(FlexContainer)`
-  width: 70%;
-`;
-
-const Info = styled(FlexContainer)`
-  margin-top: 30px;
-  width: 100%;
-`;
-export default Home;
+export default MyDesk;
