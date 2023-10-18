@@ -1,7 +1,7 @@
 export const setTokenCookie = (token: string) => {
   const expirationDate = new Date();
   console.log(expirationDate);
-  expirationDate.setTime(expirationDate.getTime() + 3600000); // 1시간 후의 시간 설정
+  expirationDate.setFullYear(expirationDate.getFullYear() + 1);
 
   // 쿠키에 토큰을 저장합니다.
   document.cookie = `token=${token}; expires=${expirationDate}; path=/`;

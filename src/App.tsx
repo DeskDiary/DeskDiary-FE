@@ -8,7 +8,7 @@ type AppProps = {};
 
 const queryClient = new QueryClient();
 const App: React.FC<AppProps> = () => {
-  
+
   return (
     <QueryClientProvider client={queryClient}>
       <Toaster position="top-center" />

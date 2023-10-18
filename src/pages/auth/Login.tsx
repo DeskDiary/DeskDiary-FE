@@ -38,7 +38,7 @@ const Login: React.FC<LoginProps> = () => {
   }, []);
 
   const [errorMessage, setErrorMessage] = useState<any[]>([]);
-  console.log(errorMessage);
+
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const loginMutation = useMutation(async (formData: FormData) => {
     try {
@@ -98,9 +98,7 @@ const Login: React.FC<LoginProps> = () => {
 
   const handleCheckChange = () => {
     setIdSaveCheckButton(!idSaveCheckButton);
-    console.log(idSaveCheckButton);
     if (idSaveCheckButton) {
-      console.log('아이디 저장 삭제');
       localStorage.removeItem('아이디저장');
     }
   };
