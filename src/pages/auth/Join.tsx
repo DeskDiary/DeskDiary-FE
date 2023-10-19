@@ -3,8 +3,8 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { logo } from '../../images';
-import {colorChecked, unchecked, XIcon} from '../../images';
+import { logo, kakao, google } from '../../images';
+import { colorChecked, unchecked, XIcon } from '../../images';
 
 import { userAtom } from '../../recoil/UserAtom';
 
@@ -252,7 +252,10 @@ const Join: React.FC<JoinProps> = () => {
 
         <AgreeBox row justify="space-between">
           <AgreeCheck type="checkbox" onClick={onClickAgree}></AgreeCheck>
-          <AgreeLink to="/"><span>(필수)</span>통합서비스 이용약관 및 개인정보 처리방침에 동의 합니다.</AgreeLink>
+          <AgreeLink to="/">
+            <span>(필수)</span>통합서비스 이용약관 및 개인정보 처리방침에 동의
+            합니다.
+          </AgreeLink>
         </AgreeBox>
       </JoinList>
       <JoinButton type="submit" disabled={!isAgreeChecked}>
@@ -272,10 +275,10 @@ const Join: React.FC<JoinProps> = () => {
             window.location.href = kakaoOauthURL;
           }}
         >
-          카카오
+          <img src={kakao} />
         </SocialLoginLink>
 
-        <SocialLoginLink to="/">구글</SocialLoginLink>
+        <SocialLoginLink to="/"><img src={google} /></SocialLoginLink>
       </SocialLoginGroup>
     </JoinForm>
   );
@@ -318,7 +321,8 @@ const InputBox = styled.div<{ focused: boolean }>`
   align-items: center;
   gap: 10px;
   border-radius: 5px;
-  border: 1px solid ${props => (props.focused ? 'var(--primary-01)' : 'var(--gray-07)')};
+  border: 1px solid
+    ${props => (props.focused ? 'var(--primary-01)' : 'var(--gray-07)')};
   background-color: white;
 
   &:focus {
@@ -343,8 +347,7 @@ const AgreeBox = styled(FlexContainer)`
 const SocialLoginLink = styled(Link)`
   width: 72px;
   height: 72px;
-  background-color: #999;
-  border-radius: 50%;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -352,8 +355,8 @@ const SocialLoginLink = styled(Link)`
 `;
 
 const SocialLoginText = styled(FlexContainer)`
-  margin-top: 40px;
   height: 48px;
+  margin-top: 8px;
 `;
 
 const SocialLoginGroup = styled(FlexContainer)``;
@@ -366,7 +369,6 @@ const JoinButton = styled.button<{ disabled: boolean }>`
   align-items: center;
 
   border: none;
-  margin-top: 12px;
   color: #fff;
   font-size: 24px;
   font-weight: 500;
@@ -387,9 +389,9 @@ const AgreeLink = styled(Link)`
   color: var(--primary-01);
   text-decoration: underline;
   font-weight: 500;
-line-height: 123.5%;
-letter-spacing: 0.25px;
-  >span{
+  line-height: 123.5%;
+  letter-spacing: 0.25px;
+  > span {
     color: var(--gray-07);
   }
 `;
@@ -440,6 +442,11 @@ const JoinInput = styled.input`
   border: none;
   background: #fff;
   font-size: 15px;
+
+  ::placeholder {
+    opacity: 0.3;
+    font-weight: 400;
+  }
 
   &:focus {
     outline: none;

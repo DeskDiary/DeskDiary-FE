@@ -15,10 +15,6 @@ import axios from 'axios';
 
 type MyDeskProps = {};
 
-interface RoomResponse {
-  result: Room[];
-}
-
 interface Room {
   uuid: string;
   title: string;
@@ -140,7 +136,7 @@ const MyDesk: React.FC<MyDeskProps> = () => {
     return data;
   };
 
-  const { data, error, isLoading } = useQuery<RoomResponse, Error>(
+  const { data, error, isLoading } = useQuery<Room[], Error>(
     'rooms',
     fetchRooms,
   );
@@ -158,7 +154,7 @@ const MyDesk: React.FC<MyDeskProps> = () => {
         <ListTitle>최근에 들어간 방 목록</ListTitle>
         <JoinedRooms>
           {data ? (
-            data?.result.map(room => {
+            data.map(room => {
               return <RoomCard key={room.uuid} room={room} />;
             })
           ) : (

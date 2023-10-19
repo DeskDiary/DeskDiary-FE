@@ -23,15 +23,15 @@ const navItems = [
   {
     title: '스터디룸',
     icon: study,
-    url: 'room',
+    url: '/:study',
   },
   {
     title: '취미룸',
     icon: hobby,
-    url: 'room',
+    url: '/:hobby',
   },
   {
-    title: '나의 책상',
+    title: '책상기록',
     icon: mydesk,
     url: '/mydesk',
   },
@@ -58,19 +58,6 @@ const SideBar: React.FC<SideBarProps> = () => {
             ))}
           </SidebarMenu>
         </div>
-        {token ? (
-          <User to="/mypage/:id">
-            <img></img>
-            <p>유저이름</p>
-          </User>
-        ) : (
-          <User to="/login">
-            <img></img>
-            <p>
-              로그인이 <br /> 필요합니다.
-            </p>
-          </User>
-        )}
       </SidebarInner>
     </Sidebar>
   );
@@ -90,25 +77,34 @@ const SidebarButton = styled(NavLink)`
   border-radius: 60px;
   opacity: 0.8;
 
+  color: var(--primary-01);
+  
+
   &.active {
     > img {
-      opacity: 1;
+      filter: grayscale(0); /* 회색조 */
+    }
+    > p {
+      color: var(--primary-01);
     }
   }
 
   &:hover {
-    background-color: #d9d9d9;
+    border: 1px solid var(--primary-01);
     opacity: 1;
     width: 100%;
     > img {
-      opacity: 1;
+      filter: grayscale(0);
+    }
+    > p {
+      color: var(--primary-01);
     }
   }
 
   > img {
-    opacity: 0.3;
     border-radius: 50%;
     margin: 0 18px 0 15px;
+    filter: grayscale(100%);
   }
 
   > p {
@@ -116,32 +112,7 @@ const SidebarButton = styled(NavLink)`
     white-space: nowrap;
     opacity: 0;
     transition: opacity 0.6s ease-in-out;
-  }
-`;
-
-const User = styled(Link)`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: start;
-
-  margin-left: 15px;
-  margin-bottom: 20px;
-
-  > img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: #d9d9d9;
-    margin-right: 15px;
-  }
-
-  > p {
-    font-size: 15px;
-    width: 100px;
-    line-height: 123.5%; /* 18.525px */
-    opacity: 0;
-    transition: opacity 0.6s ease-in-out;
+    color: var(--gray-06);
   }
 `;
 
@@ -197,7 +168,7 @@ const Sidebar = styled.div`
   left: 0;
   width: 80px;
   height: 100vh;
-  background: #999;
+  /* background: #999; */
   transition: width 0.4s;
 
   ${SidebarHeader} {
@@ -211,9 +182,8 @@ const Sidebar = styled.div`
       width: 200px;
     }
 
-    ${SidebarButton} p, ${User} p {
+    ${SidebarButton} p {
       opacity: 1;
-      /* transition: opacity 0.7s ease-in-out; */
     }
   }
 `;

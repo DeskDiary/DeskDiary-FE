@@ -7,7 +7,7 @@ type CameraProps = {};
 
 const APP_ID = 'a53d5f93a9934e0299413f35614fa485';
 const TOKEN =
-  '007eJxTYBB8c2e74nm/dzG1kXOM7gerTvPiffVuJl/GqcAEc/Vju+8rMCSaGqeYplkaJ1paGpukGhhZWpoYGqcZm5oZmqQlmliYPpXXTW0IZGSQ+NXFxMgAgSA+C0NRfn4uAwMAUtofDg==';
+  '007eJxTYHhzWyXO9oJLrx0L99aQAKslwsv6e8weNu9dqlyj8MQ1ebcCQ6KpcYppmqVxoqWlsUmqgZGlpYmhcZqxqZmhSVqiiYXp910GqQ2BjAzL80yYGRkgEMRnYSjKz89lYAAA1WYdzQ==';
 const CHANNEL = 'room';
 
 const client = AgoraRTC.createClient({

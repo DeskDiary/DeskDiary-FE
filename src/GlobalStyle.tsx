@@ -36,17 +36,27 @@ const GlobalStyle = createGlobalStyle`
 
       --system-error: #D32F2F
 
+      --font-a: "PrePretendard"
+
     }
   body {
     width: 100vw;
     scroll-behavior: smooth;
     overflow-x: hidden;
+
+    font-family: Pretendard;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 123.5%; /* 29.64px */
+    letter-spacing: 0.25px;
+    font-feature-settings: 'clig' off, 'liga' off;
   }
 
   *{
     font-family: Pretendard;
+    /* font-family: NotoSansKR-Regular; */
     font-style: normal;
-    font-weight: 400;
+    font-weight: 900;
     line-height: 123.5%; /* 29.64px */
     letter-spacing: 0.25px;
     font-feature-settings: 'clig' off, 'liga' off;
@@ -70,7 +80,7 @@ const GlobalStyle = createGlobalStyle`
 
   /* 스크롤바의 넓이 */
   ::-webkit-scrollbar {
-    width: 20px;
+    width: 10px;
   }
 
 

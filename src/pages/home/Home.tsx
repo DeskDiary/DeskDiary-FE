@@ -23,10 +23,6 @@ import { getCookie, setTokenCookie } from '../../auth/cookie';
 //   updatedAt: string;
 // }
 
-interface RoomResponse {
-  result: Room[];
-}
-
 interface Room {
   uuid: string;
   title: string;
@@ -150,7 +146,7 @@ const Home = () => {
     return data;
   };
 
-  const { data, error, isLoading } = useQuery<RoomResponse, Error>(
+  const { data, error, isLoading } = useQuery<Room[], Error>(
     'rooms',
     fetchRooms,
   );
@@ -173,13 +169,9 @@ const Home = () => {
       <List col align="start">
         <ListTitle>내가 참여했던 방</ListTitle>
         <JoinedRooms>
-          {data ? (
-            data?.result.map(room => {
+            {data?.map(room => {
               return <RoomCard key={room.uuid} room={room} />;
-            })
-          ) : (
-            <></>
-          )}
+            })}
         </JoinedRooms>
       </List>
       <Link to="/join">회원가입</Link>
