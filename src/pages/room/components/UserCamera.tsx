@@ -76,10 +76,16 @@ const UserCamera: React.FC<CameraProps> = () => {
 };
 
 const Cameras = styled.div`
-  display: 'flex';
-  gap: 10px;
+  width: 100%;
+  height: 100%;
+  display: flex;
   margin: 10px;
   padding: 10px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 40px;
 `;
 
 export default UserCamera;

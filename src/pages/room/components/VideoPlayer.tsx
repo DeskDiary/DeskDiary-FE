@@ -15,27 +15,34 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ user }) => {
     user.videoTrack.play(ref.current);
   }, []);
   return (
-    <div style={{ borderRadius: '8px' }}>
+    <Body>
       <CamDivBox ref={ref}>
         <UserInfoDivBox>
           <p>닉네임닉네임닉네임닉네임</p>
           <img src={sound ? volumOnImg : volumOffImg} alt="" />
         </UserInfoDivBox>
       </CamDivBox>
-    </div>
+    </Body>
   );
 };
 
+const Body = styled.div`
+  border-radius: 8px;
+  width: 40%;
+`
+
 const CamDivBox = styled.div`
-  width: 45%;
-  min-width: 400px;
-  aspect-ratio: 16/9;
+  display: flex;
+  width: 100%;
+  aspect-ratio: 3/2;
   background: rgba(217, 217, 217, 1);
   border-radius: 8px;
   position: relative;
   margin: 10px;
   overflow: hidden;
 `;
+
+
 
 const UserInfoDivBox = styled.div`
   width: 90%;
@@ -51,14 +58,6 @@ const UserInfoDivBox = styled.div`
     width: 30%;
     padding: 10px;
     margin-right: auto;
-    color: #000;
-    font-feature-settings: 'clig' off, 'liga' off;
-    font-family: Inter;
-    font-size: 15px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 123.5%; /* 18.525px */
-    letter-spacing: 0.25px;
     background: rgba(255, 255, 255, 0.5);
     border-radius: 10px;
     white-space: nowrap; /* 줄 바꿈 방지 */
