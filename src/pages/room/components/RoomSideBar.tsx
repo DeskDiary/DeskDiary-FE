@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import logo from '../../../images/logo.svg';
+import logo from '../../../images/logo.png';
 
 type RoomSideBarProps = {};
 
@@ -8,13 +8,17 @@ const RoomSideBar: React.FC<RoomSideBarProps> = () => {
   return (
     <Body>
       <LogoImg src={logo} alt="" />
-      <TimeBox>
-        {/* <img src="" alt="" /> */}
-        <p>시간 기록 시작</p>
-        <p>타이머</p>
-        <p>일시정지</p>
-        <RoomCheckOut>방나가기</RoomCheckOut>
-      </TimeBox>
+      <UserInfoBox>
+        <img
+          src="https://avatars.githubusercontent.com/u/120389368?v=4"
+          alt=""
+        />
+        <p>유저이름</p>
+      </UserInfoBox>
+      <TimerBox>
+        <p>00:00:00</p>
+        <button>기록시작</button>
+      </TimerBox>
     </Body>
   );
 };
@@ -25,28 +29,55 @@ const Body = styled.div`
   height: calc(100vh - 60);
   display: flex;
   flex-direction: column;
+  align-items: center;
 `;
 
 const LogoImg = styled.img`
-  margin-top: 20px;
-  width: 224px;
-  height: 56px;
+  margin: 16px;
+  width: 60px;
+  height: 73px;
   flex-shrink: 0;
 `;
-
-const TimeBox = styled.div`
-  margin-top: 178px;
-  width: 224px;
-  height: 468px;
-  flex-shrink: 0;
-  background: #ababab;
+const UserInfoBox = styled.div`
+  width: 152px;
+  height: 164px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 24px;
+  /* background-color: beige; */
+  p {
+    margin: 16px;
+    color: white;
+    text-align: center;
+  }
+  img {
+    margin-top: 24px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+  }
 `;
 
-const RoomCheckOut = styled.button`
-  width: 100%;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  background: #fff;
-  border: none;
+const TimerBox = styled.div`
+  margin-top: 16px;
+  background-color: beige;
+  width: 104px;
+  height: 70px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  font-size: 24px;
+
+  button {
+    width: 103px;
+    height: 32px;
+    background: var(--primary-01);
+    border: none;
+  }
 `;
+
 export default RoomSideBar;

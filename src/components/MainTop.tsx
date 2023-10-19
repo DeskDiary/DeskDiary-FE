@@ -5,7 +5,10 @@ import { toast } from 'sonner';
 import styled from '@emotion/styled';
 import CreateRoomModal from '../pages/CreateRoomModal';
 import { getCookie, setTokenCookie } from '../auth/cookie';
-import addroom from '../images/addroom.svg'
+import addroom from '../images/addroom.svg';
+import {fetchUser} from '../axios/api'
+
+import { useQuery } from 'react-query';
 
 type MainTopProps = {};
 
@@ -31,21 +34,21 @@ const MainTop: React.FC<MainTopProps> = () => {
     toast.message('search click');
   };
 
+  const { data, error, isLoading } = useQuery<user, Error>('user', fetchUser);
+
   return (
     <NavHeader justify="space-between">
       {token ? (
-          <User to="/mypage/:id">
-            <img></img>
-            <p>박서현</p>님의 마이페이지
-          </User>
-        ) : (
-          <User to="/login">
-            <img></img>
-            <p>
-              로그인이 필요합니다.
-            </p>
-          </User>
-        )}
+        <User to="/mypage/:id">
+          <img src={data?.profileImage}></img>
+          <p>{data?.nickname}</p>님의 마이페이지
+        </User>
+      ) : (
+        <User to="/login">
+          <img></img>
+          <p>로그인이 필요합니다.</p>
+        </User>
+      )}
 
       <Search isFocused={isFocused} justify="space-between">
         <SearchInput
@@ -100,14 +103,16 @@ const User = styled(Link)`
   }
 
   > p {
-    font-size: 14px;
+    font-size: 16px;
     color: black;
+    width: 100px;
+    overflow: hidden;
   }
 `;
 
 const CreateRoomButton = styled.button`
   display: flex;
-  width: 15%;
+  width: 320px;
   padding: 10px;
   justify-content: center;
   align-items: center;
@@ -132,7 +137,7 @@ const NavHeader = styled(FlexContainer)`
 `;
 
 const Search = styled(FlexContainer)<{ isFocused: boolean }>`
-  width: 880px;
+  width: 850px;
   height: 48px;
   border: 2px solid var(--gray-06);
   padding: 10px;
