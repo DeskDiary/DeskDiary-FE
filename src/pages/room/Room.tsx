@@ -38,12 +38,11 @@ const Room: React.FC<RoomProps> = () => {
 const Container = styled.div`
   display: flex;
   height: calc(100vh - 60px);
-
-  background-color: #616161;
+  background: var(--gray-09);
 `;
 
 const Content = styled.div`
-  flex: 1;
+  width: 100%;
 `;
 
 const Area = styled.div`
@@ -59,6 +58,7 @@ const CamAreaDiv = styled.div`
   margin-right: 40px;
   margin-bottom: 61px;
   overflow: auto;
+  overflow-x: hidden;
 
   &::-webkit-scrollbar {
     width: 0;

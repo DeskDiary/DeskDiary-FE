@@ -4,12 +4,12 @@ import styled from 'styled-components';
 type GoalProps = {};
 
 const Goal: React.FC<GoalProps> = () => {
-  const [current, setCurrent] = useState<number>(110);
+  const [current, setCurrent] = useState<number>(90);
 
   return (
     <GoalDiv>
       <Title>오늘의 책상 목표</Title>
-      <Content>목표의 {current}%(시간)이나 해냈어요.</Content>
+      <Content>목표의 {current}%이나 해냈어요.</Content>
       <GoalGraph>
         <FlagOutlinedIcon
           style={{
@@ -21,7 +21,7 @@ const Goal: React.FC<GoalProps> = () => {
           }}
         />
 
-        <CurrentGraph width={Math.min(current * 6.5, 714)}>
+        <CurrentGraph width={Math.min(current * 6.5, 682)}>
         </CurrentGraph>
       </GoalGraph>
     </GoalDiv>

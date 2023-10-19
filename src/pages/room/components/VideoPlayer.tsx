@@ -29,6 +29,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ user }) => {
 const Body = styled.div`
   border-radius: 8px;
   width: 40%;
+  min-width: 300px;
 `
 
 const CamDivBox = styled.div`
