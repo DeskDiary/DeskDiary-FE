@@ -1,6 +1,13 @@
 import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
+  /* @font-face {
+    font-family: 'Pretendard';
+    src: url('/fonts/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+  } */
+
   :root {
       --gray-01: #FAFAFA;
       --gray-02: #F5F5F5;
@@ -29,20 +36,51 @@ const GlobalStyle = createGlobalStyle`
 
       --system-error: #D32F2F
 
+      --font-a: "PrePretendard"
+
     }
   body {
     width: 100vw;
     scroll-behavior: smooth;
-    overflow-y: hidden;
-  }
+    overflow-x: hidden;
 
-  *{
     font-family: Pretendard;
     font-style: normal;
     font-weight: 400;
     line-height: 123.5%; /* 29.64px */
     letter-spacing: 0.25px;
     font-feature-settings: 'clig' off, 'liga' off;
+  }
+
+  *{
+    font-family: Pretendard;
+    /* font-family: NotoSansKR-Regular; */
+    font-style: normal;
+    font-weight: 900;
+    line-height: 123.5%; /* 29.64px */
+    letter-spacing: 0.25px;
+    font-feature-settings: 'clig' off, 'liga' off;
+  }
+
+   /* 스크롤바 트랙(배경) 디자인 */
+   ::-webkit-scrollbar-track {
+    background: rgba(0, 197, 255, 0.2);
+  }
+
+  /* 스크롤바 핸들 디자인 */
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0, 197, 255, 0.4);
+    border-radius: 10px;
+  }
+
+  /* 스크롤바 핸들 호버 상태 */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  /* 스크롤바의 넓이 */
+  ::-webkit-scrollbar {
+    width: 10px;
   }
 
 

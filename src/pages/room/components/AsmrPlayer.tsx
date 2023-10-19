@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import 일시정지 from '../../../images/audio/audio_stop.svg';
 import 이미지 from '../../../images/logo.png';
+
 type AsmrPlayerProps = {};
 
 const asmrList = [
@@ -13,8 +14,10 @@ const asmrList = [
 
 const AsmrPlayer: React.FC<AsmrPlayerProps> = () => {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [volume, setVolume] = useState(1); // 초기 볼륨을 1로 설정 (최대 볼륨)
   const audioRef = React.createRef<HTMLAudioElement>();
   const [current, setCurrent] = useState<number>(0);
+
   const togglePlay = () => {
     if (audioRef.current) {
       if (isPlaying) {
@@ -42,6 +45,14 @@ const AsmrPlayer: React.FC<AsmrPlayerProps> = () => {
     }
   };
 
+  const handleVolumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newVolume = parseFloat(event.target.value);
+    setVolume(newVolume);
+    if (audioRef.current) {
+      audioRef.current.volume = newVolume;
+    }
+  };
+
   useEffect(() => {
     if (isPlaying) {
       audioRef.current?.play();
@@ -61,6 +72,14 @@ const AsmrPlayer: React.FC<AsmrPlayerProps> = () => {
         <PlayButton onClick={togglePlay} />
         <button onClick={nextCurrentHandler}>앞으로가기</button>
         <button onClick={backCurrentHandler}>뒤로가기</button>
+        <VolumeSlider
+          type="range"
+          min="0"
+          max="1"
+          step="0.1"
+          value={volume}
+          onChange={handleVolumeChange}
+        />
       </div>
     </Body>
   );
@@ -84,11 +103,18 @@ const AudioImg = styled.img`
 
 const PlayButton = styled.button`
   background-image: url(${일시정지});
-  background-size: cover; /* 이미지를 버튼 크기에 맞게 조절 */
-  width: 40px; /* 버튼의 크기를 조절 */
+  background-size: cover;
+  width: 40px;
   height: 40px;
   border-radius: 50%;
   border: none;
 `;
+
+const VolumeSlider = styled.input`
+  width: 100px;
+  accent-color : var(--primary-01);
+  
+`;
+
 
 export default AsmrPlayer;

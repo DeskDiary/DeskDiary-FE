@@ -29,11 +29,11 @@ const MyRecords: React.FC<MyRecordsProps> = () => {
   };
 
   return (
-    <Container column gap="15px">
+    <Container col gap="15px">
       <Label>책상 기록</Label>
 
       <RecordBox>
-        <DayMenus column align="start">
+        <DayMenus col align="start">
           {menus.map((day, index) => (
             <DaysMenu
               type="button"
@@ -54,13 +54,13 @@ const MyRecords: React.FC<MyRecordsProps> = () => {
 };
 
 const FlexContainer = styled.div<{
-  column?: boolean;
+  col?: boolean;
   align?: string;
   justify?: string;
   gap?: string;
 }>`
   display: flex;
-  flex-direction: ${props => (props.column ? 'column' : 'row')};
+  flex-direction: ${props => (props.col ? 'column' : 'row')};
   align-items: ${props => (props.align ? props.align : 'center')};
   justify-content: ${props => (props.justify ? props.justify : 'center')};
   gap: ${props => props.gap || '0'};
@@ -93,7 +93,9 @@ const DayMenus = styled(FlexContainer)`
   height: 100%;
 `;
 
-const DaysMenu = styled.button<{ menu: boolean }>`
+const DaysMenu = styled.button.withConfig({
+  shouldForwardProp: (prop) => !['menu'].includes(prop)
+})<{ menu?: boolean }>`
   width: 100%;
   height: 100%;
   border: 1px solid black;

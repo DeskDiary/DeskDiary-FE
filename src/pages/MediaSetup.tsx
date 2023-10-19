@@ -100,7 +100,7 @@ const MediaSetup: React.FC<MediaSetupProps> = () => {
     startMicTest();
   }, [choiceMic]);
   return (
-    <Container column gap="22px">
+    <Container col gap="22px">
       {localStream ? (
         <Cam
           autoPlay
@@ -117,7 +117,7 @@ const MediaSetup: React.FC<MediaSetupProps> = () => {
       )}
 
       <CamSetting align="start" gap="10px">
-        <ButonGroup column align="start" gap="5px">
+        <ButonGroup col align="start" gap="5px">
           <TestButton onClick={startCameraTest} disabled={isCameraTesting}>
             Camera
           </TestButton>
@@ -136,7 +136,7 @@ const MediaSetup: React.FC<MediaSetupProps> = () => {
             })}
           </MediaSelect>
         </ButonGroup>
-        <ButonGroup column align="start" gap="5px">
+        <ButonGroup col align="start" gap="5px">
           <TestButton onClick={startMicTest} disabled={isMicTesting}>
             Microphone
           </TestButton>
@@ -164,13 +164,13 @@ const MediaSetup: React.FC<MediaSetupProps> = () => {
 };
 
 const FlexContainer = styled.div<{
-  column?: boolean;
+  col?: boolean;
   align?: string;
   justify?: string;
   gap?: string;
 }>`
   display: flex;
-  flex-direction: ${props => (props.column ? 'column' : 'row')};
+  flex-direction: ${props => (props.col ? 'column' : 'row')};
   align-items: ${props => (props.align ? props.align : 'center')};
   justify-content: ${props => (props.justify ? props.justify : 'center')};
   gap: ${props => props.gap || '0'};
