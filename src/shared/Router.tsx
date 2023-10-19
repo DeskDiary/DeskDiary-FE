@@ -1,5 +1,4 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-
 import SideLayout from '../components/layout/auth/AuthLayout';
 import MainLayout from '../components/layout/main/MainLayout';
 import { Error, Home, Join, Login, Mypage, Room } from '../pages';
@@ -8,6 +7,8 @@ import CamAndMicSetting from '../pages/CamAndMicSetting';
 import MyRecord from '../pages/myRecord/MyDesk';
 
 const Router = () => {
+  
+
   return (
     <BrowserRouter>
       <Routes>

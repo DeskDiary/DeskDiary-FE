@@ -1,12 +1,15 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-
+import volumOffImg from '../../../images/volume_off.png';
+import volumOnImg from '../../../images/volume_up.png';
 type VideoPlayerProps = {
   user: any;
 };
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({ user }) => {
   const ref = useRef<any>();
+
+  const [sound, setSound] = useState<boolean>(true);
 
   useEffect(() => {
     user.videoTrack.play(ref.current);
@@ -15,11 +18,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ user }) => {
     <div style={{ borderRadius: '8px' }}>
       <CamDivBox ref={ref}>
         <UserInfoDivBox>
-          <p style={{ backgroundColor: 'white' }}>닉네임</p>
-          <img
-            src="https://avatars.githubusercontent.com/u/120389368?v=4"
-            alt=""
-          />
+          <p>닉네임닉네임닉네임닉네임</p>
+          <img src={sound ? volumOnImg : volumOffImg} alt="" />
         </UserInfoDivBox>
       </CamDivBox>
     </div>
@@ -59,10 +59,16 @@ const UserInfoDivBox = styled.div`
     font-weight: 400;
     line-height: 123.5%; /* 18.525px */
     letter-spacing: 0.25px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    white-space: nowrap; /* 줄 바꿈 방지 */
+    overflow: hidden; /* 내용 숨김 */
+    text-overflow: ellipsis; /* 글자를 ...으로 표시 */
   }
   img {
-    width: 50px;
-    height: 50px;
+    width: 24px;
+    height: 24px;
+    padding: 10px;
     border-radius: 50%;
     margin-left: auto;
   }

@@ -11,6 +11,7 @@ type RoomProps = {
 };
 
 const Room: React.FC<RoomProps> = () => {
+  
   return (
     <>
       <Container>
@@ -23,7 +24,7 @@ const Room: React.FC<RoomProps> = () => {
             </CamAreaDiv>
             {/* 채팅이 들어갈 곳 */}
             <ChattingAreaDiv>
-              {/* <AsmrPlayer /> */}
+              <AsmrPlayer />
               <ChatBox />
             </ChattingAreaDiv>
           </Area>
