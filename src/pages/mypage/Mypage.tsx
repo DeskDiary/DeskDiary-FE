@@ -7,40 +7,25 @@ import { useQuery } from 'react-query';
 import axios from 'axios';
 import { useRecoilValue } from 'recoil';
 import { RoomAtom } from '../../recoil/RoomAtom';
+import {fetchUser} from '../../axios/api'
 
 type MypageProps = {};
 
-interface User {
-  nickname: string,
-  goaltime: number,
-  image : string,
-  }
 
 const Mypage: React.FC<MypageProps> = () => {
 
-  const fetchRooms = async () => {
-    const { data } = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL!}/auth/profile`,
-    );
-    console.log('유저데이터', data)
-    return data;
-  };
 
-  const { data, error, isLoading } = useQuery<User, Error>(
-    'user',
-    fetchRooms,
-  );
+  const { data, error, isLoading } = useQuery<user, Error>('user', fetchUser);
+
 
   return (
     <Container col justify="start" align="center">
       <MainTop />
       <UserProfile col justify="start">
-        <ProfileImg></ProfileImg>
+        <ProfileImg src={data?.profileImage ? data?.profileImage : profile}></ProfileImg>
         <UserInfo col>
-          {/* <Label>이메일{data?.email}</Label> */}
-          <Content>seohyeon@email.com</Content>
           <Label>닉네임</Label>
-          <Content>seohyeon{data?.nickname}</Content>
+          <Content>{data?.nickname}</Content>
         </UserInfo>
       </UserProfile>
     </Container>
@@ -67,10 +52,10 @@ const Label = styled.div``;
 
 const UserInfo = styled(FlexContainer)``;
 
-const ProfileImg = styled.div`
+const ProfileImg = styled.img`
   width: 170px;
   height: 170px;
-  background: url(${profile}) no-repeat center;
+  /* background: url(${profile}) no-repeat center; */
 `;
 
 const UserProfile = styled(FlexContainer)`
