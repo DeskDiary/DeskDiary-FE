@@ -12,21 +12,19 @@ import {
 } from '../recoil/CamAtom';
 import MediaSetup from './MediaSetup';
 
-type EnterRoomModal = {
+type JoinRoomModal = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   room: {
-    id: number;
+    uuid: string;
     title: string;
     category: string;
-    nowHeadcount: number;
-    maxHeadcount: number;
-    roomThumnail: any;
-    createdAt: string;
-    updatedAt: string;
+    agoraAppId: string;
+    agoraToken: string;
+    ownerId: number;
   };
 };
 
-const EnterRoom: React.FC<EnterRoomModal> = ({ setIsOpen, room }) => {
+const JoinRoomModal: React.FC<JoinRoomModal> = ({ setIsOpen, room }) => {
   const [inputText, setInputText] = useState('');
 
   const [test, setTest] = useState(true);
@@ -38,21 +36,20 @@ const EnterRoom: React.FC<EnterRoomModal> = ({ setIsOpen, room }) => {
   return (
     <Container>
       <BackGround />
-      <ModalContent column justify="start">
+      <ModalContent col justify="start">
         <Title>{room.title}</Title>
 
         <MediaSetupGroup>
           <MediaSetup></MediaSetup>
         </MediaSetupGroup>
 
-        <Content column gap="15px">
-
-          <Group column align="start">
-            <Label>엉덩이들의 유의사항</Label>
+        <Content col gap="15px">
+          <Group col align="start">
+            <Label>{room.ownerId}</Label>
           </Group>
         </Content>
 
-        <Button column gap="8px">
+        <Button col gap="8px">
           <EnterRoomButton to="/room/:id">들어가기</EnterRoomButton>
           <CancleButton to="/" onClick={() => setIsOpen(false)}>
             취소
@@ -64,13 +61,13 @@ const EnterRoom: React.FC<EnterRoomModal> = ({ setIsOpen, room }) => {
 };
 
 const FlexContainer = styled.div<{
-  column?: boolean;
+  col?: boolean;
   align?: string;
   justify?: string;
   gap?: string;
 }>`
   display: flex;
-  flex-direction: ${props => (props.column ? 'column' : 'row')};
+  flex-direction: ${props => (props.col ? 'column' : 'row')};
   align-items: ${props => (props.align ? props.align : 'center')};
   justify-content: ${props => (props.justify ? props.justify : 'center')};
   gap: ${props => props.gap || '0'};
@@ -178,4 +175,4 @@ const Container = styled(FlexContainer)`
   cursor: auto;
 `;
 
-export default EnterRoom;
+export default JoinRoomModal;

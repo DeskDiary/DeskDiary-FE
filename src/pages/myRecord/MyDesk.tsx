@@ -7,7 +7,22 @@ import Goal from '../home/components/Goal';
 import { IndexKind } from 'typescript';
 import MyRecords from './components/MyRecords';
 
+import { useRecoilValue } from 'recoil';
+import { RoomAtom } from '../../recoil/RoomAtom';
+
+import { useQuery } from 'react-query';
+import axios from 'axios';
+
 type MyDeskProps = {};
+
+interface Room {
+  uuid: string;
+  title: string;
+  category: string;
+  agoraAppId: string;
+  agoraToken: string;
+  ownerId: number;
+}
 
 const MyDesk: React.FC<MyDeskProps> = () => {
   const rooms = [
@@ -113,8 +128,21 @@ const MyDesk: React.FC<MyDeskProps> = () => {
     },
   ];
 
+  const fetchRooms = async () => {
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_SERVER_URL!}/room`,
+    );
+    console.log('fetchRooms data', data);
+    return data;
+  };
+
+  const { data, error, isLoading } = useQuery<Room[], Error>(
+    'rooms',
+    fetchRooms,
+  );
+
   return (
-    <Container column justify="start">
+    <Container col justify="start">
       <MainTop />
       <MyDeskTop justify="start">
         <Goal />
@@ -122,12 +150,16 @@ const MyDesk: React.FC<MyDeskProps> = () => {
 
       <MyRecords />
 
-      <List column align="start">
+      <List col align="start">
         <ListTitle>최근에 들어간 방 목록</ListTitle>
         <JoinedRooms>
-          {rooms.map(room => {
-            return <RoomCard key={room.id} room={room} />;
-          })}
+          {data ? (
+            data.map(room => {
+              return <RoomCard key={room.uuid} room={room} />;
+            })
+          ) : (
+            <></>
+          )}
         </JoinedRooms>
       </List>
     </Container>
@@ -135,13 +167,13 @@ const MyDesk: React.FC<MyDeskProps> = () => {
 };
 
 const FlexContainer = styled.div<{
-  column?: boolean;
+  col?: boolean;
   align?: string;
   justify?: string;
   gap?: string;
 }>`
   display: flex;
-  flex-direction: ${props => (props.column ? 'column' : 'row')};
+  flex-direction: ${props => (props.col ? 'column' : 'row')};
   align-items: ${props => (props.align ? props.align : 'center')};
   justify-content: ${props => (props.justify ? props.justify : 'center')};
   gap: ${props => props.gap || '0'};

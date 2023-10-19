@@ -3,6 +3,7 @@ export const setTokenCookie = (token: string) => {
   console.log(expirationDate);
   expirationDate.setFullYear(expirationDate.getFullYear() + 1);
 
+
   // 쿠키에 토큰을 저장합니다.
   document.cookie = `token=${token}; expires=${expirationDate}; path=/`;
 };

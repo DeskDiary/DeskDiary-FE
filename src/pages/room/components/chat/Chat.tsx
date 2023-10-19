@@ -13,7 +13,7 @@ const Chat: React.FC<ChatProps> = ({message}) => {
   return (
     <Container justify="start" align="start" gap="8px">
       <UserImg />
-      <ChatDetails column align="start" gap="5px">
+      <ChatDetails col align="start" gap="5px">
         <Metadata justify="space-between">
           <UserName>{message.user}</UserName>
           <Time>{message.time}</Time>
@@ -28,13 +28,13 @@ const Chat: React.FC<ChatProps> = ({message}) => {
 };
 
 const FlexContainer = styled.div<{
-  column?: boolean;
+  col?: boolean;
   align?: string;
   justify?: string;
   gap?: string;
 }>`
   display: flex;
-  flex-direction: ${props => (props.column ? 'column' : 'row')};
+  flex-direction: ${props => (props.col ? 'column' : 'row')};
   align-items: ${props => (props.align ? props.align : 'center')};
   justify-content: ${props => (props.justify ? props.justify : 'center')};
   gap: ${props => props.gap || '0'};

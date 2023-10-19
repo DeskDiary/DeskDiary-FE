@@ -1,15 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import Goal from './components/Goal';
+import { useQuery } from 'react-query';
+import axios from 'axios';
+
 import styled from 'styled-components';
-import MainTop from '../../components/MainTop';
-import DeskRecoder from './components/DeskRecoder';
-import RoomCard from './components/RoomCard';
-import thumbnail from '../../images/sample.png';
-import NonUserIntro from './components/NonUserIntro';
-import { getCookie, setTokenCookie } from '../../auth/cookie';
 import { useRecoilValue } from 'recoil';
 import { RoomAtom } from '../../recoil/RoomAtom';
+
+import MainTop from '../../components/MainTop';
+import { DeskRecoder, Goal, NonUserIntro, RoomCard } from './components';
+import thumbnail from '../../images/sample.png';
+import { getCookie, setTokenCookie } from '../../auth/cookie';
+
+// interface Room {
+//   uuid: number;
+//   title: string;
+//   category: string;
+//   nowHeadcount: number;
+//   maxHeadcount: number;
+//   roomThumnail: { thumbnail: string };
+//   createdAt: string;
+//   updatedAt: string;
+// }
+
+interface Room {
+  uuid: string;
+  title: string;
+  category: string;
+  agoraAppId: string;
+  agoraToken: string;
+  ownerId: number;
+}
 
 const Home = () => {
   const rooms = [
@@ -117,12 +138,25 @@ const Home = () => {
 
   const token = getCookie('token');
 
+  const fetchRooms = async () => {
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_SERVER_URL!}/room`,
+    );
+    console.log('fetchRooms data', data);
+    return data;
+  };
+
+  const { data, error, isLoading } = useQuery<Room[], Error>(
+    'rooms',
+    fetchRooms,
+  );
+
   return (
-    <Container column justify="start">
+    <Container col justify="start">
       {/* <삭제></삭제> */}
       <MainTop />
 
-      <Info gap="33px" align='start'>
+      <Info gap="33px" align="start">
         {token ? (
           <>
             <Goal />
@@ -132,31 +166,31 @@ const Home = () => {
           <NonUserIntro />
         )}
       </Info>
-      <List column align="start">
+      <List col align="start">
         <ListTitle>내가 참여했던 방</ListTitle>
         <JoinedRooms>
-          {rooms.map(room => {
-            return (
-              <>
-                <RoomCard key={room.id} room={room} />
-              </>
-            );
-          })}
+            {data?.map(room => {
+              return <RoomCard key={room.uuid} room={room} />;
+            })}
         </JoinedRooms>
       </List>
       <Link to="/join">회원가입</Link>
+      <br />
+      <br />
+      <br />
+      <Link to="/login">로그인</Link>
     </Container>
   );
 };
 
 const FlexContainer = styled.div<{
-  column?: boolean;
+  col?: boolean;
   align?: string;
   justify?: string;
   gap?: string;
 }>`
   display: flex;
-  flex-direction: ${props => (props.column ? 'column' : 'row')};
+  flex-direction: ${props => (props.col ? 'column' : 'row')};
   align-items: ${props => (props.align ? props.align : 'center')};
   justify-content: ${props => (props.justify ? props.justify : 'center')};
   gap: ${props => props.gap || '0'};
@@ -202,13 +236,11 @@ const JoinedRooms = styled.div`
   @media (max-width: 1000px) {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   @media (max-width: 800px) {
     grid-template-columns: repeat(1, 1fr);
   }
 `;
-
-
 
 const Container = styled(FlexContainer)`
   width: 70%;

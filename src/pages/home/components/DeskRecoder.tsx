@@ -5,7 +5,7 @@ type DeskRecoderProps = {};
 
 const DeskRecoder: React.FC<DeskRecoderProps> = () => {
   return (
-    <Container column justify="start">
+    <Container col justify="start">
       <Title>최근 책상 기록</Title>
       <Content>
         <NoContent>아직 기록된 책상시간이 없습니다.</NoContent>
@@ -15,13 +15,13 @@ const DeskRecoder: React.FC<DeskRecoderProps> = () => {
 };
 
 const FlexContainer = styled.div<{
-  column?: boolean;
+  col?: boolean;
   align?: string;
   justify?: string;
   gap?: string;
 }>`
   display: flex;
-  flex-direction: ${props => (props.column ? 'column' : 'row')};
+  flex-direction: ${props => (props.col ? 'column' : 'row')};
   align-items: ${props => (props.align ? props.align : 'center')};
   justify-content: ${props => (props.justify ? props.justify : 'center')};
   gap: ${props => props.gap || '0'};
