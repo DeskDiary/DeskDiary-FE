@@ -111,7 +111,7 @@ const SidebarButton = styled(NavLink)`
     width: 100px;
     white-space: nowrap;
     opacity: 0;
-    transition: opacity 0.6s ease-in-out;
+    transition: opacity 0.4s ease-in-out;
     color: var(--gray-06);
   }
 `;

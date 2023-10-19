@@ -1,4 +1,21 @@
 import axios from "axios";
+import { getCookie, setTokenCookie } from '../auth/cookie';
+
+const token = getCookie('token');
+
+// user 프로필 가져오기
+export const fetchUser = async () => {
+  const { data } = await axios.get(
+    `${process.env.REACT_APP_SERVER_URL!}/auth/profile`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`, // 여기서 토큰을 헤더에 추가해줘
+      },
+    },
+  );
+  console.log('main top 유저정보 data', data);
+  return data;
+};
 
 const instance = axios.create({
   baseURL: process.env.REACT_APP_SERVER_URL,

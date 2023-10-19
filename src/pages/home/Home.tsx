@@ -33,108 +33,6 @@ interface Room {
 }
 
 const Home = () => {
-  const rooms = [
-    {
-      id: 1,
-      title: '방 타이틀1',
-      category: 'study',
-      nowHeadcount: 2,
-      maxHeadcount: 4,
-      roomThumnail: { thumbnail },
-      createdAt: '2023-10-10',
-      updatedAt: '2023-10-11',
-    },
-    {
-      id: 2,
-      title: '방 타이틀2',
-      category: 'music',
-      nowHeadcount: 1,
-      maxHeadcount: 3,
-      roomThumnail: { thumbnail },
-      createdAt: '2023-10-09',
-      updatedAt: '2023-10-10',
-    },
-    {
-      id: 3,
-      title: '방 타이틀3',
-      category: 'movie',
-      nowHeadcount: 4,
-      maxHeadcount: 5,
-      roomThumnail: { thumbnail },
-      createdAt: '2023-10-08',
-      updatedAt: '2023-10-09',
-    },
-    {
-      id: 4,
-      title: '방 타이틀4',
-      category: 'game',
-      nowHeadcount: 3,
-      maxHeadcount: 4,
-      roomThumnail: { thumbnail },
-      createdAt: '2023-10-07',
-      updatedAt: '2023-10-08',
-    },
-    {
-      id: 5,
-      title: '방 타이틀5',
-      category: 'hobby',
-      nowHeadcount: 2,
-      maxHeadcount: 3,
-      roomThumnail: { thumbnail },
-      createdAt: '2023-10-06',
-      updatedAt: '2023-10-07',
-    },
-    {
-      id: 6,
-      title: '방 타이틀6',
-      category: 'reading',
-      nowHeadcount: 1,
-      maxHeadcount: 2,
-      roomThumnail: { thumbnail },
-      createdAt: '2023-10-05',
-      updatedAt: '2023-10-06',
-    },
-    {
-      id: 7,
-      title: '방 타이틀7',
-      category: 'exercise',
-      nowHeadcount: 4,
-      maxHeadcount: 5,
-      roomThumnail: { thumbnail },
-      createdAt: '2023-10-04',
-      updatedAt: '2023-10-05',
-    },
-    {
-      id: 8,
-      title: '방 타이틀8',
-      category: 'travel',
-      nowHeadcount: 3,
-      maxHeadcount: 4,
-      roomThumnail: { thumbnail },
-      createdAt: '2023-10-03',
-      updatedAt: '2023-10-04',
-    },
-    {
-      id: 9,
-      title: '방 타이틀9',
-      category: 'food',
-      nowHeadcount: 2,
-      maxHeadcount: 3,
-      roomThumnail: { thumbnail },
-      createdAt: '2023-10-02',
-      updatedAt: '2023-10-03',
-    },
-    {
-      id: 10,
-      title: '방 타이틀10',
-      category: 'discussion',
-      nowHeadcount: 1,
-      maxHeadcount: 2,
-      roomThumnail: { thumbnail },
-      createdAt: '2023-10-01',
-      updatedAt: '2023-10-02',
-    },
-  ];
 
   const token = getCookie('token');
 
@@ -142,7 +40,7 @@ const Home = () => {
     const { data } = await axios.get(
       `${process.env.REACT_APP_SERVER_URL!}/room`,
     );
-    console.log('fetchRooms data', data);
+    // console.log('fetchRooms data', data);
     return data;
   };
 
@@ -243,7 +141,7 @@ const JoinedRooms = styled.div`
 `;
 
 const Container = styled(FlexContainer)`
-  width: 70%;
+  width: 1525px;
 `;
 
 const Info = styled(FlexContainer)`
