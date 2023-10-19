@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import AsmrPlayer from './components/AsmrPlayer';
 import RoomCamArea from './components/RoomCamArea';
 import RoomHeader from './components/RoomHeader';
 import RoomSideBar from './components/RoomSideBar';
@@ -23,7 +24,7 @@ const Room: React.FC<RoomProps> = () => {
             </CamAreaDiv>
             {/* 채팅이 들어갈 곳 */}
             <ChattingAreaDiv>
-              {/* <AsmrPlayer /> */}
+              <AsmrPlayer />
               <ChatBox />
             </ChattingAreaDiv>
           </Area>
