@@ -4,6 +4,7 @@ import { Outlet } from 'react-router-dom';
 import styled from '@emotion/styled';
 import SideMenu from './SideMenu';
 import SideBar from './SideBar';
+import MainTop from '../../MainTop';
 
 type MainLayoutProps = {};
 
@@ -13,17 +14,21 @@ const MainLayout: React.FC<MainLayoutProps> = () => {
       {/* <Header></Header> */}
       {/* <SideMenu></SideMenu> */}
       <SideBar />
+      <MainTop />
       <Outlet />
     </Wrap>
   );
 };
 
 const Wrap = styled.div`
-  min-height: calc(100vh);
+  min-height: calc(100vh - 110px);
   position: relative;
   width: 100vw;
   display: flex;
   flex-direction: row;
   justify-content: center;
+  ;
+
+  margin-top: 110px;
 `;
 export default MainLayout;

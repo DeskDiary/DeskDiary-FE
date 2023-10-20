@@ -25,6 +25,8 @@ type JoinRoomModal = {
 };
 
 const JoinRoomModal: React.FC<JoinRoomModal> = ({ setIsOpen, room }) => {
+  const navigate = useNavigate();
+
   const [inputText, setInputText] = useState('');
 
   const [test, setTest] = useState(true);
@@ -32,6 +34,10 @@ const JoinRoomModal: React.FC<JoinRoomModal> = ({ setIsOpen, room }) => {
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setInputText(e.target.value);
   };
+
+  const onClickJoinRoom = () => {
+
+  }
 
   return (
     <Container>

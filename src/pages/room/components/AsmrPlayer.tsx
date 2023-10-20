@@ -86,7 +86,7 @@ const AsmrPlayer: React.FC<AsmrPlayerProps> = () => {
 };
 
 const Body = styled.div`
-  width: 90%;
+  width: calc(90% - 5% - 10px);
   background-color: white;
   border: 1px solid black;
   margin: 10px;
@@ -113,7 +113,6 @@ const PlayButton = styled.button`
 const VolumeSlider = styled.input`
   width: 100px;
   accent-color : var(--primary-01);
-  
 `;
 
 

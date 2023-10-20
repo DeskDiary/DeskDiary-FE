@@ -5,6 +5,10 @@ import { Error, Home, Join, Login, Mypage, Room } from '../pages';
 
 import CamAndMicSetting from '../pages/CamAndMicSetting';
 import MyRecord from '../pages/myRecord/MyDesk';
+import StudyCategory from '../pages/category/StudyCategory';
+import HobbyCategory from '../pages/category/HobbyCategory';
+import CreateRoomModal from '../pages/CreateRoomModal';
+
 
 const Router = () => {
   
@@ -14,8 +18,8 @@ const Router = () => {
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/" element={<Home />} />
-          <Route path="/:hobby" element={<Home />} />
+          <Route path="/study" element={<StudyCategory />} />
+          <Route path="/hobby" element={<HobbyCategory />} />
           <Route path="/mydesk" element={<MyRecord />} />
           <Route path="/mypage/:id" element={<Mypage />} />
         </Route>
