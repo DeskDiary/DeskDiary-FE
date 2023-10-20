@@ -90,6 +90,7 @@ const MediaSetup: React.FC<MediaSetupProps> = () => {
 
   useEffect(() => {
     getCamerasAndMics();
+    setChoiceCamera(cameras[0]?.deviceId);
   }, []);
 
   useEffect(() => {

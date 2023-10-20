@@ -5,10 +5,11 @@ import 음표사진 from '../../../images/음표.png';
 
 type Props = {};
 
+
 function RoomHeader({}: Props) {
   return (
     <HeaderBG>
-      <RoomName>방제</RoomName>
+      <RoomName>👯32번째 공부의 밤 개발자 모여 모각지 진행😗👍</RoomName>
       <IconDiv>
         <img src={알림사진} alt="" />
         <img src={음표사진} alt="" />
@@ -43,16 +44,15 @@ const IconDiv = styled.div`
 `;
 
 const RoomName = styled.p`
-  font-family: Inter;
-  font-size: 36px;
-  font-weight: 700;
-  line-height: 54px;
-  letter-spacing: -0.01em;
+  font-size: 18px;
   text-align: left;
   margin-left: 70px;
   margin-right: auto;
-  width: 200px;
-  background-color: aqua;
+  width: 400px;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
 `;
+
 
 export default RoomHeader;
