@@ -56,7 +56,7 @@ const RoomSideBar: React.FC<RoomSideBarProps> = () => {
             src="https://avatars.githubusercontent.com/u/120389368?v=4"
             alt=""
           />
-          <p>User_ID 1 User_ID User_ID</p>
+          <p>User_ID 1 User_ID</p>
         </UserList>
       </JoinPeopleBox>
     </Body>
@@ -118,15 +118,15 @@ const TimerBox = styled.div`
   }
 `;
 
-const StartButton = styled.div<{ timerState: boolean }>`
-  width: 160px;
-  height: 28px;
+const StartButton = styled.button<{ timerState: boolean }>`
+  width: 180px;
+  height: 48px;
+  border: none;
   display: flex;
   padding: 10px 5px;
   justify-content: center;
   align-items: center;
   gap: 10px;
-  margin-left: 10px;
   background: ${props => (props.timerState ? 'none' : 'var(--primary-01)')};
   p {
     color: var(--gray-01);
@@ -139,6 +139,7 @@ const CamAndMicSettingsBox = styled.div`
   justify-content: center;
   align-items: center;
   gap: 20px;
+  margin-left: 10px;
   img {
     border-radius: 50%;
     border: 1px solid var(--primary-01);
@@ -195,6 +196,8 @@ const UserList = styled.div`
   p {
     color: white;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 `;
 

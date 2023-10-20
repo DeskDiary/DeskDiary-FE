@@ -4,10 +4,8 @@ import MainTop from '../../components/MainTop';
 import { profile } from '../../images';
 
 import { useQuery } from 'react-query';
-import axios from 'axios';
-import { useRecoilValue } from 'recoil';
-import { RoomAtom } from '../../recoil/RoomAtom';
-import {fetchUser} from '../../axios/api'
+import { fetchUser } from '../../axios/api';
+import RecordGraph from './RecordGraph';
 
 type MypageProps = {};
 
@@ -28,6 +26,7 @@ const Mypage: React.FC<MypageProps> = () => {
           <Content>{data?.nickname}</Content>
         </UserInfo>
       </UserProfile>
+      <RecordGraph />
     </Container>
   );
 };
