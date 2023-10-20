@@ -1,24 +1,38 @@
 import React from 'react';
+import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import 환경설정 from '../../../images/room/build.svg';
 import 도움말 from '../../../images/room/help_outline.svg';
 import 방나가기 from '../../../images/room/logout.svg';
+import { RoomModalAtom } from '../../../recoil/RoomAtom';
+import RoomModal from './RoomModal';
 
 type RoomUnderBarProps = {};
 
 const RoomUnderBar: React.FC<RoomUnderBarProps> = () => {
+  const [outModalState, setOutModalState] = useRecoilState<boolean>(RoomModalAtom);
+
+  const roomOutButtonHandler = () => {
+    setOutModalState(true);
+  };
+
   return (
-    <Body>
-      <OutRoomButton>
-        <img src={방나가기} alt="" /><p>방 나가기</p>
-      </OutRoomButton>
-      <SettingList>
-        <img src={환경설정} alt="" />
-        <p>환경설정</p>
-        <img src={도움말} alt="" />
-        <p>도움말</p>
-      </SettingList>
-    </Body>
+    <>
+      {outModalState && <RoomModal />}
+
+      <Body>
+        <OutRoomButton onClick={roomOutButtonHandler}>
+          <img src={방나가기} alt="방나가기" />
+          <p>방 나가기</p>
+        </OutRoomButton>
+        <SettingList>
+          <img src={환경설정} alt="" />
+          <p>환경설정</p>
+          <img src={도움말} alt="" />
+          <p>도움말</p>
+        </SettingList>
+      </Body>
+    </>
   );
 };
 
@@ -49,7 +63,7 @@ const OutRoomButton = styled.button`
   p {
     color: var(--primary-01);
   }
-`
+`;
 
 const SettingList = styled.div`
   margin-left: 50px;
@@ -64,6 +78,6 @@ const SettingList = styled.div`
     color: white;
     font-size: 12px;
   }
-`
+`;
 
 export default RoomUnderBar;

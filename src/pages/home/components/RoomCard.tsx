@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
-import thumbnail from '../../../images/sample.png';
-import { Link } from 'react-router-dom';
-import JoinRoomModal from '../../JoinRoomModal';
 import { useRecoilValue } from 'recoil';
+import styled from 'styled-components';
 import { RoomAtom } from '../../../recoil/RoomAtom';
+import JoinRoomModal from '../../JoinRoomModal';
 
 type RoomCardProps = {
   room: {

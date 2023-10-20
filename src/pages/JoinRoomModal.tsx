@@ -1,15 +1,10 @@
-import React, { ChangeEvent, useState, useEffect } from 'react';
 import styled from '@emotion/styled';
-import AgoraRTC from 'agora-rtc-sdk-ng';
+import axios from 'axios';
+import React, { ChangeEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import thumbnail from '../images/sample.png';
-import {
-  cameraListState,
-  choiceCameraState,
-  choiceMicState,
-  micListState,
-} from '../recoil/CamAtom';
+import { getCookie } from '../auth/cookie';
+import { RoomUUIDAtom } from '../recoil/RoomAtom';
 import MediaSetup from './MediaSetup';
 
 type JoinRoomModal = {
@@ -21,22 +16,38 @@ type JoinRoomModal = {
     agoraAppId: string;
     agoraToken: string;
     ownerId: number;
+
   };
 };
 
 const JoinRoomModal: React.FC<JoinRoomModal> = ({ setIsOpen, room }) => {
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
   const navigate = useNavigate();
-
+  console.log(room.uuid);
   const [inputText, setInputText] = useState('');
-
+  const [joinUUID, setJoinUUID] = useRecoilState<string>(RoomUUIDAtom);
+  console.log(joinUUID)
   const [test, setTest] = useState(true);
 
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setInputText(e.target.value);
   };
 
-  const onClickJoinRoom = () => {
-
+  const onClickJoinRoom = async () => {
+    try {
+      const token = getCookie('token');
+      const response = await axios.post(`${serverUrl}/room/${room.uuid}/join`,{},{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(response);
+      setJoinUUID(room.uuid);
+      navigate(`room/${room.uuid}`);
+    } catch(error) {
+      console.error(error);
+    }
+    
   }
 
   return (
@@ -56,7 +67,7 @@ const JoinRoomModal: React.FC<JoinRoomModal> = ({ setIsOpen, room }) => {
         </Content>
 
         <Button col gap="8px">
-          <EnterRoomButton to="/room/:id">들어가기</EnterRoomButton>
+          <EnterRoomButton onClick={onClickJoinRoom}>들어가기</EnterRoomButton>
           <CancleButton to="/" onClick={() => setIsOpen(false)}>
             취소
           </CancleButton>
@@ -122,7 +133,7 @@ const Button = styled(FlexContainer)`
   margin-top: auto;
 `;
 
-const EnterRoomButton = styled(Link)`
+const EnterRoomButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;

@@ -84,7 +84,9 @@ const GlobalStyle = createGlobalStyle`
     width: 10px;
   }
 
-
+  button {
+    cursor: pointer;
+  }
 
 `;
 export default GlobalStyle;
