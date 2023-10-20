@@ -5,8 +5,6 @@ import {
   home,
   logo,
   study,
-  mypage,
-  profile,
   mydesk,
 } from '../../../images';
 import { Link, NavLink } from 'react-router-dom';
@@ -178,7 +176,7 @@ const Sidebar = styled.div`
   height: 100vh;
   /* background: #999; */
   transition: width 0.4s;
-  z-index: 10;
+  z-index: 0;
 
   ${SidebarHeader} {
     transition: width 0.3s; // 이걸 추가해!

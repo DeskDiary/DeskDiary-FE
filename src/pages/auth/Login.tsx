@@ -8,8 +8,8 @@ import XIcon from '../../images/Vector.svg';
 import logo from '../../images/logo.png';
 import 아이디저장o from '../../images/radio_button_checked.svg';
 import 아이디저장x from '../../images/radio_button_unchecked.svg';
-import 구글로그인 from '../../images/구글사진.svg';
-import 카카오로그인 from '../../images/카카오사진.svg';
+import 구글로그인 from '../../images/main/구글사진.svg';
+import 카카오로그인 from '../../images/main/카카오사진.svg';
 
 type LoginProps = {};
 

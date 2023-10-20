@@ -112,21 +112,6 @@ const Mypage: React.FC<MypageProps> = () => {
       <MainTop />
       <UserProfile col justify="start">
         <ProfileImg src={data?.profileImage ? data?.profileImage : profile}></ProfileImg>
-        {/* <form onSubmit={onSubmitRoom} onClick={() => console.log('Form clicked')}>
-        <Button
-            component="label"
-            sx={{
-              color: 'gray',
-              '&:hover': {
-                backgroundColor: 'initial', // 여기서 'initial' 대신 원래 배경색을 넣어도 돼
-                boxShadow: 'none', // 그림자 효과 제거
-              },
-            }}
-          >
-            썸네일 등록
-            <VisuallyHiddenInput type="file" onChange={handleFileChange} />
-          </Button>
-        </form> */}
         <Profile />
         
         

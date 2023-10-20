@@ -12,21 +12,12 @@ import { RoomAtom } from '../../recoil/RoomAtom';
 
 import { useQuery } from 'react-query';
 import axios from 'axios';
+import RecordGraph from '../mypage/RecordGraph';
+import GoalRecoard from './components/GoalRecoard';
 
 type MyDeskProps = {};
 
-interface Room {
-  uuid: string;
-  title: string;
-  category: string;
-  agoraAppId: string;
-  agoraToken: string;
-  ownerId: number;
-  file: string;
-}
-
 const MyDesk: React.FC<MyDeskProps> = () => {
-
   const fetchRooms = async () => {
     const { data } = await axios.get(
       `${process.env.REACT_APP_SERVER_URL!}/room`,
@@ -35,7 +26,7 @@ const MyDesk: React.FC<MyDeskProps> = () => {
     return data;
   };
 
-  const { data, error, isLoading } = useQuery<Room[], Error>(
+  const { data, error, isLoading } = useQuery<room[], Error>(
     'rooms',
     fetchRooms,
   );
@@ -44,10 +35,10 @@ const MyDesk: React.FC<MyDeskProps> = () => {
     <Container col justify="start">
       <MainTop />
       <MyDeskTop justify="start">
-        <Goal />
+        <RecordGraph />
       </MyDeskTop>
 
-      <MyRecords />
+      {/* <MyRecords /> */}
 
       <List col align="start">
         <ListTitle>최근에 들어간 방 목록</ListTitle>
@@ -84,7 +75,7 @@ const MyDeskTop = styled(FlexContainer)`
 `;
 
 const List = styled(FlexContainer)`
-  margin-top: 72px;
+  margin-top: 30px;
   width: 100%;
 `;
 
@@ -94,7 +85,7 @@ const ListTitle = styled.div`
 `;
 
 const Container = styled(FlexContainer)`
-  width: 70%;
+  width: 1525px;
   height: 100%;
 `;
 
