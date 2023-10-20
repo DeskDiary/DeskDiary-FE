@@ -4,10 +4,9 @@ import MainLayout from '../components/layout/main/MainLayout';
 import { Error, Home, Join, Login, Mypage, Room } from '../pages';
 
 import CamAndMicSetting from '../pages/CamAndMicSetting';
-import MyRecord from '../pages/myRecord/MyDesk';
-import StudyCategory from '../pages/category/StudyCategory';
 import HobbyCategory from '../pages/category/HobbyCategory';
-import CreateRoomModal from '../pages/CreateRoomModal';
+import StudyCategory from '../pages/category/StudyCategory';
+import MyRecord from '../pages/myRecord/MyDesk';
 
 
 const Router = () => {

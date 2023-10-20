@@ -25,7 +25,13 @@ export const SelectCateoryAtom = atom({
   default: { category: '' },
 });
 
-export const createRoomModalAtom = atom({
-  key: 'CreateRoomModalAtom',
-  default: { isOpen:false },
-})
+export const RoomUUIDAtom = atom({
+  key: 'RoomUUIDAtom',
+  default: '',
+});
+
+// 방 나가기 버튼 클릭시 나오는 모달
+export const RoomModalAtom = atom({
+  key: 'RoomModalAtom',
+  default: false,
+});

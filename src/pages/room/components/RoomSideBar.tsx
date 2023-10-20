@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../../../images/logo.png';
 import 마이크 from '../../../images/room/mic_none.svg';
@@ -15,13 +16,21 @@ const RoomSideBar: React.FC<RoomSideBarProps> = () => {
     setTimerState(!timerState);
   };
 
+  const navigate = useNavigate();
+
   return (
     <Body>
-      <LogoImg src={logo} alt="" />
+      <LogoImg
+        src={logo}
+        alt="로고이미지"
+        onClick={() => {
+          alert('방에 나갈 때는 방 나가기 버튼을 이용해주세요.');
+        }}
+      />
       <UserInfoBox>
         <img
           src="https://avatars.githubusercontent.com/u/120389368?v=4"
-          alt=""
+          alt="사용자프로필이미지"
         />
         <p>유저이름</p>
       </UserInfoBox>
@@ -33,30 +42,23 @@ const RoomSideBar: React.FC<RoomSideBarProps> = () => {
         </StartButton>
       </TimerBox>
       <CamAndMicSettingsBox>
-        <img src={마이크} alt="" />
-        <img src={카메라} alt="" />
+        <img src={마이크} alt="마이크" />
+        <img src={카메라} alt="카메라" />
       </CamAndMicSettingsBox>
       <JoinPeopleBox>
         <UserCount>
           <p>참여인원</p>
           <DetailCount>
-            <img src={사람} alt="" />
+            <img src={사람} alt="인원수" />
             <p>04</p>
           </DetailCount>
         </UserCount>
         <UserList>
           <img
             src="https://avatars.githubusercontent.com/u/120389368?v=4"
-            alt=""
+            alt="사용자프로필이미지"
           />
           <p>User_ID</p>
-        </UserList>
-        <UserList>
-          <img
-            src="https://avatars.githubusercontent.com/u/120389368?v=4"
-            alt=""
-          />
-          <p>User_ID 1 User_ID</p>
         </UserList>
       </JoinPeopleBox>
     </Body>
@@ -78,6 +80,7 @@ const LogoImg = styled.img`
   width: 60px;
   height: 73px;
   flex-shrink: 0;
+  cursor: pointer;
 `;
 const UserInfoBox = styled.div`
   width: 152px;
