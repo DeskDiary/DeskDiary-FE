@@ -6,7 +6,7 @@ import { useRecoilState } from 'recoil';
 import { logo, kakao, google } from '../../images';
 import { colorChecked, unchecked, XIcon } from '../../images';
 
-import { userAtom } from '../../recoil/UserAtom';
+import { UserAtom } from '../../recoil/UserAtom';
 
 import { useMutation } from 'react-query';
 
@@ -15,7 +15,7 @@ type JoinProps = {};
 const Join: React.FC<JoinProps> = () => {
   const navigate = useNavigate();
 
-  const [user, setUser] = useRecoilState(userAtom);
+  const [user, setUser] = useRecoilState(UserAtom);
 
   const [confirmPassword, setconfirmPassword] = useState('');
   const [isAgreeChecked, setIsAgreeChecked] = useState(false);
@@ -378,7 +378,7 @@ const JoinButton = styled.button<{ disabled: boolean }>`
     0,
     197,
     255,
-    ${props => (props.disabled ? '0.5' : '1.0')}
+    ${props => (props.disabled ? '0.2' : '1.0')}
   );
   cursor: ${props => (props.disabled ? '' : 'pointer')};
 `;
