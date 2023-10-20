@@ -1,4 +1,9 @@
 import styled from '@emotion/styled';
+import { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import history from '../../history';
+import { RoomUUIDAtom } from '../../recoil/RoomAtom';
 import AsmrPlayer from './components/AsmrPlayer';
 import RoomCamArea from './components/RoomCamArea';
 import RoomHeader from './components/RoomHeader';
@@ -11,7 +16,34 @@ type RoomProps = {
 };
 
 const Room: React.FC<RoomProps> = () => {
-  
+  const [joinUUID, setJoinUUID] = useRecoilState<string>(RoomUUIDAtom);
+
+  const location = useLocation();
+  useEffect(() => {
+    setJoinUUID(location.pathname.split('/')[2]);
+  }, []);
+  const navigate = useNavigate();
+  useEffect(() => {
+    const listenBackEvent = () => {
+      alert(`뒤로가기이벤트를 감지했똬${'\n'}방 나가기 버튼으로 나가롸
+      `);
+      navigate(`/room/${joinUUID}`);
+    };
+
+    const unlistenHistoryEvent = history.listen(({ action }) => {
+      console.log(action);
+      if (action === 'POP') {
+        listenBackEvent();
+      }
+    });
+
+    window.onbeforeunload = function () {
+      return '이 페이지를 떠나시겠습니까?';
+    };
+
+    return unlistenHistoryEvent;
+  }, []);
+
   return (
     <>
       <Container>
