@@ -11,6 +11,8 @@ import {
 } from '../../../images';
 import { Link, NavLink } from 'react-router-dom';
 import { getCookie, setTokenCookie } from '../../../auth/cookie';
+import { useRecoilState } from 'recoil';
+import { SelectCateoryAtom } from '../../../recoil/RoomAtom';
 
 type SideBarProps = {};
 
@@ -23,12 +25,12 @@ const navItems = [
   {
     title: '스터디룸',
     icon: study,
-    url: '/:study',
+    url: '/study',
   },
   {
     title: '취미룸',
     icon: hobby,
-    url: '/:hobby',
+    url: '/hobby',
   },
   {
     title: '책상기록',
@@ -38,7 +40,14 @@ const navItems = [
 ];
 
 const SideBar: React.FC<SideBarProps> = () => {
+  const [isCategory, setIsCategory] = useRecoilState(SelectCateoryAtom);
+
   const token = getCookie('token');
+
+  const ChangeCategory = (category:string) => {
+    alert(category)
+    console.log('클릭')
+  }
 
   return (
     <Sidebar>
@@ -51,8 +60,7 @@ const SideBar: React.FC<SideBarProps> = () => {
           <SidebarMenu>
             {navItems.map(item => (
               <SidebarButton to={item.url}>
-                <img src={item.icon} />
-
+                <img src={item.icon}/>
                 <p>{item.title}</p>
               </SidebarButton>
             ))}
@@ -127,7 +135,7 @@ const SidebarMenu = styled.div`
   }
 
   &:hover {
-    width: 200px;
+    width: 180px;
 
     ${SidebarButton} img {
       transition: 0.3s;
@@ -152,7 +160,7 @@ const SidebarInner = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  width: 200px;
+  width: 180px;
   height: 100%;
 
   display: flex;
@@ -170,16 +178,17 @@ const Sidebar = styled.div`
   height: 100vh;
   /* background: #999; */
   transition: width 0.4s;
+  z-index: 10;
 
   ${SidebarHeader} {
     transition: width 0.3s; // 이걸 추가해!
   }
 
   &:hover {
-    width: 200px;
+    width: 180px;
 
     ${SidebarHeader} {
-      width: 200px;
+      width: 180px;
     }
 
     ${SidebarButton} p {

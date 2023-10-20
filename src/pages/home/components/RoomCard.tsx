@@ -14,6 +14,7 @@ type RoomCardProps = {
     agoraAppId: string;
     agoraToken: string;
     ownerId: number;
+    file: string;
   };
 };
 
@@ -24,8 +25,8 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
 
   return (
     <Container col justify="center">
-      <Thumbmail src={thumbnail} onClick={() => setIsOpen(true)}></Thumbmail>
-      <Contents justify="start" gap="9px">
+      <Thumbmail src={room.file} onClick={() => setIsOpen(true)}></Thumbmail>
+      <Contents justify="start" gap="9px"  onClick={() => setIsOpen(true)}>
         <Img></Img>
         <ContentText col justify="start">
           <RoomTitle>{room.title}</RoomTitle>
@@ -74,6 +75,8 @@ const RoomTitle = styled.div`
   line-height: 123.5%; /* 18.525px */
   letter-spacing: 0.25px;
   text-overflow: ellipsis;
+
+  width: 240px;
 `;
 
 const Img = styled.div`
@@ -91,6 +94,7 @@ const Contents = styled(FlexContainer)`
 
 const Thumbmail = styled.img`
   width: 100%;
+  border-radius: 10px;
 `;
 
 const Container = styled(FlexContainer)`

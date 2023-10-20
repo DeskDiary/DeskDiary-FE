@@ -22,6 +22,7 @@ interface Room {
   agoraAppId: string;
   agoraToken: string;
   ownerId: number;
+  file: string;
 }
 
 const MyDesk: React.FC<MyDeskProps> = () => {
@@ -93,7 +94,7 @@ const ListTitle = styled.div`
 `;
 
 const Container = styled(FlexContainer)`
-  width: 1525px;
+  width: 70%;
   height: 100%;
 `;
 

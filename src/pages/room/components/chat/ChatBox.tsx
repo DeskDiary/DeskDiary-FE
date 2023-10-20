@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Chat from './Chat';
 import io from 'socket.io-client';
+import send from '../../../../images/send.svg'
 
 const socket = io('http://localhost:5000');
 
@@ -60,24 +61,24 @@ const ChatBox: React.FC<ChatBoxProps> = () => {
           value={newMessage}
           onChange={e => setNewMessage(e.target.value)}
         ></UserInput>
-        <SendButton type="submit"></SendButton>
+        <SendButton type="submit">
+          <img src={send} />
+        </SendButton>
       </ChatForm>
-      <div className="w-screen h-screen flex justify-center items-center gap-2">
+      {/* <SendMessageBox  gap="2px">
             <input
               type="text"
               name=""
               id=""
               value={username}
               onChange={(e) => setUserName(e.target.value)}
-              className="text-center px-3 py-2 outline-none border-2 rounded-md"
             />
             <button
               type="submit"
-              className="bg-green-500 text-white px-3 py-2 rounded-md font-bold"
             >
               Start chat
             </button>
-          </div>
+          </SendMessageBox> */}
     </Container>
   );
 };
@@ -95,12 +96,19 @@ const FlexContainer = styled.div<{
   gap: ${props => props.gap || '0'};
 `;
 
+const SendMessageBox = styled(FlexContainer)`
+  width: 100%;
+  height: 10%;
+  background-color: green;
+`
+
 const SendButton = styled.button`
   width: 35px;
   height: 35px;
-  border-radius: 50%;
   border: none;
   margin: 10px;
+  background-color: white;
+  cursor: pointer;
 `;
 
 const UserInput = styled.input`
@@ -119,19 +127,33 @@ const ChatForm = styled.form`
   flex-direction: row;
   justify-content: start;
   align-items: center;
-  width: 100%;
-  padding: 10px 0;
+  height: 42px;
+  width: 92%;
+  margin: 12px;
+  border: 1px solid var(--gray-07);
+  border-radius: 5px;
 `;
 
 const ChatList = styled(FlexContainer)`
-  background-color: white;
   height: 100%;
   width: calc(100% - 40px);
   padding: 20px;
+  border-bottom: 1px solid var(--gray-05);
 `;
+
 const Container = styled(FlexContainer)`
-  width: 100%;
-  height: 100%;
+  width: 17.8%;
+  height: 70%;
+  background-color: white;
+  border: 1px solid black;
+  margin: 10px;
+  margin-bottom: 0;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  position: fixed;
+  bottom: 60px;
+  right: 7px;
+  filter: drop-shadow(0px 7px 20px rgba(0, 0, 0, 0.25));
 `;
 
 export default ChatBox;
