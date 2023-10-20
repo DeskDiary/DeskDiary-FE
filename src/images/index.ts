@@ -1,15 +1,15 @@
-import hobby from './hobby.svg'
-import home from './home.svg'
+import hobby from './main/hobby.svg'
+import home from './main/home.svg'
 import logo from './logo.png'
-import mypage from './mypage.png'
 import profile from './profile.png'
-import study from './study.svg'
-import mydesk from './mydesk.svg'
+import study from './main/study.svg'
+import mydesk from './main/mydesk.svg'
 import unchecked from './unchecked.png'
 import XIcon from './Vector.svg'
 import colorChecked from './colorChecked.svg'
 import addroom from './addroom.svg'
-import kakao from './kakao.svg'
-import google from './google.svg'
+import kakao from './main/kakao.svg'
+import google from './main/google.svg'
+import MaxUser from './room/MaxUser.svg'
 
-export { kakao, google, addroom, colorChecked, XIcon, hobby, home, logo, study, mypage, profile, mydesk, unchecked}
+export { MaxUser, kakao, google, addroom, colorChecked, XIcon, hobby, home, logo, study, profile, mydesk, unchecked}

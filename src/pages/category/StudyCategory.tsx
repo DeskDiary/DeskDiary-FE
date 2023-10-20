@@ -1,12 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import RoomList from '../home/components/RoomList';
+import MainTop from '../../components/MainTop';
 
 type StudyCategoryProps = {};
 
 const StudyCategory: React.FC<StudyCategoryProps> = () => {
   return (
     <Container col>
+      <MainTop />
       <Info>랭킹</Info>
 
       <Rooms col>
@@ -36,7 +38,7 @@ width: 100%`;
 const Container = styled(FlexContainer)`
   width: 1525px;
   height: 100%;
-  padding-top: 30px;
+
 `;
 
 const Info = styled(FlexContainer)`

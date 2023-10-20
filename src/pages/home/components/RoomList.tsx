@@ -18,16 +18,6 @@ type RoomListProps = {
   show: string;
 };
 
-interface Room {
-  uuid: string;
-  title: string;
-  category: string;
-  agoraAppId: string;
-  agoraToken: string;
-  ownerId: number;
-  file: string;
-}
-
 const fetchFunctions = {
   fetchRoomPopular: fetchRoomPopular,
   fetchRoomLatest: fetchRoomLatest,
@@ -69,7 +59,7 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
 
   console.log('fetchName: ', fetchName);
 
-  const { data, error, isLoading } = useQuery<Room[], Error>(
+  const { data, error, isLoading } = useQuery<room[], Error>(
     [fetchName, show, sort], // 쿼리 키를 배열로 만들어 fetchName, show, sort 추가
     async () => {
       const fetchFunc =
@@ -130,7 +120,7 @@ const Category = styled.button`
 
 const List = styled(FlexContainer)`
   margin-top: 72px;
-  height: 600px;
+  height:100%;
   width: 100%;
 `;
 
@@ -144,6 +134,7 @@ const JoinedRooms = styled.div`
   grid-template-columns: repeat(5, 1fr);
   gap: 16px;
   width: 100%;
+
   overflow: scroll;
 
   // 화면 크기에 따라 카드 개수 변경

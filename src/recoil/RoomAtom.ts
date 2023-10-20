@@ -2,7 +2,22 @@ import { atom } from 'recoil';
 
 export const RoomAtom = atom({
   key: 'RoomAtom',
-  default: { title: '', maxHeadcount: 1, category: '', note: '', file: '' },
+  default: {
+    agoraAppId: '',
+    agoraToken: '',
+    category: '',
+    count: 1,
+    createdAt: '',
+    maxHeadcount: 1,
+    note: '',
+    nowHeadcount: 1,
+    ownerId: 1,
+    roomId: 1,
+    file: '',
+    title: '',
+    updatedAt: '',
+    uuid: '',
+  },
 });
 
 export const SelectCateoryAtom = atom({

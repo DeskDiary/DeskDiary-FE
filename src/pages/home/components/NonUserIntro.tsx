@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import nonUserIntro from '../../../images/nonUserIntro.png'
+import nonUserIntro from '../../../images/main/nonUserIntro.svg'
 
 type NonUserIntroProps = {};
 

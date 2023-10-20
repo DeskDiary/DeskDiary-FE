@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import 팔레트 from '../../images/mypage/palette.svg';
+import study from '../../../images/main/study.svg'
 
 type GoalPercentGraphProps = {};
 
