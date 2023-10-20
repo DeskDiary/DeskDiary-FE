@@ -1,33 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useQuery } from 'react-query';
-import axios from 'axios';
 
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
-import { RoomAtom } from '../../recoil/RoomAtom';
-
 import MainTop from '../../components/MainTop';
-import { DeskRecoder, Goal, NonUserIntro, RoomCard } from './components';
-import thumbnail from '../../images/sample.png';
-import nonUserInfo from '../../images/nonUserInfo.png';
+
+import { Goal, NonUserIntro} from './components';
 import { getCookie, setTokenCookie } from '../../auth/cookie';
 import RoomList from './components/RoomList';
-
-import { useRecoilState } from 'recoil';
-import { SelectCateoryAtom } from '../../recoil/RoomAtom';
 import userIntro from '../../images/userIntro.png'
 
 const Home = () => {
   const token = getCookie('token');
-
-  const fetchRooms = async () => {
-    const { data } = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL!}/room`,
-    );
-    // console.log('fetchRooms data', data);
-    return data;
-  };
 
   return (
     <Container col justify="start">
@@ -35,10 +17,10 @@ const Home = () => {
 
       <Info align="center" justify="space-between">
         {token ? (
-          <>
+          <User justify="space-between">
             <Goal />
             <img src={userIntro}/>
-          </>
+          </User>
         ) : (
           <NonUserIntro />
         )}
@@ -67,9 +49,19 @@ const FlexContainer = styled.div<{
 
 const Container = styled(FlexContainer)`
   width: 1525px;
+  height: 100vh;
 `;
+
+const User = styled(FlexContainer)`
+height: 100%;
+width: 100%;
+  >Img{
+    height: 100%;
+  }`
 
 const Info = styled(FlexContainer)`
   width: 100%;
+  height: 220px;
 `;
+
 export default Home;

@@ -54,9 +54,8 @@ const GlobalStyle = createGlobalStyle`
 
   *{
     font-family: Pretendard;
-    /* font-family: NotoSansKR-Regular; */
     font-style: normal;
-    font-weight: 900;
+    font-weight: 400;
     line-height: 123.5%; /* 29.64px */
     letter-spacing: 0.25px;
     font-feature-settings: 'clig' off, 'liga' off;

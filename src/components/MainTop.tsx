@@ -45,8 +45,7 @@ const MainTop: React.FC<MainTopProps> = () => {
   }, [data]);
 
   return (
-    <NavHeader justify="center">
-      <NavContent justify="space-between">
+    <NavHeader justify="space-between">
       {token ? (
         <User to="/mypage/:id">
           <img src={data?.profileImage}></img>
@@ -81,7 +80,6 @@ const MainTop: React.FC<MainTopProps> = () => {
       {openCreateRoom && (
         <CreateRoomModal setOpenCreateRoom={setOpenCreateRoom} />
       )}
-      </NavContent>
     </NavHeader>
   );
 };
@@ -98,12 +96,6 @@ const FlexContainer = styled.div<{
   justify-content: ${props => (props.justify ? props.justify : 'center')};
   gap: ${props => props.gap || '0'};
 `;
-
-const NavContent = styled(FlexContainer)`
-  width: 1625px;
-  padding: 0 50px;
-  
-`
 
 const User = styled(Link)`
   display: flex;
@@ -156,18 +148,11 @@ const CreateRoomButton = styled.button`
 `;
 
 const NavHeader = styled(FlexContainer)`
-  width: 100%;
+  width: 1525px;
 
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 0;
   padding-top: 28px;
+  margin-bottom: 70px;
 
-  background-color: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(
-    5px
-  ); // 블러 정도 설정. 숫자를 조절해서 블러 정도를 변경할 수 있어.
 `;
 
 const Search = styled(FlexContainer)<{ isFocused: boolean }>`

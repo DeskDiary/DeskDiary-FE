@@ -14,7 +14,7 @@ const MainLayout: React.FC<MainLayoutProps> = () => {
       {/* <Header></Header> */}
       {/* <SideMenu></SideMenu> */}
       <SideBar />
-      <MainTop />
+      {/* <MainTop /> */}
       <Outlet />
     </Wrap>
   );
@@ -25,10 +25,8 @@ const Wrap = styled.div`
   position: relative;
   width: 100vw;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
-  ;
-
-  margin-top: 110px;
+  align-items: center;
 `;
 export default MainLayout;

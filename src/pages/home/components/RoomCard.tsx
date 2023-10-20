@@ -6,13 +6,20 @@ import JoinRoomModal from '../../JoinRoomModal';
 
 type RoomCardProps = {
   room: {
-    uuid: string;
-    title: string;
-    category: string;
     agoraAppId: string;
     agoraToken: string;
+    category: string;
+    count: number;
+    createdAt: string;
+    maxHeadcount: number;
+    note: string;
+    nowHeadcount: number;
     ownerId: number;
-    file: string;
+    roomId: number;
+    file?: string;
+    title: string;
+    updatedAt: string;
+    uuid: string;
   };
 };
 
@@ -23,14 +30,19 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
 
   return (
     <Container col justify="center">
-      <Thumbmail src={room.file} onClick={() => setIsOpen(true)}></Thumbmail>
-      <Contents justify="start" gap="9px"  onClick={() => setIsOpen(true)}>
+      <Thumbmail
+        src={room.file ? room.file : sample}
+        onClick={() => setIsOpen(true)}
+      ></Thumbmail>
+      <Contents justify="start" gap="9px" onClick={() => setIsOpen(true)}>
         <Img></Img>
         <ContentText col justify="start">
           <RoomTitle>{room.title}</RoomTitle>
-          <Tags justify="start" align="center" gap="6">
-            <Tag>#{room.category}</Tag>
-            <Tag>#{room.category}</Tag>
+          <Tags justify="start" align="center">
+            <img src={MaxUser} />
+            <Tag>
+              {room.nowHeadcount}/{room.maxHeadcount}
+            </Tag>
           </Tags>
         </ContentText>
       </Contents>
@@ -54,7 +66,9 @@ const FlexContainer = styled.div<{
 
 const ContentText = styled(FlexContainer)``;
 
-const Tags = styled(FlexContainer)``;
+const Tags = styled(FlexContainer)`
+  margin-right: auto;
+`;
 
 const Tag = styled.div`
   font-size: 15px;
@@ -62,6 +76,8 @@ const Tag = styled.div`
   font-weight: 400;
   line-height: 123.5%; /* 18.525px */
   letter-spacing: 0.25px;
+
+  margin-left: 15px;
 `;
 
 const RoomTitle = styled.div`
@@ -86,17 +102,17 @@ const Img = styled.div`
 
 const Contents = styled(FlexContainer)`
   margin: 12px 0;
-  width: 100%;
-  height: 100%;
+  height: 50px;
 `;
 
 const Thumbmail = styled.img`
   width: 100%;
   border-radius: 10px;
+  overflow: hidden;
 `;
 
 const Container = styled(FlexContainer)`
-  width: 100%;
+  width: 290px;
   height: 240px;
   cursor: pointer;
 `;
