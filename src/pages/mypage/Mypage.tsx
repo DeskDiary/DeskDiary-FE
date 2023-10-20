@@ -1,18 +1,19 @@
 import styled from '@emotion/styled';
-import React, {ChangeEvent, useState} from 'react';
+import React, { ChangeEvent, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import MainTop from '../../components/MainTop';
 import { profile } from '../../images';
-import { Button } from '@mui/material';
-import { useRecoilState } from 'recoil';
 import { UserAtom } from '../../recoil/UserAtom';
 
 import { useQuery } from 'react-query';
+
 import axios from 'axios';
-import { useRecoilValue } from 'recoil';
+import { getCookie } from '../../auth/cookie';
+import { fetchUser } from '../../axios/api';
 import { RoomAtom } from '../../recoil/RoomAtom';
-import {fetchUser} from '../../axios/api'
-import { getCookie, setTokenCookie } from '../../auth/cookie';
+import RecordGraph from './RecordGraph';
 import Profile from './components/Profile';
+
 
 type MypageProps = {};
 
@@ -134,6 +135,7 @@ const Mypage: React.FC<MypageProps> = () => {
           <Content>{data?.nickname}</Content>
         </UserInfo>
       </UserProfile>
+      <RecordGraph />
     </Container>
   );
 };
