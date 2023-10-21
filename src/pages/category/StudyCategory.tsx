@@ -7,13 +7,12 @@ type StudyCategoryProps = {};
 
 const StudyCategory: React.FC<StudyCategoryProps> = () => {
   return (
-    <Container col>
+    <Container col justify="start">
       <MainTop />
       <Info>랭킹</Info>
 
       <Rooms col>
         <RoomList label="전체 스터디룸" show="fetchStudy" />
-        {/* <RoomList label="전체 스터디룸" show="fetchStudy" /> */}
       </Rooms>
     </Container>
   );
@@ -33,12 +32,12 @@ const FlexContainer = styled.div<{
 `;
 
 const Rooms = styled(FlexContainer)`
-width: 100%`;
+  width: 100%;
+`;
 
 const Container = styled(FlexContainer)`
   width: 1525px;
-  height: 100%;
-
+  height: 100vh;
 `;
 
 const Info = styled(FlexContainer)`

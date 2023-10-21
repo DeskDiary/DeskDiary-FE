@@ -86,7 +86,7 @@ const ListTitle = styled.div`
 
 const Container = styled(FlexContainer)`
   width: 1525px;
-  height: 100%;
+  height: 100vh;
 `;
 
 const JoinedRooms = styled.div`
