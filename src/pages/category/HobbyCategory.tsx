@@ -7,13 +7,12 @@ type hobbyCategoryProps = {};
 
 const hobbyCategory: React.FC<hobbyCategoryProps> = () => {
   return (
-    <Container col>
+    <Container col justify='start'>
       <MainTop />
       <Info>랭킹</Info>
 
       <Rooms col>
         <RoomList label="전체 취미룸" show="fetchHobby" />
-        {/* <RoomList label="전체 취미룸" show="fetchHobby" /> */}
       </Rooms>
     </Container>
   );
@@ -32,11 +31,12 @@ const FlexContainer = styled.div<{
   gap: ${props => props.gap || '0'};
 `;
 
-const Rooms = styled(FlexContainer)``;
+const Rooms = styled(FlexContainer)`
+  width: 100%;`;
 
 const Container = styled(FlexContainer)`
   width: 1525px;
-  height: 100%;
+  height: 100vh;
 `;
 
 const Info = styled(FlexContainer)`

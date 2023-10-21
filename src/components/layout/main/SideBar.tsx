@@ -174,7 +174,7 @@ const Sidebar = styled.div`
   left: 0;
   width: 80px;
   height: 100vh;
-  /* background: #999; */
+  background: white;
   transition: width 0.4s;
   z-index: 0;
 
