@@ -5,6 +5,8 @@ import MaxUser from '../../../images/room/MaxUser.svg';
 import sample from '../../../images/sample.jpg';
 import { RoomAtom } from '../../../recoil/RoomAtom';
 import JoinRoomModal from '../../JoinRoomModal';
+import sample from '../../../images/sample.jpg'
+import MaxUser from '../../../images/room/MaxUser.svg'
 
 type RoomCardProps = {
   room: {
