@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import Chat from './Chat';
 import io from 'socket.io-client';
-import send from '../../../../images/send.svg'
-import 공지사진 from '../../../../images/공지.png'
+import styled from 'styled-components';
+import send from '../../../../images/send.svg';
+import 공지사진 from '../../../../images/공지.png';
+import Chat from './Chat';
+
 
 const socket = io('http://localhost:5000');
 

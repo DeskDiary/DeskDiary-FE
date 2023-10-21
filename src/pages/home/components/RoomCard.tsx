@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
+import MaxUser from '../../../images/room/MaxUser.svg';
+import sample from '../../../images/sample.jpg';
 import { RoomAtom } from '../../../recoil/RoomAtom';
 import JoinRoomModal from '../../JoinRoomModal';
 import sample from '../../../images/sample.jpg'
