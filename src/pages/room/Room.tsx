@@ -69,6 +69,7 @@ const Room: React.FC<RoomProps> = () => {
 
 const Container = styled.div`
   display: flex;
+  width: 100%;
   height: calc(100vh - 60px);
   background: var(--gray-09);
 `;
@@ -83,9 +84,9 @@ const Area = styled.div`
 `;
 
 const CamAreaDiv = styled.div`
-  width: 100%;
+  width: calc(100% - 380px);
   margin-top: 61px;
-  height: calc(100vh - (217 - 61) px);
+  height: calc(100vh - (217px - 61px));
   margin-left: 40px;
   margin-right: 40px;
   margin-bottom: 61px;
@@ -99,7 +100,7 @@ const CamAreaDiv = styled.div`
 `;
 
 const ChattingAreaDiv = styled.div`
-  width: 30%;
+  width: 380px;
 `;
 
 export default Room;

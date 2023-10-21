@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import 재생 from '../../../images/audio/Button_Play.svg';
 import 일시정지 from '../../../images/audio/audio_stop.svg';
+import 뒤로가기 from '../../../images/audio/back_button.svg';
+import 앞으로가기 from '../../../images/audio/front_button.svg';
+import 음소거 from '../../../images/audio/volume_off.svg';
+import 소리최대 from '../../../images/audio/volume_up.svg';
 import 이미지 from '../../../images/logo.png';
-
 type AsmrPlayerProps = {};
 
 const asmrList = [
@@ -65,13 +69,16 @@ const AsmrPlayer: React.FC<AsmrPlayerProps> = () => {
     <Body>
       <AudioImg src={이미지} alt="" />
       <div>
-        <p>{asmrList[current].title}</p>
+        <Title>{asmrList[current].title}</Title>
         <audio ref={audioRef} src={asmrList[current].src} />
       </div>
-      <div>
-        <PlayButton onClick={togglePlay} />
-        <button onClick={nextCurrentHandler}>앞으로가기</button>
-        <button onClick={backCurrentHandler}>뒤로가기</button>
+      <PlayBox>
+        <BackButton onClick={backCurrentHandler} img={뒤로가기} />
+        <PlayButton onClick={togglePlay} isPlaying={isPlaying} />
+        <FrontButton onClick={nextCurrentHandler} img={앞으로가기} />
+      </PlayBox>
+      <VolumeBox>
+        <MuteButton img={음소거} />
         <VolumeSlider
           type="range"
           min="0"
@@ -80,40 +87,99 @@ const AsmrPlayer: React.FC<AsmrPlayerProps> = () => {
           value={volume}
           onChange={handleVolumeChange}
         />
-      </div>
+        <MaxSoundButton img={소리최대} />
+      </VolumeBox>
     </Body>
   );
 };
 
 const Body = styled.div`
-  width: calc(90% - 5% - 10px);
-  background-color: white;
+  width: 100%;
+  background-color: gray;
   border: 1px solid black;
-  margin: 10px;
-  border-radius: 10px;
   display: flex;
-  padding: 5%;
+  flex-direction: column;
   align-items: center;
 `;
 const AudioImg = styled.img`
-  width: 70px;
-  height: 70px;
-  border-radius: 10px;
+  margin-top: 21px;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  margin-bottom: 10px;
 `;
 
-const PlayButton = styled.button`
-  background-image: url(${일시정지});
+const Title = styled.div`
+  font-size: 14px;
+  color: white;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+const PlayBox = styled.div`
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+`;
+
+const PlayButton = styled.button<{ isPlaying: boolean }>`
+  background-image: url(${props => (props.isPlaying ? 일시정지 : 재생)});
   background-size: cover;
   width: 40px;
   height: 40px;
   border-radius: 50%;
   border: none;
+  background-color: transparent;
+`;
+
+const FrontButton = styled.button<{ img: any }>`
+  background-image: url(${props => props.img});
+  width: 16px;
+  height: 20px;
+  border: none;
+  background-color: transparent;
+`;
+
+const BackButton = styled.button<{ img: any }>`
+  background-image: url(${props => props.img});
+  width: 16px;
+  height: 20px;
+  border: none;
+  background-color: transparent;
+`;
+
+const VolumeBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 310px;
+  margin-bottom: 16px;
 `;
 
 const VolumeSlider = styled.input`
-  width: 100px;
-  accent-color : var(--primary-01);
+  width: 200px;
+  accent-color: var(--primary-01);
+  height: 5px;
 `;
 
+const MuteButton = styled.button<{ img: any }>`
+  background-image: url(${props => props.img});
+  width: 24px;
+  height: 24px;
+  border: none;
+  background-color: transparent;
+`;
+
+const MaxSoundButton = styled.button<{ img: any }>`
+  background-image: url(${props => props.img});
+  width: 24px;
+  height: 24px;
+  border: none;
+  background-color: transparent;
+`;
 
 export default AsmrPlayer;

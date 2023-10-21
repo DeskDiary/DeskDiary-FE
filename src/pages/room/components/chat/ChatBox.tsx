@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import Chat from './Chat';
 import io from 'socket.io-client';
-import send from '../../../../images/send.svg'
+import styled from 'styled-components';
+import send from '../../../../images/send.svg';
+import Chat from './Chat';
 
 const socket = io('http://localhost:5000');
 

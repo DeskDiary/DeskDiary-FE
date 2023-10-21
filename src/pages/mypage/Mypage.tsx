@@ -11,7 +11,7 @@ import axios from 'axios';
 import { getCookie } from '../../auth/cookie';
 import { fetchUser } from '../../axios/api';
 import { RoomAtom } from '../../recoil/RoomAtom';
-import RecordGraph from './RecordGraph';
+import GoalRecordChart from './chart/GoalRecordChart';
 import Profile from './components/Profile';
 
 
@@ -120,7 +120,7 @@ const Mypage: React.FC<MypageProps> = () => {
           <Content>{data?.nickname}</Content>
         </UserInfo>
       </UserProfile>
-      <RecordGraph />
+      <GoalRecordChart />
     </Container>
   );
 };
