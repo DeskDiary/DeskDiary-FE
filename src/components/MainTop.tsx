@@ -16,6 +16,7 @@ const MainTop: React.FC<MainTopProps> = () => {
   const [isFocused, setIsFocused] = useState(false);
   const [openCreateRoom, setOpenCreateRoom] = useState(false);
 
+
   const [nickname, setNickname] = useState('');
 
   const token = getCookie('token');
@@ -42,7 +43,7 @@ const MainTop: React.FC<MainTopProps> = () => {
     if (data) {
       setNickname(data.nickname);
     }
-  }, [data]);
+  }, [data, token, nickname]);
 
   return (
     <NavHeader justify="space-between">

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Chat from './Chat';
 import io from 'socket.io-client';
 import send from '../../../../images/send.svg'
+import 공지사진 from '../../../../images/공지.png'
 
 const socket = io('http://localhost:5000');
 
@@ -51,6 +52,7 @@ const ChatBox: React.FC<ChatBoxProps> = () => {
 
   return (
     <Container col justify="start">
+      <ChatImg src={공지사진} />
       <ChatList col justify="start" align="start" gap="15px">
         {messages.map((message, index) => {
           return <Chat key={index} message={message}/>;
@@ -65,20 +67,6 @@ const ChatBox: React.FC<ChatBoxProps> = () => {
           <img src={send} />
         </SendButton>
       </ChatForm>
-      {/* <SendMessageBox  gap="2px">
-            <input
-              type="text"
-              name=""
-              id=""
-              value={username}
-              onChange={(e) => setUserName(e.target.value)}
-            />
-            <button
-              type="submit"
-            >
-              Start chat
-            </button>
-          </SendMessageBox> */}
     </Container>
   );
 };
@@ -95,6 +83,11 @@ const FlexContainer = styled.div<{
   justify-content: ${props => (props.justify ? props.justify : 'center')};
   gap: ${props => props.gap || '0'};
 `;
+
+const ChatImg = styled.img`
+margin: 5px auto 0 5px;
+filter: grayscale(100%);
+`
 
 const SendMessageBox = styled(FlexContainer)`
   width: 100%;
@@ -142,18 +135,9 @@ const ChatList = styled(FlexContainer)`
 `;
 
 const Container = styled(FlexContainer)`
-  width: 17.8%;
-  height: 70%;
-  background-color: white;
-  border: 1px solid black;
-  margin: 10px;
-  margin-bottom: 0;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  position: fixed;
-  bottom: 60px;
-  right: 7px;
-  filter: drop-shadow(0px 7px 20px rgba(0, 0, 0, 0.25));
+  width: 100%;
+  height: 100%;
+  border: 1px solid var(--gray-07);
 `;
 
 export default ChatBox;

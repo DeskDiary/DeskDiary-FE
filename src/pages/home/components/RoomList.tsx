@@ -74,7 +74,7 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
   );
 
   return (
-    <List col align="start">
+    <List col align="start" justify='start'>
       <ListInfo justify="space-between">
         <ListTitle>{label}</ListTitle>
         <Categorys gap="15px">

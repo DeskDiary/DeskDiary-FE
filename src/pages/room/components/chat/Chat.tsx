@@ -56,20 +56,19 @@ const FlexContainer = styled.div<{
 
 const Metadata = styled(FlexContainer)`
   width: 100%;
-  position: relative;
 `;
 
 const Time = styled.div`
-  color: #9e9e9e;
+  color: var(--gray-05);
   font-size: 12px;
-  position: fixed;
-  right: 6%;
+  margin-left: auto;
 `;
 
 const Message = styled.div`
   font-size: 15px;
   word-wrap: break-word;
   width: 100%;
+  color: white;
   @media (min-width: 768px) {
     width: 300px;
   }
