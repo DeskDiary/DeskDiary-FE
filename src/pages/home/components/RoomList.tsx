@@ -114,7 +114,7 @@ const Categorys = styled(FlexContainer)`
 `;
 
 const Category = styled.button`
-  font-size: 24px;
+  font-size: 14px;
   font-weight: 400;;
 `;
 
@@ -132,15 +132,10 @@ const ListTitle = styled.div`
 const JoinedRooms = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 16px;
-  width: 100%;
+  gap: 12px;
+  width: 1215px;
 
   overflow: scroll;
-
-  // 화면 크기에 따라 카드 개수 변경
-  @media (max-width: 1500px) {
-    grid-template-columns: repeat(4, 1fr);
-  }
 
   @media (max-width: 1200px) {
     grid-template-columns: repeat(3, 1fr);

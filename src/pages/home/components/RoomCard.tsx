@@ -28,12 +28,11 @@ type RoomCardProps = {
 const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const rooms = useRecoilValue(RoomAtom);
-
   return (
     <Container col justify="center">
       <Thumbmail
         src={room.file ? room.file : sample}
+        alt="room thumbnail"
         onClick={() => setIsOpen(true)}
       ></Thumbmail>
       <Contents justify="start" gap="9px" onClick={() => setIsOpen(true)}>
@@ -41,7 +40,7 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
         <ContentText col justify="start">
           <RoomTitle>{room.title}</RoomTitle>
           <Tags justify="start" align="center">
-            <img src={MaxUser} />
+            <img src={MaxUser} alt="user count"/>
             <Tag>
               {room.nowHeadcount}/{room.maxHeadcount}
             </Tag>
@@ -70,52 +69,48 @@ const ContentText = styled(FlexContainer)``;
 
 const Tags = styled(FlexContainer)`
   margin-right: auto;
+
+  >img{
+    width: 20px;
+  }
 `;
 
 const Tag = styled.div`
-  font-size: 15px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 123.5%; /* 18.525px */
-  letter-spacing: 0.25px;
+  font-size: 14px;
 
-  margin-left: 15px;
+  margin-left: 5px;
 `;
 
 const RoomTitle = styled.div`
   margin-right: auto;
   overflow: hidden;
-  font-size: 15px;
-  font-style: normal;
+  font-size: 14px;
   font-weight: 500;
-  line-height: 123.5%; /* 18.525px */
-  letter-spacing: 0.25px;
   text-overflow: ellipsis;
-
-  width: 240px;
 `;
 
 const Img = styled.div`
   background-color: #d9d9d9;
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
 `;
 
 const Contents = styled(FlexContainer)`
   margin: 12px 0;
   height: 50px;
+  width: 100%;
 `;
 
 const Thumbmail = styled.img`
-  width: 100%;
+  width: 97%;
   border-radius: 10px;
   overflow: hidden;
 `;
 
 const Container = styled(FlexContainer)`
-  width: 290px;
-  height: 240px;
+  width: 230px;
+  height: 200px;
   cursor: pointer;
 `;
 export default RoomCard;

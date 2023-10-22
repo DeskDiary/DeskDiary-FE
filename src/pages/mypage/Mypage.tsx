@@ -1,126 +1,84 @@
 import styled from '@emotion/styled';
-import React, { ChangeEvent, useState } from 'react';
+import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import MainTop from '../../components/MainTop';
 import { profile } from '../../images';
-import { UserAtom } from '../../recoil/UserAtom';
+import { down, right } from '../../images/mypage';
+import { UserAtom, ProfiltUpdate } from '../../recoil/UserAtom';
 
 import { useQuery } from 'react-query';
 
-import axios from 'axios';
 import { getCookie } from '../../auth/cookie';
 import { fetchUser } from '../../axios/api';
 import { RoomAtom } from '../../recoil/RoomAtom';
-import GoalRecordChart from './chart/GoalRecordChart';
 import Profile from './components/Profile';
-
+import MypageToggle from './components/MypageToggle';
 
 type MypageProps = {};
 
-// 썸네일 등록 버튼 스타일
-const VisuallyHiddenInput = styled('input')({
-  clip: 'rect(0 0 0 0)',
-  clipPath: 'inset(50%)',
-  height: 1,
-  overflow: 'hidden',
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  whiteSpace: 'nowrap',
-  width: 1,
-});
-
-
 const Mypage: React.FC<MypageProps> = () => {
   const token = getCookie('token');
-  const [image, setImage] = useState('');
   const [user, setUser] = useRecoilState(UserAtom);
-
   const [formData, setFormData] = useRecoilState(RoomAtom);
-
-  const updateFormData = (field: string, value: any) => {
-    setFormData({
-      ...formData,
-      [field]: value,
-    });
-  };
-
-
   const { data, error, isLoading } = useQuery<user, Error>('user', fetchUser);
+  const [isOpen, setIsOpen] = useState(false);
 
-  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    console.log('51번째 줄', file);
+  const [edit, setEdit] = useRecoilState(ProfiltUpdate);
 
-    if (file) {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        const base64 = reader.result;
-        setImage(base64 as string);
-        updateFormData('file', base64 as string)
-      };
-    }
+  const lists = [
+    { i: 1, title: '공지 사항', url: '/mypage', type: 'noPage' },
+    { i: 2, title: '서비스 이용 약관', url: '/mypage', type: 'noPage' },
+    { i: 3, title: '자주 묻는 질문', url: '/mypage', type: 'noPage' },
+    { i: 4, title: '계정 관리', url: '/mypage', type: '계정관리' },
+    { i: 5, title: '로그아웃', url: '/mypage', type: '로그아웃' },
+    { i: 6, title: '환경 설정', url: '/mypage', type: 'noPage' },
+  ];
+
+  const onClickToggle = () => {
+    setIsOpen(!isOpen);
   };
 
-  const onSubmitRoom = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log('저장?')
-    
-    // FormData 객체 생성
-    const formData = new FormData();
-
-    if (image) {
-      console.log('이미지 있음')
-      formData.append('file', image);
-    }
-    
-    formData.append('profileImage', user.file);
-
-    console.log('프로필 이미지 선택', formData.get('profileImage'));
-
-
-    try {
-      console.log('try')
-      const config = {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${token}`,  // JWT 토큰을 여기에 삽입해주세요
-        },
-      };
-      const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL!}/auth/profile/image`,
-        formData, config);
-
-        console.log('프로필 수정 서버로 전송', response.data);
-  
-      // 성공시 로직
-      if (response.data.profileImage) {
-        console.log('성공')
-        alert('프로필 수정 성공!');
-      } else {
-        console.log('실패ddzz', response.data)
-      }
-    } catch (error) {
-      console.log('프로필 수정 실패', error);
-    }
+  const onClickList = (type: string) => {
+    alert(type);
   };
-
 
   return (
-    <Container col justify="start" align="center">
+    <Container col justify="start">
       <MainTop />
-      <UserProfile col justify="start">
-        <ProfileImg src={data?.profileImage ? data?.profileImage : profile}></ProfileImg>
-        <Profile />
-        
-        
-        <UserInfo col>
-          <Label>닉네임</Label>
-          <Content>{data?.nickname}</Content>
-        </UserInfo>
-      </UserProfile>
-      <GoalRecordChart />
+      <Contants col justify="start">
+        <UserProfile col justify="start">
+          <ProfileImg
+            src={data?.profileImage ? data?.profileImage : profile}
+            alt="profile image"
+          ></ProfileImg>
+          {edit.open && <Profile />}
+
+          <UserInfo col>
+            <Label>닉네임</Label>
+            <Content>{data?.nickname}</Content>
+            {edit.open && (
+              <EditNickname>
+                <input />
+                <button>닉네임 저장</button>
+              </EditNickname>
+            )}
+          </UserInfo>
+        </UserProfile>
+        <Toggle justify="start" onClick={onClickToggle}>
+          <img src={isOpen ? down : right} alt="toggle" />
+          <span>계정관리</span>
+        </Toggle>
+        {isOpen && <MypageToggle />}
+        <Lists col>
+          {lists.map(list => {
+            return (
+              <List onClick={() => onClickList(list.type)}>{list.title}</List>
+            );
+          })}
+        </Lists>
+      </Contants>
+
+      {/* <GoalRecordChart /> */}
     </Container>
   );
 };
@@ -139,11 +97,41 @@ const FlexContainer = styled.div<{
   width: 100%;
 `;
 
+const EditNickname = styled(FlexContainer)`
+  width: 100%;
+
+`
+
+const Toggle = styled(FlexContainer)`
+  width: 100%;
+  margin-right: auto;
+  background: url();
+  margin-top: 70px;
+  > img {
+    margin-right: 5px;
+  }
+`;
+
+const List = styled.div`
+  width: 100%;
+  margin-right: auto;
+  font-size: 18px;
+  padding: 16px 0;
+  border-top: 1px solid var(--gray-03);
+  border-bottom: 1px solid var(--gray-03);
+  cursor: pointer;
+`;
+
+const Lists = styled(FlexContainer)`
+  /* margin-top: 70px; */
+`;
+
 const Content = styled.div``;
 
 const Label = styled.div``;
 
-const UserInfo = styled(FlexContainer)``;
+const UserInfo = styled(FlexContainer)`
+width: 100%`;
 
 const ProfileImg = styled.img`
   width: 170px;
@@ -153,8 +141,11 @@ const ProfileImg = styled.img`
 
 const UserProfile = styled(FlexContainer)`
   width: 800px;
-  background-color: aliceblue;
   margin-top: 70px;
+`;
+
+const Contants = styled(FlexContainer)`
+  width: 800px;
 `;
 
 const Container = styled(FlexContainer)`

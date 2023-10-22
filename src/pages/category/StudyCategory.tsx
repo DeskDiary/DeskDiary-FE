@@ -36,13 +36,13 @@ const Rooms = styled(FlexContainer)`
 `;
 
 const Container = styled(FlexContainer)`
-  width: 1525px;
-  height: 100vh;
+  width: 1200px;
+  height: 100%;
 `;
 
 const Info = styled(FlexContainer)`
   width: 100%;
-  height: 243px;
+  height: 200px;
   border: 1px solid black;
   font-size: 40px;
   font-weight: 800;

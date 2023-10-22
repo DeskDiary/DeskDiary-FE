@@ -20,7 +20,7 @@ type MyDeskProps = {};
 const MyDesk: React.FC<MyDeskProps> = () => {
   const fetchRooms = async () => {
     const { data } = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL!}/room`,
+      `${process.env.REACT_APP_SERVER_URL!}/my-rooms`,
     );
     console.log('fetchRooms data', data);
     return data;
@@ -34,7 +34,7 @@ const MyDesk: React.FC<MyDeskProps> = () => {
   return (
     <Container col justify="start">
       <MainTop />
-      <MyDeskTop justify="start">
+      <MyDeskTop justify="center">
         <RecordGraph />
       </MyDeskTop>
 
@@ -85,7 +85,7 @@ const ListTitle = styled.div`
 `;
 
 const Container = styled(FlexContainer)`
-  width: 1525px;
+  width: 1200px;
   height: 100vh;
 `;
 
