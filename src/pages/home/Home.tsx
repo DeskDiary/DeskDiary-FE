@@ -19,7 +19,7 @@ const Home = () => {
         {token ? (
           <User justify="space-between">
             <Goal />
-            <img src={userIntro}/>
+            <img src={userIntro} alt="user "/>
           </User>
         ) : (
           <NonUserIntro />
@@ -48,7 +48,7 @@ const FlexContainer = styled.div<{
 `;
 
 const Container = styled(FlexContainer)`
-  width: 1525px;
+  width: 1200px;
   height: 100vh;
 `;
 
@@ -56,12 +56,11 @@ const User = styled(FlexContainer)`
 height: 100%;
 width: 100%;
   >Img{
-    height: 100%;
+    width: 50%;
   }`
 
 const Info = styled(FlexContainer)`
   width: 100%;
-  height: 220px;
 `;
 
 export default Home;
