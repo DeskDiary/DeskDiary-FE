@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
-import {fetchUser} from '../../../../axios/api'
-import { getCookie, setTokenCookie } from '../../../../auth/cookie';
 import { useQuery } from 'react-query';
-import {profile} from '../../../../images'
+import styled from 'styled-components';
+import { getCookie } from '../../../../auth/cookie';
+import { fetchUser } from '../../../../axios/api';
+import { profile } from '../../../../images';
 
 type ChatProps = {
   message: {
@@ -69,9 +69,9 @@ const Message = styled.div`
   word-wrap: break-word;
   width: 100%;
   color: white;
-  @media (min-width: 768px) {
+  /* @media (min-width: 768px) {
     width: 300px;
-  }
+  } */
 `;
 
 const UserName = styled.div`
@@ -81,9 +81,9 @@ const UserName = styled.div`
 
 const ChatDetails = styled(FlexContainer)`
   width: 100%;
-  @media (min-width: 768px) {
+  /* @media (min-width: 768px) {
     width: 300px;
-  }
+  } */
 `;
 
 const UserImg = styled.img`

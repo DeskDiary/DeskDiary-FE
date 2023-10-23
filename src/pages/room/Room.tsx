@@ -1,9 +1,11 @@
 import styled from '@emotion/styled';
+import axios from 'axios';
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
+import { getCookie } from '../../auth/cookie';
 import history from '../../history';
-import { RoomUUIDAtom } from '../../recoil/RoomAtom';
+import { RoomAtom, RoomUUIDAtom } from '../../recoil/RoomAtom';
 import AsmrPlayer from './components/AsmrPlayer';
 import RoomCamArea from './components/RoomCamArea';
 import RoomHeader from './components/RoomHeader';
@@ -16,18 +18,22 @@ type RoomProps = {
 };
 
 const Room: React.FC<RoomProps> = () => {
-  const [joinUUID, setJoinUUID] = useRecoilState<string>(RoomUUIDAtom);
-
+  const [roomInfo, setRoomInfo] = useRecoilState(RoomAtom);
+  const [roomUUID, setRoomUUID] = useRecoilState(RoomUUIDAtom);
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
   const location = useLocation();
+  const token = getCookie('token');
   useEffect(() => {
-    setJoinUUID(location.pathname.split('/')[2]);
+    setRoomUUID(location.pathname.split('/')[2]);
+    getRoomInfo();
   }, []);
   const navigate = useNavigate();
+
   useEffect(() => {
     const listenBackEvent = () => {
       alert(`뒤로가기이벤트를 감지했똬${'\n'}방 나가기 버튼으로 나가롸
       `);
-      navigate(`/room/${joinUUID}`);
+      navigate(`/room/${roomUUID}`);
     };
 
     const unlistenHistoryEvent = history.listen(({ action }) => {
@@ -43,6 +49,37 @@ const Room: React.FC<RoomProps> = () => {
 
     return unlistenHistoryEvent;
   }, []);
+
+  const getRoomInfo = async () => {
+    const url = `${serverUrl}/room/${location.pathname.split('/')[2]}`;
+    console.log('url', url);
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = response.data.findRoom;
+      setRoomInfo({
+        agoraAppId: data.agoraAppId,
+        agoraToken: data.agoraToken,
+        category: data.category,
+        count: data.count,
+        createdAt: data.createdAt,
+        maxHeadcount: data.maxHeadcount,
+        note: data.note,
+        nowHeadcount: data.nowHeadcount,
+        ownerId: data.ownerId,
+        roomId: data.roomId,
+        roomThumbnail: data.roomThumbnail,
+        title: data.title,
+        updatedAt: data.updatedAt,
+        uuid: data.uuid,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>
@@ -103,7 +140,6 @@ const ChattingAreaDiv = styled.div`
   width: 380px;
   display: flex;
   flex-direction: column;
-
 `;
 
 export default Room;

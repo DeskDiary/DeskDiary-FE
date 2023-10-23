@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import MaxUser from '../../../images/room/MaxUser.svg';
 import sample from '../../../images/sample.jpg';
-import { RoomAtom } from '../../../recoil/RoomAtom';
 import JoinRoomModal from '../../JoinRoomModal';
 
 type RoomCardProps = {
@@ -18,7 +16,7 @@ type RoomCardProps = {
     nowHeadcount: number;
     ownerId: number;
     roomId: number;
-    file?: string;
+    roomThumbnail: string | null;
     title: string;
     updatedAt: string;
     uuid: string;
@@ -28,12 +26,10 @@ type RoomCardProps = {
 const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const rooms = useRecoilValue(RoomAtom);
-
   return (
     <Container col justify="center">
       <Thumbmail
-        src={room.file ? room.file : sample}
+        src={room.roomThumbnail ? room.roomThumbnail : sample}
         onClick={() => setIsOpen(true)}
       ></Thumbmail>
       <Contents justify="start" gap="9px" onClick={() => setIsOpen(true)}>
