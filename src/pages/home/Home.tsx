@@ -1,65 +1,65 @@
 import React, { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
-import MainTop from '../../components/MainTop';
+import MainTop from '../../components/layout/main/MainTop';
 
-import { Goal, NonUserIntro} from './components';
+import { Goal, NonUserIntro } from './components';
 import { getCookie, setTokenCookie } from '../../auth/cookie';
 import RoomList from './components/RoomList';
-import userIntro from '../../images/userIntro.png'
+import userIntro from '../../images/userIntro.png';
 
 const Home = () => {
   const token = getCookie('token');
 
   return (
-    <Container col justify="start">
+    <Container>
       <MainTop />
 
-      <Info align="center" justify="space-between">
+      <Info>
         {token ? (
-          <User justify="space-between">
+          <User>
             <Goal />
-            <img src={userIntro} alt="user "/>
+            <img src={userIntro} alt="user " />
           </User>
         ) : (
           <NonUserIntro />
         )}
       </Info>
 
-      <RoomList
-        label="엉덩이들이 많이 찾는 TOP 10"
-        show="fetchRoomTop"
-      />
+      <RoomList label="엉덩이들이 많이 찾는 TOP 10" show="fetchRoomTop" />
     </Container>
   );
 };
 
-const FlexContainer = styled.div<{
-  col?: boolean;
-  align?: string;
-  justify?: string;
-  gap?: string;
-}>`
+const Container = styled.div`
   display: flex;
-  flex-direction: ${props => (props.col ? 'column' : 'row')};
-  align-items: ${props => (props.align ? props.align : 'center')};
-  justify-content: ${props => (props.justify ? props.justify : 'center')};
-  gap: ${props => props.gap || '0'};
-`;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
 
-const Container = styled(FlexContainer)`
   width: 1200px;
   height: 100vh;
 `;
 
-const User = styled(FlexContainer)`
-height: 100%;
-width: 100%;
-  >Img{
-    width: 50%;
-  }`
+const User = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 
-const Info = styled(FlexContainer)`
+  height: 100%;
+  width: 100%;
+  > Img {
+    width: 50%;
+  }
+`;
+
+const Info = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
   width: 100%;
 `;
 

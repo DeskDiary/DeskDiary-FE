@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import React, { ChangeEvent, useState } from 'react';
-import MainTop from '../../../components/MainTop';
+import MainTop from '../../../components/layout/main/MainTop';
 import { profile } from '../../../images';
 import { Button } from '@mui/material';
 import { useRecoilState } from 'recoil';
@@ -13,7 +13,7 @@ import { RoomAtom } from '../../../recoil/RoomAtom';
 import { fetchUser } from '../../../axios/api';
 import { getCookie, setTokenCookie } from '../../../auth/cookie';
 
-type ProfileProps = {};
+type EditProfileImgProps = {};
 
 // 썸네일 등록 버튼 스타일
 const VisuallyHiddenInput = styled('input')({
@@ -28,7 +28,7 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 
-const Profile: React.FC<ProfileProps> = () => {
+const EditProfileImg: React.FC<EditProfileImgProps> = () => {
   const token = getCookie('token');
   const [image, setImage] = useState('');
   const [user, setUser] = useRecoilState(UserAtom);
@@ -118,4 +118,4 @@ const Profile: React.FC<ProfileProps> = () => {
     </Button>
   );
 };
-export default Profile;
+export default EditProfileImg;

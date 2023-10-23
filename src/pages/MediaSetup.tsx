@@ -101,7 +101,7 @@ const MediaSetup: React.FC<MediaSetupProps> = () => {
     startMicTest();
   }, [choiceMic]);
   return (
-    <Container col gap="22px">
+    <Container>
       {localStream ? (
         <Cam
           autoPlay
@@ -117,8 +117,8 @@ const MediaSetup: React.FC<MediaSetupProps> = () => {
         <Cam />
       )}
 
-      <CamSetting align="start" gap="10px">
-        <ButonGroup col align="start" gap="5px">
+      <CamSetting>
+        <ButonGroup>
           <TestButton onClick={startCameraTest} disabled={isCameraTesting}>
             Camera
           </TestButton>
@@ -137,7 +137,7 @@ const MediaSetup: React.FC<MediaSetupProps> = () => {
             })}
           </MediaSelect>
         </ButonGroup>
-        <ButonGroup col align="start" gap="5px">
+        <ButonGroup>
           <TestButton onClick={startMicTest} disabled={isMicTesting}>
             Microphone
           </TestButton>
@@ -164,29 +164,22 @@ const MediaSetup: React.FC<MediaSetupProps> = () => {
   );
 };
 
-const FlexContainer = styled.div<{
-  col?: boolean;
-  align?: string;
-  justify?: string;
-  gap?: string;
-}>`
-  display: flex;
-  flex-direction: ${props => (props.col ? 'column' : 'row')};
-  align-items: ${props => (props.align ? props.align : 'center')};
-  justify-content: ${props => (props.justify ? props.justify : 'center')};
-  gap: ${props => props.gap || '0'};
-`;
-
 const MediaSelect = styled.select`
   width: 100%;
   height: 30px;
   color: #6e6e6e;
-  &:focus{
+  &:focus {
     outline: none;
   }
 `;
 
-const ButonGroup = styled(FlexContainer)`
+const ButonGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  gap: 5px;
+
   width: 100%;
 `;
 
@@ -207,11 +200,21 @@ const Cam = styled.video`
   background-color: #6e6e6e;
 `;
 
-const CamSetting = styled(FlexContainer)`
+const CamSetting = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: start;
+  gap: 10px;
   width: 100%;
 `;
 
-const Container = styled(FlexContainer)`
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 22px;
   width: 582px;
 `;
 export default MediaSetup;

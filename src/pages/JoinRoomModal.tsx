@@ -53,20 +53,20 @@ const JoinRoomModal: React.FC<JoinRoomModal> = ({ setIsOpen, room }) => {
   return (
     <Container>
       <BackGround />
-      <ModalContent col justify="start">
+      <ModalContent>
         <Title>{room.title}</Title>
 
         <MediaSetupGroup>
           <MediaSetup></MediaSetup>
         </MediaSetupGroup>
 
-        <Content col gap="15px">
-          <Group col align="start">
+        <Content>
+          <Group>
             <Label>{room.ownerId}</Label>
           </Group>
         </Content>
 
-        <Button col gap="8px">
+        <Button>
           <EnterRoomButton onClick={onClickJoinRoom}>들어가기</EnterRoomButton>
           <CancleButton to="/" onClick={() => setIsOpen(false)}>
             취소
@@ -77,22 +77,19 @@ const JoinRoomModal: React.FC<JoinRoomModal> = ({ setIsOpen, room }) => {
   );
 };
 
-const FlexContainer = styled.div<{
-  col?: boolean;
-  align?: string;
-  justify?: string;
-  gap?: string;
-}>`
-  display: flex;
-  flex-direction: ${props => (props.col ? 'column' : 'row')};
-  align-items: ${props => (props.align ? props.align : 'center')};
-  justify-content: ${props => (props.justify ? props.justify : 'center')};
-  gap: ${props => props.gap || '0'};
+const MediaSetupGroup = styled.div`
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
 `;
 
-const MediaSetupGroup = styled(FlexContainer)``;
-
-const Content = styled(FlexContainer)`
+const Content = styled.div`
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+gap: 15px;
   display: flex;
   width: 582px;
   margin-top: 14px;
@@ -102,17 +99,12 @@ const Label = styled.div`
   padding: 10px 0;
 `;
 
-const RoomTitle = styled.input`
-  width: calc(100% - 30px);
-  height: 18px;
-  padding: 15px;
+const Group = styled.div`
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: start;
 
-  border-radius: 5px;
-  border: 1px solid var(--gray-07, #757575);
-  background: #fff;
-`;
-
-const Group = styled(FlexContainer)`
   width: 100%;
 `;
 
@@ -128,7 +120,13 @@ const Title = styled.div`
   height: 44px;
 `;
 
-const Button = styled(FlexContainer)`
+const Button = styled.div`
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+gap: 8px;
+
   margin-bottom: 16px;
   margin-top: auto;
 `;
@@ -173,7 +171,12 @@ const BackGround = styled.div`
   align-items: center;
 `;
 
-const ModalContent = styled(FlexContainer)`
+const ModalContent = styled.div`
+display: flex;
+flex-direction: column;
+justify-content: start;
+align-items: center;
+
   width: 810px;
   height: 948px;
   background-color: rgba(255, 255, 255, 0.8);
@@ -182,7 +185,12 @@ const ModalContent = styled(FlexContainer)`
   position: absolute;
 `;
 
-const Container = styled(FlexContainer)`
+const Container = styled.div`
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+
   position: fixed;
   top: 0;
   left: 0;
