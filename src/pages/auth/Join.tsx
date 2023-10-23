@@ -136,8 +136,8 @@ const Join: React.FC<JoinProps> = () => {
     <JoinForm onSubmit={onSubmitJoin}>
       <Logo to="/"></Logo>
       <Title>회원가입</Title>
-      <JoinList align="start">
-        <Joincontent align="start">
+      <JoinList>
+        <Joincontent>
           <JoinLabel focused={focusedInput === 'email'}>이메일</JoinLabel>
           <InputBox focused={focusedInput === 'email'}>
             <JoinInput
@@ -162,7 +162,7 @@ const Join: React.FC<JoinProps> = () => {
           </Relative>
         </Joincontent>
 
-        <Joincontent align="start">
+        <Joincontent>
           <JoinLabel focused={focusedInput === 'password'}>비밀번호</JoinLabel>
           <InputBox focused={focusedInput === 'password'}>
             <JoinInput
@@ -191,7 +191,7 @@ const Join: React.FC<JoinProps> = () => {
           </Relative>
         </Joincontent>
 
-        <Joincontent align="start">
+        <Joincontent>
           <JoinLabel focused={focusedInput === 'confirmPassword'}>
             비밀번호 확인
           </JoinLabel>
@@ -223,7 +223,7 @@ const Join: React.FC<JoinProps> = () => {
           </Relative>
         </Joincontent>
 
-        <Joincontent align="start">
+        <Joincontent>
           <JoinLabel focused={focusedInput === 'nickname'}>닉네임</JoinLabel>
           <InputBox focused={focusedInput === 'nickname'}>
             <JoinInput
@@ -250,7 +250,7 @@ const Join: React.FC<JoinProps> = () => {
           </Relative>
         </Joincontent>
 
-        <AgreeBox row justify="space-between">
+        <AgreeBox>
           <AgreeCheck type="checkbox" onClick={onClickAgree}></AgreeCheck>
           <AgreeLink to="/">
             <span>(필수)</span>통합서비스 이용약관 및 개인정보 처리방침에 동의
@@ -262,7 +262,7 @@ const Join: React.FC<JoinProps> = () => {
         JOIN
       </JoinButton>
       <SocialLoginText>SNS 계정으로 시작하기</SocialLoginText>
-      <SocialLoginGroup row gap="30px">
+      <SocialLoginGroup>
         <SocialLoginLink
           to="/"
           onClick={() => {
@@ -278,7 +278,9 @@ const Join: React.FC<JoinProps> = () => {
           <img src={kakao} />
         </SocialLoginLink>
 
-        <SocialLoginLink to="/"><img src={google} /></SocialLoginLink>
+        <SocialLoginLink to="/">
+          <img src={google} />
+        </SocialLoginLink>
       </SocialLoginGroup>
     </JoinForm>
   );
@@ -288,20 +290,6 @@ const Logo = styled(Link)`
   background: url(${logo}) no-repeat center;
   width: 70px;
   height: 70px;
-`;
-
-const FlexContainer = styled.div<{
-  row?: boolean;
-  align?: string;
-  justify?: string;
-  gap?: string;
-}>`
-  display: flex;
-  flex-direction: ${props => (props.row ? 'row' : 'column')};
-  align-items: ${props => (props.align ? props.align : 'center')};
-  justify-content: ${props => (props.justify ? props.justify : 'center')};
-  gap: ${props => props.gap || '0'};
-  width: 300px;
 `;
 
 const Clear = styled.button`
@@ -339,9 +327,14 @@ const ErrorMessage = styled.div`
   top: 85px;
 `;
 
-const AgreeBox = styled(FlexContainer)`
+const AgreeBox = styled.div`
   height: 48px;
   width: 100%;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-betweet;
+  align-items: center;
 `;
 
 const SocialLoginLink = styled(Link)`
@@ -354,12 +347,22 @@ const SocialLoginLink = styled(Link)`
   margin-bottom: 130px;
 `;
 
-const SocialLoginText = styled(FlexContainer)`
+const SocialLoginText = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   height: 48px;
   margin-top: 8px;
 `;
 
-const SocialLoginGroup = styled(FlexContainer)``;
+const SocialLoginGroup = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+`;
 
 const JoinButton = styled.button<{ disabled: boolean }>`
   width: 400px;
@@ -429,7 +432,12 @@ const JoinLabel = styled.div<{ focused: boolean }>`
   font-size: 15px;
 `;
 
-const Joincontent = styled(FlexContainer)``;
+const Joincontent = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+`;
 
 const Relative = styled.div`
   height: 40px;
@@ -453,8 +461,12 @@ const JoinInput = styled.input`
   }
 `;
 
-const JoinList = styled(FlexContainer)`
+const JoinList = styled.div`
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
 `;
 
 const Title = styled.div`

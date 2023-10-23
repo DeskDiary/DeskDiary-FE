@@ -5,7 +5,6 @@ import send from '../../../../images/send.svg';
 import 공지사진 from '../../../../images/공지.png';
 import Chat from './Chat';
 
-
 const socket = io('http://localhost:5000');
 
 type ChatBoxProps = {};
@@ -52,11 +51,11 @@ const ChatBox: React.FC<ChatBoxProps> = () => {
   };
 
   return (
-    <Container col justify="start">
+    <Container>
       <ChatImg src={공지사진} />
-      <ChatList col justify="start" align="start" gap="15px">
+      <ChatList>
         {messages.map((message, index) => {
-          return <Chat key={index} message={message}/>;
+          return <Chat key={index} message={message} />;
         })}
       </ChatList>
       <ChatForm onSubmit={handleSubmit}>
@@ -72,29 +71,10 @@ const ChatBox: React.FC<ChatBoxProps> = () => {
   );
 };
 
-const FlexContainer = styled.div<{
-  col?: boolean;
-  align?: string;
-  justify?: string;
-  gap?: string;
-}>`
-  display: flex;
-  flex-direction: ${props => (props.col ? 'column' : 'row')};
-  align-items: ${props => (props.align ? props.align : 'center')};
-  justify-content: ${props => (props.justify ? props.justify : 'center')};
-  gap: ${props => props.gap || '0'};
-`;
-
 const ChatImg = styled.img`
-margin: 5px auto 0 5px;
-filter: grayscale(100%);
-`
-
-const SendMessageBox = styled(FlexContainer)`
-  width: 100%;
-  height: 10%;
-  background-color: green;
-`
+  margin: 5px auto 0 5px;
+  filter: grayscale(100%);
+`;
 
 const SendButton = styled.button`
   width: 35px;
@@ -131,14 +111,25 @@ const ChatForm = styled.form`
   background-color: transparent;
 `;
 
-const ChatList = styled(FlexContainer)`
+const ChatList = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  gap: 15px;
+
   height: 100%;
   width: calc(100% - 40px);
   padding: 20px;
   border-bottom: 1px solid var(--gray-05);
 `;
 
-const Container = styled(FlexContainer)`
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+
   width: 100%;
   height: 100%;
   border: 1px solid var(--gray-07);

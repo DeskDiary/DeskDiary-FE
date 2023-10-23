@@ -57,8 +57,6 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
     console.log(fetchName);
   }, [isPopular]);
 
-  console.log('fetchName: ', fetchName);
-
   const { data, error, isLoading } = useQuery<room[], Error>(
     
     [fetchName, show, sort], // 쿼리 키를 배열로 만들어 fetchName, show, sort 추가
@@ -76,10 +74,10 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
   );
 
   return (
-    <List col align="start" justify='start'>
-      <ListInfo justify="space-between">
+    <List>
+      <ListInfo>
         <ListTitle>{label}</ListTitle>
-        <Categorys gap="15px">
+        <Categorys>
           <Category onClick={() => changePopular(true)}>인기순</Category>
           <Category onClick={() => changePopular(false)}>최신순</Category>
         </Categorys>
@@ -94,35 +92,36 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
   );
 };
 
-const FlexContainer = styled.div<{
-  col?: boolean;
-  align?: string;
-  justify?: string;
-  gap?: string;
-}>`
+const ListInfo = styled.div`
   display: flex;
-  flex-direction: ${props => (props.col ? 'column' : 'row')};
-  align-items: ${props => (props.align ? props.align : 'center')};
-  justify-content: ${props => (props.justify ? props.justify : 'center')};
-  gap: ${props => props.gap || '0'};
-`;
-
-const ListInfo = styled(FlexContainer)`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
 `;
 
-const Categorys = styled(FlexContainer)`
+const Categorys = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
   margin-bottom: 10px;
 `;
 
 const Category = styled.button`
-  font-size: 24px;
-  font-weight: 400;;
+  font-size: 14px;
+  font-weight: 400;
 `;
 
-const List = styled(FlexContainer)`
+const List = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+
   margin-top: 72px;
-  height:100%;
+  height: 100%;
   width: 100%;
 `;
 
@@ -134,26 +133,17 @@ const ListTitle = styled.div`
 const JoinedRooms = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 16px;
-  width: 100%;
+  gap: 12px;
+  width: 1215px;
 
   overflow: scroll;
 
-  // 화면 크기에 따라 카드 개수 변경
-  @media (max-width: 1500px) {
+  @media (max-width: 1000px) {
     grid-template-columns: repeat(4, 1fr);
   }
 
-  @media (max-width: 1200px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  @media (max-width: 1000px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
   @media (max-width: 800px) {
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 `;
 

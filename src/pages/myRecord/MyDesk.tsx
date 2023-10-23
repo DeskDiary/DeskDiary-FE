@@ -1,26 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
-import MainTop from '../../components/MainTop';
-import thumbnail from '../../images/sample.png';
+import MainTop from '../../components/layout/main/MainTop';
 import RoomCard from '../home/components/RoomCard';
-import Goal from '../home/components/Goal';
-import { IndexKind } from 'typescript';
-import MyRecords from './components/MyRecords';
-
-import { useRecoilValue } from 'recoil';
-import { RoomAtom } from '../../recoil/RoomAtom';
 
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import RecordGraph from '../mypage/RecordGraph';
-import GoalRecoard from './components/GoalRecoard';
+
 
 type MyDeskProps = {};
 
 const MyDesk: React.FC<MyDeskProps> = () => {
   const fetchRooms = async () => {
     const { data } = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL!}/room`,
+      `${process.env.REACT_APP_SERVER_URL!}/my-rooms`,
     );
     console.log('fetchRooms data', data);
     return data;
@@ -32,15 +25,14 @@ const MyDesk: React.FC<MyDeskProps> = () => {
   );
 
   return (
-    <Container col justify="start">
+    <Container>
       <MainTop />
-      <MyDeskTop justify="start">
+      <MyDeskTop>
         <RecordGraph />
       </MyDeskTop>
 
-      {/* <MyRecords /> */}
 
-      <List col align="start">
+      <List>
         <ListTitle>최근에 들어간 방 목록</ListTitle>
         <JoinedRooms>
           {data ? (
@@ -56,25 +48,21 @@ const MyDesk: React.FC<MyDeskProps> = () => {
   );
 };
 
-const FlexContainer = styled.div<{
-  col?: boolean;
-  align?: string;
-  justify?: string;
-  gap?: string;
-}>`
-  display: flex;
-  flex-direction: ${props => (props.col ? 'column' : 'row')};
-  align-items: ${props => (props.align ? props.align : 'center')};
-  justify-content: ${props => (props.justify ? props.justify : 'center')};
-  gap: ${props => props.gap || '0'};
-  width: 100%;
-`;
+const MyDeskTop = styled.div`
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
 
-const MyDeskTop = styled(FlexContainer)`
   margin: 30px 0 24px 0;
 `;
 
-const List = styled(FlexContainer)`
+const List = styled.div`
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: start;
+
   margin-top: 30px;
   width: 100%;
 `;
@@ -84,8 +72,13 @@ const ListTitle = styled.div`
   font-size: 24px;
 `;
 
-const Container = styled(FlexContainer)`
-  width: 1525px;
+const Container = styled.div`
+display: flex;
+flex-direction: column;
+justify-content: start;
+align-items: center;
+
+  width: 1200px;
   height: 100vh;
 `;
 
