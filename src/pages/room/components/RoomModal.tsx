@@ -1,6 +1,6 @@
 import axios from 'axios';
-import React, { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { getCookie } from '../../../auth/cookie';
@@ -15,14 +15,10 @@ const RoomModal: React.FC<RoomModalProps> = () => {
   console.log(outModalState);
   const [joinUUID, setJoinUUID] = useRecoilState<string>(RoomUUIDAtom);
   const serverUrl = process.env.REACT_APP_SERVER_URL;
-  const location = useLocation();
-  useEffect(() => {
-    setJoinUUID(location.pathname.split('/')[2]);
-  }, []);
+
   const roomOutHandler = async () => {
     try {
       const token = getCookie('token');
-      console.log(joinUUID);
       const response = await axios.post(
         `${serverUrl}/room/${joinUUID}/leave`,
         {

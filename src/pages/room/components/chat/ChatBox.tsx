@@ -101,7 +101,7 @@ const SendButton = styled.button`
   height: 35px;
   border: none;
   margin: 10px;
-  background-color: white;
+  background-color: transparent;
   cursor: pointer;
 `;
 
@@ -114,6 +114,8 @@ const UserInput = styled.input`
   &:focus {
     outline: none;
   }
+  background-color: transparent;
+  color: var(--gray-01);
 `;
 
 const ChatForm = styled.form`
@@ -124,8 +126,9 @@ const ChatForm = styled.form`
   height: 42px;
   width: 92%;
   margin: 12px;
-  border: 1px solid var(--gray-07);
+  border: 1px solid var(--primary-01);
   border-radius: 5px;
+  background-color: transparent;
 `;
 
 const ChatList = styled(FlexContainer)`

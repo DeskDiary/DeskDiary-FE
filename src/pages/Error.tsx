@@ -1,12 +1,21 @@
 import React from 'react';
+import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 type ErrorProps = {};
 
 const Error: React.FC<ErrorProps> = () => {
+  const navigate = useNavigate();
   return (
     <Container>
       <Text>없는 페이지 입니다</Text>
+      <button
+        onClick={() => {
+          navigate(-1);
+        }}
+      >
+        이전 페이지로 이동하기
+      </button>
     </Container>
   );
 };
