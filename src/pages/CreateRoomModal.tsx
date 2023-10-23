@@ -145,12 +145,12 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
     <Container onSubmit={onSubmitRoom}>
       <BackGround />
 
-      <ModalContent col justify="start">
+      <ModalContent>
         <Title>방 만들기</Title>
         <Thumbnail image={image}>
           {image ? <ThumbnailImg src={image} /> : <SampleImg src={Picture} />}
         </Thumbnail>
-        <ThumbnailButtonGroup gap="10px">
+        <ThumbnailButtonGroup>
           <Button
             component="label"
             sx={{
@@ -168,8 +168,8 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
           <button onClick={() => setImage('')}>삭제</button>
         </ThumbnailButtonGroup>
 
-        <Content col gap="15px">
-          <Group col align="start">
+        <Content>
+          <Group>
             <Label>방 이름</Label>
             <RoomTitle
               type="text"
@@ -178,13 +178,13 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
             />
           </Group>
 
-          <Group col align="start">
+          <Group>
             <Label>목적 정하기</Label>
 
-            <CategoryGroup gap="16px">
-              {categories.map(category => (
+            <CategoryGroup>
+              {categories.map((category, index) => (
                 <Category
-                  key={category}
+                  key={index}
                   type="button"
                   onClick={() => onChangeCategory(category)}
                   isActive={activeStates[category as 'study' | 'hobby']}
@@ -199,12 +199,12 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
             </CategoryGroup>
           </Group>
 
-          <Group col align="start">
+          <Group>
             <Label>인원설정 (최대 4인 가능)</Label>
-            <CategoryGroup gap="16px">
-              {[1, 2, 3, 4].map(i => (
+            <CategoryGroup>
+              {[1, 2, 3, 4].map((i, index) => (
                 <MaxUser
-                  key={i}
+                  key={index}
                   type="button"
                   onClick={() => handleUserCountClick(i)}
                   isActive={i === selectedUserCount}
@@ -216,9 +216,9 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
           </Group>
         </Content>
 
-        <PrecautionsBox col align="start" gap="16">
+        <PrecautionsBox>
           <p>방 개설 시 유의 사항</p>
-          <Box col align="start" gap="16">
+          <Box>
             <BoxGroup>
               <Number>1.</Number>
               <span>
@@ -255,7 +255,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
           </Box>
         </PrecautionsBox>
 
-        <ButtonGroup justify="space-between">
+        <ButtonGroup>
           <CreateRoomButton>방만들기</CreateRoomButton>
           <CancleButton type="button" onClick={() => setOpenCreateRoom(false)}>
             취소
@@ -266,25 +266,17 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
   );
 };
 
-const FlexContainer = styled.div<{
-  col?: boolean;
-  align?: string;
-  justify?: string;
-  gap?: string;
-}>`
-  display: flex;
-  flex-direction: ${props => (props.col ? 'column' : 'row')};
-  align-items: ${props => (props.align ? props.align : 'center')};
-  justify-content: ${props => (props.justify ? props.justify : 'center')};
-  gap: ${props => props.gap || '0'};
-`;
-
 const CategoryImg = styled.img<{ isActive: boolean }>`
   filter: grayscale(${props => (props.isActive ? '0%' : '100%')});
   width: 20px;
 `;
 
-const ThumbnailButtonGroup = styled(FlexContainer)`
+const ThumbnailButtonGroup = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
   height: 20px;
 `;
 
@@ -321,7 +313,13 @@ const MaxUser = styled.button<{ isActive: boolean }>`
   padding: 7px;
 `;
 
-const CategoryGroup = styled(FlexContainer)``;
+const CategoryGroup = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+`;
 
 const Category = styled.button<{ isActive: boolean }>`
   padding: 7px 10px;
@@ -337,7 +335,13 @@ const Category = styled.button<{ isActive: boolean }>`
   border-radius: 100px;
 `;
 
-const Content = styled(FlexContainer)`
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+
   display: flex;
   width: 400px;
   margin-top: 14px;
@@ -350,7 +354,12 @@ const Label = styled.div`
   color: var(--gray-07);
 `;
 
-const PrecautionsBox = styled(FlexContainer)`
+const PrecautionsBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+
   margin-top: 15px;
   > p {
     margin-right: auto;
@@ -368,14 +377,24 @@ const Number = styled.div`
   height: 100%;
 `;
 
-const Box = styled(FlexContainer)`
+const Box = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  gap: 5px;
+
   width: 400px;
   border: 1px solid var(--gray-07);
   border-radius: 10px;
   padding: 5px;
 `;
 
-const BoxGroup = styled(FlexContainer)`
+const BoxGroup = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   > span {
     font-size: 12px;
     color: var(--gray-07);
@@ -397,11 +416,21 @@ const RoomTitle = styled.input`
   }
 `;
 
-const Group = styled(FlexContainer)`
+const Group = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+
   width: 100%;
 `;
 
-const Thumbnail = styled(FlexContainer)<{ image?: string }>`
+const Thumbnail = styled.div<{ image?: string }>`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
   width: 150px;
   height: 100px;
   border-radius: 10px;
@@ -420,7 +449,12 @@ const Title = styled.div`
   margin-bottom: 18px;
 `;
 
-const ButtonGroup = styled(FlexContainer)`
+const ButtonGroup = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
   width: 400px;
   margin-top: auto;
 `;
@@ -460,7 +494,12 @@ const BackGround = styled.div`
   align-items: center;
 `;
 
-const ModalContent = styled(FlexContainer)`
+const ModalContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+
   width: 600px;
   height: 800px;
   /* background-color: rgba(255, 255, 255, 0.8); */

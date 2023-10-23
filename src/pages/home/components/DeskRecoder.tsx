@@ -5,7 +5,7 @@ type DeskRecoderProps = {};
 
 const DeskRecoder: React.FC<DeskRecoderProps> = () => {
   return (
-    <Container col justify="start">
+    <Container>
       <Title>최근 책상 기록</Title>
       <Content>
         <NoContent>아직 기록된 책상시간이 없습니다.</NoContent>
@@ -13,19 +13,6 @@ const DeskRecoder: React.FC<DeskRecoderProps> = () => {
     </Container>
   );
 };
-
-const FlexContainer = styled.div<{
-  col?: boolean;
-  align?: string;
-  justify?: string;
-  gap?: string;
-}>`
-  display: flex;
-  flex-direction: ${props => (props.col ? 'column' : 'row')};
-  align-items: ${props => (props.align ? props.align : 'center')};
-  justify-content: ${props => (props.justify ? props.justify : 'center')};
-  gap: ${props => props.gap || '0'};
-`;
 
 const NoContent = styled.div`
   margin-bottom: 99px;
@@ -36,12 +23,20 @@ const NoContent = styled.div`
   letter-spacing: -0.24px;
 `;
 
-const Content = styled(FlexContainer)`
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   height: 100%;
   width: 100%;
 `;
 
-const Container = styled(FlexContainer)`
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
   width: 750px;
   height: 243px;
   background-color: #d9d9d9;

@@ -29,18 +29,18 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <Container col justify="center">
+    <Container>
       <Thumbmail
         src={room.file ? room.file : sample}
         alt="room thumbnail"
         onClick={() => setIsOpen(true)}
       ></Thumbmail>
-      <Contents justify="start" gap="9px" onClick={() => setIsOpen(true)}>
+      <Contents onClick={() => setIsOpen(true)}>
         <Img></Img>
-        <ContentText col justify="start">
+        <ContentText>
           <RoomTitle>{room.title}</RoomTitle>
-          <Tags justify="start" align="center">
-            <img src={MaxUser} alt="user count"/>
+          <Tags>
+            <img src={MaxUser} alt="user count" />
             <Tag>
               {room.nowHeadcount}/{room.maxHeadcount}
             </Tag>
@@ -52,25 +52,21 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
   );
 };
 
-const FlexContainer = styled.div<{
-  col?: boolean;
-  align?: string;
-  justify?: string;
-  gap?: string;
-}>`
+const ContentText = styled.div`
   display: flex;
-  flex-direction: ${props => (props.col ? 'column' : 'row')};
-  align-items: ${props => (props.align ? props.align : 'center')};
-  justify-content: ${props => (props.justify ? props.justify : 'center')};
-  gap: ${props => props.gap || '0'};
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
 `;
 
-const ContentText = styled(FlexContainer)``;
-
-const Tags = styled(FlexContainer)`
+const Tags = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
   margin-right: auto;
 
-  >img{
+  > img {
     width: 20px;
   }
 `;
@@ -96,7 +92,12 @@ const Img = styled.div`
   border-radius: 50%;
 `;
 
-const Contents = styled(FlexContainer)`
+const Contents = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
   margin: 12px 0;
   height: 50px;
   width: 100%;
@@ -108,7 +109,11 @@ const Thumbmail = styled.img`
   overflow: hidden;
 `;
 
-const Container = styled(FlexContainer)`
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   width: 230px;
   height: 200px;
   cursor: pointer;

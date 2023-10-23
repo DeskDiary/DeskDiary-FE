@@ -16,21 +16,25 @@ type SideBarProps = {};
 
 const navItems = [
   {
+    id: 1,
     title: '홈',
     icon: home,
     url: '/',
   },
   {
+    id: 2,
     title: '스터디룸',
     icon: study,
     url: '/study',
   },
   {
+    id: 3,
     title: '취미룸',
     icon: hobby,
     url: '/hobby',
   },
   {
+    id: 4,
     title: '책상기록',
     icon: mydesk,
     url: '/mydesk',
@@ -57,7 +61,7 @@ const SideBar: React.FC<SideBarProps> = () => {
           </SidebarHeader>
           <SidebarMenu>
             {navItems.map(item => (
-              <SidebarButton to={item.url}>
+              <SidebarButton key={item.id} to={item.url}>
                 <img src={item.icon} alt="menu icon"/>
                 <p>{item.title}</p>
               </SidebarButton>

@@ -7,9 +7,8 @@ import mydesk from './main/mydesk.svg'
 import unchecked from './unchecked.png'
 import XIcon from './Vector.svg'
 import colorChecked from './colorChecked.svg'
-import addroom from './addroom.svg'
 import kakao from './main/kakao.svg'
 import google from './main/google.svg'
 import MaxUser from './room/MaxUser.svg'
 
-export { MaxUser, kakao, google, addroom, colorChecked, XIcon, hobby, home, logo, study, profile, mydesk, unchecked}
+export { MaxUser, kakao, google, colorChecked, XIcon, hobby, home, logo, study, profile, mydesk, unchecked}
