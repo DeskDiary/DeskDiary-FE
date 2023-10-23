@@ -4,29 +4,36 @@ import React, { ChangeEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { getCookie } from '../auth/cookie';
-import { RoomUUIDAtom } from '../recoil/RoomAtom';
+import { RoomAtom, RoomUUIDAtom } from '../recoil/RoomAtom';
 import MediaSetup from './MediaSetup';
 
 type JoinRoomModal = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   room: {
-    uuid: string;
-    title: string;
-    category: string;
     agoraAppId: string;
     agoraToken: string;
+    category: string;
+    count: number;
+    createdAt: string;
+    maxHeadcount: number;
+    note: string;
+    nowHeadcount: number;
     ownerId: number;
-
+    uuid: string;
+    roomThumbnail: string | null;
+    title: string;
+    updatedAt: string;
+    roomId: number;
   };
 };
 
 const JoinRoomModal: React.FC<JoinRoomModal> = ({ setIsOpen, room }) => {
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const navigate = useNavigate();
-  console.log(room.uuid);
   const [inputText, setInputText] = useState('');
   const [joinUUID, setJoinUUID] = useRecoilState<string>(RoomUUIDAtom);
-  console.log(joinUUID)
+  const [roomInfo, setRoomInfo] = useRecoilState(RoomAtom);
+  console.log(room);
   const [test, setTest] = useState(true);
 
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -36,19 +43,39 @@ const JoinRoomModal: React.FC<JoinRoomModal> = ({ setIsOpen, room }) => {
   const onClickJoinRoom = async () => {
     try {
       const token = getCookie('token');
-      const response = await axios.post(`${serverUrl}/room/${room.uuid}/join`,{},{
-        headers: {
-          Authorization: `Bearer ${token}`,
+      console.log('조인룸 토큰', token);
+      const response = await axios.post(
+        `${serverUrl}/room/${room.uuid}/join`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
       console.log(response);
+      setRoomInfo({
+        agoraAppId: room.agoraAppId,
+        agoraToken: room.agoraToken,
+        category: room.category,
+        count: room.count,
+        createdAt: room.createdAt,
+        maxHeadcount: room.maxHeadcount,
+        note: room.note,
+        nowHeadcount: room.nowHeadcount,
+        ownerId: room.ownerId,
+        roomId: room.roomId,
+        roomThumbnail: room.roomThumbnail ? room.roomThumbnail : '',
+        title: room.title,
+        updatedAt: room.updatedAt,
+        uuid: room.uuid,
+      });
       setJoinUUID(room.uuid);
-      navigate(`room/${room.uuid}`);
-    } catch(error) {
+      navigate(`/room/${room.uuid}`);
+    } catch (error) {
       console.error(error);
     }
-    
-  }
+  };
 
   return (
     <Container>

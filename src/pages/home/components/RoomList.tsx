@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import {
-  fetchRoomPopular,
-  fetchRoomLatest,
-  fetchRoomTopPopular,
-  fetchRoomTopLatest,
-  fetchStudyPopular,
-  fetchHobbyPopular,
-  fetchStudyLatest,
-  fetchHobbyLatest,
-} from '../../../axios/api';
-import styled from 'styled-components';
 import { useQuery } from 'react-query';
+import styled from 'styled-components';
+import {
+  fetchHobbyLatest,
+  fetchHobbyPopular,
+  fetchRoomLatest,
+  fetchRoomPopular,
+  fetchRoomTopLatest,
+  fetchRoomTopPopular,
+  fetchStudyLatest,
+  fetchStudyPopular,
+} from '../../../axios/api';
 import RoomCard from './RoomCard';
 
 type RoomListProps = {
@@ -58,8 +58,10 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
   }, [isPopular]);
 
   const { data, error, isLoading } = useQuery<room[], Error>(
+    
     [fetchName, show, sort], // 쿼리 키를 배열로 만들어 fetchName, show, sort 추가
     async () => {
+      
       const fetchFunc =
         fetchFunctions[fetchName as keyof typeof fetchFunctions];
       if (fetchFunc) {
