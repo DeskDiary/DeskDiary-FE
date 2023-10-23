@@ -28,21 +28,18 @@ const Mypage: React.FC<MypageProps> = () => {
 
   const navigate = useNavigate();
 
-  const lists = [
-    { i: 1, title: '가입정보', url: '/mypage', type: 'noPage' },
-    { i: 2, title: '로그아웃', url: '/mypage', type: 'handleLogout' },
-    { i: 3, title: '회원탈퇴', url: '/mypage', type: 'noPage' },
-  ];
-
   const onClickToggle = () => {
     setIsOpen(!isOpen);
   };
 
   const handleLogout = () => {
     // 토큰 이름이 'token'이라고 가정
-    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-    // 여기서 추가로 로그아웃 처리 로직을 넣을 수 있어. 예를 들면 페이지 리디렉션 같은 것!
-    navigate('/');
+    if (window.confirm('로그아웃 하시겠습니까?')) {
+      document.cookie =
+        'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+      // 여기서 추가로 로그아웃 처리 로직을 넣을 수 있어. 예를 들면 페이지 리디렉션 같은 것!
+      navigate('/');
+    }
   };
 
   return (
@@ -65,13 +62,11 @@ const Mypage: React.FC<MypageProps> = () => {
             </EditNickname>
           </UserInfo>
         </UserProfile>
-        <Toggle onClick={onClickToggle}>
-          <img src={isOpen ? down : right} alt="toggle" />
-          <span>계정관리</span>
-        </Toggle>
-        {isOpen && <MypageToggle />}
+
         <Lists>
+          <List onClick={() => handleLogout()}>가입정보</List>
           <List onClick={() => handleLogout()}>로그아웃</List>
+          <List onClick={() => handleLogout()}>회원탈퇴</List>
         </Lists>
       </Contants>
 
@@ -80,21 +75,24 @@ const Mypage: React.FC<MypageProps> = () => {
   );
 };
 
-
 const EditNickname = styled.div`
-display: flex;
-flex-direction: row;
-justify-content: center;
-align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
 
   width: 100%;
+  >input{
+    width: 100%;
+    height: 30px;
+  }
 `;
 
 const Toggle = styled.div`
-display: flex;
-flex-direction: column;
-justify-content: start;
-align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
 
   width: 100%;
   margin-right: auto;
@@ -120,6 +118,8 @@ const Lists = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  width: 100%;
 `;
 
 const Content = styled.div``;
@@ -130,7 +130,7 @@ const UserInfo = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: start;
 
   width: 100%;
 `;
@@ -147,7 +147,7 @@ const UserProfile = styled.div`
   justify-content: start;
   align-items: center;
 
-  width: 800px;
+  width: 100%;
   margin-top: 70px;
 `;
 
@@ -157,7 +157,7 @@ const Contants = styled.div`
   justify-content: start;
   align-items: center;
 
-  width: 800px;
+  width: 100%;
 `;
 
 const Container = styled.div`
@@ -166,7 +166,7 @@ const Container = styled.div`
   justify-content: start;
   align-items: center;
 
-  width: 70%;
+  width: 400px;
   height: 100vh;
 `;
 export default Mypage;
