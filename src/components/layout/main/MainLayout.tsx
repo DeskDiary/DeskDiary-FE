@@ -1,20 +1,14 @@
 import React from 'react';
-import { Header, Footer } from '../index';
 import { Outlet } from 'react-router-dom';
 import styled from '@emotion/styled';
-import SideMenu from './SideMenu';
 import SideBar from './SideBar';
-import MainTop from '../../MainTop';
 
 type MainLayoutProps = {};
 
 const MainLayout: React.FC<MainLayoutProps> = () => {
   return (
     <Wrap>
-      {/* <Header></Header> */}
-      {/* <SideMenu></SideMenu> */}
       <SideBar />
-      {/* <MainTop /> */}
       <Outlet />
     </Wrap>
   );

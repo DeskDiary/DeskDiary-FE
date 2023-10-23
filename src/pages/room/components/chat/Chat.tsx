@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
+
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { getCookie } from '../../../../auth/cookie';
 import { fetchUser } from '../../../../axios/api';
+
+
+
+
+
 import { profile } from '../../../../images';
 
 type ChatProps = {
@@ -13,48 +19,33 @@ type ChatProps = {
   };
 };
 
-const Chat: React.FC<ChatProps> = ({message}) => {
+const Chat: React.FC<ChatProps> = ({ message }) => {
   const [isMe, setIsMe] = useState(false);
   const token = getCookie('token');
 
-  const { data } = useQuery<user, Error>(
-    'user',
-    fetchUser,
-  );
+  const { data } = useQuery<user, Error>('user', fetchUser);
 
   return (
-    <Container justify="start" align="start" gap="8px">
-      <UserImg 
-        src= {data?.profileImage ? data?.profileImage : profile}
-        />
-      <ChatDetails col align="start" gap="5px">
-        <Metadata justify="space-between">
+    <Container>
+      <UserImg src={data?.profileImage ? data?.profileImage : profile} />
+      <ChatDetails>
+        <Metadata>
           <UserName>{data?.nickname}</UserName>
           <Time>{message.time}</Time>
         </Metadata>
 
-        <Message>
-          {message.message}
-        </Message>
+        <Message>{message.message}</Message>
       </ChatDetails>
     </Container>
   );
 };
 
-const FlexContainer = styled.div<{
-  col?: boolean;
-  align?: string;
-  justify?: string;
-  gap?: string;
-}>`
+const Metadata = styled.div`
   display: flex;
-  flex-direction: ${props => (props.col ? 'column' : 'row')};
-  align-items: ${props => (props.align ? props.align : 'center')};
-  justify-content: ${props => (props.justify ? props.justify : 'center')};
-  gap: ${props => props.gap || '0'};
-`;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 
-const Metadata = styled(FlexContainer)`
   width: 100%;
 `;
 
@@ -79,7 +70,13 @@ const UserName = styled.div`
   font-size: 15px;
 `;
 
-const ChatDetails = styled(FlexContainer)`
+const ChatDetails = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  gap: 5px;
+
   width: 100%;
   /* @media (min-width: 768px) {
     width: 300px;
@@ -93,7 +90,13 @@ const UserImg = styled.img`
   border-radius: 50%;
 `;
 
-const Container = styled(FlexContainer)`
+const Container = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: start;
+  gap: 8px;
+
   width: 100%;
 `;
 export default Chat;

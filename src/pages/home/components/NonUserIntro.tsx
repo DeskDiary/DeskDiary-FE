@@ -7,7 +7,7 @@ type NonUserIntroProps = {};
 const NonUserIntro: React.FC<NonUserIntroProps> = () => {
   return (
     <Container>
-      <img src={nonUserIntro} />
+      <img src={nonUserIntro} alt="user intro"/>
     </Container>
   );
 };
@@ -20,6 +20,10 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
   background-color: #d9d9d9;
+
+  >img{
+    width: 100%;
+  }
 `;
 
 export default NonUserIntro;

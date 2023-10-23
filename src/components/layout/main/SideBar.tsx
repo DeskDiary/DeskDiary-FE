@@ -16,21 +16,25 @@ type SideBarProps = {};
 
 const navItems = [
   {
+    id: 1,
     title: '홈',
     icon: home,
     url: '/',
   },
   {
+    id: 2,
     title: '스터디룸',
     icon: study,
     url: '/study',
   },
   {
+    id: 3,
     title: '취미룸',
     icon: hobby,
     url: '/hobby',
   },
   {
+    id: 4,
     title: '책상기록',
     icon: mydesk,
     url: '/mydesk',
@@ -53,12 +57,12 @@ const SideBar: React.FC<SideBarProps> = () => {
       <SidebarInner>
         <div>
           <SidebarHeader>
-            <Logo src={logo}></Logo>
+            <Logo src={logo} alt="Logo"></Logo>
           </SidebarHeader>
           <SidebarMenu>
             {navItems.map(item => (
-              <SidebarButton to={item.url}>
-                <img src={item.icon}/>
+              <SidebarButton key={item.id} to={item.url}>
+                <img src={item.icon} alt="menu icon"/>
                 <p>{item.title}</p>
               </SidebarButton>
             ))}
@@ -72,15 +76,15 @@ const SideBar: React.FC<SideBarProps> = () => {
 const SidebarButton = styled(NavLink)`
   display: flex;
   align-items: center;
-  height: 60px;
-  width: 60px;
+  height: 50px;
+  width: 50px;
   background-color: transparent; // 기본 배경색을 투명으로 설정
   transition: width 0.4s, background-color 0.3s; // width와 background-color에 대한 transition 추가
 
   font-size: 16px;
   text-transform: capitalize;
   line-height: 1;
-  border-radius: 60px;
+  border-radius: 50px;
   opacity: 0.8;
 
   color: var(--primary-01);
@@ -98,7 +102,7 @@ const SidebarButton = styled(NavLink)`
   &:hover {
     border: 1px solid var(--primary-01);
     opacity: 1;
-    width: 100%;
+    width: 90%;
     > img {
       filter: grayscale(0);
     }
@@ -133,7 +137,7 @@ const SidebarMenu = styled.div`
   }
 
   &:hover {
-    width: 180px;
+    width: 160px;
 
     ${SidebarButton} img {
       transition: 0.3s;
@@ -158,7 +162,7 @@ const SidebarInner = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  width: 180px;
+  width: 160px;
   height: 100%;
 
   display: flex;
@@ -183,10 +187,10 @@ const Sidebar = styled.div`
   }
 
   &:hover {
-    width: 180px;
+    width: 160px;
 
     ${SidebarHeader} {
-      width: 180px;
+      width: 160px;
     }
 
     ${SidebarButton} p {

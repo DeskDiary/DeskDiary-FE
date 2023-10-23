@@ -3,10 +3,11 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Link, useNavigate, NavLink } from 'react-router-dom';
 import { toast } from 'sonner';
 import styled from '@emotion/styled';
-import CreateRoomModal from '../pages/CreateRoomModal';
-import { getCookie, setTokenCookie } from '../auth/cookie';
-import addroom from '../images/addroom.svg';
-import { fetchUser } from '../axios/api';
+import CreateRoomModal from '../../../pages/CreateRoomModal';
+import { getCookie, setTokenCookie } from '../../../auth/cookie';
+import addroom from '../../../images/main/addroom.svg';
+import { fetchUser } from '../../../axios/api';
+import profile from '../../../images/profile.png'
 
 import { useQuery } from 'react-query';
 
@@ -46,21 +47,21 @@ const MainTop: React.FC<MainTopProps> = () => {
   }, [data, token, nickname]);
 
   return (
-    <NavHeader justify="space-between">
+    <NavHeader>
       {token ? (
         <User to="/mypage/:id">
-          <img src={data?.profileImage}></img>
+          <img src={data?.profileImage} alt="profile image"></img>
           <p>{data?.nickname}</p>
           <span>님의 마이페이지</span>
         </User>
       ) : (
         <User to="/login">
-          <img></img>
+          <img src={profile} alt="login"></img>
           <p>로그인이 필요합니다.</p>
         </User>
       )}
 
-      <Search isFocused={isFocused} justify="space-between">
+      {/* <Search isFocused={isFocused} justify="space-between">
         <SearchInput
           onFocus={clickSearch}
           onBlur={blurSearch}
@@ -69,13 +70,13 @@ const MainTop: React.FC<MainTopProps> = () => {
         <SearchButton onClick={onclickSearch}>
           <SearchIcon />
         </SearchButton>
-      </Search>
+      </Search> */}
 
       <Link to="/join">회원가입</Link>
       <Link to="/login">로그인</Link>
 
       <CreateRoomButton type="button" onClick={onClickCreateRoomButton}>
-        <img src={addroom} />
+        <img src={addroom} alt="add room button"/>
         방만들기
       </CreateRoomButton>
       {openCreateRoom && (
@@ -84,19 +85,6 @@ const MainTop: React.FC<MainTopProps> = () => {
     </NavHeader>
   );
 };
-
-const FlexContainer = styled.div<{
-  isColumn?: boolean;
-  align?: string;
-  justify?: string;
-  gap?: string;
-}>`
-  display: flex;
-  flex-direction: ${props => (props.isColumn ? 'column' : 'row')};
-  align-items: ${props => (props.align ? props.align : 'center')};
-  justify-content: ${props => (props.justify ? props.justify : 'center')};
-  gap: ${props => props.gap || '0'};
-`;
 
 const User = styled(Link)`
   display: flex;
@@ -129,14 +117,13 @@ const User = styled(Link)`
 
 const CreateRoomButton = styled.button`
   display: flex;
-  width: 320px;
+  width: 200px;
   padding: 10px;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
   background-color: var(--primary-01);
   border: none;
-  font-size: 15px;
+  font-size: 14px;
 
   min-width: 100px;
   color: var(--bw-whtie);
@@ -148,21 +135,28 @@ const CreateRoomButton = styled.button`
   }
 `;
 
-const NavHeader = styled(FlexContainer)`
-  width: 1525px;
+const NavHeader = styled.div`
+  width: 1200px;
 
-  padding-top: 28px;
-  margin-bottom: 70px;
-
+  padding-top: 20px;
+  margin-bottom: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 `;
 
-const Search = styled(FlexContainer)<{ isFocused: boolean }>`
+const Search = styled.div<{ isFocused: boolean }>`
   width: 50%;
   height: 48px;
   border: 2px solid var(--gray-06);
   padding: 10px;
   border-radius: 5px;
   background-color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const SearchInput = styled.input`
