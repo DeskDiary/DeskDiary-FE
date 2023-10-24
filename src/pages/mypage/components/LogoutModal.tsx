@@ -9,12 +9,9 @@ type LogoutModalProps = {
 const LogoutModal: React.FC<LogoutModalProps> = ({ setIsOpenLogout }) => {
   const navigate = useNavigate();
   const handleLogout = () => {
-    if (window.confirm('로그아웃 하시겠습니까?')) {
-      document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=yourDomain.com;';
-
-      // 여기서 추가로 로그아웃 처리 로직을 넣을 수 있어. 예를 들면 페이지 리디렉션 같은 것!
-      navigate('/');
-    }
+    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    // 여기서 추가로 로그아웃 처리 로직을 넣을 수 있어. 예를 들면 페이지 리디렉션 같은 것!
+    navigate('/');
   };
 
   return (
@@ -51,7 +48,7 @@ const ButtonGroup = styled.div`
   flex-direction: row;
   gap: 15px;
   margin-top: 20px;
-`
+`;
 
 const Button = styled.button<{ cancle?: boolean }>`
   width: 100px;
@@ -77,7 +74,6 @@ const BackGround = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  
 `;
 
 const ModalContent = styled.div`

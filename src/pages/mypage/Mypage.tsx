@@ -1,44 +1,41 @@
 import styled from '@emotion/styled';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
-import MainTop from '../../components/layout/main/MainTop';
-import { profile } from '../../images';
-import { down, right } from '../../images/mypage';
-import { UserAtom, ProfiltUpdate } from '../../recoil/UserAtom';
-import send from '../../images/send.svg';
-
-import { useQuery } from 'react-query';
+import { useNavigate } from 'react-router';
+import { useMutation, useQuery } from 'react-query';
+import axios from 'axios';
 
 import { getCookie } from '../../auth/cookie';
 import { fetchUser } from '../../axios/api';
+
 import { RoomAtom } from '../../recoil/RoomAtom';
-import MypageToggle from './components/MypageToggle';
-import EditProfileImg from './components/EditProfileImg';
-import { useNavigate } from 'react-router';
+import { UserAtom, ProfiltUpdate } from '../../recoil/UserAtom';
+
+import MainTop from '../../components/layout/main/MainTop';
 import ChangePasswordModal from './components/ChangePasswordModal';
 import LogoutModal from './components/LogoutModal';
+import EditProfileImg from './components/EditProfileImg';
+
+import { profile } from '../../images';
+import send from '../../images/send.svg';
 
 type MypageProps = {};
 
 const Mypage: React.FC<MypageProps> = () => {
-  const token = getCookie('token');
   const [user, setUser] = useRecoilState(UserAtom);
-  const [formData, setFormData] = useRecoilState(RoomAtom);
   const { data, error, isLoading } = useQuery<user, Error>('user', fetchUser);
   const [isOpen, setIsOpen] = useState(false);
   const [isChangePW, setIsChangePW] = useState(false);
   const [isOpenLogout, setIsOpenLogout] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [nickname, setNickname] = useState('');
+
+  const token = getCookie('token');
 
   const navigate = useNavigate();
 
   const onClickToggle = () => {
     setIsOpen(!isOpen);
-  };
-
-  console.log('유저정보', data);
-
-  const handleAuthInfo = () => {
-    alert(`${data?.nickname} 님의 가입 경로는 ${data?.provider}입니다.`);
   };
 
   const handleLogout = () => {
@@ -48,6 +45,55 @@ const Mypage: React.FC<MypageProps> = () => {
   const handleChangePassword = () => {
     setIsChangePW(!isChangePW);
   };
+
+  const joinMutation = useMutation(
+    (nickname: string) =>
+      axios.put(
+        `${process.env.REACT_APP_SERVER_URL!}/auth/profile`,
+        { nickname: nickname },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // JWT 토큰을 여기에 삽입해주세요
+          },
+        },
+      ),
+    {
+      onSuccess: () => {
+        alert('닉네임 수정 성공');
+        // navigate('/login');
+      },
+      onError: (error: any) => {
+        if (error.response) {
+          const message = error.response.data.message;
+          console.log(message);
+
+          switch (true) {
+            case message.includes('닉네임이 비어 있으면 안됩니다.'):
+              setErrorMessage('닉네임이 비어 있으면 안됩니다.');
+              break;
+            case message.includes(
+              '닉네임은 한글, 알파벳, 숫자만 포함해야 합니다',
+            ):
+              setErrorMessage('닉네임은 특수문자가 포함될 수 없습니다.');
+              break;
+            default:
+              console.log(
+                '닉네임변경에 실패했습니다. 관리자에게 문의해주세요.',
+              );
+          }
+        }
+      },
+    },
+  );
+
+  const onSubmitNickname = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log('nickname', nickname);
+
+    joinMutation.mutate(nickname);
+  };
+
+  console.log(nickname);
 
   return (
     <Container>
@@ -63,9 +109,15 @@ const Mypage: React.FC<MypageProps> = () => {
           <UserInfo>
             <Group>
               <Label>닉네임</Label>
-              <EditNickname>
-                <input placeholder={data?.nickname} />
-                <button>
+              <EditNickname onSubmit={onSubmitNickname}>
+                <input
+                  placeholder={data?.nickname}
+                  value={nickname}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setNickname(e.target.value)
+                  }
+                />
+                <button type="submit">
                   <img src={send} alt="send" />
                 </button>
               </EditNickname>
@@ -74,12 +126,12 @@ const Mypage: React.FC<MypageProps> = () => {
               <Label>이메일 계정</Label>
               <span>{data?.email ? data?.email : 'abcd@email.com'}</span>
             </Group>
-            <ChangePasswordModal pw={data?.password}/>
+            <ChangePasswordModal pw={data?.password} />
           </UserInfo>
         </UserProfile>
 
         <Lists>
-          <List onClick={() => onClickToggle()}>가입정보</List>
+          {/* <List onClick={() => onClickToggle()}>가입정보</List>
           {isOpen && (
             <Toggle>
               <span>
@@ -89,11 +141,11 @@ const Mypage: React.FC<MypageProps> = () => {
               <button onClick={handleChangePassword}> 비밀번호 수정</button>
             </Toggle>
           )}
-          {isChangePW && <ChangePasswordModal />}
+          {isChangePW && <ChangePasswordModal />} */}
           <List onClick={handleLogout}>로그아웃</List>
           <List onClick={() => handleLogout()}>회원탈퇴</List>
         </Lists>
-        {isOpenLogout && <LogoutModal setIsOpenLogout={setIsOpenLogout}/>}
+        {isOpenLogout && <LogoutModal setIsOpenLogout={setIsOpenLogout} />}
       </Contants>
 
       {/* <GoalRecordChart /> */}
@@ -113,7 +165,7 @@ const Group = styled.div`
   }
 `;
 
-const EditNickname = styled.div`
+const EditNickname = styled.form`
   display: flex;
   flex-direction: row;
   justify-content: start;

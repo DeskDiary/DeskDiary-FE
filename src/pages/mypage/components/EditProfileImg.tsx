@@ -42,14 +42,13 @@ const EditProfileImg: React.FC<EditProfileImgProps> = () => {
     });
   };
 
-  const { data, error, isLoading } = useQuery<user, Error>('user', fetchUser);
-
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const image = e.target.files?.[0];
 
     if (image) {
       const reader = new FileReader();
       reader.readAsDataURL(image);
+      console.log('이미지확인', image);
       reader.onload = () => {
         const base64 = reader.result;
         setImage(base64 as string);
@@ -66,8 +65,6 @@ const EditProfileImg: React.FC<EditProfileImgProps> = () => {
       console.log('이미지 있음');
       formData.append('image', image);
     }
-
-    formData.append('image', user.file);
 
     console.log('프로필 이미지 선택', formData.get('image'));
 
@@ -99,6 +96,7 @@ const EditProfileImg: React.FC<EditProfileImgProps> = () => {
       console.log('프로필 수정 실패', error);
     }
   };
+
 
   return (
     <Button
