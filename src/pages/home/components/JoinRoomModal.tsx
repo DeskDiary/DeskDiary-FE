@@ -31,14 +31,16 @@ type JoinRoomModal = {
 const JoinRoomModal: React.FC<JoinRoomModal> = ({ setIsOpen, room }) => {
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const navigate = useNavigate();
-  const [inputText, setInputText] = useState('');
   const [joinUUID, setJoinUUID] = useRecoilState<string>(RoomUUIDAtom);
   const [roomInfo, setRoomInfo] = useRecoilState(RoomAtom);
-  console.log(room);
-  const [test, setTest] = useState(true);
 
-  const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setInputText(e.target.value);
+  const renderNoteWithBreaks = (text: string) => {
+    return text.split('\n').map((line, index) => (
+      <React.Fragment key={index}>
+        {line}
+        <br />
+      </React.Fragment>
+    ));
   };
 
   const onClickJoinRoom = async () => {
@@ -92,7 +94,7 @@ const JoinRoomModal: React.FC<JoinRoomModal> = ({ setIsOpen, room }) => {
           <Group>
             <Label>방 입장 시 유의 사항</Label>
             <BasicPrecautions />
-            <Note>{room.note}</Note>
+            <Note>{renderNoteWithBreaks(room.note)}</Note>
           </Group>
         </Content>
 
