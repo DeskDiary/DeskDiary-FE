@@ -32,7 +32,7 @@ const Container = styled.div`
   justify-content: start;
   align-items: center;
   width: 1200px;
-  height: 100%;
+  height: 100vh;
 `;
 
 const Info = styled.div`
