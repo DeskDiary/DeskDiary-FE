@@ -6,10 +6,10 @@ import styled from 'styled-components';
 import { getCookie, setTokenCookie } from '../../auth/cookie';
 import XIcon from '../../images/Vector.svg';
 import logo from '../../images/logo.png';
-import 아이디저장o from '../../images/radio_button_checked.svg';
-import 아이디저장x from '../../images/radio_button_unchecked.svg';
 import 구글로그인 from '../../images/main/구글사진.svg';
 import 카카오로그인 from '../../images/main/카카오사진.svg';
+import 아이디저장o from '../../images/radio_button_checked.svg';
+import 아이디저장x from '../../images/radio_button_unchecked.svg';
 
 type LoginProps = {};
 
@@ -54,7 +54,7 @@ const Login: React.FC<LoginProps> = () => {
       setErrorMessage([]);
       console.log(token);
       setTokenCookie(token);
-      if (idSaveCheckButton) {
+      if (idSaveCheckButton === true) {
         saveIdLocalStorage(id);
       }
       alert(`로그인 성공`);

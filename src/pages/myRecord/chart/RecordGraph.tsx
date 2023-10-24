@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import GoalRecoard from '../components/GoalRecoard';
 import GoalPercentGraph from './GoalPercentGraph';
-import GoalRecoard from '../myRecord/components/GoalRecoard';
 
 type RecordGraphProps = {};
 
