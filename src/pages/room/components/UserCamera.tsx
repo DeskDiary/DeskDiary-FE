@@ -1,21 +1,78 @@
 import AgoraRTC from 'agora-rtc-sdk-ng';
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { RoomAtom } from '../../../recoil/RoomAtom';
+import { getCookie } from '../../../auth/cookie';
 import VideoPlayer from './VideoPlayer';
 
-type CameraProps = {};
+type CameraProps = {
+  // roomInfo: {
+  //   agoraAppId: string;
+  //   agoraToken: string;
+  //   category: string;
+  //   count: number;
+  //   createdAt: string;
+  //   maxHeadcount: number;
+  //   note: string;
+  //   nowHeadcount: number;
+  //   ownerId: number;
+  //   uuid: string;
+  //   roomThumbnail: string | null;
+  //   title: string;
+  //   updatedAt: string;
+  //   roomId: number;
+  // };
+};
 
 const UserCamera: React.FC<CameraProps> = () => {
-  const [roomInfo, setRoomInfo] = useRecoilState(RoomAtom);
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
   const [client, setClient] = useState<any>(null);
+  const [roomInfo, setRoomInfo] = useState({
+    agoraAppId: '',
+    agoraToken: '',
+    category: '',
+    count: 0,
+    createdAt: '0',
+    maxHeadcount: 0,
+    note: '0',
+    nowHeadcount: 0,
+    ownerId: 0,
+    roomId: 0,
+    roomThumbnail: '0',
+    title: '0',
+    updatedAt: '0',
+    uuid: '0',
+  });
+  // console.log('룸데이터', roomInfo)
   const [users, setUsers] = useState<{ uid: any; videoTrack: any }[]>([]);
   const [localTracks, setLocalTracks] = useState<any[]>([]);
+  const location = useLocation();
+  const getUUID = location.pathname.split('/room/')[1];
+  const token = getCookie('token');
+  const getRoomInfo = async () => {
+    try {
+      const response = await axios.get(`${serverUrl}/room/${getUUID}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const allData = response.data;
+      console.log('전체 방 데이터', allData)
+      const data = response.data.findRoom;
+      console.log('리스폰스', data);
+      setRoomInfo(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
-    console.log(roomInfo)
-    if (roomInfo.agoraAppId && roomInfo.agoraToken && roomInfo.title) {
+    getRoomInfo();
+  }, []);
+
+  useEffect(() => {
+    if (roomInfo.agoraAppId !== '' && roomInfo.agoraToken && roomInfo.title) {
       const APP_ID = roomInfo.agoraAppId;
       const TOKEN = roomInfo.agoraToken;
       const CHANNEL = roomInfo.uuid;
@@ -26,7 +83,7 @@ const UserCamera: React.FC<CameraProps> = () => {
 
       newClient.on('user-published', handleUserJoined);
       newClient.on('user-left', handleUserLeft);
-      
+
       newClient
         .join(APP_ID, CHANNEL, TOKEN, null)
         .then(uid => {
@@ -59,10 +116,13 @@ const UserCamera: React.FC<CameraProps> = () => {
     }
   }, [roomInfo]);
 
+  console.log('클라이언트', client);
+
   const handleUserJoined = async (user: any, mediaType: any) => {
     await client.subscribe(user, mediaType);
 
     if (mediaType === 'video') {
+      console.log('mediaType', mediaType);
       setUsers(previousUsers => [...previousUsers, user]);
     }
 

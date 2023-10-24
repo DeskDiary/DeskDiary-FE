@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import MainTop from '../../components/layout/main/MainTop';
 import RoomCard from '../home/components/RoomCard';
 
-import { useQuery } from 'react-query';
 import axios from 'axios';
-import RecordGraph from '../mypage/RecordGraph';
+import { useQuery } from 'react-query';
+import RecordGraph from './chart/RecordGraph';
 
 
 type MyDeskProps = {};

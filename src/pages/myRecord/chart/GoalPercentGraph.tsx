@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import 팔레트 from '../../images/mypage/palette.svg';
-import study from '../../../images/main/study.svg'
+// import 팔레트 from '../../images/mypage/palette.svg';
+// import study from '../../../images/main/study.svg'
 
 type GoalPercentGraphProps = {};
 
@@ -10,7 +10,7 @@ const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
     <Body>
       <Title>오늘의 취미 목표</Title>
       <PercentImg>
-        <img src={팔레트} alt="" />
+        {/* <img src={팔레트} alt="" /> */}
         <p>38%</p>
       </PercentImg>
       <div>
