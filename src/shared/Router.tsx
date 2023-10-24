@@ -26,7 +26,7 @@ const Router = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/join" element={<Join />} />
         </Route>
-        <Route path="/room" element={<CamAndMicSetting />} />
+        {/* <Route path="/room" element={<CamAndMicSetting />} /> */}
         <Route path="/room/:id" element={<Room />} />
         <Route path="*" element={<Error />} />
       </Routes>
