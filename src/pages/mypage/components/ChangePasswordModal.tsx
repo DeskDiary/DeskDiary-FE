@@ -1,18 +1,62 @@
+import axios from 'axios';
 import React, { useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { useMutation } from 'react-query';
+import { useNavigate } from 'react-router';
 import styled from 'styled-components';
+import { UserAtom } from '../../../recoil/UserAtom';
 
 type ChangePasswordModalProps = {
   pw?: string;
 };
 
 const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({ pw }) => {
+  const [user, setUser] = useRecoilState(UserAtom);
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  console.log('password', password);
-  console.log('newPassword', newPassword);
-  console.log('confirmPassword', confirmPassword);
+  const joinMutation = useMutation(
+    // (userData: typeof user) =>
+    (userData) =>
+      axios.post(`${process.env.REACT_APP_SERVER_URL!}/auth/join`, userData),
+    {
+      onSuccess: () => {
+        alert('비밀번호 변경 완료');
+      },
+      onError: (error: any) => {
+        if (error.response) {
+          const message = error.response.data.message;
+          console.log(message);
+
+          switch (true) {
+            case message.includes('비밀번호가 비어 있으면 안됩니다.'):
+              setErrorMessage('비밀번호가 비어 있으면 안됩니다.');
+              break;
+            case message.includes(
+              '비밀번호는 대문자, 소문자, 숫자, 특수문자를 각각 하나 이상 포함해야 합니다',
+            ):
+              setErrorMessage(
+                '비밀번호는 대문자, 소문자, 숫자, 특수문자를 각각 하나 이상 포함한 8자 이상 이어야 합니다',
+              );
+              break;
+            case message.includes('비밀번호는 8자 이상이어야 합니다'):
+              setErrorMessage('비밀번호는 8자 이상이어야 합니다');
+              break;
+            default:
+              console.log('회원가입에 실패했습니다. 관리자에게 문의해주세요.');
+          }
+        }
+      },
+    },
+  );
+
+  const onSubmitJoin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    // joinMutation.mutate(user);
+  };
 
   const handleChangePassword = () => {
     if (pw !== password) {

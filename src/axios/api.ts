@@ -10,7 +10,7 @@ export const fetchUser = async () => {
     console.log("fetchUser 로그인이 필요해요!");
     return null;
   }
-
+  console.log('token',token)
   const { data } = await axios.get(
     `${process.env.REACT_APP_SERVER_URL!}/auth/profile`,
     {

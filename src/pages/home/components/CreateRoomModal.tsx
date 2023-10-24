@@ -35,7 +35,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
   const [room, setRoom] = useRecoilState(RoomAtom);
   const [isStudyActive, setIsStudyActive] = useState(false);
   const [isHobbyActive, setIsHobbyActive] = useState(false);
-  const [image, setImage] = useState('');
+  const [file, setFile] = useState<File | null>(null);
 
   const categories = ['study', 'hobby'];
   const activeStates = { study: isStudyActive, hobby: isHobbyActive };
@@ -76,18 +76,12 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
     updateFormData('count', count);
   };
 
-  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     console.log(file);
 
     if (file) {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        const base64 = reader.result;
-        setImage(base64 as string);
-        updateFormData('file', base64 as string);
-      };
+      setFile(file); // 바로 파일 객체 저장
     }
   };
 
@@ -97,21 +91,14 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
     // FormData 객체 생성
     const formData = new FormData();
 
-    if (image) {
-      console.log('이미지 있음');
-      formData.append('file', image);
+    if (file) {
+      formData.append('file', file);
     }
 
     formData.append('title', room.title);
     formData.append('maxHeadcount', maxUser.toString());
     formData.append('category', isStudyActive ? 'study' : 'hobby');
     formData.append('note', room.note);
-
-    console.log('formData title', formData.get('title'));
-    console.log('formData maxHeadcount', formData.get('maxHeadcount'));
-    console.log('formData category', formData.get('category'));
-    console.log('formData note', formData.get('note'));
-    console.log('formData file', formData.get('file'));
 
     try {
       console.log('try');
@@ -127,13 +114,11 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
         config,
       );
 
-      console.log('Room created: ', response.data);
-
       // 성공시 로직
       if (response.data.createdRoom) {
         console.log('성공');
         alert('방만들기 성공!');
-        navigate(`/room`);
+        navigate(`/`);
       } else {
         console.log('실패ddzz', response.data);
       }
@@ -148,8 +133,8 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
 
       <ModalContent>
         <Title>방 만들기</Title>
-        <Thumbnail image={image}>
-          {image ? <ThumbnailImg src={image} /> : <SampleImg src={upload} />}
+        <Thumbnail>
+          {file && <ThumbnailImg src={URL.createObjectURL(file)} />}
         </Thumbnail>
         <ThumbnailButtonGroup>
           <Button
@@ -166,7 +151,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
             <VisuallyHiddenInput type="file" onChange={handleFileChange} />
           </Button>
 
-          <button onClick={() => setImage('')}>삭제</button>
+          <button onClick={() => setFile(null)}>삭제</button>
         </ThumbnailButtonGroup>
 
         <Content>
@@ -203,7 +188,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
           <Group>
             <Label>인원설정 (최대 4인 가능)</Label>
             <CategoryGroup>
-              {[1, 2, 3, 4].map((i, index) => (
+              {[1, 2, 3, 4, 5, 6, 7, 8].map((i, index) => (
                 <MaxUser
                   key={index}
                   type="button"
@@ -283,8 +268,8 @@ const MaxUser = styled.button<{ isActive: boolean }>`
   font-size: 16px;
   font-weight: 500;
 
-  width: 50px;
-  padding: 7px;
+  width: 40px;
+  padding: 4px;
 `;
 
 const CategoryGroup = styled.div`
@@ -292,7 +277,7 @@ const CategoryGroup = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 16px;
+  gap: 11px;
 `;
 
 const Category = styled.button<{ isActive: boolean }>`
@@ -344,7 +329,6 @@ const PrecautionsBox = styled.div`
   }
 `;
 
-
 const Box = styled.div`
   display: flex;
   flex-direction: column;
@@ -357,7 +341,6 @@ const Box = styled.div`
   border-radius: 10px;
   padding: 5px;
 `;
-
 
 const RoomTitle = styled.input`
   width: calc(100%);
@@ -383,7 +366,7 @@ const Group = styled.div`
   width: 100%;
 `;
 
-const Thumbnail = styled.div<{ image?: string }>`
+const Thumbnail = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
