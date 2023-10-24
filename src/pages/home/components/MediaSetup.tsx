@@ -8,7 +8,11 @@ import {
   choiceCameraState,
   choiceMicState,
   micListState,
-} from '../recoil/CamAtom';
+} from '../../../recoil/CamAtom';
+import mic from '../../../images/main/mic.svg';
+import cam from '../../../images/main/cam.svg';
+import down from '../../../images/mypage/down.svg';
+import VideocamIcon from '@mui/icons-material/Videocam';
 
 type MediaSetupProps = {};
 
@@ -16,6 +20,18 @@ const MediaSetup: React.FC<MediaSetupProps> = () => {
   const [localStream, setLocalStream] = useState<MediaStream | null>(null);
   const [isCameraTesting, setCameraTesting] = useState(false);
   const [isMicTesting, setMicTesting] = useState(false);
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const selectOption = (option: any) => {
+    setSelectedOption(option);
+    setIsOpen(false);
+  };
 
   const [cameras, setCameras] =
     useRecoilState<MediaDeviceInfo[]>(cameraListState);
@@ -122,39 +138,48 @@ const MediaSetup: React.FC<MediaSetupProps> = () => {
           <TestButton onClick={startCameraTest} disabled={isCameraTesting}>
             Camera
           </TestButton>
-          <MediaSelect
-            name="cameraSelect"
-            id=""
-            value={choiceCamera}
-            onChange={choiceCameraHandler}
-          >
-            {cameras.map(item => {
-              return (
-                <option key={item.deviceId} value={item.deviceId}>
-                  {item.label}
-                </option>
-              );
-            })}
-          </MediaSelect>
+          <Media>
+            <img src={cam} alt="cam setting" />
+            <img src={down} alt="cam list" />
+            <MediaSelect
+              name="cameraSelect"
+              id=""
+              value={choiceCamera}
+              onChange={choiceCameraHandler}
+            >
+              {cameras.map(item => {
+                return (
+                  <option key={item.deviceId} value={item.deviceId}>
+                    {item.label}
+                  </option>
+                );
+              })}
+            </MediaSelect>
+          </Media>
         </ButonGroup>
+
         <ButonGroup>
           <TestButton onClick={startMicTest} disabled={isMicTesting}>
             Microphone
           </TestButton>
-          <MediaSelect
-            name="micSelect"
-            id=""
-            value={choiceMic}
-            onChange={choiceMicHandler}
-          >
-            {mics.map(item => {
-              return (
-                <option key={item.deviceId} value={item.deviceId}>
-                  {item.label}
-                </option>
-              );
-            })}
-          </MediaSelect>
+          <Media>
+            <img src={mic} alt="mic setting" />
+            <img src={down} alt="mic list" />
+            <MediaSelect
+              name="micSelect"
+              id=""
+              value={choiceMic}
+              onChange={choiceMicHandler}
+            >
+              {mics.map(item => {
+                return (
+                  <option key={item.deviceId} value={item.deviceId}>
+                    {item.label}
+                  </option>
+                );
+              })}
+            </MediaSelect>
+          </Media>
         </ButonGroup>
       </CamSetting>
       <button onClick={stopTest} disabled={!localStream}>
@@ -164,10 +189,29 @@ const MediaSetup: React.FC<MediaSetupProps> = () => {
   );
 };
 
+const Media = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100px;
+  height: 50px;
+  border: 1px solid var(--primary-01);
+  border-radius: 50px;
+  position: relative;
+  padding: 0 10px;
+`;
+
 const MediaSelect = styled.select`
-  width: 100%;
+  position: absolute;
+  left: 35%;
+  width: 30px;
   height: 30px;
+  font-size: 12px;
   color: #6e6e6e;
+  border: none;
+  appearance: none;
+
   &:focus {
     outline: none;
   }
@@ -179,8 +223,6 @@ const ButonGroup = styled.div`
   justify-content: center;
   align-items: start;
   gap: 5px;
-
-  width: 100%;
 `;
 
 const TestButton = styled.button`
@@ -194,18 +236,17 @@ const TestButton = styled.button`
 `;
 
 const Cam = styled.video`
-  width: 234px;
-  height: 140px;
+  width: 250px;
+  height: 160px;
   border-radius: 10px;
-  background-color: #6e6e6e;
 `;
 
 const CamSetting = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: start;
-  gap: 10px;
+  align-items: center;
+  gap: 20px;
   width: 100%;
 `;
 

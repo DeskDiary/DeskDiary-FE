@@ -37,10 +37,8 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
     setIsPopular(value);
     if (value) {
       setSort('Popular');
-      console.log('인기순');
     } else {
       setSort('Latest');
-      console.log('최신순');
     }
   };
 
@@ -49,12 +47,9 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
   useEffect(() => {
     if (isPopular) {
       setSort('Popular');
-      console.log('인기순');
     } else {
       setSort('Latest');
-      console.log('최신순');
     }
-    console.log(fetchName);
   }, [isPopular]);
 
   const { data, error, isLoading } = useQuery<room[], Error>(

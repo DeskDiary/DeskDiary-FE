@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import React, { ChangeEvent, useState } from 'react';
 import MainTop from '../../../components/layout/main/MainTop';
-import { profile } from '../../../images';
+import { edit } from '../../../images/mypage';
 import { Button } from '@mui/material';
 import { useRecoilState } from 'recoil';
 import { UserAtom } from '../../../recoil/UserAtom';
@@ -46,7 +46,6 @@ const EditProfileImg: React.FC<EditProfileImgProps> = () => {
 
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const image = e.target.files?.[0];
-    console.log('51번째 줄', image);
 
     if (image) {
       const reader = new FileReader();
@@ -59,7 +58,6 @@ const EditProfileImg: React.FC<EditProfileImgProps> = () => {
     }
 
     e.preventDefault();
-    console.log('저장?');
 
     // FormData 객체 생성
     const formData = new FormData();
@@ -106,16 +104,21 @@ const EditProfileImg: React.FC<EditProfileImgProps> = () => {
     <Button
       component="label"
       sx={{
-        color: 'gray',
+        color: 'var(--primary-01)',
         '&:hover': {
           backgroundColor: 'initial', // 여기서 'initial' 대신 원래 배경색을 넣어도 돼
           boxShadow: 'none', // 그림자 효과 제거
         },
       }}
     >
-      썸네일 등록
+      사진 수정
+      <EditIcon src={edit} alt='edit profile image'/>
       <VisuallyHiddenInput type="file" onChange={handleFileChange} />
     </Button>
   );
 };
+
+const EditIcon = styled.img`
+  width: 18px;
+`
 export default EditProfileImg;

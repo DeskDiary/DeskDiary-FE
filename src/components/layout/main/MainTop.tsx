@@ -3,11 +3,11 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Link, useNavigate, NavLink } from 'react-router-dom';
 import { toast } from 'sonner';
 import styled from '@emotion/styled';
-import CreateRoomModal from '../../../pages/CreateRoomModal';
+import CreateRoomModal from '../../../pages/home/components/CreateRoomModal';
 import { getCookie, setTokenCookie } from '../../../auth/cookie';
 import addroom from '../../../images/main/addroom.svg';
 import { fetchUser } from '../../../axios/api';
-import profile from '../../../images/profile.png'
+import profile from '../../../images/profile.png';
 
 import { useQuery } from 'react-query';
 
@@ -16,11 +16,11 @@ type MainTopProps = {};
 const MainTop: React.FC<MainTopProps> = () => {
   const [isFocused, setIsFocused] = useState(false);
   const [openCreateRoom, setOpenCreateRoom] = useState(false);
-
+  
+  
+  const token = getCookie('token');
 
   const [nickname, setNickname] = useState('');
-
-  const token = getCookie('token');
 
   const onClickCreateRoomButton = () => {
     setOpenCreateRoom(!openCreateRoom);
@@ -38,6 +38,7 @@ const MainTop: React.FC<MainTopProps> = () => {
     toast.message('search click');
   };
 
+  // 로그인 하자마자 유저 정보 안보이는 문제
   const { data } = useQuery<user>('user', fetchUser);
 
   useEffect(() => {
@@ -50,7 +51,10 @@ const MainTop: React.FC<MainTopProps> = () => {
     <NavHeader>
       {token ? (
         <User to="/mypage/:id">
-          <img src={data?.profileImage} alt="profile image"></img>
+          <img
+            src={data?.profileImage ? data.profileImage : profile}
+            alt="profile image"
+          ></img>
           <p>{data?.nickname}</p>
           <span>님의 마이페이지</span>
         </User>
@@ -76,7 +80,7 @@ const MainTop: React.FC<MainTopProps> = () => {
       <Link to="/login">로그인</Link>
 
       <CreateRoomButton type="button" onClick={onClickCreateRoomButton}>
-        <img src={addroom} alt="add room button"/>
+        <img src={addroom} alt="add room button" />
         방만들기
       </CreateRoomButton>
       {openCreateRoom && (
@@ -110,7 +114,7 @@ const User = styled(Link)`
     overflow: hidden;
   }
 
-  >span {
+  > span {
     margin-left: auto;
   }
 `;

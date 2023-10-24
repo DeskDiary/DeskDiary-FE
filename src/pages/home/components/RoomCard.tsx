@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import MaxUser from '../../../images/room/MaxUser.svg';
-import sample from '../../../images/sample.jpg';
-import JoinRoomModal from '../../JoinRoomModal';
+import sample from '../../../images/sample.svg';
+import JoinRoomModal from './JoinRoomModal';
 
 type RoomCardProps = {
   room: {
@@ -26,13 +26,25 @@ type RoomCardProps = {
 const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+
+  const handleImageLoaded = () => {
+    setIsImageLoaded(true);
+  };
+
+  const handleImageError = () => {
+    setIsImageLoaded(false);
+  };
+
   return (
     <Container>
+      {!isImageLoaded && <img src={sample} alt="thumbnail" />}
       <Thumbmail
-
+        onLoad={handleImageLoaded}
+        onError={handleImageError}
+        style={{ display: isImageLoaded ? 'block' : 'none' }}
         src={room.roomThumbnail ? room.roomThumbnail : sample}
         alt="room thumbnail"
-
         onClick={() => setIsOpen(true)}
       ></Thumbmail>
       <Contents onClick={() => setIsOpen(true)}>
@@ -117,5 +129,11 @@ const Container = styled.div`
   width: 230px;
   height: 200px;
   cursor: pointer;
+
+  > img {
+    width: 97%;
+    border-radius: 10px;
+    overflow: hidden;
+  }
 `;
 export default RoomCard;
