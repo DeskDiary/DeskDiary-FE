@@ -1,42 +1,81 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import study from '../../../images/main/study.svg'
+import GoalRecordChart from '../chart/GoalRecordChart';
 
-type GoalRecoardProps = {
-  
+type GoalRecoardProps = {};
+
+const GoalRecoard: React.FC<GoalRecoardProps> = () => {
+  const [view7, setView7] = useState<boolean>(true);
+  const [view30, setView30] = useState<boolean>(false);
+
+  const view7OnclickHandler = () => {
+    setView7(true);
+    setView30(false);
+  };
+  const view30OnclickHandler = () => {
+    setView7(false);
+    setView30(true);
+  };
+  return (
+    <Container>
+      <TitleBox>
+        <Titile>목표 달성 기록 모음</Titile>
+        <GoalButtonBox>
+          <ButtonState7
+            onClick={view7OnclickHandler}
+            state={view7 ? true : false}
+          >
+            일주일 기록 보기
+          </ButtonState7>
+          <ButtonState30
+            onClick={view30OnclickHandler}
+            state={view30 ? true : false}
+          >
+            한달 기록 보기
+          </ButtonState30>
+        </GoalButtonBox>
+      </TitleBox>
+      <GoalRecordChart view7={view7} view30={view30}/>
+    </Container>
+  );
 };
-
-const GoalRecoard:React.FC<GoalRecoardProps> = () => {
-  
-  return <Body>
-  <Title>목표 달성 기록 모음</Title>
-  <PercentImg>
-    <img src={study} alt="" />
-    <p>38%</p>
-  </PercentImg>
-</Body>
-}
-
-const Body = styled.div`
-  width: 790px;
-  height: 320px;
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 10px 20px;
+  width: 786px;
+  height: 319px;
   border-radius: 20px;
-  background-color: white;
+  background: var(--bw-whtie);
   box-shadow: 2px 4px 9px 0px rgba(0, 0, 0, 0.25);
-  padding: 20px;
-  margin-top: auto;
 `;
 
-const Title = styled.p`
+const TitleBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+`;
+
+const GoalButtonBox = styled.div`
+  display: flex;
+  gap: 12px;
+  font-size: 14px;
+`;
+
+const ButtonState7 = styled.button<{ state: boolean }>`
+  color: ${props => (props.state ? 'black' : 'rgba(0, 0, 0, 0.5)')};
+  text-decoration: ${props => (props.state ? 'underline' : 'none')};
+`;
+
+const ButtonState30 = styled.button<{ state: boolean }>`
+  color: ${props => (props.state ? 'black' : 'rgba(0, 0, 0, 0.5)')};
+  text-decoration: ${props => (props.state ? 'underline' : 'none')};
+`;
+
+const Titile = styled.div`
   font-size: 16px;
   font-weight: 700;
+  white-space: nowrap;
 `;
 
-const PercentImg = styled.div`
-  display: flex;
-  img {
-    width: 234px;
-    height: 234px;
-  }
-`;
 export default GoalRecoard;
