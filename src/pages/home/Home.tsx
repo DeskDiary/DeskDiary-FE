@@ -10,7 +10,7 @@ import userIntro from '../../images/main/userIntro.svg';
 
 const Home = () => {
   const token = getCookie('token');
-
+  
   return (
     <Container>
       <MainTop />

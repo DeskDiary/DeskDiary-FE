@@ -10,8 +10,8 @@ const LogoutModal: React.FC<LogoutModalProps> = ({ setIsOpenLogout }) => {
   const navigate = useNavigate();
   const handleLogout = () => {
     if (window.confirm('로그아웃 하시겠습니까?')) {
-      document.cookie =
-        'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+      document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=yourDomain.com;';
+
       // 여기서 추가로 로그아웃 처리 로직을 넣을 수 있어. 예를 들면 페이지 리디렉션 같은 것!
       navigate('/');
     }
