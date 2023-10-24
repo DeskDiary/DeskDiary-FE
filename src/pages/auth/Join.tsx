@@ -9,6 +9,7 @@ import { colorChecked, unchecked, XIcon } from '../../images';
 import { UserAtom } from '../../recoil/UserAtom';
 
 import { useMutation } from 'react-query';
+import Kakao from './components/Kakao';
 
 type JoinProps = {};
 
@@ -281,6 +282,7 @@ const Join: React.FC<JoinProps> = () => {
         <SocialLoginLink to="/">
           <img src={google} />
         </SocialLoginLink>
+        <Kakao />
       </SocialLoginGroup>
     </JoinForm>
   );

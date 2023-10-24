@@ -3,9 +3,10 @@ import axios from 'axios';
 import React, { ChangeEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { getCookie } from '../auth/cookie';
-import { RoomAtom, RoomUUIDAtom } from '../recoil/RoomAtom';
+import { getCookie } from '../../../auth/cookie';
+import { RoomAtom, RoomUUIDAtom } from '../../../recoil/RoomAtom';
 import MediaSetup from './MediaSetup';
+import BasicPrecautions from './BasicPrecautions';
 
 type JoinRoomModal = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -89,7 +90,9 @@ const JoinRoomModal: React.FC<JoinRoomModal> = ({ setIsOpen, room }) => {
 
         <Content>
           <Group>
-            <Label>{room.ownerId}</Label>
+            <Label>방 입장 시 유의 사항</Label>
+            <BasicPrecautions />
+            <Note>{room.note}</Note>
           </Group>
         </Content>
 
@@ -104,21 +107,29 @@ const JoinRoomModal: React.FC<JoinRoomModal> = ({ setIsOpen, room }) => {
   );
 };
 
+const Note = styled.div`
+  font-size: 12px;
+  color: var(--gray-07);
+  margin-right: auto;
+`;
+
 const MediaSetupGroup = styled.div`
-display: flex;
-flex-direction: row;
-justify-content: center;
-align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  width: 400px;
 `;
 
 const Content = styled.div`
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-gap: 15px;
   display: flex;
-  width: 582px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  display: flex;
+  width: 400px;
   margin-top: 14px;
 `;
 
@@ -127,68 +138,59 @@ const Label = styled.div`
 `;
 
 const Group = styled.div`
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
 
   width: 100%;
 `;
 
 const Title = styled.div`
-  font-size: 36px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 123.5%; /* 44.46px */
-  letter-spacing: 0.25px;
-
-  margin-top: 36px;
-  margin-bottom: 22px;
-  height: 44px;
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 25px;
 `;
 
 const Button = styled.div`
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-gap: 8px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 
-  margin-bottom: 16px;
+  width: 400px;
   margin-top: auto;
 `;
 
 const EnterRoomButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 510px;
+  width: 195px;
   height: 50px;
   border: none;
-  background-color: rgb(110, 110, 110);
-  cursor: pointer;
+  background-color: var(--primary-01);
   color: white;
-  font-size: 24px;
+  font-size: 16px;
+  font-weight: 600;
 `;
 
 const CancleButton = styled(Link)`
   display: flex;
-  align-items: center;
   justify-content: center;
-  width: 510px;
+  align-items: center;
+  width: 195px;
   height: 50px;
-  border: none;
+  border: 1px solid var(--primary-01);
+  color: var(--primary-01);
   background-color: rgba(110, 110, 110, 0);
-  cursor: pointer;
-  font-size: 24px;
+  font-size: 16px;
+  font-weight: 600;
 `;
 
 const BackGround = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(
     5px
@@ -199,31 +201,32 @@ const BackGround = styled.div`
 `;
 
 const ModalContent = styled.div`
-display: flex;
-flex-direction: column;
-justify-content: start;
-align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
 
-  width: 810px;
-  height: 948px;
-  background-color: rgba(255, 255, 255, 0.8);
+  width: 600px;
+  height: 800px;
+  /* background-color: rgba(255, 255, 255, 0.8); */
+  background-color: white;
   border-radius: 20px;
   z-index: 50;
   position: absolute;
+  padding: 60px 0;
 `;
 
 const Container = styled.div`
-display: flex;
-flex-direction: row;
-justify-content: center;
-align-items: center;
-
+  display: flex;
+  flex-direction: col;
+  align-items: center;
+  justify-content: center;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 50;
+  z-index: 5000;
   cursor: auto;
 `;
 

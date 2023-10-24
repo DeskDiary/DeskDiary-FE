@@ -4,33 +4,59 @@ import styled from 'styled-components';
 import send from '../../../../images/send.svg';
 import 공지사진 from '../../../../images/공지.png';
 import Chat from './Chat';
+import { ChatMessagesAtom } from '../../../../recoil/ChatAtom';
+import { useRecoilState } from 'recoil';
+import { fetchUser } from '../../../../axios/api';
+import { useQuery } from 'react-query';
 
-const socket = io('http://localhost:5000');
+// const socket = io('http://localhost:5000');
+const socket = io(`${process.env.REACT_APP_SERVER_URL!}`);
 
-type ChatBoxProps = {};
+type ChatBoxProps = { roomId: string };
 
 type MessageData = {
   message: string;
   user: string;
+  profileImage: string;
   time: string;
+  roomId: string;
 };
 
-const ChatBox: React.FC<ChatBoxProps> = () => {
+const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
   const [username, setUserName] = useState('');
   const [chatActive, setChatActive] = useState(false);
   const [messages, setMessages] = useState<MessageData[]>([]);
   const [newMessage, setNewMessage] = useState('');
 
-  useEffect(() => {
-    socket.on('received-message', (message: MessageData) => {
-      setMessages(prevMessages => [...prevMessages, message]);
-    });
-    console.log('messages', messages);
+  const { data } = useQuery<user>('user', fetchUser);
 
-    return () => {
-      socket.off('received-message');
+  const [recoilMessages, setRecoilMessages] = useRecoilState(
+    ChatMessagesAtom(roomId),
+  );
+
+  useEffect(() => {
+    // roomId가 바뀔 때 로컬 스토리지에서 채팅 불러오기
+    const savedChat = JSON.parse(localStorage.getItem(`chat-${roomId}`) || '[]');
+    setMessages(savedChat);
+  
+    const handleReceivedMessage = (message: MessageData) => {
+      // 메시지 추가
+      setMessages((prevMessages: MessageData[]) => [...prevMessages, message]);
+      // Recoil 상태 업데이트
+      setRecoilMessages((prevMessages: MessageData[]) => [...prevMessages, message]);
+  
+      // 로컬 스토리지에도 저장
+      const currentChat = [...savedChat, message]; // 여기서도 savedChat을 그대로 사용
+      localStorage.setItem(`chat-${roomId}`, JSON.stringify(currentChat));
     };
-  }, [messages, socket]);
+  
+    socket.on('received-message', handleReceivedMessage);
+  
+    return () => {
+      socket.off('received-message', handleReceivedMessage);
+    };
+  }, [roomId]);  // 의존성 배열에서 savedChat을 제거
+
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -40,8 +66,10 @@ const ChatBox: React.FC<ChatBoxProps> = () => {
 
     const messageData = {
       message: newMessage,
-      user: username,
+      user: data?.nickname,
+      profileImage:data?.profileImage,
       time: time,
+      uuid: roomId,
     };
 
     newMessage !== ''
@@ -58,6 +86,7 @@ const ChatBox: React.FC<ChatBoxProps> = () => {
           return <Chat key={index} message={message} />;
         })}
       </ChatList>
+      {roomId}
       <ChatForm onSubmit={handleSubmit}>
         <UserInput
           value={newMessage}
