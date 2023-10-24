@@ -3,4 +3,5 @@ interface user {
   password: string;
   nickname: string;
   profileImage?: string;
+  provider: string;
 }

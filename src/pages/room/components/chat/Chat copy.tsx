@@ -11,9 +11,7 @@ type ChatProps = {
   message: {
     message: string;
     user: string;
-    profileImage: string;
     time: string;
-    roomId: string;
   };
 };
 
@@ -25,10 +23,10 @@ const Chat: React.FC<ChatProps> = ({ message }) => {
 
   return (
     <Container>
-      <UserImg src={message.profileImage ? message.profileImage : profile} />
+      <UserImg src={data?.profileImage ? data?.profileImage : profile} />
       <ChatDetails>
         <Metadata>
-          <UserName>{message.user}</UserName>
+          <UserName>{data?.nickname}</UserName>
           <Time>{message.time}</Time>
         </Metadata>
 

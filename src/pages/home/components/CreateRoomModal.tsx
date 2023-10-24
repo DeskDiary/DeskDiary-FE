@@ -1,15 +1,16 @@
 import React, { ChangeEvent, useState } from 'react';
 import styled from '@emotion/styled';
-import Picture from '../images/Picture.png';
+import upload from '../../../images/main/upload.svg';
 import { Button } from '@mui/material';
 import { useRecoilState } from 'recoil';
-import { RoomAtom } from '../recoil/RoomAtom';
+import { RoomAtom } from '../../../recoil/RoomAtom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
-import { getCookie, setTokenCookie } from '../auth/cookie';
+import { getCookie, setTokenCookie } from '../../../auth/cookie';
 
-import { study, hobby } from '../images';
+import { study, hobby } from '../../../images';
+import BasicPrecautions from './BasicPrecautions';
 
 type CreateRoomProps = {
   setOpenCreateRoom: React.Dispatch<React.SetStateAction<boolean>>;
@@ -148,7 +149,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
       <ModalContent>
         <Title>방 만들기</Title>
         <Thumbnail image={image}>
-          {image ? <ThumbnailImg src={image} /> : <SampleImg src={Picture} />}
+          {image ? <ThumbnailImg src={image} /> : <SampleImg src={upload} />}
         </Thumbnail>
         <ThumbnailButtonGroup>
           <Button
@@ -219,34 +220,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
         <PrecautionsBox>
           <p>방 개설 시 유의 사항</p>
           <Box>
-            <BoxGroup>
-              <Number>1.</Number>
-              <span>
-                화상 채팅 중에도 개인 정보를 보호해야 해. 화상 채팅 중에
-                화면을녹화하거나 스크린샷을 찍지 않도록 주의
-              </span>
-            </BoxGroup>
-            <BoxGroup>
-              <Number>2.</Number>
-              <span>
-                다른 사용자를 존중하고예의를 갖춰 모욕, 비방, 또는 공격적인 언어
-                사용을 피해주세요.
-              </span>
-            </BoxGroup>
-            <BoxGroup>
-              <Number>3.</Number>
-              <span>
-                가능하다면 조용한 환경에서 화상 채팅을 하도록 노력하며, 배경
-                소음을 최소화해주세요.{' '}
-              </span>
-            </BoxGroup>
-            <BoxGroup>
-              <Number>4.</Number>
-              <span>
-                화상 채팅 중에 화면 공유를 사용할 때 주의해야 하며, 중요한
-                정보가 노출되지 않도록 확인해주세요.
-              </span>
-            </BoxGroup>
+            <BasicPrecautions />
 
             <Precautions
               onChange={e => setRoom({ ...room, note: e.target.value })}
@@ -370,12 +344,6 @@ const PrecautionsBox = styled.div`
   }
 `;
 
-const Number = styled.div`
-  font-size: 12px;
-  color: var(--gray-07);
-  width: 15px;
-  height: 100%;
-`;
 
 const Box = styled.div`
   display: flex;
@@ -390,16 +358,6 @@ const Box = styled.div`
   padding: 5px;
 `;
 
-const BoxGroup = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  > span {
-    font-size: 12px;
-    color: var(--gray-07);
-  }
-`;
 
 const RoomTitle = styled.input`
   width: calc(100%);
@@ -434,7 +392,6 @@ const Thumbnail = styled.div<{ image?: string }>`
   width: 150px;
   height: 100px;
   border-radius: 10px;
-  background-color: ${props => (props.image ? '' : '#6e6e6e')};
   overflow: hidden;
 `;
 

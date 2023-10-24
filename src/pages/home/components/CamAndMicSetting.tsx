@@ -8,7 +8,7 @@ import {
   choiceCameraState,
   choiceMicState,
   micListState,
-} from '../recoil/CamAtom';
+} from '../../../recoil/CamAtom';
 
 type CamAndMicSettingProps = {};
 

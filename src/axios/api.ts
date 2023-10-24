@@ -1,12 +1,13 @@
 import axios from "axios";
 import { getCookie, setTokenCookie } from '../auth/cookie';
 
-const token = getCookie('token');
+
 
 // user 프로필 가져오기
 export const fetchUser = async () => {
+  const token = getCookie('token');
   if (!token) {
-    console.log("로그인이 필요해요!");
+    console.log("fetchUser 로그인이 필요해요!");
     return null;
   }
 
@@ -18,7 +19,7 @@ export const fetchUser = async () => {
       },
     },
   );
-  // console.log('main top 유저정보 data', data);
+  console.log('main top 유저정보 data', data);
   return data;
 };
 

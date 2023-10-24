@@ -6,7 +6,7 @@ import MainTop from '../../components/layout/main/MainTop';
 import { Goal, NonUserIntro } from './components';
 import { getCookie, setTokenCookie } from '../../auth/cookie';
 import RoomList from './components/RoomList';
-import userIntro from '../../images/userIntro.png';
+import userIntro from '../../images/main/userIntro.svg';
 
 const Home = () => {
   const token = getCookie('token');

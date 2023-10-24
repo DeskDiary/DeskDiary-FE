@@ -76,8 +76,8 @@ const SideBar: React.FC<SideBarProps> = () => {
 const SidebarButton = styled(NavLink)`
   display: flex;
   align-items: center;
-  height: 50px;
-  width: 50px;
+  height: 60px;
+  width: 60px;
   background-color: transparent; // 기본 배경색을 투명으로 설정
   transition: width 0.4s, background-color 0.3s; // width와 background-color에 대한 transition 추가
 
@@ -86,6 +86,7 @@ const SidebarButton = styled(NavLink)`
   line-height: 1;
   border-radius: 50px;
   opacity: 0.8;
+  margin-left: 5px;
 
   color: var(--primary-01);
   
@@ -112,13 +113,14 @@ const SidebarButton = styled(NavLink)`
   }
 
   > img {
+    height: 35px;
     border-radius: 50%;
-    margin: 0 18px 0 15px;
     filter: grayscale(100%);
+    padding: 0 10px;
   }
 
   > p {
-    width: 100px;
+    width: 80px;
     white-space: nowrap;
     opacity: 0;
     transition: opacity 0.4s ease-in-out;
