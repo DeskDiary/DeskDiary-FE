@@ -19,7 +19,7 @@ const RoomList: React.FC<RoomListProps> = ({ label, mydesk }) => {
 
   let fetchName = mydesk;
 
-  const { data, error, isLoading, refetch } = useQuery<room[], Error>(
+  const { data, refetch } = useQuery<room[], Error>(
     fetchName, // 쿼리 키를 배열로 만들어 fetchName, show, sort 추가
     async () => {
       const fetchFunc =
@@ -32,8 +32,6 @@ const RoomList: React.FC<RoomListProps> = ({ label, mydesk }) => {
       }
     },
   );
-
-  console.log(fetchName, data)
 
   return (
     <List>

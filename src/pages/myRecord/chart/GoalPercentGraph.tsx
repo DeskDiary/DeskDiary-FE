@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import 아무사진 from '../../../images/logo.png';
+import 아무사진 from '../../../images/logo.svg';
 
 type GoalPercentGraphProps = {};
 const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {

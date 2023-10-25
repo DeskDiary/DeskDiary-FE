@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import logo from '../../../images/logo.png';
+import logo from '../../../images/logo.svg';
 import 마이크 from '../../../images/room/mic_none.svg';
 import 사람 from '../../../images/room/people_outline.svg';
 import 카메라 from '../../../images/room/videocam.svg';

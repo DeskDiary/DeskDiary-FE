@@ -12,14 +12,39 @@ type ConfirmModalProps = {
   refetch?: () => Promise<unknown>;
 };
 
-const ConfirmModal: React.FC<ConfirmModalProps> = ({ uuid, title, setIsOpen, refetch }) => {
+const ConfirmModal: React.FC<ConfirmModalProps> = ({
+  uuid,
+  title,
+  setIsOpen,
+  refetch,
+}) => {
   const navigate = useNavigate();
-  
-  const handleDeleteRoom = async (uuid:string) => {
+
+  const handleDeleteRoom = async (uuid: string) => {
     try {
       const token = getCookie('token');
       const response = await axios.delete(
         `${process.env.REACT_APP_SERVER_URL!}/room/${uuid}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      console.log(response);
+      setIsOpen(false);
+      // window.location.reload();
+      refetch!();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleDeleteUser = async () => {
+    try {
+      const token = getCookie('token');
+      const response = await axios.delete(
+        `${process.env.REACT_APP_SERVER_URL!}/me`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -46,6 +71,9 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ uuid, title, setIsOpen, ref
       case '삭제':
         handleDeleteRoom(uuid!);
         break;
+      case '회원탈퇴':
+        handleDeleteUser();
+        break;
     }
   };
 
@@ -59,7 +87,11 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ uuid, title, setIsOpen, ref
           <Button type="button" onClick={() => handleButton(title)}>
             {title}
           </Button>
-          <Button type="button" buttontype="cancel" onClick={() => setIsOpen(false)}>
+          <Button
+            type="button"
+            buttontype="cancel"
+            onClick={() => setIsOpen(false)}
+          >
             취소
           </Button>
         </ButtonGroup>
@@ -85,15 +117,18 @@ const ButtonGroup = styled.div`
   margin-top: 20px;
 `;
 
-const Button = styled.button<{ buttontype ?: string }>`
+const Button = styled.button<{ buttontype?: string }>`
   width: 100px;
   height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${props => (props.buttontype === "cancel" ? '' : 'var(--primary-01)')};
-  color: ${props => (props.buttontype === "cancel" ? 'var(--primary-01)' : 'white')};
-  border: 1px solid ${props => (props.buttontype === "cancel" ? 'var(--primary-01)' : '')};
+  background-color: ${props =>
+    props.buttontype === 'cancel' ? '' : 'var(--primary-01)'};
+  color: ${props =>
+    props.buttontype === 'cancel' ? 'var(--primary-01)' : 'white'};
+  border: 1px solid
+    ${props => (props.buttontype === 'cancel' ? 'var(--primary-01)' : '')};
 `;
 
 const BackGround = styled.div`
