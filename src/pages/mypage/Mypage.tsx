@@ -13,7 +13,7 @@ import { UserAtom, ProfiltUpdate } from '../../recoil/UserAtom';
 
 import MainTop from '../../components/layout/main/MainTop';
 import ChangePasswordModal from './components/ChangePasswordModal';
-import LogoutModal from './components/LogoutModal';
+import ConfirmModal from '../../components/ConfirmModal';
 import EditProfileImg from './components/EditProfileImg';
 
 import { profile } from '../../images';
@@ -49,7 +49,7 @@ const Mypage: React.FC<MypageProps> = () => {
   const joinMutation = useMutation(
     (nickname: string) =>
       axios.put(
-        `${process.env.REACT_APP_SERVER_URL!}/auth/profile`,
+        `${process.env.REACT_APP_SERVER_URL!}/me/profile`,
         { nickname: nickname },
         {
           headers: {
@@ -145,7 +145,7 @@ const Mypage: React.FC<MypageProps> = () => {
           <List onClick={handleLogout}>로그아웃</List>
           <List onClick={() => handleLogout()}>회원탈퇴</List>
         </Lists>
-        {isOpenLogout && <LogoutModal setIsOpenLogout={setIsOpenLogout} />}
+        {isOpenLogout && <ConfirmModal title="로그아웃" setIsOpen={setIsOpenLogout} />}
       </Contants>
 
       {/* <GoalRecordChart /> */}

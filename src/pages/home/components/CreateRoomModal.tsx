@@ -3,11 +3,10 @@ import styled from '@emotion/styled';
 import upload from '../../../images/main/upload.svg';
 import { Button } from '@mui/material';
 import { useRecoilState } from 'recoil';
-import { RoomAtom } from '../../../recoil/RoomAtom';
+import { RoomAtom, RoomUUIDAtom } from '../../../recoil/RoomAtom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useMutation } from 'react-query';
-import { getCookie, setTokenCookie } from '../../../auth/cookie';
+import { getCookie } from '../../../auth/cookie';
 
 import { study, hobby } from '../../../images';
 import BasicPrecautions from './BasicPrecautions';
@@ -30,9 +29,11 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
   const token = getCookie('token');
 
   const [room, setRoom] = useRecoilState(RoomAtom);
+  const [joinUUID, setJoinUUID] = useRecoilState<string>(RoomUUIDAtom);
   const [isStudyActive, setIsStudyActive] = useState(false);
   const [isHobbyActive, setIsHobbyActive] = useState(false);
   const [file, setFile] = useState<File | null>(null);
@@ -85,6 +86,26 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
     }
   };
 
+  const handleJoinRoom = async (uuid:string) => {
+    try {
+      const token = getCookie('token');
+      console.log('조인룸 토큰', token);
+      const response = await axios.post(
+        `${process.env.REACT_APP_SERVER_URL!}/room/${uuid}/join`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      console.log(response);
+      navigate(`/room/${uuid}`);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const onSubmitRoom = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -116,9 +137,10 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
 
       // 성공시 로직
       if (response.data.createdRoom) {
-        console.log('성공');
+        console.log('성공', response.data);
         alert('방만들기 성공!');
-        navigate(`/`);
+        handleJoinRoom(response.data.createdRoom.uuid)
+        // console.log(response.data.createdRoom.uuid)
       } else {
         console.log('실패ddzz', response.data);
       }
@@ -134,7 +156,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
       <ModalContent>
         <Title>방 만들기</Title>
         <Thumbnail>
-          {file && <ThumbnailImg src={URL.createObjectURL(file)} />}
+          {file ? <ThumbnailImg src={URL.createObjectURL(file)} /> : <img src={upload}/>}
         </Thumbnail>
         <ThumbnailButtonGroup>
           <Button

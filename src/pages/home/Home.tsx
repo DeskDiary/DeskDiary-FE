@@ -38,7 +38,8 @@ const Container = styled.div`
   align-items: center;
 
   width: 1200px;
-  height: 100vh;
+  min-height: 100vh;
+
 `;
 
 const User = styled.div`
