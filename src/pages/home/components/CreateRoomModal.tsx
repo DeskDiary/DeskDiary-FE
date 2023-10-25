@@ -91,7 +91,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
       const token = getCookie('token');
       console.log('조인룸 토큰', token);
       const response = await axios.post(
-        `${serverUrl}/room/${uuid}/join`,
+        `${process.env.REACT_APP_SERVER_URL!}/room/${uuid}/join`,
         {},
         {
           headers: {

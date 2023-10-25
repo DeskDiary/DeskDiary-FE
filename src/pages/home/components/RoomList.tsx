@@ -15,7 +15,7 @@ import RoomCard from './RoomCard';
 
 type RoomListProps = {
   label: string;
-  show: string;
+  show?: string;
 };
 
 const fetchFunctions = {
@@ -42,7 +42,9 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
     }
   };
 
-  const fetchName = show + sort;
+  let fetchName = show + sort;
+
+  console.log('여기!!! fetchName', fetchName)
 
   useEffect(() => {
     if (isPopular) {
@@ -130,6 +132,7 @@ const JoinedRooms = styled.div`
   grid-template-columns: repeat(5, 1fr);
   gap: 12px;
   width: 1215px;
+  min-height: 470px;
 
   overflow: scroll;
 
