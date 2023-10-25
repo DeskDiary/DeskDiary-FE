@@ -2,27 +2,13 @@ import AgoraRTC from 'agora-rtc-sdk-ng';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { getCookie } from '../../../auth/cookie';
+import { RoomInfo } from '../../../recoil/RoomAtom';
 import VideoPlayer from './VideoPlayer';
 
 type CameraProps = {
-  // roomInfo: {
-  //   agoraAppId: string;
-  //   agoraToken: string;
-  //   category: string;
-  //   count: number;
-  //   createdAt: string;
-  //   maxHeadcount: number;
-  //   note: string;
-  //   nowHeadcount: number;
-  //   ownerId: number;
-  //   uuid: string;
-  //   roomThumbnail: string | null;
-  //   title: string;
-  //   updatedAt: string;
-  //   roomId: number;
-  // };
 };
 
 const UserCamera: React.FC<CameraProps> = () => {
@@ -33,18 +19,18 @@ const UserCamera: React.FC<CameraProps> = () => {
     agoraToken: '',
     category: '',
     count: 0,
-    createdAt: '0',
+    createdAt: '',
     maxHeadcount: 0,
-    note: '0',
+    note: '',
     nowHeadcount: 0,
     ownerId: 0,
     roomId: 0,
-    roomThumbnail: '0',
-    title: '0',
-    updatedAt: '0',
-    uuid: '0',
+    roomThumbnail: '',
+    title: '',
+    updatedAt: '',
+    uuid: '',
   });
-  // console.log('룸데이터', roomInfo)
+  const [recoilRoomInfo, setRecoilRoomInfo] = useRecoilState(RoomInfo);
   const [users, setUsers] = useState<{ uid: any; videoTrack: any }[]>([]);
   const [localTracks, setLocalTracks] = useState<any[]>([]);
   const location = useLocation();
@@ -57,10 +43,7 @@ const UserCamera: React.FC<CameraProps> = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      const allData = response.data;
-      console.log('전체 방 데이터', allData)
       const data = response.data.findRoom;
-      console.log('리스폰스', data);
       setRoomInfo(data);
     } catch (error) {
       console.error(error);
@@ -73,6 +56,7 @@ const UserCamera: React.FC<CameraProps> = () => {
 
   useEffect(() => {
     if (roomInfo.agoraAppId !== '' && roomInfo.agoraToken && roomInfo.title) {
+      setRecoilRoomInfo(roomInfo);
       const APP_ID = roomInfo.agoraAppId;
       const TOKEN = roomInfo.agoraToken;
       const CHANNEL = roomInfo.uuid;

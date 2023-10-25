@@ -1,20 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../../../images/logo.png';
 import 마이크 from '../../../images/room/mic_none.svg';
-import 일시정지 from '../../../images/room/pause.svg';
 import 사람 from '../../../images/room/people_outline.svg';
-import 타이머 from '../../../images/room/timer.svg';
 import 카메라 from '../../../images/room/videocam.svg';
+import Timer from './Timer';
 type RoomSideBarProps = {};
 
 const RoomSideBar: React.FC<RoomSideBarProps> = () => {
-  const [timerState, setTimerState] = useState<boolean>(false);
+  // const [timerState, setTimerState] = useState<boolean>(false);
 
-  const timerButtonHandler = () => {
-    setTimerState(!timerState);
-  };
+  // const timerButtonHandler = () => {
+  //   setTimerState(!timerState);
+  // };
 
   const navigate = useNavigate();
 
@@ -35,11 +34,7 @@ const RoomSideBar: React.FC<RoomSideBarProps> = () => {
         <p>유저이름</p>
       </UserInfoBox>
       <TimerBox>
-        <p>00:00:00</p>
-        <StartButton timerState={timerState} onClick={timerButtonHandler}>
-          <img src={timerState ? 일시정지 : 타이머} alt="" />
-          <p>{timerState ? '일시정지' : '기록시작'}</p>
-        </StartButton>
+        <Timer />
       </TimerBox>
       <CamAndMicSettingsBox>
         <img src={마이크} alt="마이크" />

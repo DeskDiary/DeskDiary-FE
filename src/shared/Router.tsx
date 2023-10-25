@@ -3,7 +3,6 @@ import SideLayout from '../components/layout/auth/AuthLayout';
 import MainLayout from '../components/layout/main/MainLayout';
 import { Error, Home, Join, Login, Mypage, Room } from '../pages';
 
-import CamAndMicSetting from '../pages/home/components/CamAndMicSetting';
 import HobbyCategory from '../pages/category/HobbyCategory';
 import StudyCategory from '../pages/category/StudyCategory';
 import MyRecord from '../pages/myRecord/MyDesk';
@@ -26,7 +25,7 @@ const Router = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/join" element={<Join />} />
         </Route>
-        <Route path="/room" element={<CamAndMicSetting />} />
+        {/* <Route path="/room" element={<CamAndMicSetting />} /> */}
         <Route path="/room/:id" element={<Room />} />
         <Route path="*" element={<Error />} />
       </Routes>

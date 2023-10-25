@@ -52,37 +52,21 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
 
   const sevenDaysAgo = new Date(year, month, day - 6);
   const dateArray7 = generateDateArray(sevenDaysAgo, today);
-  console.log('dataArray7', dateArray7);
-
   const thirtyDaysAgo = new Date(year, month, day - 29);
   const dateArray30 = generateDateArray(thirtyDaysAgo, today);
-  console.log('dataArray30', dateArray30);
 
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const token = getCookie('token');
   const [weeklyHobby, setWeeklyHobby] = useState<any[]>([]);
   const [weeklyStudy, setWeeklyStudy] = useState<any[]>([]);
-  console.log('7일 데이터', weeklyHobby, weeklyStudy);
   const [monthlyHobby, setMonthlyHobby] = useState<any[]>([]);
   const [monthlyStudy, setMonthlyStudy] = useState<any[]>([]);
-
-  // const [view7, setView7] = useState<boolean>(true);
-  // const [view30, setView30] = useState<boolean>(false);
-
-  // const view7OnclickHandler = () => {
-  //   setView7(true);
-  //   setView30(false);
-  // };
-  // const view30OnclickHandler = () => {
-  //   setView7(false);
-  //   setView30(true);
-  // };
 
   const sevenData = async () => {
     try {
       const response = await axios.get(`${serverUrl}/learning-history/weekly`, {
         headers: {
-          Authorization: `Bearer ${token}`, // JWT 토큰을 여기에 삽입해주세요
+          Authorization: `Bearer ${token}`,
         },
       });
       const data = response.data;
@@ -125,7 +109,6 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
         },
       );
       const data = response.data;
-      console.log('한달 데이터', data);
       setMonthlyHobby(data.monthlyHobby);
       setMonthlyStudy(data.monthlyStudy);
     } catch (error) {
@@ -158,13 +141,13 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
         label: '취미',
         data: weeklyHobby.map(x => x.totalHours),
         stack: 'stack1',
-        backgroundColor: ['#757575'],
+        backgroundColor: ['#00C5FF'],
       },
       {
         label: '스터디',
         data: weeklyStudy.map(x => x.totalHours),
         stack: 'stack1',
-        backgroundColor: ['#9E9E9E'],
+        backgroundColor: ['#1A81E8'],
       },
     ],
   };
@@ -176,13 +159,13 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
         label: '취미',
         data: monthlyHobby.map(x => x.totalHours),
         stack: 'stack1',
-        backgroundColor: ['#757575'],
+        backgroundColor: ['#00C5FF'],
       },
       {
         label: '스터디',
         data: monthlyStudy.map(x => x.totalHours),
         stack: 'stack1',
-        backgroundColor: ['#9E9E9E'],
+        backgroundColor: ['#1A81E8'],
       },
     ],
   };
@@ -194,7 +177,6 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
       )}
       {view30 && (
         <Bar options={options} data={monthlyData} width={730} height={240} />
-
       )}
     </Body>
   );
