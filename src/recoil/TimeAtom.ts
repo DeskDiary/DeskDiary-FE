@@ -2,12 +2,12 @@ import { atom, selector } from 'recoil';
 
 export const timerState = atom({
   key: 'timeState', // 고유 id
-  default: '00:00:00', // 기본(초기)값
+  default: '', // 기본(초기)값
 });
 
 export const startTimeState = atom({
   key: 'startTimeState',
-  default: '00:00:00',
+  default: '',
 });
 
 export const getStartTimeState = selector({

@@ -3,11 +3,10 @@ import SideLayout from '../components/layout/auth/AuthLayout';
 import MainLayout from '../components/layout/main/MainLayout';
 import { Error, Home, Join, Login, Mypage, Room } from '../pages';
 
-import CamAndMicSetting from '../pages/home/components/CamAndMicSetting';
+import Auth from '../pages/auth/Auth';
 import HobbyCategory from '../pages/category/HobbyCategory';
 import StudyCategory from '../pages/category/StudyCategory';
 import MyRecord from '../pages/myRecord/MyDesk';
-import Auth from '../pages/auth/Auth';
 
 
 const Router = () => {
