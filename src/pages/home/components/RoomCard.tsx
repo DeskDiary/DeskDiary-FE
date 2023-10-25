@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import MaxUser from '../../../images/room/MaxUser.svg';
 import sample from '../../../images/sample.svg';
 import JoinRoomModal from './JoinRoomModal';
-import { getCookie } from '../../../auth/cookie';
-import axios from 'axios';
 import ConfirmModal from '../../../components/ConfirmModal';
 import { useQuery } from 'react-query';
 import { fetchUser } from '../../../axios/api';
@@ -35,7 +33,7 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, refetch }) => {
 
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
-  const { data, error, isLoading } = useQuery<user, Error>(
+  const { data } = useQuery<user, Error>(
     'userCreatedRoom',
     fetchUser,
   );

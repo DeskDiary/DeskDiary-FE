@@ -44,16 +44,6 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
 
   let fetchName = show + sort;
 
-  console.log('여기!!! fetchName', fetchName)
-
-  useEffect(() => {
-    if (isPopular) {
-      setSort('Popular');
-    } else {
-      setSort('Latest');
-    }
-  }, [isPopular]);
-
   const { data, error, isLoading } = useQuery<room[], Error>(
     
     [fetchName, show, sort], // 쿼리 키를 배열로 만들어 fetchName, show, sort 추가
@@ -69,6 +59,18 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
       }
     },
   );
+
+  useEffect(() => {
+    if (isPopular) {
+      setSort('Popular');
+    } else {
+      setSort('Latest');
+    }
+  }, [isPopular]);
+
+  useEffect(() => {
+
+  }, [data])
 
   return (
     <List>

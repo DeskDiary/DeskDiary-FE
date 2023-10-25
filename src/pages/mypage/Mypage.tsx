@@ -1,15 +1,11 @@
 import styled from '@emotion/styled';
-import React, { useState, useEffect } from 'react';
-import { useRecoilState } from 'recoil';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useMutation, useQuery } from 'react-query';
 import axios from 'axios';
 
 import { getCookie } from '../../auth/cookie';
 import { fetchUser } from '../../axios/api';
-
-import { RoomAtom } from '../../recoil/RoomAtom';
-import { UserAtom, ProfiltUpdate } from '../../recoil/UserAtom';
 
 import MainTop from '../../components/layout/main/MainTop';
 import ChangePasswordModal from './components/ChangePasswordModal';
@@ -22,17 +18,14 @@ import send from '../../images/send.svg';
 type MypageProps = {};
 
 const Mypage: React.FC<MypageProps> = () => {
-  const [user, setUser] = useRecoilState(UserAtom);
-  const { data, error, isLoading } = useQuery<user, Error>('user', fetchUser);
+  const { data } = useQuery<user, Error>('mypageUser', fetchUser);
   const [isOpen, setIsOpen] = useState(false);
-  const [isChangePW, setIsChangePW] = useState(false);
   const [isOpenLogout, setIsOpenLogout] = useState(false);
+  const [isOpenDeleteUser, setIsOpenDeleteUser] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [nickname, setNickname] = useState('');
 
   const token = getCookie('token');
-
-  const navigate = useNavigate();
 
   const onClickToggle = () => {
     setIsOpen(!isOpen);
@@ -42,8 +35,8 @@ const Mypage: React.FC<MypageProps> = () => {
     setIsOpenLogout(!isOpenLogout);
   };
 
-  const handleChangePassword = () => {
-    setIsChangePW(!isChangePW);
+  const handleDeleteUser = () => {
+    setIsOpenDeleteUser(!isOpenDeleteUser);
   };
 
   const joinMutation = useMutation(
@@ -126,7 +119,7 @@ const Mypage: React.FC<MypageProps> = () => {
               <Label>이메일 계정</Label>
               <span>{data?.email ? data?.email : 'abcd@email.com'}</span>
             </Group>
-            <ChangePasswordModal pw={data?.password} />
+            <ChangePasswordModal/>
           </UserInfo>
         </UserProfile>
 
@@ -143,9 +136,10 @@ const Mypage: React.FC<MypageProps> = () => {
           )}
           {isChangePW && <ChangePasswordModal />} */}
           <List onClick={handleLogout}>로그아웃</List>
-          <List onClick={() => handleLogout()}>회원탈퇴</List>
+          <List onClick={handleDeleteUser}>회원탈퇴</List>
         </Lists>
         {isOpenLogout && <ConfirmModal title="로그아웃" setIsOpen={setIsOpenLogout} />}
+        {isOpenDeleteUser && <ConfirmModal title="회원탈퇴" setIsOpen={setIsOpenDeleteUser} />}
       </Contants>
 
       {/* <GoalRecordChart /> */}

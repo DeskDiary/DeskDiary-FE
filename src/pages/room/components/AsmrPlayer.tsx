@@ -6,7 +6,7 @@ import 뒤로가기 from '../../../images/audio/back_button.svg';
 import 앞으로가기 from '../../../images/audio/front_button.svg';
 import 음소거 from '../../../images/audio/volume_off.svg';
 import 소리최대 from '../../../images/audio/volume_up.svg';
-import 이미지 from '../../../images/logo.png';
+import 이미지 from '../../../images/logo.svg';
 type AsmrPlayerProps = {};
 
 const asmrList = [

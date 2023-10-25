@@ -12,6 +12,7 @@ type CameraProps = {
 };
 
 const UserCamera: React.FC<CameraProps> = () => {
+  
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const [client, setClient] = useState<any>(null);
   const [roomInfo, setRoomInfo] = useState({

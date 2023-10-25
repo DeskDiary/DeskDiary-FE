@@ -10,25 +10,21 @@ import { profile } from '../../../../images';
 type ChatProps = {
   message: {
     message: string;
-    user: string;
-    profileImage: string;
+    nickname : string;
+    img: string;
     time: string;
     roomId: string;
   };
 };
 
 const Chat: React.FC<ChatProps> = ({ message }) => {
-  const [isMe, setIsMe] = useState(false);
-  const token = getCookie('token');
-
-  const { data } = useQuery<user, Error>('user', fetchUser);
 
   return (
     <Container>
-      <UserImg src={message.profileImage ? message.profileImage : profile} />
+      <UserImg src={message.img ? message.img : profile} />
       <ChatDetails>
         <Metadata>
-          <UserName>{message.user}</UserName>
+          <UserName>{message.nickname }</UserName>
           <Time>{message.time}</Time>
         </Metadata>
 

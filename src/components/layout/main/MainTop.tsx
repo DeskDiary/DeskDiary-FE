@@ -38,14 +38,13 @@ const MainTop: React.FC<MainTopProps> = () => {
     toast.message('search click');
   };
 
-  // 로그인 하자마자 유저 정보 안보이는 문제
   const { data } = useQuery<user>('user', fetchUser);
 
   useEffect(() => {
     if (data) {
       setNickname(data.nickname);
     }
-  }, [data, token, nickname]);
+  }, [token]);
 
   return (
     <NavHeader>
@@ -84,7 +83,7 @@ const MainTop: React.FC<MainTopProps> = () => {
         방만들기
       </CreateRoomButton>
       {openCreateRoom && (
-        <CreateRoomModal setOpenCreateRoom={setOpenCreateRoom} />
+        <CreateRoomModal setOpenCreateRoom={setOpenCreateRoom} user={data!}/>
       )}
     </NavHeader>
   );
