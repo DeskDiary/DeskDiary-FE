@@ -50,7 +50,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
       localStorage.setItem(`chat-${roomId}`, JSON.stringify(currentChat));
     };
   
-    socket.on('received-message', handleReceivedMessage);
+    socket.on('msgToClient', handleReceivedMessage);
   
     return () => {
       socket.off('received-message', handleReceivedMessage);
@@ -68,12 +68,11 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
       message: newMessage,
       user: data?.nickname,
       profileImage:data?.profileImage,
-      time: time,
       uuid: roomId,
     };
 
     newMessage !== ''
-      ? socket.emit('send-message', messageData)
+      ? socket.emit('msgToServer', messageData)
       : alert('메세지를 입력해주세요');
     setNewMessage('');
   };
@@ -86,7 +85,6 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
           return <Chat key={index} message={message} />;
         })}
       </ChatList>
-      {roomId}
       <ChatForm onSubmit={handleSubmit}>
         <UserInput
           value={newMessage}

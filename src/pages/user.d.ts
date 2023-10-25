@@ -4,4 +4,5 @@ interface user {
   nickname: string;
   profileImage?: string;
   provider: string;
+  userId: number;
 }

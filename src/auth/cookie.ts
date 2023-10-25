@@ -10,7 +10,7 @@ export const setTokenCookie = (token: string) => {
 
 export const getCookie = (name: string) => {
   const cookies = document.cookie;
-  // console.log('cookies', cookies)
+  // console.log('cookies', cookies);
   const cookieArray = cookies.split(';');
   for (const cookie of cookieArray) {
     const [cookieName, cookieValue] = cookie.trim().split('=');

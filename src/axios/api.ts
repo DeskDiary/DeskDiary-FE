@@ -2,6 +2,7 @@ import axios from "axios";
 import { getCookie, setTokenCookie } from '../auth/cookie';
 
 
+const token = getCookie('token');
 
 // user 프로필 가져오기
 export const fetchUser = async () => {
@@ -10,9 +11,9 @@ export const fetchUser = async () => {
     console.log("fetchUser 로그인이 필요해요!");
     return null;
   }
-
+  console.log('token',token)
   const { data } = await axios.get(
-    `${process.env.REACT_APP_SERVER_URL!}/auth/profile`,
+    `${process.env.REACT_APP_SERVER_URL!}/me/profile`,
     {
       headers: {
         Authorization: `Bearer ${token}`, // 여기서 토큰을 헤더에 추가해줘
@@ -20,6 +21,34 @@ export const fetchUser = async () => {
     },
   );
   console.log('main top 유저정보 data', data);
+  return data;
+};
+
+// 내가 참여한 방 조회
+export const fetchJoinRoom = async () => {
+  const { data } = await axios.get(
+    `${process.env.REACT_APP_SERVER_URL!}/my-rooms`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`, // 여기서 토큰을 헤더에 추가해줘
+      },
+    },
+  );
+  console.log('fetchRooms data', data);
+  return data;
+};
+
+// 내가 만든 방 조회
+export const fetchCreatedRoom = async () => {
+  const { data } = await axios.get(
+    `${process.env.REACT_APP_SERVER_URL!}/rooms/my-created`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`, // 여기서 토큰을 헤더에 추가해줘
+      },
+    },
+  );
+  console.log('내가 만든 방 조회', data);
   return data;
 };
 

@@ -6,6 +6,7 @@ import { Error, Home, Join, Login, Mypage, Room } from '../pages';
 import HobbyCategory from '../pages/category/HobbyCategory';
 import StudyCategory from '../pages/category/StudyCategory';
 import MyRecord from '../pages/myRecord/MyDesk';
+import Auth from '../pages/auth/Auth';
 
 
 const Router = () => {
@@ -27,6 +28,7 @@ const Router = () => {
         </Route>
         {/* <Route path="/room" element={<CamAndMicSetting />} /> */}
         <Route path="/room/:id" element={<Room />} />
+        <Route path="/auth" element={<Auth />} />
         <Route path="*" element={<Error />} />
       </Routes>
     </BrowserRouter>
