@@ -1,15 +1,20 @@
+import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import 공지사진 from '../../../images/공지.png';
 import 알림사진 from '../../../images/알림.png';
 import 음표사진 from '../../../images/음표.png';
+import { RoomInfo } from '../../../recoil/RoomAtom';
 
 type Props = {};
 
 
 function RoomHeader({}: Props) {
+
+  const [roomInfo, setRoomInfo] = useRecoilState(RoomInfo);
+  console.log('헤더',roomInfo) 
   return (
     <HeaderBG>
-      <RoomName>👯32번째 공부의 밤 개발자 모여 모각지 진행😗👍</RoomName>
+      <RoomName>{roomInfo.title}</RoomName>
       <IconDiv>
         <img src={알림사진} alt="" />
         <img src={음표사진} alt="" />
@@ -27,12 +32,12 @@ const HeaderBG = styled.div`
 `;
 
 const IconDiv = styled.div`
+  display: flex;
   width: 350px;
   height: 100%;
-  display: flex;
   align-items: center;
   gap: 24px;
-
+  justify-content: space-around;
   img {
     width: 24px;
     height: 24px;

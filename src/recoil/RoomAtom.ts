@@ -36,3 +36,22 @@ export const RoomModalAtom = atom({
   default: false,
 });
 
+export const RoomInfo = atom({
+  key: 'RoomInfo',
+  default: {
+    agoraAppId: '',
+    agoraToken: '',
+    category: '',
+    count: 0,
+    createdAt: '',
+    maxHeadcount: 0,
+    note: '',
+    nowHeadcount: 0,
+    ownerId: 0,
+    roomId: 0,
+    roomThumbnail: '',
+    title: '',
+    updatedAt: '',
+    uuid: '',
+  },
+});
