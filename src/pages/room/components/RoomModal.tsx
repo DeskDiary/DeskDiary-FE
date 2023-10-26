@@ -5,6 +5,7 @@ import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { getCookie } from '../../../auth/cookie';
 import { RoomModalAtom, RoomUUIDAtom } from '../../../recoil/RoomAtom';
+import { timerState } from '../../../recoil/TimeAtom';
 import { getKoreanTime } from './Timer';
 
 type RoomModalProps = {};
@@ -18,12 +19,12 @@ const RoomModal: React.FC<RoomModalProps> = () => {
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const [storageStartData, setStorageStartData] = useState<string>('');
   const [storageEndData, setStorageEndData] = useState<string>('')
-
+  const [timer, setTimer] = useRecoilState<string>(timerState);
   useEffect(() => {
     const storageStartData = localStorage.getItem('startTime');
     if (storageStartData) {
       setStorageStartData(
-        JSON.parse(storageStartData)[0].replaceAll(/["/]/g, ''),
+        JSON.parse(storageStartData)[0].replaceAll(/[Z"/]/g, ''),
       );
     } else {
       setStorageStartData('기록이 없습니다.');
@@ -32,7 +33,7 @@ const RoomModal: React.FC<RoomModalProps> = () => {
     const storageEndData = localStorage.getItem('endTime');
     if (storageEndData) {
       setStorageEndData(
-        JSON.parse(storageEndData)[JSON.parse(storageEndData).length -1].replaceAll(/["/]/g, '')
+        JSON.parse(storageEndData)[JSON.parse(storageEndData).length -1].replaceAll(/[Z"/]/g, '')
       );
     } else {
       setStorageEndData('기록이 없습니다.');
@@ -45,7 +46,7 @@ const RoomModal: React.FC<RoomModalProps> = () => {
       const data = {
         checkIn: storageStartData !== '기록이 없습니다.' ? storageStartData : JSON.stringify(getKoreanTime()).replaceAll(/["/]/g, ''),
         checkOut: storageEndData !== '기록이 없습니다.' ? storageEndData : JSON.stringify(getKoreanTime()).replaceAll(/["/]/g, ''),
-        totalHours: '01:30:00',
+        totalHours: timer,
         historyType: '취미',
       };
       console.log(token, data);
@@ -74,7 +75,7 @@ const RoomModal: React.FC<RoomModalProps> = () => {
         <p>여기에서 머무른 시간이에요</p>
         <TimeBox>
           <p>책상시간</p>
-          <p>4시간 8분 38초</p>
+          <p>{timer}</p>
         </TimeBox>
         <CheckInBox>
           <div>
