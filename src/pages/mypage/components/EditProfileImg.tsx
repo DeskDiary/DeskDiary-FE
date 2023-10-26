@@ -78,7 +78,7 @@ const EditProfileImg: React.FC<EditProfileImgProps> = () => {
       };
       console.log('===')
       const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL!}/auth/profile/image`,
+        `${process.env.REACT_APP_SERVER_URL!}/me/profile/image`,
         formData,
         config,
       );

@@ -13,52 +13,38 @@ import socket from './socketInstance';
 // const socket = io('http://localhost:5000');
 // const socket = io(`${process.env.REACT_APP_SERVER_URL!}`);
 
-type ChatBoxProps = { roomId: string };
+type ChatBoxProps = { roomId: string; userCount: number };
 
 type MessageData = {
   message: string;
-  nickname : string;
+  nickname: string;
   img: string;
   time: string;
   roomId: string;
 };
 
-const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
+type UserList = {
+  socketId: {
+    img: string;
+    nickname: string;
+  };
+};
+
+const ChatBox: React.FC<ChatBoxProps> = ({ roomId, userCount }) => {
   const [username, setUserName] = useState('');
   const [chatActive, setChatActive] = useState(false);
   const [messages, setMessages] = useState<MessageData[]>([]);
   const [newMessage, setNewMessage] = useState('');
+  const [socketUserList, setSocketUserList] = useState<UserList | undefined>();
 
   const { data } = useQuery<user>('chatUser', fetchUser);
-
-  useEffect(() => {
-    socket.on('msgToClient', (message: MessageData) => {
-      console.log("받은 메시지:", message);  // 이 부분을 추가해줘!
-      setMessages(prevMessages => [...prevMessages, message]);
-    });
-
-    return () => {
-      console.log('off')
-      socket.off('msgToClient');
-    };
-
-  }, [socket]);
-
-  const socketConfirm = () => {
-    console.log('useEffect 실행', messages);
-    socket.on('msgToClient', (message: MessageData) => {
-      setMessages(prevMessages => [...prevMessages, message]);
-    });
-    console.log('messages❤️✨', messages);
-  }
-
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const messageData = {
       message: newMessage,
-      nickname : data?.nickname,
+      nickname: data?.nickname,
       img: data?.profileImage,
       uuid: roomId,
     };
@@ -71,6 +57,42 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
     console.log('전송후');
   };
 
+  useEffect(() => {
+    socket.on('msgToClient', (message: MessageData) => {
+      console.log('받은 메시지:', message); // 이 부분을 추가해줘!
+      setMessages(prevMessages => [...prevMessages, message]);
+    });
+
+    return () => {
+      console.log('off');
+      socket.off('msgToClient');
+    };
+  }, [socket]);
+
+  useEffect(() => {
+    socket.on('user-list', newUserList => {
+      console.log('유저리스트 메시지:', newUserList);
+      setSocketUserList(newUserList);
+    });
+
+    return () => {
+      socket.off('user-list');
+    };
+  }, [userCount]);
+
+  // useEffect(() => {
+  //   const userListMessage: MessageData = {
+  //     message: `${socketUserList!.socketId.nickname}님이 입장하셨습니다.`,
+  //     nickname: socketUserList!.socketId.nickname,
+  //     img: socketUserList!.socketId.img,
+  //     time: '',
+  //     roomId: roomId
+  //   };
+  //   setMessages(prevMessages => [...prevMessages, userListMessage]);
+  // }, [socketUserList])
+
+  console.log('유저리스트', socketUserList);
+
   return (
     <Container>
       <ChatImg src={공지사진} />
@@ -78,6 +100,11 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
         {messages.map((message, index) => {
           return <Chat key={index} message={message} />;
         })}
+        {socketUserList
+          ? Object.values(socketUserList).map((user, index) => (
+              <div key={index}>{user.nickname} 님이 입장하셨습니다.</div>
+            ))
+          : 'undefined'}
       </ChatList>
       <ChatForm onSubmit={handleSubmit}>
         <UserInput
@@ -88,7 +115,6 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
           <img src={send} />
         </SendButton>
       </ChatForm>
-      <button type="button" onClick={socketConfirm}>확인</button>
     </Container>
   );
 };

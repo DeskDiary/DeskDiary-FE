@@ -72,7 +72,7 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
         onClick={onClickCard}
       ></Thumbmail>
       <Contents onClick={onClickCard}>
-        <Img></Img>
+        {/* <Img></Img> */}
         <ContentText>
           <RoomTitle>{room.title}</RoomTitle>
           <Tags>
