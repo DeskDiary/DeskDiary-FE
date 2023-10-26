@@ -3,7 +3,26 @@ import styled from 'styled-components';
 import 일시정지 from '../../../images/room/pause.svg';
 import 타이머 from '../../../images/room/timer.svg';
 type TimerProps = {};
+export function formatTime(seconds: number) {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const remainingSeconds = seconds % 60;
 
+  const formattedTime =
+    String(hours).padStart(2, '0') +
+    ':' +
+    String(minutes).padStart(2, '0') +
+    ':' +
+    String(remainingSeconds).padStart(2, '0');
+
+  return formattedTime;
+}
+export const getKoreanTime = () => {
+  const now = new Date();
+  // 한국 시간대로 변환
+  now.setHours(now.getHours() + 9);
+  return now;
+};
 const Timer: React.FC<TimerProps> = () => {
   const [timer, setTimer] = useState<string>('00:00:00');
 
@@ -14,13 +33,6 @@ const Timer: React.FC<TimerProps> = () => {
 
   const timerButtonHandler = () => {
     setTimerButtonState(!timerButtonState);
-  };
-
-  const getKoreanTime = () => {
-    const now = new Date();
-    // 한국 시간대로 변환
-    now.setHours(now.getHours() + 9);
-    return now;
   };
 
   // 시작, 일시정시 기록을 로컬스토리지에 저장
@@ -115,7 +127,7 @@ const Timer: React.FC<TimerProps> = () => {
             }
             return acc;
           }, 0);
-        const 누적시간 = (현재시간초 - 마지막시간초);
+        const 누적시간 = 현재시간초 - 마지막시간초;
         setTimer(formatTime(누적시간));
       } else {
         // 일시정지상태
@@ -131,19 +143,6 @@ const Timer: React.FC<TimerProps> = () => {
       }
     }
   }, [startLocalStorageData, endLocalStorageData]);
-
-  function formatTime(seconds:number) {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const remainingSeconds = seconds % 60;
-    
-    const formattedTime = 
-      String(hours).padStart(2, '0') + ':' +
-      String(minutes).padStart(2, '0') + ':' +
-      String(remainingSeconds).padStart(2, '0');
-    
-    return formattedTime;
-  }
 
   return (
     <Container>
