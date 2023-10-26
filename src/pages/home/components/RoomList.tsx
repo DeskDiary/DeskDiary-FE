@@ -33,6 +33,8 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
   const [isPopular, setIsPopular] = useState(true);
   const [sort, setSort] = useState('Popular');
 
+  console.log('룸리스트렌더링')
+
   const changePopular = (value: boolean) => {
     setIsPopular(value);
     if (value) {
@@ -44,7 +46,7 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
 
   let fetchName = show + sort;
 
-  const { data, error, isLoading } = useQuery<room[], Error>(
+  const { data } = useQuery<room[], Error>(
     
     [fetchName, show, sort], // 쿼리 키를 배열로 만들어 fetchName, show, sort 추가
     async () => {
@@ -58,6 +60,9 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
         throw new Error('Invalid fetchName');
       }
     },
+    {
+      staleTime: Infinity, // 캐시 시간을 무한대로 설정
+    }
   );
 
   useEffect(() => {
