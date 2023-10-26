@@ -99,7 +99,7 @@ const Room: React.FC<RoomProps> = () => {
           </Area>
         </Content>
       </Container>
-      <RoomUnderBar />
+      <RoomUnderBar roomId={roomInfo.uuid} />
     </>
   );
 };

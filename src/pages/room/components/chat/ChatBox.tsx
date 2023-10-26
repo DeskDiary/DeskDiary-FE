@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import io from 'socket.io-client';
 import styled from 'styled-components';
 import send from '../../../../images/send.svg';
@@ -8,16 +8,17 @@ import { ChatMessagesAtom } from '../../../../recoil/ChatAtom';
 import { useRecoilState } from 'recoil';
 import { fetchUser } from '../../../../axios/api';
 import { useQuery } from 'react-query';
+import socket from './socketInstance';
 
 // const socket = io('http://localhost:5000');
-const socket = io(`${process.env.REACT_APP_SERVER_URL!}`);
+// const socket = io(`${process.env.REACT_APP_SERVER_URL!}`);
 
 type ChatBoxProps = { roomId: string };
 
 type MessageData = {
   message: string;
-  user: string;
-  profileImage: string;
+  nickname : string;
+  img: string;
   time: string;
   roomId: string;
 };
@@ -28,54 +29,46 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
   const [messages, setMessages] = useState<MessageData[]>([]);
   const [newMessage, setNewMessage] = useState('');
 
-  const { data } = useQuery<user>('user', fetchUser);
-
-  const [recoilMessages, setRecoilMessages] = useRecoilState(
-    ChatMessagesAtom(roomId),
-  );
+  const { data } = useQuery<user>('chatUser', fetchUser);
 
   useEffect(() => {
-    // roomId가 바뀔 때 로컬 스토리지에서 채팅 불러오기
-    const savedChat = JSON.parse(localStorage.getItem(`chat-${roomId}`) || '[]');
-    setMessages(savedChat);
-  
-    const handleReceivedMessage = (message: MessageData) => {
-      // 메시지 추가
-      setMessages((prevMessages: MessageData[]) => [...prevMessages, message]);
-      // Recoil 상태 업데이트
-      setRecoilMessages((prevMessages: MessageData[]) => [...prevMessages, message]);
-  
-      // 로컬 스토리지에도 저장
-      const currentChat = [...savedChat, message]; // 여기서도 savedChat을 그대로 사용
-      localStorage.setItem(`chat-${roomId}`, JSON.stringify(currentChat));
-    };
-  
-    socket.on('received-message', handleReceivedMessage);
-  
+    socket.on('msgToClient', (message: MessageData) => {
+      console.log("받은 메시지:", message);  // 이 부분을 추가해줘!
+      setMessages(prevMessages => [...prevMessages, message]);
+    });
+
     return () => {
-      socket.off('received-message', handleReceivedMessage);
+      console.log('off')
+      socket.off('msgToClient');
     };
-  }, [roomId]);  // 의존성 배열에서 savedChat을 제거
+
+  }, [socket]);
+
+  const socketConfirm = () => {
+    console.log('useEffect 실행', messages);
+    socket.on('msgToClient', (message: MessageData) => {
+      setMessages(prevMessages => [...prevMessages, message]);
+    });
+    console.log('messages❤️✨', messages);
+  }
 
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const now = new Date(Date.now());
-    const time = `${now.getHours()}:${now.getMinutes()}`;
-
     const messageData = {
       message: newMessage,
-      user: data?.nickname,
-      profileImage:data?.profileImage,
-      time: time,
+      nickname : data?.nickname,
+      img: data?.profileImage,
       uuid: roomId,
     };
 
+    console.log('전송전', messageData);
     newMessage !== ''
-      ? socket.emit('send-message', messageData)
+      ? socket.emit('msgToServer', messageData)
       : alert('메세지를 입력해주세요');
     setNewMessage('');
+    console.log('전송후');
   };
 
   return (
@@ -86,7 +79,6 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
           return <Chat key={index} message={message} />;
         })}
       </ChatList>
-      {roomId}
       <ChatForm onSubmit={handleSubmit}>
         <UserInput
           value={newMessage}
@@ -96,6 +88,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
           <img src={send} />
         </SendButton>
       </ChatForm>
+      <button type="button" onClick={socketConfirm}>확인</button>
     </Container>
   );
 };

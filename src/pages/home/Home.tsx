@@ -4,11 +4,13 @@ import styled from 'styled-components';
 import MainTop from '../../components/layout/main/MainTop';
 
 import { Goal, NonUserIntro } from './components';
-import { getCookie, setTokenCookie } from '../../auth/cookie';
+import { getCookie } from '../../auth/cookie';
 import RoomList from './components/RoomList';
 import userIntro from '../../images/main/userIntro.svg';
 
 const Home = () => {
+
+  console.log('홈화면 렌더링')
   const token = getCookie('token');
 
   return (
@@ -38,7 +40,8 @@ const Container = styled.div`
   align-items: center;
 
   width: 1200px;
-  height: 100vh;
+  min-height: 100vh;
+
 `;
 
 const User = styled.div`

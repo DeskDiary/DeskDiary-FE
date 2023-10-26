@@ -1,42 +1,95 @@
+import axios from 'axios';
 import React, { useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { useMutation } from 'react-query';
+import { useNavigate } from 'react-router';
 import styled from 'styled-components';
+import { UserAtom } from '../../../recoil/UserAtom';
+import { getCookie } from '../../../auth/cookie';
 
-type ChangePasswordModalProps = {
-  pw?: string;
+type ChangePasswordModalProps = {};
+
+type UserData = {
+  password: string;
+  newPassword: string;
+  confirmNewPassword: string;
 };
 
-const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({ pw }) => {
+const ChangePasswordModal: React.FC<ChangePasswordModalProps> = () => {
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  console.log('password', password);
-  console.log('newPassword', newPassword);
-  console.log('confirmPassword', confirmPassword);
+  const token = getCookie('token');
 
-  const handleChangePassword = () => {
-    if (pw !== password) {
-      alert('현재 비밀번호를 확인 해 주세요.');
-      return;
+  const joinMutation = useMutation(
+    // (userData: typeof user) =>
+    (userData: UserData) =>
+      axios.put(`${process.env.REACT_APP_SERVER_URL!}/me/password`, userData, {
+        headers: {
+          Authorization: `Bearer ${token}`, // 여기서 토큰을 헤더에 추가해줘
+        },
+      }),
+
+    {
+      onSuccess: () => {
+        setPassword('');
+        setNewPassword('');
+        setConfirmNewPassword('');
+        setErrorMessage('');
+        alert('비밀번호 변경 완료');
+      },
+      onError: (error: any) => {
+        if (error.response) {
+          const message = error.response.data.message;
+          console.log(message);
+
+          switch (true) {
+            case message.includes('비밀번호가 비어 있으면 안됩니다.'):
+              setErrorMessage('비밀번호가 비어 있으면 안됩니다.');
+              break;
+            case message.includes(
+              '비밀번호는 대문자, 소문자, 숫자, 특수문자를 각각 하나 이상 포함해야 합니다',
+            ):
+              setErrorMessage(
+                '비밀번호는 대문자, 소문자, 숫자, 특수문자를 각각 하나 이상 포함한 8자 이상 이어야 합니다',
+              );
+              break;
+            case message.includes('비밀번호는 8자 이상이어야 합니다'):
+              setErrorMessage('비밀번호는 8자 이상이어야 합니다');
+              break;
+            default:
+              console.log('회원가입에 실패했습니다. 관리자에게 문의해주세요.');
+          }
+        }
+      },
+    },
+  );
+
+  const onBlur = () => {
+    setErrorMessage('');
+  }
+
+  const onSubmitChange = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if(newPassword !== confirmNewPassword) {
+      setErrorMessage('변경 비밀번호와 확인 비밀번호가 다릅니다.')
     }
-    if (pw === newPassword) {
-      alert('현재 비밀번호와 변경 비밀번호가 같습니다.');
-      return;
-    }
-    if (newPassword !== confirmPassword) {
-      alert('확인 비밀번호가 틀립니다.');
-      return;
-    }
+
+    joinMutation.mutate({ password, newPassword, confirmNewPassword });
   };
 
   return (
-    <Container onSubmit={handleChangePassword}>
+    <Container onSubmit={onSubmitChange}>
       <Group>
         <Label>현재 비밀번호</Label>
         <input
           type="password"
           value={password}
           onChange={e => setPassword(e.target.value)}
+          onBlur={onBlur}
         />
       </Group>
       <Group>
@@ -45,16 +98,19 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({ pw }) => {
           type="password"
           value={newPassword}
           onChange={e => setNewPassword(e.target.value)}
+          onBlur={onBlur}
         />
       </Group>
       <Group>
         <Label>변경 비밀번호 확인</Label>
         <input
           type="password"
-          value={confirmPassword}
-          onChange={e => setConfirmPassword(e.target.value)}
+          value={confirmNewPassword}
+          onChange={e => setConfirmNewPassword(e.target.value)}
+          onBlur={onBlur}
         />
       </Group>
+      {errorMessage}
       <button type="submit">비밀번호 수정</button>
     </Container>
   );

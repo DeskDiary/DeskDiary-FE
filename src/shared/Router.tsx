@@ -3,6 +3,7 @@ import SideLayout from '../components/layout/auth/AuthLayout';
 import MainLayout from '../components/layout/main/MainLayout';
 import { Error, Home, Join, Login, Mypage, Room } from '../pages';
 
+import Auth from '../pages/auth/Auth';
 import HobbyCategory from '../pages/category/HobbyCategory';
 import StudyCategory from '../pages/category/StudyCategory';
 import MyRecord from '../pages/myRecord/MyDesk';
@@ -27,6 +28,7 @@ const Router = () => {
         </Route>
         {/* <Route path="/room" element={<CamAndMicSetting />} /> */}
         <Route path="/room/:id" element={<Room />} />
+        <Route path="/auth" element={<Auth />} />
         <Route path="*" element={<Error />} />
       </Routes>
     </BrowserRouter>

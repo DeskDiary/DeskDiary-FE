@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import styled from 'styled-components';
 import MainTop from '../../components/layout/main/MainTop';
 import RoomCard from '../home/components/RoomCard';
@@ -6,24 +6,14 @@ import RoomCard from '../home/components/RoomCard';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 import RecordGraph from './chart/RecordGraph';
+import { getCookie } from '../../auth/cookie';
+import RoomList from './components/RoomList';
 
 
 type MyDeskProps = {};
 
 const MyDesk: React.FC<MyDeskProps> = () => {
-  const fetchRooms = async () => {
-    const { data } = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL!}/my-rooms`,
-    );
-    console.log('fetchRooms data', data);
-    return data;
-  };
-
-  const { data, error, isLoading } = useQuery<room[], Error>(
-    'rooms',
-    fetchRooms,
-  );
-
+  const token = getCookie('token');
   return (
     <Container>
       <MainTop />
@@ -31,19 +21,8 @@ const MyDesk: React.FC<MyDeskProps> = () => {
         <RecordGraph />
       </MyDeskTop>
 
-
-      <List>
-        <ListTitle>최근에 들어간 방 목록</ListTitle>
-        <JoinedRooms>
-          {data ? (
-            data.map(room => {
-              return <RoomCard key={room.uuid} room={room} />;
-            })
-          ) : (
-            <></>
-          )}
-        </JoinedRooms>
-      </List>
+      <RoomList label="최근에 들어간 방 목록" mydesk="fetchJoinRoom"/>
+      <RoomList label="내가 만든 방 목록" mydesk="fetchCreatedRoom"/>
     </Container>
   );
 };

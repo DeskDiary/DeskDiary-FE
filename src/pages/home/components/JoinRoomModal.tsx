@@ -1,12 +1,16 @@
 import styled from '@emotion/styled';
 import axios from 'axios';
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { getCookie } from '../../../auth/cookie';
 import { RoomAtom, RoomUUIDAtom } from '../../../recoil/RoomAtom';
 import MediaSetup from './MediaSetup';
 import BasicPrecautions from './BasicPrecautions';
+import io from 'socket.io-client';
+import { useQuery } from 'react-query';
+import { fetchUser } from '../../../axios/api';
+import socket from '../../room/components/chat/socketInstance';
 
 type JoinRoomModal = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -28,18 +32,25 @@ type JoinRoomModal = {
   };
 };
 
+// const socket = io(`${process.env.REACT_APP_SERVER_URL!}`);
+
 const JoinRoomModal: React.FC<JoinRoomModal> = ({ setIsOpen, room }) => {
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const navigate = useNavigate();
-  const [inputText, setInputText] = useState('');
   const [joinUUID, setJoinUUID] = useRecoilState<string>(RoomUUIDAtom);
   const [roomInfo, setRoomInfo] = useRecoilState(RoomAtom);
-  console.log(room);
-  const [test, setTest] = useState(true);
 
-  const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setInputText(e.target.value);
+  const { data } = useQuery<user>('joinRoomUserInfo', fetchUser);
+
+  const renderNoteWithBreaks = (text: string) => {
+    return text.split('\n').map((line, index) => (
+      <React.Fragment key={index}>
+        {line}
+        <br />
+      </React.Fragment>
+    ));
   };
+
 
   const onClickJoinRoom = async () => {
     try {
@@ -72,6 +83,30 @@ const JoinRoomModal: React.FC<JoinRoomModal> = ({ setIsOpen, room }) => {
         uuid: room.uuid,
       });
       setJoinUUID(room.uuid);
+
+
+      socket.emit('joinRoom', {
+        nickname: data!.nickname,
+        uuid: room.uuid,
+        img: data!.profileImage,
+      }, (response:any) => {
+        // 서버로부터의 응답을 여기서 처리
+        if (response.success) {
+          console.log('방에 성공적으로 참여했어!✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
+        } else {
+          console.log('방 참여 실패😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭');
+        }
+      });
+
+      socket.on('new-user', (nickname) => {
+        console.log('새로운 유저가 방에 참석:✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨', nickname);
+      });
+      
+
+      // socket.on('error-room', (errorMessage:any) => {
+      //   console.log("에러 메시지 받았어! 😱", errorMessage);
+      // });
+
       navigate(`/room/${room.uuid}`);
     } catch (error) {
       console.error(error);
@@ -92,7 +127,7 @@ const JoinRoomModal: React.FC<JoinRoomModal> = ({ setIsOpen, room }) => {
           <Group>
             <Label>방 입장 시 유의 사항</Label>
             <BasicPrecautions />
-            <Note>{room.note}</Note>
+            <Note>{renderNoteWithBreaks(room.note)}</Note>
           </Group>
         </Content>
 

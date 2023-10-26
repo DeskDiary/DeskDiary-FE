@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import MaxUser from '../../../images/room/MaxUser.svg';
 import sample from '../../../images/sample.svg';
 import JoinRoomModal from './JoinRoomModal';
+import ConfirmModal from '../../../components/ConfirmModal';
+import { useQuery } from 'react-query';
+import { fetchUser } from '../../../axios/api';
 
 type RoomCardProps = {
   room: {
@@ -21,12 +24,22 @@ type RoomCardProps = {
     updatedAt: string;
     uuid: string;
   };
+  refetch?: () => Promise<unknown>;
 };
 
-const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
+const RoomCard: React.FC<RoomCardProps> = ({ room, refetch }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenDeleteRoomModal, setIsOpenDeleteRoomModal] = useState(false);
 
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+
+  const { data } = useQuery<user, Error>(
+    'userCreatedRoom',
+    fetchUser,
+    {
+      staleTime: Infinity, // 캐시 시간을 무한대로 설정
+    }
+  );
 
   const handleImageLoaded = () => {
     setIsImageLoaded(true);
@@ -59,7 +72,18 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
           </Tags>
         </ContentText>
       </Contents>
+      {data?.userId === room.ownerId && (
+        <Delete onClick={() => setIsOpenDeleteRoomModal(true)}>삭제</Delete>
+      )}
       {isOpen && <JoinRoomModal setIsOpen={setIsOpen} room={room} />}
+      {isOpenDeleteRoomModal && (
+        <ConfirmModal
+          title="삭제"
+          uuid={room.uuid}
+          setIsOpen={setIsOpenDeleteRoomModal}
+          refetch = {refetch}
+        />
+      )}
     </Container>
   );
 };
@@ -69,6 +93,8 @@ const ContentText = styled.div`
   flex-direction: column;
   justify-content: start;
   align-items: center;
+
+  width: 100%;
 `;
 
 const Tags = styled.div`
@@ -77,9 +103,22 @@ const Tags = styled.div`
   justify-content: start;
   align-items: center;
   margin-right: auto;
+  width: 100%;
 
   > img {
     width: 20px;
+  }
+`;
+
+const Delete = styled.button`
+  position: absolute;
+  right: 5px;
+  bottom: 0;
+  padding: 5px;
+  border-radius: 10px;
+
+  &:hover {
+    color: red;
   }
 `;
 
@@ -110,15 +149,16 @@ const Contents = styled.div`
   justify-content: start;
   align-items: center;
   gap: 10px;
-  margin: 12px 0;
+  margin-top: 12px;
   height: 50px;
   width: 100%;
 `;
 
 const Thumbmail = styled.img`
-  width: 97%;
+  height: 100%;
   border-radius: 10px;
   overflow: hidden;
+  object-fit: cover;
 `;
 
 const Container = styled.div`
@@ -129,6 +169,7 @@ const Container = styled.div`
   width: 230px;
   height: 200px;
   cursor: pointer;
+  position: relative;
 
   > img {
     width: 97%;

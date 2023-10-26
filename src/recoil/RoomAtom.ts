@@ -36,6 +36,7 @@ export const RoomModalAtom = atom({
   default: false,
 });
 
+
 export const RoomInfo = atom({
   key: 'RoomInfo',
   default: {

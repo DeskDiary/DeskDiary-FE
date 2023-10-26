@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
@@ -15,6 +15,20 @@ const RoomModal: React.FC<RoomModalProps> = () => {
   console.log(outModalState);
   const [joinUUID, setJoinUUID] = useRecoilState<string>(RoomUUIDAtom);
   const serverUrl = process.env.REACT_APP_SERVER_URL;
+  const [storageStartData, setStorageStartData] = useState('');
+
+  useEffect(() => {
+  const storageStartData = localStorage.getItem('startTime');
+    if(storageStartData) {
+      console.log(JSON.parse(storageStartData)[0].split('T')[1].slice(0, 8))
+      setStorageStartData(JSON.parse(storageStartData)[0].split('T')[1].slice(0, 8));
+    } else {
+      setStorageStartData('기록이 없습니다.');
+    }
+  }, []);
+
+  
+  
 
   const roomOutHandler = async () => {
     try {
@@ -22,7 +36,7 @@ const RoomModal: React.FC<RoomModalProps> = () => {
       const response = await axios.post(
         `${serverUrl}/room/${joinUUID}/leave`,
         {
-          checkIn: '2023-10-16T14:00:00Z', // 날짜 - 연월일만
+          checkIn: storageStartData, // 날짜 - 연월일만
           checkOut: '2023-10-16T16:30:00Z',
           totalHours: '02:30:00',
           historyType: '취미', // study, hobby
@@ -51,7 +65,7 @@ const RoomModal: React.FC<RoomModalProps> = () => {
         <CheckInBox>
           <div>
             <p>First Check In</p>
-            <p>짜장면시 키신분</p>
+            <p>{storageStartData}</p>
           </div>
           <div>
             <p>Last Check Out</p>

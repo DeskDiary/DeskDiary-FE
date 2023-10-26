@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import 아무사진 from '../../../images/logo.png';
+import 아무사진 from '../../../images/logo.svg';
 
 type GoalPercentGraphProps = {};
 const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
@@ -49,7 +49,7 @@ const PercentImg = styled.div`
   img {
     width: 234px;
     height: 234px;
-    background-image: linear-gradient(to top, yellow 40%, grey 40%);
+    background-image: linear-gradient(to top, yellow 10%, grey 10%);
   }
   p {
     font-size: 30px;

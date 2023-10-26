@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { getCookie, setTokenCookie } from '../../auth/cookie';
 import XIcon from '../../images/Vector.svg';
-import logo from '../../images/logo.png';
+import logo from '../../images/logo.svg';
 import 구글로그인 from '../../images/main/구글사진.svg';
 import 카카오로그인 from '../../images/main/카카오사진.svg';
 import 아이디저장o from '../../images/radio_button_checked.svg';
