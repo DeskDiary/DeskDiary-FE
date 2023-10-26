@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useEffect, useState} from 'react';
 import styled from 'styled-components';
 import MainTop from '../../components/layout/main/MainTop';
 import RoomCard from '../home/components/RoomCard';
@@ -8,12 +8,22 @@ import { useQuery } from 'react-query';
 import RecordGraph from './chart/RecordGraph';
 import { getCookie } from '../../auth/cookie';
 import RoomList from './components/RoomList';
+import { useNavigate } from 'react-router-dom';
 
 
 type MyDeskProps = {};
 
 const MyDesk: React.FC<MyDeskProps> = () => {
   const token = getCookie('token');
+  const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   if(!token) {
+  //     navigate('/login');
+  //     return;
+  //   }
+  // }, [])
+
   return (
     <Container>
       <MainTop />

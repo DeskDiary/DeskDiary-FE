@@ -7,6 +7,7 @@ import Auth from '../pages/auth/Auth';
 import HobbyCategory from '../pages/category/HobbyCategory';
 import StudyCategory from '../pages/category/StudyCategory';
 import MyRecord from '../pages/myRecord/MyDesk';
+import Lending from '../pages/auth/Lending';
 
 
 const Router = () => {
@@ -30,6 +31,7 @@ const Router = () => {
         <Route path="/room/:id" element={<Room />} />
         <Route path="/auth" element={<Auth />} />
         <Route path="*" element={<Error />} />
+        <Route path="/lending" element={<Lending />} />
       </Routes>
     </BrowserRouter>
   );

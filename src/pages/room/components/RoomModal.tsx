@@ -6,6 +6,8 @@ import styled from 'styled-components';
 import { getCookie } from '../../../auth/cookie';
 import { RoomModalAtom, RoomUUIDAtom } from '../../../recoil/RoomAtom';
 import { getKoreanTime } from './Timer';
+import socket from '../../room/components/chat/socketInstance';
+
 
 type RoomModalProps = {};
 
@@ -64,6 +66,21 @@ const RoomModal: React.FC<RoomModalProps> = () => {
     } catch (error) {
       console.error(error);
     }
+
+    socket.emit(
+      'leave-room',
+      {
+        uuid: joinUUID,
+      },
+      (response: any) => {
+        // 서버로부터의 응답을 여기서 처리
+        if (response.success) {
+          console.log('방에서 나가기 성공!✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
+        } else {
+          console.log('방 나가기 실패😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭');
+        }
+      },
+    );
   };
 
   return (

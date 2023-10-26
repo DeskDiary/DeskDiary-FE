@@ -32,8 +32,6 @@ type JoinRoomModal = {
   };
 };
 
-// const socket = io(`${process.env.REACT_APP_SERVER_URL!}`);
-
 const JoinRoomModal: React.FC<JoinRoomModal> = ({ setIsOpen, room }) => {
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const navigate = useNavigate();
@@ -101,11 +99,6 @@ const JoinRoomModal: React.FC<JoinRoomModal> = ({ setIsOpen, room }) => {
       socket.on('new-user', (nickname) => {
         console.log('새로운 유저가 방에 참석:✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨', nickname);
       });
-      
-
-      // socket.on('error-room', (errorMessage:any) => {
-      //   console.log("에러 메시지 받았어! 😱", errorMessage);
-      // });
 
       navigate(`/room/${room.uuid}`);
     } catch (error) {
