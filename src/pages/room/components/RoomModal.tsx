@@ -5,7 +5,9 @@ import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { getCookie } from '../../../auth/cookie';
 import { RoomModalAtom, RoomUUIDAtom } from '../../../recoil/RoomAtom';
+import { getKoreanTime } from './Timer';
 import socket from '../../room/components/chat/socketInstance';
+
 
 type RoomModalProps = {};
 
@@ -16,32 +18,43 @@ const RoomModal: React.FC<RoomModalProps> = () => {
   console.log(outModalState);
   const [joinUUID, setJoinUUID] = useRecoilState<string>(RoomUUIDAtom);
   const serverUrl = process.env.REACT_APP_SERVER_URL;
-  const [storageStartData, setStorageStartData] = useState('');
+  const [storageStartData, setStorageStartData] = useState<string>('');
+  const [storageEndData, setStorageEndData] = useState<string>('')
 
   useEffect(() => {
-  const storageStartData = localStorage.getItem('startTime');
-    if(storageStartData) {
-      console.log(JSON.parse(storageStartData)[0].split('T')[1].slice(0, 8))
-      setStorageStartData(JSON.parse(storageStartData)[0].split('T')[1].slice(0, 8));
+    const storageStartData = localStorage.getItem('startTime');
+    if (storageStartData) {
+      setStorageStartData(
+        JSON.parse(storageStartData)[0].replaceAll(/["/]/g, ''),
+      );
     } else {
       setStorageStartData('기록이 없습니다.');
     }
-  }, []);
 
-  
-  
+    const storageEndData = localStorage.getItem('endTime');
+    if (storageEndData) {
+      setStorageEndData(
+        JSON.parse(storageEndData)[JSON.parse(storageEndData).length -1].replaceAll(/["/]/g, '')
+      );
+    } else {
+      setStorageEndData('기록이 없습니다.');
+    }
+  }, []);
 
   const roomOutHandler = async () => {
     try {
       const token = getCookie('token');
+      const data = {
+        checkIn: storageStartData !== '기록이 없습니다.' ? storageStartData : JSON.stringify(getKoreanTime()).replaceAll(/["/]/g, ''),
+        checkOut: storageEndData !== '기록이 없습니다.' ? storageEndData : JSON.stringify(getKoreanTime()).replaceAll(/["/]/g, ''),
+        totalHours: '01:30:00',
+        historyType: '취미',
+      };
+      console.log(token, data);
+      console.log(typeof data.checkIn, typeof data.checkOut)
       const response = await axios.post(
         `${serverUrl}/room/${joinUUID}/leave`,
-        {
-          checkIn: '2023-10-16T16:30:00Z', // 날짜 - 연월일만
-          checkOut: '2023-10-16T16:30:00Z',
-          totalHours: '02:30:00',
-          historyType: '취미', // study, hobby
-        },
+        data,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -85,7 +98,7 @@ const RoomModal: React.FC<RoomModalProps> = () => {
           </div>
           <div>
             <p>Last Check Out</p>
-            <p>서울시 여러분</p>
+            <p>{storageEndData}</p>
           </div>
         </CheckInBox>
         <p>퇴장하시겠어요?</p>
