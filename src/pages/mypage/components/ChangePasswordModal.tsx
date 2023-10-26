@@ -5,24 +5,39 @@ import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { UserAtom } from '../../../recoil/UserAtom';
+import { getCookie } from '../../../auth/cookie';
 
-type ChangePasswordModalProps = {
-  pw?: string;
+type ChangePasswordModalProps = {};
+
+type UserData = {
+  password: string;
+  newPassword: string;
+  confirmNewPassword: string;
 };
 
-const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({ pw }) => {
-  const [user, setUser] = useRecoilState(UserAtom);
+const ChangePasswordModal: React.FC<ChangePasswordModalProps> = () => {
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+
+  const token = getCookie('token');
 
   const joinMutation = useMutation(
     // (userData: typeof user) =>
-    (userData) =>
-      axios.post(`${process.env.REACT_APP_SERVER_URL!}/auth/join`, userData),
+    (userData: UserData) =>
+      axios.put(`${process.env.REACT_APP_SERVER_URL!}/me/password`, userData, {
+        headers: {
+          Authorization: `Bearer ${token}`, // 여기서 토큰을 헤더에 추가해줘
+        },
+      }),
+
     {
       onSuccess: () => {
+        setPassword('');
+        setNewPassword('');
+        setConfirmNewPassword('');
+        setErrorMessage('');
         alert('비밀번호 변경 완료');
       },
       onError: (error: any) => {
@@ -52,35 +67,29 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({ pw }) => {
     },
   );
 
-  const onSubmitJoin = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onBlur = () => {
+    setErrorMessage('');
+  }
+
+  const onSubmitChange = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // joinMutation.mutate(user);
-  };
+    if(newPassword !== confirmNewPassword) {
+      setErrorMessage('변경 비밀번호와 확인 비밀번호가 다릅니다.')
+    }
 
-  const handleChangePassword = () => {
-    if (pw !== password) {
-      alert('현재 비밀번호를 확인 해 주세요.');
-      return;
-    }
-    if (pw === newPassword) {
-      alert('현재 비밀번호와 변경 비밀번호가 같습니다.');
-      return;
-    }
-    if (newPassword !== confirmPassword) {
-      alert('확인 비밀번호가 틀립니다.');
-      return;
-    }
+    joinMutation.mutate({ password, newPassword, confirmNewPassword });
   };
 
   return (
-    <Container onSubmit={handleChangePassword}>
+    <Container onSubmit={onSubmitChange}>
       <Group>
         <Label>현재 비밀번호</Label>
         <input
           type="password"
           value={password}
           onChange={e => setPassword(e.target.value)}
+          onBlur={onBlur}
         />
       </Group>
       <Group>
@@ -89,16 +98,19 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({ pw }) => {
           type="password"
           value={newPassword}
           onChange={e => setNewPassword(e.target.value)}
+          onBlur={onBlur}
         />
       </Group>
       <Group>
         <Label>변경 비밀번호 확인</Label>
         <input
           type="password"
-          value={confirmPassword}
-          onChange={e => setConfirmPassword(e.target.value)}
+          value={confirmNewPassword}
+          onChange={e => setConfirmNewPassword(e.target.value)}
+          onBlur={onBlur}
         />
       </Group>
+      {errorMessage}
       <button type="submit">비밀번호 수정</button>
     </Container>
   );

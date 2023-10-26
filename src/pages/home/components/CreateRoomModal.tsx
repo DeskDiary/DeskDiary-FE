@@ -10,9 +10,11 @@ import { getCookie } from '../../../auth/cookie';
 
 import { study, hobby } from '../../../images';
 import BasicPrecautions from './BasicPrecautions';
+import socket from '../../room/components/chat/socketInstance';
 
 type CreateRoomProps = {
   setOpenCreateRoom: React.Dispatch<React.SetStateAction<boolean>>;
+  user: user
 };
 
 // 썸네일 등록 버튼 스타일
@@ -28,12 +30,10 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 
-const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
-  const serverUrl = process.env.REACT_APP_SERVER_URL;
+const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom, user }) => {
   const token = getCookie('token');
 
   const [room, setRoom] = useRecoilState(RoomAtom);
-  const [joinUUID, setJoinUUID] = useRecoilState<string>(RoomUUIDAtom);
   const [isStudyActive, setIsStudyActive] = useState(false);
   const [isHobbyActive, setIsHobbyActive] = useState(false);
   const [file, setFile] = useState<File | null>(null);
@@ -46,6 +46,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
   const [selectedUserCount, setSelectedUserCount] = useState<number | null>(
     null,
   );
+
 
   const navigate = useNavigate();
 
@@ -100,6 +101,24 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
         },
       );
       console.log(response);
+
+      socket.emit('joinRoom', {
+        nickname: user.nickname,
+        uuid: uuid,
+        img: user.profileImage,
+      }, (response:any) => {
+        // 서버로부터의 응답을 여기서 처리
+        if (response.success) {
+          console.log('방에 성공적으로 참여했어!✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
+        } else {
+          console.log('방 참여 실패😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭');
+        }
+      });
+    
+      socket.on('new-user', (nickname) => {
+        console.log('새로운 유저가 방에 참석:✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨', nickname);
+      });
+
       navigate(`/room/${uuid}`);
     } catch (error) {
       console.error(error);
