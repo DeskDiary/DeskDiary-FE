@@ -59,6 +59,8 @@ const RoomModal: React.FC<RoomModalProps> = () => {
           },
         },
       );
+      localStorage.removeItem('startTime');
+      localStorage.removeItem('endTime');
       setOutModalState(false);
       navigate('/');
     } catch (error) {
