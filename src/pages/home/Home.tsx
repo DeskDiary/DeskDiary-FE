@@ -9,10 +9,10 @@ import RoomList from './components/RoomList';
 import userIntro from '../../images/main/userIntro.svg';
 
 const Home = () => {
+
+  console.log('홈화면 렌더링')
   const token = getCookie('token');
 
-
-  
   return (
     <Container>
       <MainTop />

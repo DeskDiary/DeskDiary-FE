@@ -18,7 +18,7 @@ import send from '../../images/send.svg';
 type MypageProps = {};
 
 const Mypage: React.FC<MypageProps> = () => {
-  const { data } = useQuery<user, Error>('mypageUser', fetchUser);
+  
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenLogout, setIsOpenLogout] = useState(false);
   const [isOpenDeleteUser, setIsOpenDeleteUser] = useState(false);
@@ -38,6 +38,10 @@ const Mypage: React.FC<MypageProps> = () => {
   const handleDeleteUser = () => {
     setIsOpenDeleteUser(!isOpenDeleteUser);
   };
+
+  const { data } = useQuery<user, Error>('mypageUser', fetchUser, {
+    staleTime: Infinity, // 캐시 시간을 무한대로 설정
+  });
 
   const joinMutation = useMutation(
     (nickname: string) =>
@@ -86,8 +90,6 @@ const Mypage: React.FC<MypageProps> = () => {
     joinMutation.mutate(nickname);
   };
 
-  console.log(nickname);
-
   return (
     <Container>
       <MainTop />
@@ -119,7 +121,7 @@ const Mypage: React.FC<MypageProps> = () => {
               <Label>이메일 계정</Label>
               <span>{data?.email ? data?.email : 'abcd@email.com'}</span>
             </Group>
-            <ChangePasswordModal/>
+            <ChangePasswordModal />
           </UserInfo>
         </UserProfile>
 
@@ -138,8 +140,12 @@ const Mypage: React.FC<MypageProps> = () => {
           <List onClick={handleLogout}>로그아웃</List>
           <List onClick={handleDeleteUser}>회원탈퇴</List>
         </Lists>
-        {isOpenLogout && <ConfirmModal title="로그아웃" setIsOpen={setIsOpenLogout} />}
-        {isOpenDeleteUser && <ConfirmModal title="회원탈퇴" setIsOpen={setIsOpenDeleteUser} />}
+        {isOpenLogout && (
+          <ConfirmModal title="로그아웃" setIsOpen={setIsOpenLogout} />
+        )}
+        {isOpenDeleteUser && (
+          <ConfirmModal title="회원탈퇴" setIsOpen={setIsOpenDeleteUser} />
+        )}
       </Contants>
 
       {/* <GoalRecordChart /> */}

@@ -36,6 +36,9 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, refetch }) => {
   const { data } = useQuery<user, Error>(
     'userCreatedRoom',
     fetchUser,
+    {
+      staleTime: Infinity, // 캐시 시간을 무한대로 설정
+    }
   );
 
   const handleImageLoaded = () => {

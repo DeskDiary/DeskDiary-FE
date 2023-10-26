@@ -31,6 +31,9 @@ const RoomList: React.FC<RoomListProps> = ({ label, mydesk }) => {
         throw new Error('Invalid fetchName');
       }
     },
+    {
+      staleTime: Infinity, // 캐시 시간을 무한대로 설정
+    }
   );
 
   return (

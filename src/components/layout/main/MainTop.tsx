@@ -8,6 +8,7 @@ import { getCookie, setTokenCookie } from '../../../auth/cookie';
 import addroom from '../../../images/main/addroom.svg';
 import { fetchUser } from '../../../axios/api';
 import profile from '../../../images/profile.png';
+import axios from 'axios';
 
 import { useQuery } from 'react-query';
 
@@ -16,8 +17,8 @@ type MainTopProps = {};
 const MainTop: React.FC<MainTopProps> = () => {
   const [isFocused, setIsFocused] = useState(false);
   const [openCreateRoom, setOpenCreateRoom] = useState(false);
-  
-  
+  const [user, setUser] = useState<user>();
+
   const token = getCookie('token');
 
   const [nickname, setNickname] = useState('');
@@ -38,13 +39,28 @@ const MainTop: React.FC<MainTopProps> = () => {
     toast.message('search click');
   };
 
-  const { data } = useQuery<user>('user', fetchUser);
+  const { data } = useQuery<user>('user', fetchUser, {
+    staleTime: Infinity, // 캐시 시간을 무한대로 설정
+  });
+  console.log('MainTop 렌더링')
 
-  useEffect(() => {
-    if (data) {
-      setNickname(data.nickname);
-    }
-  }, [token]);
+  // const fetchUserProfile = async () => {
+  //   const { data } = await axios.get(
+  //     `${process.env.REACT_APP_SERVER_URL!}/me/profile`,
+  //     {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     },
+  //   );
+  //   setUser(data);
+  // };
+
+  // useEffect(() => {
+  //   if (token) {
+  //     fetchUserProfile();
+  //   }
+  // }, [token]);
 
   return (
     <NavHeader>
@@ -83,7 +99,7 @@ const MainTop: React.FC<MainTopProps> = () => {
         방만들기
       </CreateRoomButton>
       {openCreateRoom && (
-        <CreateRoomModal setOpenCreateRoom={setOpenCreateRoom} user={data!}/>
+        <CreateRoomModal setOpenCreateRoom={setOpenCreateRoom} user={data!} />
       )}
     </NavHeader>
   );
