@@ -30,12 +30,17 @@ type UserList = {
   };
 };
 
+type AllChatItem =
+  | { type: 'message'; data: MessageData }
+  | { type: 'user'; data: UserList };
+
 const ChatBox: React.FC<ChatBoxProps> = ({ roomId, userCount }) => {
   const [username, setUserName] = useState('');
   const [chatActive, setChatActive] = useState(false);
   const [messages, setMessages] = useState<MessageData[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [socketUserList, setSocketUserList] = useState<UserList | undefined>();
+  const [allChatList, setAllChatList] = useState<AllChatItem[]>([]);
 
   const { data } = useQuery<user>('chatUser', fetchUser);
 
@@ -61,6 +66,10 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId, userCount }) => {
     socket.on('msgToClient', (message: MessageData) => {
       console.log('받은 메시지:', message); // 이 부분을 추가해줘!
       setMessages(prevMessages => [...prevMessages, message]);
+      setAllChatList(prevAllChatList => [
+        ...prevAllChatList,
+        { type: 'message', data: message },
+      ]);
     });
 
     return () => {
@@ -73,6 +82,10 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId, userCount }) => {
     socket.on('user-list', newUserList => {
       console.log('유저리스트 메시지:', newUserList);
       setSocketUserList(newUserList);
+      setAllChatList(prevAllChatList => [
+        ...prevAllChatList,
+        { type: 'user', data: newUserList },
+      ]);
     });
 
     return () => {
@@ -80,31 +93,28 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId, userCount }) => {
     };
   }, [userCount]);
 
-  // useEffect(() => {
-  //   const userListMessage: MessageData = {
-  //     message: `${socketUserList!.socketId.nickname}님이 입장하셨습니다.`,
-  //     nickname: socketUserList!.socketId.nickname,
-  //     img: socketUserList!.socketId.img,
-  //     time: '',
-  //     roomId: roomId
-  //   };
-  //   setMessages(prevMessages => [...prevMessages, userListMessage]);
-  // }, [socketUserList])
-
   console.log('유저리스트', socketUserList);
 
   return (
     <Container>
       <ChatImg src={공지사진} />
       <ChatList>
-        {messages.map((message, index) => {
+        {/* {messages.map((message, index) => {
           return <Chat key={index} message={message} />;
         })}
         {socketUserList
           ? Object.values(socketUserList).map((user, index) => (
               <div key={index}>{user.nickname} 님이 입장하셨습니다.</div>
             ))
-          : 'undefined'}
+          : 'undefined'} */}
+        {allChatList.map((chat, index) => {
+          if (chat.type === 'message') {
+            return <Chat key={index} message={chat.data} />;
+          } else {
+            const lastUser = Object.values(chat.data).slice(-1)[0]; // 마지막 유저만 가져와
+            return <div>{`${lastUser.nickname} 님이 입장하셨습니다.`}</div>;
+          }
+        })}
       </ChatList>
       <ChatForm onSubmit={handleSubmit}>
         <UserInput
