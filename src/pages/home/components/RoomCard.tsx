@@ -6,6 +6,8 @@ import JoinRoomModal from './JoinRoomModal';
 import ConfirmModal from '../../../components/ConfirmModal';
 import { useQuery } from 'react-query';
 import { fetchUser } from '../../../axios/api';
+import { getCookie } from '../../../auth/cookie';
+import { useNavigate } from 'react-router-dom';
 
 type RoomCardProps = {
   room: {
@@ -24,15 +26,16 @@ type RoomCardProps = {
     updatedAt: string;
     uuid: string;
   };
-  refetch?: () => Promise<unknown>;
 };
 
-const RoomCard: React.FC<RoomCardProps> = ({ room, refetch }) => {
+const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
+  const token = getCookie('token');
+
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenDeleteRoomModal, setIsOpenDeleteRoomModal] = useState(false);
 
   const [isImageLoaded, setIsImageLoaded] = useState(false);
-
+  const navigate = useNavigate();
   const { data } = useQuery<user, Error>(
     'userCreatedRoom',
     fetchUser,
@@ -49,6 +52,14 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, refetch }) => {
     setIsImageLoaded(false);
   };
 
+  const onClickCard = () => {
+    if(token) {
+      setIsOpen(true)
+    } else {
+      navigate("/login")
+    }
+  }
+
   return (
     <Container>
       {!isImageLoaded && <img src={sample} alt="thumbnail" />}
@@ -58,9 +69,9 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, refetch }) => {
         style={{ display: isImageLoaded ? 'block' : 'none' }}
         src={room.roomThumbnail ? room.roomThumbnail : sample}
         alt="room thumbnail"
-        onClick={() => setIsOpen(true)}
+        onClick={onClickCard}
       ></Thumbmail>
-      <Contents onClick={() => setIsOpen(true)}>
+      <Contents onClick={onClickCard}>
         <Img></Img>
         <ContentText>
           <RoomTitle>{room.title}</RoomTitle>
@@ -81,7 +92,6 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, refetch }) => {
           title="삭제"
           uuid={room.uuid}
           setIsOpen={setIsOpenDeleteRoomModal}
-          refetch = {refetch}
         />
       )}
     </Container>

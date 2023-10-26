@@ -9,14 +9,12 @@ type ConfirmModalProps = {
   title: string;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   uuid?: string;
-  refetch?: () => Promise<unknown>;
 };
 
 const ConfirmModal: React.FC<ConfirmModalProps> = ({
   uuid,
   title,
   setIsOpen,
-  refetch,
 }) => {
   const navigate = useNavigate();
 
@@ -34,7 +32,6 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
       console.log(response);
       setIsOpen(false);
       // window.location.reload();
-      refetch!();
     } catch (error) {
       console.error(error);
     }
@@ -53,8 +50,12 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
       );
       console.log(response);
       setIsOpen(false);
-      // window.location.reload();
-      refetch!();
+
+      document.cookie =
+        'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+      // 여기서 추가로 로그아웃 처리 로직을 넣을 수 있어. 예를 들면 페이지 리디렉션 같은 것!
+      navigate('/');
+      window.location.reload();
     } catch (error) {
       console.error(error);
     }
@@ -67,6 +68,8 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
           'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
         // 여기서 추가로 로그아웃 처리 로직을 넣을 수 있어. 예를 들면 페이지 리디렉션 같은 것!
         navigate('/');
+        window.location.reload();
+
         break;
       case '삭제':
         handleDeleteRoom(uuid!);

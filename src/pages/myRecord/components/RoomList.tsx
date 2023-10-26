@@ -3,6 +3,7 @@ import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { fetchJoinRoom, fetchCreatedRoom } from '../../../axios/api';
 import RoomCard from '../../home/components/RoomCard';
+import { getCookie } from '../../../auth/cookie';
 
 type RoomListProps = {
   label: string;
@@ -15,8 +16,8 @@ const fetchFunctions = {
 };
 
 const RoomList: React.FC<RoomListProps> = ({ label, mydesk }) => {
+  const token = getCookie('token');
   
-
   let fetchName = mydesk;
 
   const { data, refetch } = useQuery<room[], Error>(
@@ -36,13 +37,14 @@ const RoomList: React.FC<RoomListProps> = ({ label, mydesk }) => {
     }
   );
 
+
   return (
     <List>
       <ListTitle>{label}</ListTitle>
 
       <JoinedRooms>
         {data?.map(room => {
-          return <RoomCard key={room.uuid} room={room} refetch={refetch}/>;
+          return <RoomCard key={room.uuid} room={room}/>;
         })}
       </JoinedRooms>
 

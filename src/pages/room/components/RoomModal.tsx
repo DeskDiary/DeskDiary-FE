@@ -5,6 +5,7 @@ import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { getCookie } from '../../../auth/cookie';
 import { RoomModalAtom, RoomUUIDAtom } from '../../../recoil/RoomAtom';
+import socket from '../../room/components/chat/socketInstance';
 
 type RoomModalProps = {};
 
@@ -36,7 +37,7 @@ const RoomModal: React.FC<RoomModalProps> = () => {
       const response = await axios.post(
         `${serverUrl}/room/${joinUUID}/leave`,
         {
-          checkIn: storageStartData, // 날짜 - 연월일만
+          checkIn: '2023-10-16T16:30:00Z', // 날짜 - 연월일만
           checkOut: '2023-10-16T16:30:00Z',
           totalHours: '02:30:00',
           historyType: '취미', // study, hobby
@@ -52,6 +53,21 @@ const RoomModal: React.FC<RoomModalProps> = () => {
     } catch (error) {
       console.error(error);
     }
+
+    socket.emit(
+      'leave-room',
+      {
+        uuid: joinUUID,
+      },
+      (response: any) => {
+        // 서버로부터의 응답을 여기서 처리
+        if (response.success) {
+          console.log('방에서 나가기 성공!✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
+        } else {
+          console.log('방 나가기 실패😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭');
+        }
+      },
+    );
   };
 
   return (
