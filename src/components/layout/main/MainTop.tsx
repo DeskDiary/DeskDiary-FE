@@ -25,10 +25,10 @@ const MainTop: React.FC<MainTopProps> = () => {
   const [nickname, setNickname] = useState('');
 
   const onClickCreateRoomButton = () => {
-    if(token) {
+    if (token) {
       setOpenCreateRoom(!openCreateRoom);
     } else {
-      navigate('/login')
+      navigate('/login');
     }
   };
 
@@ -45,7 +45,7 @@ const MainTop: React.FC<MainTopProps> = () => {
   };
 
   const { data } = useQuery<user>('user', fetchUser);
-  console.log('MainTop 렌더링')
+  console.log('MainTop 렌더링');
 
   return (
     <NavHeader>
@@ -76,19 +76,37 @@ const MainTop: React.FC<MainTopProps> = () => {
         </SearchButton>
       </Search> */}
 
-      <Link to="/join">회원가입</Link>
-      <Link to="/login">로그인</Link>
+      {token ? (
+        <CreateRoomButton type="button" onClick={onClickCreateRoomButton}>
+          <img src={addroom} alt="add room button" />
+          방만들기
+        </CreateRoomButton>
+      ) : (
+        <UserAuthGroup>
+          <AuthLink to="/login">로그인</AuthLink>
+          <AuthLink to="/join">회원가입</AuthLink>
+        </UserAuthGroup>
+      )}
 
-      <CreateRoomButton type="button" onClick={onClickCreateRoomButton}>
-        <img src={addroom} alt="add room button" />
-        방만들기
-      </CreateRoomButton>
       {openCreateRoom && (
         <CreateRoomModal setOpenCreateRoom={setOpenCreateRoom} user={data!} />
       )}
     </NavHeader>
   );
 };
+
+const UserAuthGroup = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+`;
+
+const AuthLink = styled(Link)`
+  font-size: 15px;
+  color: var(--gray-07)
+`;
 
 const User = styled(Link)`
   display: flex;
