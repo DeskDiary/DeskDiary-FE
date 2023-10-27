@@ -1,10 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { useRecoilState } from 'recoil';
 import 아무사진 from '../../../images/logo.svg';
+import { GoalTimeModalState } from '../../../recoil/DeskAtom';
 
 type GoalPercentGraphProps = {};
 const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
+  const [GoalModal, setGoalModal] = useRecoilState<boolean>(GoalTimeModalState);
+
+  const goalModalOnclickHandler = () => {
+    setGoalModal(!GoalModal);
+  };
+
   return (
     <Body>
       <Title>오늘의 취미 목표</Title>
@@ -23,7 +31,9 @@ const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
         </DetailTimeInfoPBox>
       </DetailTimeInfo>
 
-      <PageMoveButton>목표시간 채우러 가기</PageMoveButton>
+      <PageMoveButton onClick={goalModalOnclickHandler}>
+        목표시간 수정하기
+      </PageMoveButton>
     </Body>
   );
 };
@@ -49,7 +59,7 @@ const PercentImg = styled.div`
   img {
     width: 234px;
     height: 234px;
-    background-image: linear-gradient(to top, yellow 10%, grey 10%);
+    background-image: linear-gradient(to top, yellow 50%, grey 50%);
   }
   p {
     font-size: 30px;
@@ -75,6 +85,7 @@ const DetailTimeInfoPBox = styled.div`
   p:last-child {
     font-size: 22px;
     font-weight: 700;
+    color: var(--primary-00);
   }
 `;
 

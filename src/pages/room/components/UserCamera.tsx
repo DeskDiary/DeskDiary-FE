@@ -8,11 +8,9 @@ import { getCookie } from '../../../auth/cookie';
 import { RoomInfo } from '../../../recoil/RoomAtom';
 import VideoPlayer from './VideoPlayer';
 
-type CameraProps = {
-};
+type CameraProps = {};
 
 const UserCamera: React.FC<CameraProps> = () => {
-  
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const [client, setClient] = useState<any>(null);
   const [roomInfo, setRoomInfo] = useState({
@@ -31,6 +29,26 @@ const UserCamera: React.FC<CameraProps> = () => {
     updatedAt: '',
     uuid: '',
   });
+  const handleUserJoined = async (user: any, mediaType: any) => {
+    try {
+      await client.subscribe(user, mediaType);
+
+      if (mediaType === 'video') {
+        console.log('mediaType', mediaType);
+        setUsers(previousUsers => [...previousUsers, user]);
+      }
+
+      if (mediaType === 'audio') {
+        // user.audioTrack.play();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleUserLeft = (user: any) => {
+    setUsers(previousUsers => previousUsers.filter(u => u.uid !== user.uid));
+  };
   const [recoilRoomInfo, setRecoilRoomInfo] = useRecoilState(RoomInfo);
   const [users, setUsers] = useState<{ uid: any; videoTrack: any }[]>([]);
   const [localTracks, setLocalTracks] = useState<any[]>([]);
@@ -99,26 +117,7 @@ const UserCamera: React.FC<CameraProps> = () => {
         newClient.unpublish(localTracks).then(() => newClient.leave());
       };
     }
-  }, [roomInfo]);
-
-  console.log('클라이언트', client);
-
-  const handleUserJoined = async (user: any, mediaType: any) => {
-    await client.subscribe(user, mediaType);
-
-    if (mediaType === 'video') {
-      console.log('mediaType', mediaType);
-      setUsers(previousUsers => [...previousUsers, user]);
-    }
-
-    if (mediaType === 'audio') {
-      // user.audioTrack.play();
-    }
-  };
-
-  const handleUserLeft = (user: any) => {
-    setUsers(previousUsers => previousUsers.filter(u => u.uid !== user.uid));
-  };
+  }, [, roomInfo]);
 
   return (
     <Cameras>
