@@ -116,9 +116,9 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId, userCount }) => {
           if (chat.type === 'message') {
             return <Chat key={index} message={chat.data} />;
           } else if (chat.type === 'new-user') {
-            return <div key={index}>{`${chat.data} 님이 입장하셨습니다.`}</div>;
+            return <Message key={index}>{`${chat.data} 님이 입장하셨습니다.`}</Message>;
           } else if (chat.type === 'left-user') {
-            return <div key={index}>{`${chat.data} 님이 나가셨습니다.`}</div>;
+            return <Message key={index}>{`${chat.data} 님이 나가셨습니다.`}</Message>;
           }
         })}
       </ChatList>
@@ -134,6 +134,14 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId, userCount }) => {
     </Container>
   );
 };
+
+const Message = styled.div`
+margin: 0 auto;
+background-color: var(--gray-05);
+padding: 5px;
+border-radius: 10px;
+font-weight: 500;
+`
 
 const ChatImg = styled.img`
   margin: 5px auto 0 5px;
@@ -182,7 +190,7 @@ const ChatList = styled.div`
   align-items: start;
   gap: 15px;
 
-  height: 100%;
+  height: 900px;
   width: calc(100% - 40px);
   padding: 20px;
   border-bottom: 1px solid var(--gray-05);

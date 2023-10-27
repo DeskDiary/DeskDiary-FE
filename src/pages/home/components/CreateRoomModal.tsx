@@ -202,6 +202,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom, user })
               type="text"
               // onChange={e => setRoom({ ...room, title: e.target.value })}
               onChange={e => updateFormData('title', e.target.value)}
+              required
             />
           </Group>
 
