@@ -8,7 +8,8 @@ import { ChatMessagesAtom } from '../../../../recoil/ChatAtom';
 import { useRecoilState } from 'recoil';
 import { fetchUser } from '../../../../axios/api';
 import { useQuery } from 'react-query';
-import socket from './socketInstance';
+import socket from '../../socketInstance';
+import { getRoomCookie, setRoomCookie } from '../../../../auth/cookie';
 
 type ChatBoxProps = { roomId: string; userCount: number };
 
@@ -29,8 +30,12 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId, userCount }) => {
   const [newMessage, setNewMessage] = useState('');
   const [allChatList, setAllChatList] = useState<AllChatItem[]>([]);
   const [isStartButton, setIsStartButton] = useState(true);
+  // const historyRoom = getRoomCookie('room');
+  // const [roomCookie, setRoomCookie] = useState<string>('');
 
-  const { data } = useQuery<user>('chatUser', fetchUser);
+  const { data } = useQuery<user>('chatUser', fetchUser, {
+    staleTime: Infinity, // 캐시 시간을 무한대로 설정
+  });
 
   // 연결이 버튼
   const restartSocket = () => {
@@ -52,15 +57,13 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId, userCount }) => {
     setIsStartButton(false);
   };
 
-  useEffect(() => {
-    socket.on('disconnect_user', (byeUser: string) => {
-      setAllChatList(prevAllChatList => [
-        ...prevAllChatList,
-        { type: 'left-user', data: byeUser },
-      ]);
-      console.log('😭나간 유저', byeUser);
-    });
-  }, [socket]);
+  if (!localStorage.getItem('room')) {
+    localStorage.setItem('room', 'room');
+  }
+
+  const historyRoom = localStorage.getItem('room')
+
+  console.log('historyRoom==="room"', historyRoom==="room")
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -154,11 +157,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId, userCount }) => {
         })}
       </ChatList>
       <ChatUnder>
-        {isStartButton ? (
-          <button type="button" onClick={restartSocket}>
-            채팅다시연결
-          </button>
-        ) : (
+        {historyRoom==="room" ? (
           <ChatForm onSubmit={handleSubmit}>
             <UserInput
               value={newMessage}
@@ -168,6 +167,10 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId, userCount }) => {
               <img src={send} />
             </SendButton>
           </ChatForm>
+        ) : (
+          <button type="button" onClick={restartSocket}>
+            채팅 시작하기
+          </button>
         )}
       </ChatUnder>
     </Container>
@@ -180,6 +183,17 @@ const ChatUnder = styled.div`
   justify-content: start;
   align-items: center;
   width: 100%;
+
+  > button {
+    background-color: var(--gray-09);
+    border: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    font-size: 20px;
+    color: white;
+  }
 `;
 
 const Message = styled.div`
@@ -257,17 +271,17 @@ const Container = styled.div`
   width: 96%;
   min-height: calc(100% - 145px);
   border-left: 1px solid var(--gray-07);
+  position: relative;
 
-   /* 스크롤바 트랙(배경) 디자인 */
-   ::-webkit-scrollbar-track {
-    background: rgba(0, 197, 255, 0.0);
+  /* 스크롤바 트랙(배경) 디자인 */
+  ::-webkit-scrollbar-track {
+    background: rgba(0, 197, 255, 0);
   }
 
   /* 스크롤바 핸들 디자인 */
   ::-webkit-scrollbar-thumb {
     background: var(--gray-07);
     border-radius: 10px;
-    
   }
 
   /* 스크롤바 핸들 호버 상태 */

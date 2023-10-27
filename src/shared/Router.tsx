@@ -21,7 +21,7 @@ const Router = () => {
           <Route path="/study" element={<StudyCategory />} />
           <Route path="/hobby" element={<HobbyCategory />} />
           <Route path="/mydesk" element={<MyRecord />} />
-          <Route path="/mypage/:id" element={<Mypage />} />
+          <Route path="/mypage" element={<Mypage />} />
         </Route>
         <Route element={<SideLayout />}>
           <Route path="/login" element={<Login />} />

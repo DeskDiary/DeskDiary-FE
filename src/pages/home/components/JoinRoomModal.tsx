@@ -3,14 +3,14 @@ import axios from 'axios';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { getCookie } from '../../../auth/cookie';
+import { getCookie, setRoomCookie } from '../../../auth/cookie';
 import { RoomAtom, RoomUUIDAtom } from '../../../recoil/RoomAtom';
 import MediaSetup from './MediaSetup';
 import BasicPrecautions from './BasicPrecautions';
 import io from 'socket.io-client';
 import { useQuery } from 'react-query';
 import { fetchUser } from '../../../axios/api';
-import socket from '../../room/components/chat/socketInstance';
+import socket from '../../room/socketInstance';
 
 type JoinRoomModal = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -83,22 +83,23 @@ const JoinRoomModal: React.FC<JoinRoomModal> = ({ setIsOpen, room }) => {
       setJoinUUID(room.uuid);
 
 
-      // socket.emit('joinRoom', {
-      //   nickname: data!.nickname,
-      //   uuid: room.uuid,
-      //   img: data!.profileImage,
-      // }, (response:any) => {
-      //   // 서버로부터의 응답을 여기서 처리
-      //   if (response.success) {
-      //     console.log('방에 성공적으로 참여했어!✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
-      //   } else {
-      //     console.log('방 참여 실패😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭');
-      //   }
-      // });
+      socket.emit('joinRoom', {
+        nickname: data!.nickname,
+        uuid: room.uuid,
+        img: data!.profileImage,
+      }, (response:any) => {
+        // 서버로부터의 응답을 여기서 처리
+        if (response.success) {
+          console.log('방에 성공적으로 참여했어!✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
+        } else {
+          console.log('방 참여 실패😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭');
+        }
+      });
 
-      // socket.on('new-user', (nickname) => {
-      //   console.log('새로운 유저가 방에 참석:✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨', nickname);
-      // });
+      socket.on('new-user', (nickname) => {
+        console.log('새로운 유저가 방에 참석:✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨', nickname);
+      });
+      
 
       navigate(`/room/${room.uuid}`);
     } catch (error) {

@@ -17,7 +17,7 @@ const fetchFunctions = {
 
 const RoomList: React.FC<RoomListProps> = ({ label, mydesk }) => {
   const token = getCookie('token');
-  
+
   let fetchName = mydesk;
 
   const { data, refetch } = useQuery<room[], Error>(
@@ -34,20 +34,20 @@ const RoomList: React.FC<RoomListProps> = ({ label, mydesk }) => {
     },
     {
       staleTime: Infinity, // 캐시 시간을 무한대로 설정
-    }
+    },
   );
-
 
   return (
     <List>
       <ListTitle>{label}</ListTitle>
 
-      <JoinedRooms>
-        {data?.map(room => {
-          return <RoomCard key={room.uuid} room={room}/>;
-        })}
-      </JoinedRooms>
-
+      {Array.isArray(data) && (
+        <JoinedRooms>
+          {data.map(room => {
+            return <RoomCard key={room.uuid} room={room} />;
+          })}
+        </JoinedRooms>
+      )}
     </List>
   );
 };
@@ -78,7 +78,7 @@ const JoinedRooms = styled.div`
   grid-template-columns: repeat(5, 1fr);
   gap: 12px;
   width: 1215px;
-  min-height: 470px;
+  /* min-height: 470px; */
 
   overflow: scroll;
 

@@ -115,7 +115,7 @@ const Join: React.FC<JoinProps> = () => {
               '비밀번호는 대문자, 소문자, 숫자, 특수문자를 각각 하나 이상 포함해야 합니다',
             ):
               setPasswordError(
-                '비밀번호는 대문자, 소문자, 숫자, 특수문자를 각각 하나 이상 포함한 8자 이상 이어야 합니다',
+                '영문 대소문자, 숫자,특수기호 포함 8~16글자를 입력해주세요.',
               );
               break;
             case message.includes('비밀번호는 8자 이상이어야 합니다'):
@@ -333,7 +333,7 @@ const InputBox = styled.div<{ focused: boolean }>`
 const ErrorMessage = styled.div`
   width: 400px;
   padding: 5px 0 10px 5px;
-  color: var(--system-error);
+  color: red;
   font-size: 14px;
   font-weight: 400;
 
