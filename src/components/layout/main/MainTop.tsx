@@ -50,13 +50,13 @@ const MainTop: React.FC<MainTopProps> = () => {
   return (
     <NavHeader>
       {token ? (
-        <User to="/mypage/:id">
+        <User to="/mypage">
           <img
             src={data?.profileImage ? data.profileImage : profile}
             alt="profile image"
           ></img>
           <p>{data?.nickname}</p>
-          <span>님의 마이페이지</span>
+          {/* <span>마이페이지</span> */}
         </User>
       ) : (
         <User to="/login">

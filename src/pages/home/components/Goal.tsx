@@ -31,7 +31,7 @@ const Goal: React.FC<GoalProps> = () => {
 const GoalDiv = styled.div`
   width: 714px;
   height: 211px;
-  background: #d9d9d9;
+  /* background: #d9d9d9; */
   padding: 16px;
 `;
 

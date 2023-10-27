@@ -10,7 +10,7 @@ import { getCookie } from '../../../auth/cookie';
 
 import { study, hobby } from '../../../images';
 import BasicPrecautions from './BasicPrecautions';
-import socket from '../../room/components/chat/socketInstance';
+import socket from '../../room/socketInstance';
 
 type CreateRoomProps = {
   setOpenCreateRoom: React.Dispatch<React.SetStateAction<boolean>>;
@@ -354,7 +354,7 @@ const Category = styled.button<{ isActive: boolean }>`
   font-size: 16px;
   color: ${props => (props.isActive ? 'var(--primary-01)' : 'var(--gray-05)')};
   display: flex;
-  gap: 13px;
+  gap: 9px;
   justify-content: center;
   align-items: center;
   border: 2px solid

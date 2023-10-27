@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { getCookie } from '../../../auth/cookie';
 import { RoomModalAtom, RoomUUIDAtom } from '../../../recoil/RoomAtom';
 import { timerState } from '../../../recoil/TimeAtom';
-import socket from '../../room/components/chat/socketInstance';
+import socket from '../socketInstance';
 import { getKoreanTime } from './Timer';
 
 
@@ -85,6 +85,7 @@ const RoomModal: React.FC<RoomModalProps> = () => {
         }
       },
     );
+    localStorage.removeItem('room');
   };
 
   return (

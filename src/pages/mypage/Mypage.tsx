@@ -14,16 +14,26 @@ import EditProfileImg from './components/EditProfileImg';
 
 import { profile } from '../../images';
 import send from '../../images/send.svg';
+import { logo, kakao } from '../../images';
 
 type MypageProps = {};
 
 const Mypage: React.FC<MypageProps> = () => {
-  
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenLogout, setIsOpenLogout] = useState(false);
   const [isOpenDeleteUser, setIsOpenDeleteUser] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [nickname, setNickname] = useState('');
+
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
 
   const token = getCookie('token');
 
@@ -81,6 +91,8 @@ const Mypage: React.FC<MypageProps> = () => {
     },
   );
 
+  console.log('🎈user', data);
+
   const onSubmitNickname = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('nickname', nickname);
@@ -115,15 +127,30 @@ const Mypage: React.FC<MypageProps> = () => {
                 </button>
               </EditNickname>
             </Group>
-            <Group>
-              <Label>이메일 계정</Label>
-              <span>{data?.email ? data?.email : 'abcd@email.com'}</span>
-            </Group>
+            <EmailInfo
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+            >
+              <Group>
+                <Label>이메일 계정 </Label>
+                <span>{data?.email ? data?.email : 'abcd@email.com'}</span>
+              </Group>
+              <img
+                src={data?.provider === 'local' ? logo : kakao}
+                alt="login-info"
+              />
+              <EmailHover show={isHovered}>
+                {data?.provider === 'local' ? '일반로그인으' : '카카오로그인으'}
+                로 로그인 하셨습니다.
+              </EmailHover>
+            </EmailInfo>
+
             <ChangePasswordModal />
           </UserInfo>
         </UserProfile>
 
         <Lists>
+          <List onClick={handleLogout}>정보수정</List>
           <List onClick={handleLogout}>로그아웃</List>
           <List onClick={handleDeleteUser}>회원탈퇴</List>
         </Lists>
@@ -139,6 +166,32 @@ const Mypage: React.FC<MypageProps> = () => {
     </Container>
   );
 };
+
+const EmailHover = styled.div<{ show: boolean }>`
+  position: absolute;
+  top: 15px;
+  left: 170px;
+  font-size: 12px;
+  font-weight: 500;
+  background-color: var(--gray-03);
+  border-radius: 15px;
+  padding: 3px 10px;
+  opacity: ${props => (props.show ? 1 : 0)};
+  transition: opacity 0.2s ease-in-out;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out 0.3s;
+`;
+
+const EmailInfo = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  > img {
+    height: 30px;
+  }
+`;
 
 const Group = styled.div`
   display: flex;
