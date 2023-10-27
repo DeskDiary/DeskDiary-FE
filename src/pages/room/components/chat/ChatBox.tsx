@@ -182,7 +182,7 @@ const ChatList = styled.div`
   align-items: start;
   gap: 15px;
 
-  height: calc(100% - 100px);
+  height: 900px;
   width: calc(100% - 40px);
   padding: 20px;
   border-bottom: 1px solid var(--gray-05);
