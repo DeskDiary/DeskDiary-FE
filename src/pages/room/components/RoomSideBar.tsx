@@ -6,6 +6,10 @@ import 마이크 from '../../../images/room/mic_none.svg';
 import 사람 from '../../../images/room/people_outline.svg';
 import 카메라 from '../../../images/room/videocam.svg';
 import Timer from './Timer';
+import profile from '../../../images/profile.png';
+import { fetchUser } from '../../../axios/api';
+import { useQuery } from 'react-query';
+
 type RoomSideBarProps = {};
 
 const RoomSideBar: React.FC<RoomSideBarProps> = () => {
@@ -16,6 +20,8 @@ const RoomSideBar: React.FC<RoomSideBarProps> = () => {
   // };
 
   const navigate = useNavigate();
+
+  const { data } = useQuery<user>('user', fetchUser);
 
   return (
     <Body>
@@ -28,10 +34,10 @@ const RoomSideBar: React.FC<RoomSideBarProps> = () => {
       />
       <UserInfoBox>
         <img
-          src="https://avatars.githubusercontent.com/u/120389368?v=4"
-          alt="사용자프로필이미지"
-        />
-        <p>유저이름</p>
+          src={data?.profileImage ? data.profileImage : profile}
+          alt="profile image"
+        ></img>
+        <p>{data?.nickname}</p>
       </UserInfoBox>
       <TimerBox>
         <Timer />
