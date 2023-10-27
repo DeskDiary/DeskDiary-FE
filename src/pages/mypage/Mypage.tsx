@@ -39,9 +39,7 @@ const Mypage: React.FC<MypageProps> = () => {
     setIsOpenDeleteUser(!isOpenDeleteUser);
   };
 
-  const { data } = useQuery<user, Error>('mypageUser', fetchUser, {
-    staleTime: Infinity, // 캐시 시간을 무한대로 설정
-  });
+  const { data } = useQuery<user, Error>('mypageUser', fetchUser);
 
   const joinMutation = useMutation(
     (nickname: string) =>
@@ -126,17 +124,6 @@ const Mypage: React.FC<MypageProps> = () => {
         </UserProfile>
 
         <Lists>
-          {/* <List onClick={() => onClickToggle()}>가입정보</List>
-          {isOpen && (
-            <Toggle>
-              <span>
-                {' '}
-                {data?.nickname}님의 가입 경로 | {data?.provider}
-              </span>
-              <button onClick={handleChangePassword}> 비밀번호 수정</button>
-            </Toggle>
-          )}
-          {isChangePW && <ChangePasswordModal />} */}
           <List onClick={handleLogout}>로그아웃</List>
           <List onClick={handleDeleteUser}>회원탈퇴</List>
         </Lists>

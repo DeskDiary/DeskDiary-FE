@@ -5,6 +5,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { logo, kakao, google } from '../../images';
 import { colorChecked, unchecked, XIcon } from '../../images';
+import 아이디저장o from '../../images/radio_button_checked.svg';
+import 아이디저장x from '../../images/radio_button_unchecked.svg';
 
 import { UserAtom } from '../../recoil/UserAtom';
 
@@ -92,7 +94,7 @@ const Join: React.FC<JoinProps> = () => {
             case message.includes('이메일이 이미'):
               setEmailError('이메일이 이미 사용중입니다.');
               break;
-            case message.includes('이메일이 형식이'):
+            case message.includes('이메일 형식이'):
               setEmailError('이메일 형식이 아닙니다');
               break;
             case message.includes('이메일이 비어'):
@@ -135,6 +137,7 @@ const Join: React.FC<JoinProps> = () => {
 
   return (
     <JoinForm onSubmit={onSubmitJoin}>
+      <LoginLink to="/login">로그인</LoginLink>
       <Logo to="/"></Logo>
       <Title>회원가입</Title>
       <JoinList>
@@ -151,6 +154,7 @@ const Join: React.FC<JoinProps> = () => {
                 handleBlurInput();
               }}
               value={user.email}
+              required
             />
             {user.email.length !== 0 && (
               <Clear type="button" onClick={() => handleClearInput('email')}>
@@ -177,6 +181,7 @@ const Join: React.FC<JoinProps> = () => {
                 handleBlurInput();
               }}
               value={user.password}
+              required
             />
             {user.password.length !== 0 && (
               <Clear type="button" onClick={() => handleClearInput('password')}>
@@ -207,6 +212,7 @@ const Join: React.FC<JoinProps> = () => {
                 blurConfirmHandler();
                 handleBlurInput();
               }}
+              required
             />
             {confirmPassword.length !== 0 && (
               <Clear
@@ -237,6 +243,7 @@ const Join: React.FC<JoinProps> = () => {
                 handleBlurInput();
               }}
               value={user.nickname}
+              required
             />
             {user.nickname.length !== 0 && (
               <Clear type="button" onClick={() => handleClearInput('nickname')}>
@@ -282,16 +289,19 @@ const Join: React.FC<JoinProps> = () => {
         <SocialLoginLink to="/">
           <img src={google} />
         </SocialLoginLink>
-        <Kakao />
       </SocialLoginGroup>
     </JoinForm>
   );
 };
 
+const LoginLink = styled(Link)`
+  margin-left: auto;
+`
+
 const Logo = styled(Link)`
   background: url(${logo}) no-repeat center;
-  width: 70px;
-  height: 70px;
+  width: 62px;
+  height: 73px;
 `;
 
 const Clear = styled.button`
@@ -307,7 +317,7 @@ const InputBox = styled.div<{ focused: boolean }>`
   display: flex;
   width: 370px;
   height: 28px;
-  padding: 10px 15px;
+  padding: 7px 10px;
   align-items: center;
   gap: 10px;
   border-radius: 5px;
@@ -322,9 +332,10 @@ const InputBox = styled.div<{ focused: boolean }>`
 
 const ErrorMessage = styled.div`
   width: 400px;
-  padding: 10px;
+  padding: 5px 0 10px 5px;
   color: var(--system-error);
-  font-size: 15px;
+  font-size: 14px;
+  font-weight: 400;
 
   top: 85px;
 `;
@@ -380,12 +391,12 @@ const JoinButton = styled.button<{ disabled: boolean }>`
   line-height: 123.5%; /* 29.64px */
 
   background-color: rgba(
-    0,
-    197,
-    255,
-    ${props => (props.disabled ? '0.2' : '1.0')}
+    26,
+    129,
+    232,
+    ${props => (props.disabled ? '0.5' : '1.0')}
   );
-  cursor: ${props => (props.disabled ? '' : 'pointer')};
+  cursor: ${props => (props.disabled ? 'auto' : 'pointer')};
 `;
 
 const AgreeLink = styled(Link)`
@@ -403,17 +414,16 @@ const AgreeLink = styled(Link)`
 
 const AgreeCheck = styled.input`
   appearance: none;
-  width: 15px;
-  height: 15px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background-color: white;
   border: 1px solid var(--primary-01);
   display: inline-block;
-  background: url(${unchecked}) no-repeat center;
+  background: url(${아이디저장x}) no-repeat center;
   //체크했을 때의post 스타일
   &:checked {
-    background: url(${colorChecked}) no-repeat center;
-    background-color: var(--primary-01);
+    background: url(${아이디저장o}) no-repeat center;
   }
 `;
 
@@ -424,12 +434,12 @@ const JoinForm = styled.form`
   justify-content: start;
   width: 400px;
   height: 100%;
-  padding: 110px 0;
+  padding-top: 50px;
 `;
 
 const JoinLabel = styled.div<{ focused: boolean }>`
   width: 380px;
-  padding: 10px;
+  margin-bottom: 5px;
   color: ${props => (props.focused ? 'var(--primary-01)' : 'var(--gray-07)')};
   font-size: 15px;
 `;
@@ -472,12 +482,11 @@ const JoinList = styled.div`
 `;
 
 const Title = styled.div`
-  color: #000;
   text-align: center;
   font-size: 32px;
   width: 100%;
-  margin-top: 24px;
-  margin-bottom: 54px;
+  margin-top: 20px;
+  margin-bottom: 40px;
 `;
 
 export default Join;

@@ -10,7 +10,7 @@ import { profile } from '../../../../images';
 type ChatProps = {
   message: {
     message: string;
-    nickname : string;
+    nickname: string;
     img: string;
     time: string;
     roomId: string;
@@ -18,21 +18,26 @@ type ChatProps = {
 };
 
 const Chat: React.FC<ChatProps> = ({ message }) => {
-
   return (
     <Container>
-      <UserImg src={message.img ? message.img : profile} />
-      <ChatDetails>
-        <Metadata>
-          <UserName>{message.nickname }</UserName>
-          <Time>{message.time}</Time>
-        </Metadata>
+      {message && (
+        <>
+          <UserImg src={message.img ? message.img : profile} />
+          <ChatDetails>
+            <Metadata>
+              <UserName>{message.nickname}</UserName>
+              <Time>{message.time}</Time>
+            </Metadata>
 
-        <Message>{message.message}</Message>
-      </ChatDetails>
+            <Message>{message.message}</Message>
+          </ChatDetails>
+        </>
+      )}
     </Container>
   );
 };
+
+const NewUser = styled.div``
 
 const Metadata = styled.div`
   display: flex;
@@ -80,7 +85,6 @@ const ChatDetails = styled.div`
 const UserImg = styled.img`
   height: 24px;
   width: 24px;
-  background-color: #d9d9d9;
   border-radius: 50%;
 `;
 

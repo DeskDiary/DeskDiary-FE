@@ -10,55 +10,39 @@ import { fetchUser } from '../../../../axios/api';
 import { useQuery } from 'react-query';
 import socket from './socketInstance';
 
-// const socket = io('http://localhost:5000');
-// const socket = io(`${process.env.REACT_APP_SERVER_URL!}`);
-
-type ChatBoxProps = { roomId: string };
+type ChatBoxProps = { roomId: string; userCount: number };
 
 type MessageData = {
   message: string;
-  nickname : string;
+  nickname: string;
   img: string;
   time: string;
   roomId: string;
 };
 
-const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
+type AllChatItem =
+  | { type: 'message'; data: MessageData }
+  | { type: 'new-user'; data: string }
+  | { type: 'left-user'; data: string };
+
+const ChatBox: React.FC<ChatBoxProps> = ({ roomId, userCount }) => {
   const [username, setUserName] = useState('');
   const [chatActive, setChatActive] = useState(false);
   const [messages, setMessages] = useState<MessageData[]>([]);
   const [newMessage, setNewMessage] = useState('');
+  const [allChatList, setAllChatList] = useState<AllChatItem[]>([]);
+  const [hiUserNickname, setHiUserNickname] = useState('');
+  const [byeUserNickname, setByeUserNickname] = useState('');
 
   const { data } = useQuery<user>('chatUser', fetchUser);
-
-  useEffect(() => {
-    socket.on('msgToClient', (message: MessageData) => {
-      console.log("받은 메시지:", message);  // 이 부분을 추가해줘!
-      setMessages(prevMessages => [...prevMessages, message]);
-    });
-
-    return () => {
-      console.log('off')
-      socket.off('msgToClient');
-    };
-
-  }, [socket]);
-
-  const socketConfirm = () => {
-    console.log('useEffect 실행', messages);
-    socket.on('msgToClient', (message: MessageData) => {
-      setMessages(prevMessages => [...prevMessages, message]);
-    });
-    console.log('messages❤️✨', messages);
-  }
-
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // 유저가 서버에게 메세지 보냄
     const messageData = {
       message: newMessage,
-      nickname : data?.nickname,
+      nickname: data?.nickname,
       img: data?.profileImage,
       uuid: roomId,
     };
@@ -71,12 +55,71 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
     console.log('전송후');
   };
 
+  // 서버에서 유저애개 메세지를 보냄
+  useEffect(() => {
+    socket.on('msgToClient', (message: MessageData) => {
+      console.log('받은 메시지:', message); // 이 부분을 추가해줘!
+      setMessages(prevMessages => [...prevMessages, message]);
+      setAllChatList(prevAllChatList => [
+        ...prevAllChatList,
+        { type: 'message', data: message },
+      ]);
+    });
+
+    return () => {
+      console.log('off');
+      socket.off('msgToClient');
+    };
+  }, [socket]);
+
+  // 나가고 들어온 유저 닉네임 받아오기
+  useEffect(() => {
+    socket.on('new-user', (hiUser: string) => {
+      setHiUserNickname(hiUser);
+      setAllChatList(prevAllChatList => [
+        ...prevAllChatList,
+        { type: 'new-user', data: hiUser },
+      ]);
+      console.log('🥰새로 들어온 유저', hiUser);
+    });
+
+    socket.on('left-user', (byeUser: string) => {
+      setByeUserNickname(byeUser);
+      setAllChatList(prevAllChatList => [
+        ...prevAllChatList,
+        { type: 'left-user', data: byeUser },
+      ]);
+      console.log('😭나간 유저', byeUser);
+    });
+
+    console.log('소켓연결')
+
+    return () => {
+      socket.off('user-list');
+      socket.off('left-user');
+    };
+  }, [userCount]);
+
   return (
     <Container>
       <ChatImg src={공지사진} />
       <ChatList>
-        {messages.map((message, index) => {
+        {/* {messages.map((message, index) => {
           return <Chat key={index} message={message} />;
+        })}
+        {socketUserList
+          ? Object.values(socketUserList).map((user, index) => (
+              <div key={index}>{user.nickname} 님이 입장하셨습니다.</div>
+            ))
+          : 'undefined'} */}
+        {allChatList.map((chat, index) => {
+          if (chat.type === 'message') {
+            return <Chat key={index} message={chat.data} />;
+          } else if (chat.type === 'new-user') {
+            return <div key={index}>{`${chat.data} 님이 입장하셨습니다.`}</div>;
+          } else if (chat.type === 'left-user') {
+            return <div key={index}>{`${chat.data} 님이 나가셨습니다.`}</div>;
+          }
         })}
       </ChatList>
       <ChatForm onSubmit={handleSubmit}>
@@ -88,7 +131,6 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
           <img src={send} />
         </SendButton>
       </ChatForm>
-      <button type="button" onClick={socketConfirm}>확인</button>
     </Container>
   );
 };
