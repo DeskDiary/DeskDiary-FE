@@ -6,8 +6,8 @@ import styled from 'styled-components';
 import { getCookie } from '../../../auth/cookie';
 import { RoomModalAtom, RoomUUIDAtom } from '../../../recoil/RoomAtom';
 import { timerState } from '../../../recoil/TimeAtom';
-import { getKoreanTime } from './Timer';
 import socket from '../../room/components/chat/socketInstance';
+import { getKoreanTime } from './Timer';
 
 
 type RoomModalProps = {};
@@ -26,7 +26,7 @@ const RoomModal: React.FC<RoomModalProps> = () => {
     const storageStartData = localStorage.getItem('startTime');
     if (storageStartData) {
       setStorageStartData(
-        JSON.parse(storageStartData)[0].replaceAll(/[Z"/]/g, ''),
+        JSON.parse(storageStartData)[0].replaceAll(/["/]/g, ''),
       );
     } else {
       setStorageStartData('기록이 없습니다.');
@@ -35,7 +35,7 @@ const RoomModal: React.FC<RoomModalProps> = () => {
     const storageEndData = localStorage.getItem('endTime');
     if (storageEndData) {
       setStorageEndData(
-        JSON.parse(storageEndData)[JSON.parse(storageEndData).length -1].replaceAll(/[Z"/]/g, '')
+        JSON.parse(storageEndData)[JSON.parse(storageEndData).length -1].replaceAll(/["/]/g, '')
       );
     } else {
       setStorageEndData('기록이 없습니다.');
