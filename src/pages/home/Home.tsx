@@ -17,7 +17,7 @@ const Home = () => {
 
   useEffect(() => {
     const visited = window.localStorage.getItem('visited');
-    if (!visited) {
+    if (visited === null) {
       navigate("/lending")
     }
     console.log(visited)

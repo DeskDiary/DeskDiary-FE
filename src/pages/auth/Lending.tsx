@@ -10,9 +10,7 @@ type LendingProps = {};
 
 const Lending: React.FC<LendingProps> = () => {
 
-  useEffect(() => {
-    window.localStorage.setItem('visited', 'true');
-  }, []);
+
 
   return (
     <Container>
