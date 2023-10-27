@@ -1,17 +1,56 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
+import axios from 'axios';
 import { useRecoilState } from 'recoil';
+import { getCookie } from '../../../auth/cookie';
 import 아무사진 from '../../../images/logo.svg';
 import { GoalTimeModalState } from '../../../recoil/DeskAtom';
 
 type GoalPercentGraphProps = {};
 const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
   const [GoalModal, setGoalModal] = useRecoilState<boolean>(GoalTimeModalState);
+  const [목표시간, set목표시간] = useState<string>('??시간 ??분');
+  const [취미누적시간, set취미누적시간] = useState<string>('??시간 ??분');
 
   const goalModalOnclickHandler = () => {
     setGoalModal(!GoalModal);
   };
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
+  const token = getCookie('token');
+  const 목표시간조회 = async () => {
+    try {
+      const response = await axios.get(`${serverUrl}/me/history/goaltime`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const time = response.data.goalTime;
+      const hour = Math.floor(time / 3600);
+      const minute = ((time % 3600) / 60).toString().padStart(2, '0');
+      set목표시간(`${hour}시간 ${minute}분`);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const 누적시간조회 = async () => {
+    try {
+      const response = await axios.get(`${serverUrl}/learning-history/today`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = response.data;
+      console.log('취미누적시간', data)
+      set취미누적시간(data.hobbyTotalHours+'');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    목표시간조회();
+    누적시간조회();
+  }, []);
 
   return (
     <Body>
@@ -23,11 +62,11 @@ const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
       <DetailTimeInfo>
         <DetailTimeInfoPBox>
           <p>목표시간</p>
-          <p>5시간 00분</p>
+          <p>{목표시간}</p>
         </DetailTimeInfoPBox>
         <DetailTimeInfoPBox>
           <p>누적시간</p>
-          <p>3시간 00분</p>
+          <p>{취미누적시간}</p>
         </DetailTimeInfoPBox>
       </DetailTimeInfo>
 
