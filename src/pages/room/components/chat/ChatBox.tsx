@@ -139,6 +139,8 @@ const Message = styled.div`
 margin: 0 auto;
 background-color: var(--gray-05);
 padding: 5px;
+border-radius: 10px;
+font-weight: 500;
 `
 
 const ChatImg = styled.img`
