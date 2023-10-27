@@ -22,7 +22,7 @@ const Lending: React.FC<LendingProps> = () => {
           <Text>
             온라인 캠 스터디 서비스<span>책상일기</span>
           </Text>
-          <StartButton to="/login">서비스 시작하기</StartButton>
+          <StartButton to="/">서비스 시작하기</StartButton>
         </BoxContents>
       </Contents>
       <Footer>
