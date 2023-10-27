@@ -8,10 +8,11 @@ import HobbyCategory from '../pages/category/HobbyCategory';
 import StudyCategory from '../pages/category/StudyCategory';
 import MyRecord from '../pages/myRecord/MyDesk';
 import Lending from '../pages/auth/Lending';
-
+import { useEffect } from 'react';
 
 const Router = () => {
-  
+
+
   return (
     <BrowserRouter>
       <Routes>

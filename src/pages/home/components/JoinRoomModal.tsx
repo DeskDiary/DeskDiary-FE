@@ -83,22 +83,22 @@ const JoinRoomModal: React.FC<JoinRoomModal> = ({ setIsOpen, room }) => {
       setJoinUUID(room.uuid);
 
 
-      socket.emit('joinRoom', {
-        nickname: data!.nickname,
-        uuid: room.uuid,
-        img: data!.profileImage,
-      }, (response:any) => {
-        // 서버로부터의 응답을 여기서 처리
-        if (response.success) {
-          console.log('방에 성공적으로 참여했어!✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
-        } else {
-          console.log('방 참여 실패😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭');
-        }
-      });
+      // socket.emit('joinRoom', {
+      //   nickname: data!.nickname,
+      //   uuid: room.uuid,
+      //   img: data!.profileImage,
+      // }, (response:any) => {
+      //   // 서버로부터의 응답을 여기서 처리
+      //   if (response.success) {
+      //     console.log('방에 성공적으로 참여했어!✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
+      //   } else {
+      //     console.log('방 참여 실패😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭');
+      //   }
+      // });
 
-      socket.on('new-user', (nickname) => {
-        console.log('새로운 유저가 방에 참석:✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨', nickname);
-      });
+      // socket.on('new-user', (nickname) => {
+      //   console.log('새로운 유저가 방에 참석:✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨', nickname);
+      // });
 
       navigate(`/room/${room.uuid}`);
     } catch (error) {

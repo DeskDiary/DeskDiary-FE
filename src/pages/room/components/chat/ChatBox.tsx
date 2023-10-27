@@ -26,15 +26,41 @@ type AllChatItem =
   | { type: 'left-user'; data: string };
 
 const ChatBox: React.FC<ChatBoxProps> = ({ roomId, userCount }) => {
-  const [username, setUserName] = useState('');
-  const [chatActive, setChatActive] = useState(false);
-  const [messages, setMessages] = useState<MessageData[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [allChatList, setAllChatList] = useState<AllChatItem[]>([]);
-  const [hiUserNickname, setHiUserNickname] = useState('');
-  const [byeUserNickname, setByeUserNickname] = useState('');
+  const [isStartButton, setIsStartButton] = useState(true);
 
   const { data } = useQuery<user>('chatUser', fetchUser);
+
+  // 연결이 버튼
+  const restartSocket = () => {
+    socket.emit(
+      'joinRoom',
+      { nickname: data?.nickname, uuid: roomId, img: data?.profileImage },
+      (response: any) => {
+        // 서버로부터의 응답을 여기서 처리
+        if (response.success) {
+          console.log(
+            '방에 성공적으로 참여했어!✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨',
+          );
+        } else {
+          console.log('방 참여 실패😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭');
+        }
+      },
+    );
+
+    setIsStartButton(false);
+  };
+
+  useEffect(() => {
+    socket.on('disconnect_user', (byeUser: string) => {
+      setAllChatList(prevAllChatList => [
+        ...prevAllChatList,
+        { type: 'left-user', data: byeUser },
+      ]);
+      console.log('😭나간 유저', byeUser);
+    });
+  }, [socket]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -59,7 +85,6 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId, userCount }) => {
   useEffect(() => {
     socket.on('msgToClient', (message: MessageData) => {
       console.log('받은 메시지:', message); // 이 부분을 추가해줘!
-      setMessages(prevMessages => [...prevMessages, message]);
       setAllChatList(prevAllChatList => [
         ...prevAllChatList,
         { type: 'message', data: message },
@@ -75,7 +100,6 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId, userCount }) => {
   // 나가고 들어온 유저 닉네임 받아오기
   useEffect(() => {
     socket.on('new-user', (hiUser: string) => {
-      setHiUserNickname(hiUser);
       setAllChatList(prevAllChatList => [
         ...prevAllChatList,
         { type: 'new-user', data: hiUser },
@@ -84,7 +108,6 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId, userCount }) => {
     });
 
     socket.on('left-user', (byeUser: string) => {
-      setByeUserNickname(byeUser);
       setAllChatList(prevAllChatList => [
         ...prevAllChatList,
         { type: 'left-user', data: byeUser },
@@ -92,56 +115,84 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId, userCount }) => {
       console.log('😭나간 유저', byeUser);
     });
 
-    console.log('소켓연결')
+    console.log('소켓연결');
 
     return () => {
       socket.off('user-list');
       socket.off('left-user');
     };
-  }, [userCount]);
+  }, [socket]);
+
+  const chatListRef = useRef<HTMLDivElement>(null); // ref 생성
+
+  useEffect(() => {
+    if (chatListRef.current) {
+      chatListRef.current.scrollTop = chatListRef.current.scrollHeight; // 스크롤을 아래로 이동
+    }
+  }, [allChatList]); // allChatList가 업데이트될 때마다 실행
 
   return (
     <Container>
       <ChatImg src={공지사진} />
-      <ChatList>
-        {/* {messages.map((message, index) => {
-          return <Chat key={index} message={message} />;
-        })}
-        {socketUserList
-          ? Object.values(socketUserList).map((user, index) => (
-              <div key={index}>{user.nickname} 님이 입장하셨습니다.</div>
-            ))
-          : 'undefined'} */}
+      <ChatList ref={chatListRef}>
         {allChatList.map((chat, index) => {
           if (chat.type === 'message') {
             return <Chat key={index} message={chat.data} />;
           } else if (chat.type === 'new-user') {
-            return <Message key={index}>{`${chat.data} 님이 입장하셨습니다.`}</Message>;
+            return (
+              <Message key={index}>
+                <span>{chat.data}</span> 님이 입장하셨습니다.
+              </Message>
+            );
           } else if (chat.type === 'left-user') {
-            return <Message key={index}>{`${chat.data} 님이 나가셨습니다.`}</Message>;
+            return (
+              <Message key={index}>
+                <span>{chat.data}</span> 님이 나가셨습니다.
+              </Message>
+            );
           }
         })}
       </ChatList>
-      <ChatForm onSubmit={handleSubmit}>
-        <UserInput
-          value={newMessage}
-          onChange={e => setNewMessage(e.target.value)}
-        ></UserInput>
-        <SendButton type="submit">
-          <img src={send} />
-        </SendButton>
-      </ChatForm>
+      <ChatUnder>
+        {isStartButton ? (
+          <button type="button" onClick={restartSocket}>
+            채팅다시연결
+          </button>
+        ) : (
+          <ChatForm onSubmit={handleSubmit}>
+            <UserInput
+              value={newMessage}
+              onChange={e => setNewMessage(e.target.value)}
+            ></UserInput>
+            <SendButton type="submit">
+              <img src={send} />
+            </SendButton>
+          </ChatForm>
+        )}
+      </ChatUnder>
     </Container>
   );
 };
 
+const ChatUnder = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  width: 100%;
+`;
+
 const Message = styled.div`
-margin: 0 auto;
-background-color: var(--gray-05);
-padding: 5px;
-border-radius: 10px;
-font-weight: 500;
-`
+  margin: 0 auto;
+  background-color: var(--gray-08);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 12px;
+  color: var(--gray-05);
+  > span {
+    color: white;
+  }
+`;
 
 const ChatImg = styled.img`
   margin: 5px auto 0 5px;
@@ -176,7 +227,7 @@ const ChatForm = styled.form`
   justify-content: start;
   align-items: center;
   height: 42px;
-  width: 92%;
+  width: 100%;
   margin: 12px;
   border: 1px solid var(--primary-01);
   border-radius: 5px;
@@ -203,9 +254,32 @@ const Container = styled.div`
   justify-content: start;
   align-items: center;
 
-  width: 100%;
+  width: 96%;
   min-height: calc(100% - 145px);
   border-left: 1px solid var(--gray-07);
+
+   /* 스크롤바 트랙(배경) 디자인 */
+   ::-webkit-scrollbar-track {
+    background: rgba(0, 197, 255, 0.0);
+  }
+
+  /* 스크롤바 핸들 디자인 */
+  ::-webkit-scrollbar-thumb {
+    background: var(--gray-07);
+    border-radius: 10px;
+    
+  }
+
+  /* 스크롤바 핸들 호버 상태 */
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--gray-06);
+  }
+
+  /* 스크롤바의 넓이 */
+  ::-webkit-scrollbar {
+    width: 7px;
+    height: 5px;
+  }
 `;
 
 export default ChatBox;
