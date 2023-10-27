@@ -7,11 +7,21 @@ import { Goal, NonUserIntro } from './components';
 import { getCookie } from '../../auth/cookie';
 import RoomList from './components/RoomList';
 import userIntro from '../../images/main/userIntro.svg';
+import { useNavigate } from 'react-router';
 
 const Home = () => {
+  const navigate = useNavigate();
 
-  console.log('홈화면 렌더링')
+  console.log('홈화면 렌더링');
   const token = getCookie('token');
+
+  useEffect(() => {
+    const visited = window.localStorage.getItem('visited');
+    if (!visited) {
+      navigate("/lending")
+    }
+    console.log(visited)
+  }, []);
 
   return (
     <Container>
@@ -41,7 +51,6 @@ const Container = styled.div`
 
   width: 1200px;
   min-height: 100vh;
-
 `;
 
 const User = styled.div`
