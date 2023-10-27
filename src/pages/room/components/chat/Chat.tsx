@@ -33,7 +33,6 @@ const Chat: React.FC<ChatProps> = ({ message }) => {
           </ChatDetails>
         </>
       )}
-      {/* {userList && <NewUser>{userList.socketId.nickname}</NewUser>} */}
     </Container>
   );
 };
@@ -86,7 +85,6 @@ const ChatDetails = styled.div`
 const UserImg = styled.img`
   height: 24px;
   width: 24px;
-  background-color: #d9d9d9;
   border-radius: 50%;
 `;
 

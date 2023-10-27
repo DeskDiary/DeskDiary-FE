@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import sample from '../../images/lending-sample.png';
+import sample from '../../images/lending-image.png';
 import { Link } from 'react-router-dom';
 import { getCookie } from '../../auth/cookie';
+import logo from '../../images/logo.svg';
 
 type LendingProps = {};
 
@@ -14,11 +15,15 @@ const Lending: React.FC<LendingProps> = () => {
       <Contents>
         <Box>
           <img src={sample} />
-          <StartButton to={token ? "/" : "/login"}>서비스 시작하기</StartButton>
         </Box>
-        <Box>
+        <BoxContents>
+          <p>언제 어디든지 나의 책상이 될 수 있는 곳에서 만나요</p>
+          <Logo to="/" />
+          <Text>
+            온라인 캠 스터디 서비스<span>책상일기</span>
+          </Text>
           <StartButton to="/login">서비스 시작하기</StartButton>
-        </Box>
+        </BoxContents>
       </Contents>
       <Footer>
         <FooterBody>
@@ -40,6 +45,12 @@ const Lending: React.FC<LendingProps> = () => {
     </Container>
   );
 };
+
+const Logo = styled(Link)`
+  background: url(${logo}) no-repeat center;
+  width: 62px;
+  height: 73px;
+`;
 
 const FooterBody = styled.div`
   width: 1200px;
@@ -81,16 +92,18 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: start;
   align-items: center;
+  background-color: #86c9fa;
 `;
 
 const Contents = styled.div`
   width: 1200px;
   min-height: 100vh;
-  background-color: var(--gray-02);
+  /* background-color: var(--gray-02); */
   display: flex;
   flex-direction: column;
   justify-content: start;
   align-items: center;
+  position: relative;
 `;
 
 const Footer = styled.div`
@@ -105,24 +118,54 @@ const Footer = styled.div`
 
 const Box = styled.div`
   width: 100%;
-  background-color: var(--gray-03);
-  border: 1px solid var(--gray-05);
+  /* background-color: var(--gray-03); */
   height: 100vh;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  background-image: url=(sample);
-  position: relative;
   overflow: hidden;
 
   > img {
     overflow: hidden;
     object-fit: cover;
     height: 100%;
-    filter: grayscale(100%);
+    /* filter: grayscale(100%); */
+  }
+`;
+
+const BoxContents = styled.div`
+  position: absolute;
+  bottom: 500px;
+  z-index: 50;
+  gap: 30px;
+
+  width: 750px;
+  height: 330px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  > p {
+    color: white;
+    font-size:30px;
+  }
+`;
+
+const Text = styled.div`
+  color: var(--primary-01);
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  >span{
+    color: var(--primary-01);
+    font-weight: 600;
+    margin-left: 5px;
+    font-size: 17px;
   }
 `;
 
@@ -135,8 +178,8 @@ const StartButton = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
-  bottom : 100px;
-  right : 100px;
+  border-radius: 10px;
+  font-size: 24px;
+  box-shadow: 2px 2px 4px 2px rgba(155, 155, 155, 0.5);
 `;
 export default Lending;

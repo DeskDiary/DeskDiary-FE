@@ -173,7 +173,7 @@ const Sidebar = styled.div`
   height: 100vh;
   background: white;
   transition: width 0.4s;
-  z-index: 0;
+  z-index: 1000;
 
   ${SidebarHeader} {
     transition: width 0.3s; // 이걸 추가해!

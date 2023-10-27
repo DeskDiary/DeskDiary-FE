@@ -10,9 +10,6 @@ import { fetchUser } from '../../../../axios/api';
 import { useQuery } from 'react-query';
 import socket from './socketInstance';
 
-// const socket = io('http://localhost:5000');
-// const socket = io(`${process.env.REACT_APP_SERVER_URL!}`);
-
 type ChatBoxProps = { roomId: string; userCount: number };
 
 type MessageData = {
@@ -23,30 +20,26 @@ type MessageData = {
   roomId: string;
 };
 
-type UserList = {
-  socketId: {
-    img: string;
-    nickname: string;
-  };
-};
-
 type AllChatItem =
   | { type: 'message'; data: MessageData }
-  | { type: 'user'; data: UserList };
+  | { type: 'new-user'; data: string }
+  | { type: 'left-user'; data: string };
 
 const ChatBox: React.FC<ChatBoxProps> = ({ roomId, userCount }) => {
   const [username, setUserName] = useState('');
   const [chatActive, setChatActive] = useState(false);
   const [messages, setMessages] = useState<MessageData[]>([]);
   const [newMessage, setNewMessage] = useState('');
-  const [socketUserList, setSocketUserList] = useState<UserList | undefined>();
   const [allChatList, setAllChatList] = useState<AllChatItem[]>([]);
+  const [hiUserNickname, setHiUserNickname] = useState('');
+  const [byeUserNickname, setByeUserNickname] = useState('');
 
   const { data } = useQuery<user>('chatUser', fetchUser);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // 유저가 서버에게 메세지 보냄
     const messageData = {
       message: newMessage,
       nickname: data?.nickname,
@@ -62,6 +55,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId, userCount }) => {
     console.log('전송후');
   };
 
+  // 서버에서 유저애개 메세지를 보냄
   useEffect(() => {
     socket.on('msgToClient', (message: MessageData) => {
       console.log('받은 메시지:', message); // 이 부분을 추가해줘!
@@ -78,22 +72,33 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId, userCount }) => {
     };
   }, [socket]);
 
+  // 나가고 들어온 유저 닉네임 받아오기
   useEffect(() => {
-    socket.on('user-list', newUserList => {
-      console.log('유저리스트 메시지:', newUserList);
-      setSocketUserList(newUserList);
+    socket.on('new-user', (hiUser: string) => {
+      setHiUserNickname(hiUser);
       setAllChatList(prevAllChatList => [
         ...prevAllChatList,
-        { type: 'user', data: newUserList },
+        { type: 'new-user', data: hiUser },
       ]);
+      console.log('🥰새로 들어온 유저', hiUser);
     });
+
+    socket.on('left-user', (byeUser: string) => {
+      setByeUserNickname(byeUser);
+      setAllChatList(prevAllChatList => [
+        ...prevAllChatList,
+        { type: 'left-user', data: byeUser },
+      ]);
+      console.log('😭나간 유저', byeUser);
+    });
+
+    console.log('소켓연결')
 
     return () => {
       socket.off('user-list');
+      socket.off('left-user');
     };
   }, [userCount]);
-
-  console.log('유저리스트', socketUserList);
 
   return (
     <Container>
@@ -110,9 +115,10 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId, userCount }) => {
         {allChatList.map((chat, index) => {
           if (chat.type === 'message') {
             return <Chat key={index} message={chat.data} />;
-          } else {
-            const lastUser = Object.values(chat.data).slice(-1)[0]; // 마지막 유저만 가져와
-            return <div>{`${lastUser.nickname} 님이 입장하셨습니다.`}</div>;
+          } else if (chat.type === 'new-user') {
+            return <div key={index}>{`${chat.data} 님이 입장하셨습니다.`}</div>;
+          } else if (chat.type === 'left-user') {
+            return <div key={index}>{`${chat.data} 님이 나가셨습니다.`}</div>;
           }
         })}
       </ChatList>
