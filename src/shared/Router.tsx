@@ -11,9 +11,7 @@ import Lending from '../pages/auth/Lending';
 import { useEffect } from 'react';
 
 const Router = () => {
-  useEffect(() => {
-    window.localStorage.setItem('visited', 'true');
-  }, []);
+
 
   return (
     <BrowserRouter>

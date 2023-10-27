@@ -16,7 +16,7 @@ const Home = () => {
   const token = getCookie('token');
 
   useEffect(() => {
-    const visited = window.localStorage.getItem('visited');
+    const visited = window.sessionStorage.getItem('visited');
     if (visited === null) {
       navigate("/lending")
     }
