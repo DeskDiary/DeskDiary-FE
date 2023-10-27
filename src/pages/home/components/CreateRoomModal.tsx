@@ -229,7 +229,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom, user })
           <Group>
             <Label>인원설정 (최대 4인 가능)</Label>
             <CategoryGroup>
-              {[1, 2, 3, 4, 5, 6, 7, 8].map((i, index) => (
+              {[1, 2, 3, 4, 5, 6, 7, 100].map((i, index) => (
                 <MaxUser
                   key={index}
                   type="button"

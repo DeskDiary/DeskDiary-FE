@@ -186,6 +186,7 @@ const ChatList = styled.div`
   width: calc(100% - 40px);
   padding: 20px;
   border-bottom: 1px solid var(--gray-05);
+  overflow: scroll;
 `;
 
 const Container = styled.div`
