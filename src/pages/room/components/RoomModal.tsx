@@ -49,7 +49,7 @@ const RoomModal: React.FC<RoomModalProps> = () => {
         checkIn: storageStartData !== '기록이 없습니다.' ? storageStartData : JSON.stringify(getKoreanTime()).replaceAll(/["/]/g, ''),
         checkOut: storageEndData !== '기록이 없습니다.' ? storageEndData : JSON.stringify(getKoreanTime()).replaceAll(/["/]/g, ''),
         totalHours: timer,
-        historyType: '취미',
+        historyType: 'hobby', // study, hobby
       };
       console.log(token, data);
       console.log(typeof data.checkIn, typeof data.checkOut)
