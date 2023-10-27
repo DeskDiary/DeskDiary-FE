@@ -1,18 +1,19 @@
-import React,{useState} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import MainTop from '../../components/layout/main/MainTop';
-import RoomCard from '../home/components/RoomCard';
 
-import axios from 'axios';
-import { useQuery } from 'react-query';
-import RecordGraph from './chart/RecordGraph';
+import { useRecoilState } from 'recoil';
 import { getCookie } from '../../auth/cookie';
+import { GoalTimeModalState } from '../../recoil/DeskAtom';
+import GoalSetTimeModal from './chart/GoalSetTimeModal';
+import RecordGraph from './chart/RecordGraph';
 import RoomList from './components/RoomList';
 
 
 type MyDeskProps = {};
 
 const MyDesk: React.FC<MyDeskProps> = () => {
+  const [GoalModal, setGoalModal] = useRecoilState<boolean>(GoalTimeModalState);
   const token = getCookie('token');
   return (
     <Container>
@@ -23,6 +24,9 @@ const MyDesk: React.FC<MyDeskProps> = () => {
 
       <RoomList label="최근에 들어간 방 목록" mydesk="fetchJoinRoom"/>
       <RoomList label="내가 만든 방 목록" mydesk="fetchCreatedRoom"/>
+      {
+        GoalModal && <GoalSetTimeModal />
+      }
     </Container>
   );
 };
