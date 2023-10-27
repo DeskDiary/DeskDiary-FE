@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import GlobalStyle from './GlobalStyle';
 import Router from './shared/Router';
@@ -8,12 +8,6 @@ type AppProps = {};
 
 const queryClient = new QueryClient();
 const App: React.FC<AppProps> = () => {
-
-  useEffect(() => {
-    if (window.localStorage.getItem('visited') !== 'true') {
-      window.location.href = '/lending';
-    }
-  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>

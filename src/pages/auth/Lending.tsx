@@ -1,14 +1,18 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled from 'styled-components';
 import sample from '../../images/lending-image.png';
 import { Link } from 'react-router-dom';
 import { getCookie } from '../../auth/cookie';
 import logo from '../../images/logo.svg';
+import { useNavigate } from 'react-router-dom';
 
 type LendingProps = {};
 
 const Lending: React.FC<LendingProps> = () => {
-  const token = getCookie('token');
+
+  useEffect(() => {
+    window.localStorage.setItem('visited', 'true');
+  }, []);
 
   return (
     <Container>
