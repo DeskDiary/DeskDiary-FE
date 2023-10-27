@@ -31,7 +31,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
       );
       console.log(response);
       setIsOpen(false);
-      // window.location.reload();
+      window.location.reload();
     } catch (error) {
       console.error(error);
     }
