@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import SideLayout from '../components/layout/auth/AuthLayout';
 import MainLayout from '../components/layout/main/MainLayout';
 import { Error, Home, Join, Login, Mypage, Room } from '../pages';
+import { useEffect, useState } from 'react';
 
 import Auth from '../pages/auth/Auth';
 import HobbyCategory from '../pages/category/HobbyCategory';
@@ -11,6 +12,15 @@ import Lending from '../pages/auth/Lending';
 
 
 const Router = () => {
+  const [showLandingPage, setShowLandingPage] = useState(true);
+
+  useEffect(() => {
+    if (window.localStorage.getItem('visited') === 'true') {
+      setShowLandingPage(false);
+    } else {
+      window.localStorage.setItem('visited', 'true');
+    }
+  }, []);
   
 
   return (
@@ -31,7 +41,7 @@ const Router = () => {
         <Route path="/room/:id" element={<Room />} />
         <Route path="/auth" element={<Auth />} />
         <Route path="*" element={<Error />} />
-        <Route path="/lending" element={<Lending />} />
+        { showLandingPage && <Route path="/lending" element={<Lending />} />}
       </Routes>
     </BrowserRouter>
   );

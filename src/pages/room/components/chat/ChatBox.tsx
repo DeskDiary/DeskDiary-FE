@@ -190,7 +190,7 @@ const ChatList = styled.div`
   align-items: start;
   gap: 15px;
 
-  height: 900px;
+  height: 100%;
   width: calc(100% - 40px);
   padding: 20px;
   border-bottom: 1px solid var(--gray-05);
@@ -204,7 +204,7 @@ const Container = styled.div`
   align-items: center;
 
   width: 100%;
-  height: 100%;
+  height: calc(100% - 145px);
   border: 1px solid var(--gray-07);
 `;
 
