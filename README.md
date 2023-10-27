@@ -13,12 +13,12 @@
 
 <table>
    <tr>
-    <td align="center"><b><a href="">박서현</a></b></td>
-    <td align="center"><b><a href="">김성호</a></b></td>
-    <td align="center"><b><a href="">남현재</a></b></td>
-    <td align="center"><b><a href="">손현원</a></b></td>
-    <td align="center"><b><a href="">서민정</a></b></td>
-    <td align="center"><b><a href="">이다현</a></b></td>
+    <td align="center"><b>박서현</b></td>
+    <td align="center"><b>김성호</b></td>
+    <td align="center"><b>남현재</b></td>
+    <td align="center"><b>손현원</b></td>
+    <td align="center"><b>서민정</b></td>
+    <td align="center"><b>이다현</b></td>
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/SsSseo"><img src="https://avatars.githubusercontent.com/u/139518640?v=4" width="100px" /></a></td>
