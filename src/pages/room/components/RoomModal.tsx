@@ -62,6 +62,7 @@ const RoomModal: React.FC<RoomModalProps> = () => {
           },
         },
       );
+      setTimer('00:00:00');
       localStorage.removeItem('startTime');
       localStorage.removeItem('endTime');
       setOutModalState(false);
