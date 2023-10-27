@@ -6,7 +6,9 @@ import styled from 'styled-components';
 import { getCookie } from '../../../auth/cookie';
 import { RoomModalAtom, RoomUUIDAtom } from '../../../recoil/RoomAtom';
 import { timerState } from '../../../recoil/TimeAtom';
+import socket from '../../room/components/chat/socketInstance';
 import { getKoreanTime } from './Timer';
+
 
 type RoomModalProps = {};
 
@@ -24,7 +26,7 @@ const RoomModal: React.FC<RoomModalProps> = () => {
     const storageStartData = localStorage.getItem('startTime');
     if (storageStartData) {
       setStorageStartData(
-        JSON.parse(storageStartData)[0].replaceAll(/[Z"/]/g, ''),
+        JSON.parse(storageStartData)[0].replaceAll(/["/]/g, ''),
       );
     } else {
       setStorageStartData('기록이 없습니다.');
@@ -33,7 +35,7 @@ const RoomModal: React.FC<RoomModalProps> = () => {
     const storageEndData = localStorage.getItem('endTime');
     if (storageEndData) {
       setStorageEndData(
-        JSON.parse(storageEndData)[JSON.parse(storageEndData).length -1].replaceAll(/[Z"/]/g, '')
+        JSON.parse(storageEndData)[JSON.parse(storageEndData).length -1].replaceAll(/["/]/g, '')
       );
     } else {
       setStorageEndData('기록이 없습니다.');
@@ -47,7 +49,7 @@ const RoomModal: React.FC<RoomModalProps> = () => {
         checkIn: storageStartData !== '기록이 없습니다.' ? storageStartData : JSON.stringify(getKoreanTime()).replaceAll(/["/]/g, ''),
         checkOut: storageEndData !== '기록이 없습니다.' ? storageEndData : JSON.stringify(getKoreanTime()).replaceAll(/["/]/g, ''),
         totalHours: timer,
-        historyType: '취미',
+        historyType: 'hobby', // study, hobby
       };
       console.log(token, data);
       console.log(typeof data.checkIn, typeof data.checkOut)
@@ -60,6 +62,7 @@ const RoomModal: React.FC<RoomModalProps> = () => {
           },
         },
       );
+      setTimer('00:00:00');
       localStorage.removeItem('startTime');
       localStorage.removeItem('endTime');
       setOutModalState(false);
@@ -67,6 +70,21 @@ const RoomModal: React.FC<RoomModalProps> = () => {
     } catch (error) {
       console.error(error);
     }
+
+    socket.emit(
+      'leave-room',
+      {
+        uuid: joinUUID,
+      },
+      (response: any) => {
+        // 서버로부터의 응답을 여기서 처리
+        if (response.success) {
+          console.log('방에서 나가기 성공!✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
+        } else {
+          console.log('방 나가기 실패😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭');
+        }
+      },
+    );
   };
 
   return (

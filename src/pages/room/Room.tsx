@@ -94,7 +94,7 @@ const Room: React.FC<RoomProps> = () => {
             {/* 채팅이 들어갈 곳 */}
             <ChattingAreaDiv>
               <AsmrPlayer />
-              <ChatBox roomId={roomInfo.uuid}/>
+              <ChatBox roomId={roomInfo.uuid} userCount={roomInfo.maxHeadcount}/>
             </ChattingAreaDiv>
           </Area>
         </Content>

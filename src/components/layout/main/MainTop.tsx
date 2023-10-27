@@ -18,13 +18,18 @@ const MainTop: React.FC<MainTopProps> = () => {
   const [isFocused, setIsFocused] = useState(false);
   const [openCreateRoom, setOpenCreateRoom] = useState(false);
   const [user, setUser] = useState<user>();
+  const navigate = useNavigate();
 
   const token = getCookie('token');
 
   const [nickname, setNickname] = useState('');
 
   const onClickCreateRoomButton = () => {
-    setOpenCreateRoom(!openCreateRoom);
+    if (token) {
+      setOpenCreateRoom(!openCreateRoom);
+    } else {
+      navigate('/login');
+    }
   };
 
   const clickSearch = () => {
@@ -39,28 +44,8 @@ const MainTop: React.FC<MainTopProps> = () => {
     toast.message('search click');
   };
 
-  const { data } = useQuery<user>('user', fetchUser, {
-    staleTime: Infinity, // 캐시 시간을 무한대로 설정
-  });
-  console.log('MainTop 렌더링')
-
-  // const fetchUserProfile = async () => {
-  //   const { data } = await axios.get(
-  //     `${process.env.REACT_APP_SERVER_URL!}/me/profile`,
-  //     {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     },
-  //   );
-  //   setUser(data);
-  // };
-
-  // useEffect(() => {
-  //   if (token) {
-  //     fetchUserProfile();
-  //   }
-  // }, [token]);
+  const { data } = useQuery<user>('user', fetchUser);
+  console.log('MainTop 렌더링');
 
   return (
     <NavHeader>
@@ -91,19 +76,37 @@ const MainTop: React.FC<MainTopProps> = () => {
         </SearchButton>
       </Search> */}
 
-      <Link to="/join">회원가입</Link>
-      <Link to="/login">로그인</Link>
+      {token ? (
+        <CreateRoomButton type="button" onClick={onClickCreateRoomButton}>
+          <img src={addroom} alt="add room button" />
+          방만들기
+        </CreateRoomButton>
+      ) : (
+        <UserAuthGroup>
+          <AuthLink to="/login">로그인</AuthLink>
+          <AuthLink to="/join">회원가입</AuthLink>
+        </UserAuthGroup>
+      )}
 
-      <CreateRoomButton type="button" onClick={onClickCreateRoomButton}>
-        <img src={addroom} alt="add room button" />
-        방만들기
-      </CreateRoomButton>
       {openCreateRoom && (
         <CreateRoomModal setOpenCreateRoom={setOpenCreateRoom} user={data!} />
       )}
     </NavHeader>
   );
 };
+
+const UserAuthGroup = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+`;
+
+const AuthLink = styled(Link)`
+  font-size: 15px;
+  color: var(--gray-07)
+`;
 
 const User = styled(Link)`
   display: flex;
@@ -119,7 +122,6 @@ const User = styled(Link)`
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    background-color: #d9d9d9;
     margin-right: 10px;
   }
 

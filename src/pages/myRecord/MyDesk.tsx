@@ -1,7 +1,9 @@
 import React from 'react';
+
 import styled from 'styled-components';
 import MainTop from '../../components/layout/main/MainTop';
 
+import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { getCookie } from '../../auth/cookie';
 import { GoalTimeModalState } from '../../recoil/DeskAtom';
@@ -15,6 +17,15 @@ type MyDeskProps = {};
 const MyDesk: React.FC<MyDeskProps> = () => {
   const [GoalModal, setGoalModal] = useRecoilState<boolean>(GoalTimeModalState);
   const token = getCookie('token');
+  const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   if(!token) {
+  //     navigate('/login');
+  //     return;
+  //   }
+  // }, [])
+
   return (
     <Container>
       <MainTop />

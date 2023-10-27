@@ -14,7 +14,7 @@ import socket from '../../room/components/chat/socketInstance';
 
 type CreateRoomProps = {
   setOpenCreateRoom: React.Dispatch<React.SetStateAction<boolean>>;
-  user: user
+  user: user;
 };
 
 // 썸네일 등록 버튼 스타일
@@ -30,7 +30,10 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 
-const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom, user }) => {
+const CreateRoomModal: React.FC<CreateRoomProps> = ({
+  setOpenCreateRoom,
+  user,
+}) => {
   const token = getCookie('token');
 
   const [room, setRoom] = useRecoilState(RoomAtom);
@@ -46,7 +49,6 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom, user })
   const [selectedUserCount, setSelectedUserCount] = useState<number | null>(
     null,
   );
-
 
   const navigate = useNavigate();
 
@@ -87,7 +89,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom, user })
     }
   };
 
-  const handleJoinRoom = async (uuid:string) => {
+  const handleJoinRoom = async (uuid: string) => {
     try {
       const token = getCookie('token');
       console.log('조인룸 토큰', token);
@@ -102,21 +104,30 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom, user })
       );
       console.log(response);
 
-      socket.emit('joinRoom', {
-        nickname: user.nickname,
-        uuid: uuid,
-        img: user.profileImage,
-      }, (response:any) => {
-        // 서버로부터의 응답을 여기서 처리
-        if (response.success) {
-          console.log('방에 성공적으로 참여했어!✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
-        } else {
-          console.log('방 참여 실패😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭');
-        }
-      });
-    
-      socket.on('new-user', (nickname) => {
-        console.log('새로운 유저가 방에 참석:✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨', nickname);
+      socket.emit(
+        'joinRoom',
+        {
+          nickname: user.nickname,
+          uuid: uuid,
+          img: user.profileImage,
+        },
+        (response: any) => {
+          // 서버로부터의 응답을 여기서 처리
+          if (response.success) {
+            console.log(
+              '방에 성공적으로 참여했어!✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨',
+            );
+          } else {
+            console.log('방 참여 실패😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭');
+          }
+        },
+      );
+
+      socket.on('new-user', nickname => {
+        console.log(
+          '새로운 유저가 방에 참석:✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨',
+          nickname,
+        );
       });
 
       navigate(`/room/${uuid}`);
@@ -127,6 +138,17 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom, user })
 
   const onSubmitRoom = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // 카테고리나 인원이 설정되지 않았다면 알림을 주고 함수를 종료
+    if (!isStudyActive && !isHobbyActive) {
+      alert('카테고리를 선택해주세요.');
+      return;
+    }
+
+    if (selectedUserCount === null) {
+      alert('인원을 설정해주세요.');
+      return;
+    }
 
     // FormData 객체 생성
     const formData = new FormData();
@@ -158,7 +180,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom, user })
       if (response.data.createdRoom) {
         console.log('성공', response.data);
         alert('방만들기 성공!');
-        handleJoinRoom(response.data.createdRoom.uuid)
+        handleJoinRoom(response.data.createdRoom.uuid);
         // console.log(response.data.createdRoom.uuid)
       } else {
         console.log('실패ddzz', response.data);
@@ -175,7 +197,11 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom, user })
       <ModalContent>
         <Title>방 만들기</Title>
         <Thumbnail>
-          {file ? <ThumbnailImg src={URL.createObjectURL(file)} /> : <img src={upload}/>}
+          {file ? (
+            <ThumbnailImg src={URL.createObjectURL(file)} />
+          ) : (
+            <img src={upload} />
+          )}
         </Thumbnail>
         <ThumbnailButtonGroup>
           <Button
@@ -202,6 +228,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom, user })
               type="text"
               // onChange={e => setRoom({ ...room, title: e.target.value })}
               onChange={e => updateFormData('title', e.target.value)}
+              required
             />
           </Group>
 
@@ -229,7 +256,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom, user })
           <Group>
             <Label>인원설정 (최대 4인 가능)</Label>
             <CategoryGroup>
-              {[1, 2, 3, 4, 5, 6, 7, 8].map((i, index) => (
+              {[1, 2, 3, 4, 5, 6, 7, 100].map((i, index) => (
                 <MaxUser
                   key={index}
                   type="button"

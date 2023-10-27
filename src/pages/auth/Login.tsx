@@ -10,6 +10,8 @@ import 구글로그인 from '../../images/main/구글사진.svg';
 import 카카오로그인 from '../../images/main/카카오사진.svg';
 import 아이디저장o from '../../images/radio_button_checked.svg';
 import 아이디저장x from '../../images/radio_button_unchecked.svg';
+import { Link } from 'react-router-dom';
+import Kakao from './components/Kakao';
 
 type LoginProps = {};
 
@@ -38,6 +40,7 @@ const Login: React.FC<LoginProps> = () => {
   }, []);
 
   const [errorMessage, setErrorMessage] = useState<any[]>([]);
+  const [showErrorMessage, setShowErrorMessage] = useState("");
 
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   
@@ -62,6 +65,8 @@ const Login: React.FC<LoginProps> = () => {
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
         setErrorMessage(error.response.data.message);
+      } else if (error.response.message.includes("이메일 혹은") && error.response.status === 400 ) {
+        setShowErrorMessage("이메일 혹은 비밀번호를 확인 해 주세요");
       }
       console.error(error);
     }
@@ -106,7 +111,7 @@ const Login: React.FC<LoginProps> = () => {
 
   return (
     <LoginForm onSubmit={handleSubmit}>
-      <img src={logo} alt="" />
+      <Logo to="/"></Logo>
       <Title>로그인</Title>
       <InputDiv>
         <Ptag>ID</Ptag>
@@ -118,6 +123,7 @@ const Login: React.FC<LoginProps> = () => {
             value={id}
             onChange={idChangeHandler}
             autoComplete="off"
+            required
           />
           {id.length !== 0 && (
             <img
@@ -129,7 +135,7 @@ const Login: React.FC<LoginProps> = () => {
             />
           )}
         </InputBox>
-        <Ptag>등록되지 않은 이메일입니다.</Ptag>
+        {/* <Ptag>등록되지 않은 이메일입니다.</Ptag> */}
       </InputDiv>
       <InputDiv>
         <Ptag>PW</Ptag>
@@ -140,6 +146,7 @@ const Login: React.FC<LoginProps> = () => {
             name="password"
             value={pw}
             onChange={pwChangeHandler}
+            required
           />
           {pw.length !== 0 && (
             <img
@@ -151,7 +158,7 @@ const Login: React.FC<LoginProps> = () => {
             />
           )}
         </InputBox>
-        <Ptag>비밀번호를 확인해주세요.</Ptag>
+        {showErrorMessage && <Error>showErrorMessage</Error>}
       </InputDiv>
       <IdSaveBox>
         <IdDiv>
@@ -169,7 +176,8 @@ const Login: React.FC<LoginProps> = () => {
       <LogInButton type="submit">로그인</LogInButton>
       <Ptag2>SNS 계정으로 로그인</Ptag2>
       <SNSDiv>
-        <SNSButton bgImg={카카오로그인}></SNSButton>
+        {/* <SNSButton bgImg={카카오로그인}></SNSButton> */}
+        <Kakao />
         <SNSButton bgImg={구글로그인}></SNSButton>
       </SNSDiv>
       <Ptag2>아직 회원이 아니신가요?</Ptag2>
@@ -184,29 +192,38 @@ const Login: React.FC<LoginProps> = () => {
   );
 };
 
+const Error = styled.div`
+  width: 400px;
+  padding: 5px 0 10px 5px;
+  color: var(--system-error);
+  font-size: 14px;
+  font-weight: 400;
+
+  top: 85px;
+`
+
+const Logo = styled(Link)`
+  background: url(${logo}) no-repeat center;
+  width: 62px;
+  height: 73px;
+`;
+
 const LoginForm = styled.form`
-  width: 582px;
-  height: calc(100vh - 76px);
+  width: 400px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding-top: 70px;
 `;
 
 const Title = styled.div`
   width: 400px;
-  color: #000;
   text-align: center;
-  font-feature-settings: 'clig' off, 'liga' off;
-  font-family: Pretendard;
   font-size: 32px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  letter-spacing: 0.25px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 24px;
+  margin-top: 20px;
+  margin-bottom: 40px;
 `;
 
 const InputDiv = styled.div`
@@ -215,6 +232,7 @@ const InputDiv = styled.div`
   align-items: center;
   justify-content: center;
   width: 400px;
+  margin-bottom: 20px;
 `;
 
 const Ptag = styled.div`
@@ -231,7 +249,7 @@ const InputBox = styled.div`
   display: flex;
   width: 370px;
   height: 28px;
-  padding: 10px 15px;
+  padding: 7px 10px;
   align-items: center;
   gap: 10px;
   border-radius: 5px;
@@ -276,8 +294,7 @@ const LogInButton = styled.button`
   border: none;
   gap: 10px;
   flex-shrink: 0;
-  opacity: 0.5;
-  background: var(--primary-01, #00c5ff);
+  background: var(--primary-01);
   color: #fff;
   font-feature-settings: 'clig' off, 'liga' off;
   font-family: Pretendard;
@@ -329,8 +346,9 @@ const JoinButton = styled.div`
   font-weight: 500;
   line-height: 123.5%; /* 29.64px */
   letter-spacing: 0.25px;
-  border: 1px solid var(--primary-01, #00c5ff);
+  border: 1px solid var(--primary-01);
   background: var(--bw-whtie, #fefefe);
+  cursor: pointer;
 `;
 
 export default Login;

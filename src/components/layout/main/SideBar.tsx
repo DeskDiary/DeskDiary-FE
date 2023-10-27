@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
 import styled, { createGlobalStyle, css } from 'styled-components';
-import {
-  hobby,
-  home,
-  logo,
-  study,
-  mydesk,
-} from '../../../images';
+import { hobby, home, logo, study, mydesk } from '../../../images';
 import { Link, NavLink } from 'react-router-dom';
 import { getCookie, setTokenCookie } from '../../../auth/cookie';
 import { useRecoilState } from 'recoil';
@@ -33,12 +27,6 @@ const navItems = [
     icon: hobby,
     url: '/hobby',
   },
-  {
-    id: 4,
-    title: '책상기록',
-    icon: mydesk,
-    url: '/mydesk',
-  },
 ];
 
 const SideBar: React.FC<SideBarProps> = () => {
@@ -46,10 +34,10 @@ const SideBar: React.FC<SideBarProps> = () => {
 
   const token = getCookie('token');
 
-  const ChangeCategory = (category:string) => {
-    alert(category)
-    console.log('클릭')
-  }
+  const ChangeCategory = (category: string) => {
+    alert(category);
+    console.log('클릭');
+  };
 
   return (
     <Sidebar>
@@ -62,10 +50,14 @@ const SideBar: React.FC<SideBarProps> = () => {
           <SidebarMenu>
             {navItems.map(item => (
               <SidebarButton key={item.id} to={item.url}>
-                <img src={item.icon} alt="menu icon"/>
+                <img src={item.icon} alt="menu icon" />
                 <p>{item.title}</p>
               </SidebarButton>
             ))}
+            <SidebarButton to={token ? '/mydesk' : '/login'}>
+              <img src={mydesk} alt="menu icon" />
+              <p>책상 기록</p>
+            </SidebarButton>
           </SidebarMenu>
         </div>
       </SidebarInner>
@@ -89,7 +81,6 @@ const SidebarButton = styled(NavLink)`
   margin-left: 5px;
 
   color: var(--primary-01);
-  
 
   &.active {
     > img {
@@ -182,7 +173,7 @@ const Sidebar = styled.div`
   height: 100vh;
   background: white;
   transition: width 0.4s;
-  z-index: 0;
+  z-index: 1000;
 
   ${SidebarHeader} {
     transition: width 0.3s; // 이걸 추가해!
