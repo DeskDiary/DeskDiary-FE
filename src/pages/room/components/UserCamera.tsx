@@ -117,7 +117,7 @@ const UserCamera: React.FC<CameraProps> = () => {
         newClient.unpublish(localTracks).then(() => newClient.leave());
       };
     }
-  }, [, roomInfo]);
+  }, [roomInfo]);
 
   return (
     <Cameras>
