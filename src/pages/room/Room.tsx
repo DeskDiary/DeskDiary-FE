@@ -34,7 +34,6 @@ const NotReload = (event:any) => {
       (event.ctrlKey === true && (event.keyCode === 78 || event.keyCode === 82)) ||
       event.keyCode === 116
     ) {
-      alert('새로고침을 막는다')
       event.preventDefault();
     }
   }
