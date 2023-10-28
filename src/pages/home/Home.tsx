@@ -73,6 +73,7 @@ const Info = styled.div`
   align-items: center;
 
   width: 100%;
+  height: 190px;
 `;
 
 export default Home;
