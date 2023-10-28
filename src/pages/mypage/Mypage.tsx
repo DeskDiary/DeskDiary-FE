@@ -20,6 +20,7 @@ type MypageProps = {};
 
 const Mypage: React.FC<MypageProps> = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenNick, setIsOpenNick] = useState(false);
   const [isOpenLogout, setIsOpenLogout] = useState(false);
   const [isOpenDeleteUser, setIsOpenDeleteUser] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -36,10 +37,6 @@ const Mypage: React.FC<MypageProps> = () => {
   };
 
   const token = getCookie('token');
-
-  const onClickToggle = () => {
-    setIsOpen(!isOpen);
-  };
 
   const handleLogout = () => {
     setIsOpenLogout(!isOpenLogout);
@@ -113,20 +110,27 @@ const Mypage: React.FC<MypageProps> = () => {
 
           <UserInfo>
             <Group>
-              <Label>닉네임</Label>
-              <EditNickname onSubmit={onSubmitNickname}>
-                <input
-                  placeholder={data?.nickname}
-                  value={nickname}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setNickname(e.target.value)
-                  }
-                />
-                <button type="submit">
-                  <img src={send} alt="send" />
-                </button>
-              </EditNickname>
+              <div>
+                <Label>닉네임</Label>
+                <EditButton onClick={() => setIsOpenNick(!isOpenNick)}>닉네임 수정</EditButton>
+              </div>
+
+              {isOpenNick ? (
+                <EditNickname onSubmit={onSubmitNickname}>
+                  <input
+                    placeholder={data?.nickname}
+                    value={nickname}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setNickname(e.target.value)
+                    }
+                  />
+                  <button type="submit">저장</button>
+                </EditNickname>
+              ) : (
+                data?.nickname
+              )}
             </Group>
+            {isOpen && <ChangePasswordModal />}
             <EmailInfo
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
@@ -144,13 +148,11 @@ const Mypage: React.FC<MypageProps> = () => {
                 로 로그인 하셨습니다.
               </EmailHover>
             </EmailInfo>
-
-            <ChangePasswordModal />
           </UserInfo>
         </UserProfile>
 
         <Lists>
-          <List onClick={handleLogout}>정보수정</List>
+          <List onClick={() => setIsOpen(!isOpen)}>정보수정</List>
           <List onClick={handleLogout}>로그아웃</List>
           <List onClick={handleDeleteUser}>회원탈퇴</List>
         </Lists>
@@ -166,6 +168,10 @@ const Mypage: React.FC<MypageProps> = () => {
     </Container>
   );
 };
+
+const EditButton = styled.button`
+color: var(--primary-01);
+`;
 
 const EmailHover = styled.div<{ show: boolean }>`
   position: absolute;
@@ -202,6 +208,12 @@ const Group = styled.div`
 
   > span {
     font-size: 15px;
+  }
+
+  > div {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
   }
 `;
 
@@ -268,7 +280,7 @@ const Lists = styled.div`
 
 const Content = styled.div``;
 
-const Label = styled.div`
+const Label = styled.span`
   margin-bottom: 5px;
   color: var(--gray-07);
   font-size: 14px;
