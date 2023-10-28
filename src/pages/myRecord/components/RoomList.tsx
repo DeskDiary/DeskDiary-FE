@@ -33,7 +33,7 @@ const RoomList: React.FC<RoomListProps> = ({ label, mydesk }) => {
       }
     },
     {
-      staleTime: Infinity, // 캐시 시간을 무한대로 설정
+      staleTime: 60000, // 캐시 시간을 무한대로 설정
     },
   );
 
@@ -44,7 +44,7 @@ const RoomList: React.FC<RoomListProps> = ({ label, mydesk }) => {
       {Array.isArray(data) && (
         <JoinedRooms>
           {data.map(room => {
-            return <RoomCard key={room.uuid} room={room} />;
+            return <RoomCard key={room.uuid} room={room} fetch={fetchName}/>;
           })}
         </JoinedRooms>
       )}

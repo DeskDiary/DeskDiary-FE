@@ -61,7 +61,7 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
       }
     },
     {
-      staleTime: Infinity, // 캐시 시간을 무한대로 설정
+      staleTime: 60000, // 캐시 시간을 무한대로 설정
     }
   );
 
