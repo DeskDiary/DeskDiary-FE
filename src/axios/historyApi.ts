@@ -24,16 +24,26 @@ export const todayLerningHistoryHome = async () => {
     );
     console.log('api 1일 학습 기록 조회', response.data);
     const data = response.data;
-    const goalTime = Number(data.goaltime);
-    const hobbyTotalHours = Number(data.hobbyTotalHours);
-    const studyTotalHours = Number(data.studyTotalHours);
-    const [goalTimeHour, goalTimeMinute] = 초를시분으로(goalTime);
-    const totalSecond = hobbyTotalHours + studyTotalHours;
-    const [totalHours, totalMinute] = 초를시분으로(totalSecond);
-    return [goalTimeHour, goalTimeMinute, totalHours, totalMinute, goalTime, totalSecond];
+    if (data.message === '등록된 목표시간이 없습니다.') {
+      return [0, 0, 0, 0, 0, 0];
+    } else {
+      const goalTime = Number(data.goaltime);
+      const hobbyTotalHours = Number(data.hobbyTotalHours);
+      const studyTotalHours = Number(data.studyTotalHours);
+      const [goalTimeHour, goalTimeMinute] = 초를시분으로(goalTime);
+      const totalSecond = hobbyTotalHours + studyTotalHours;
+      const [totalHours, totalMinute] = 초를시분으로(totalSecond);
+      return [
+        goalTimeHour,
+        goalTimeMinute,
+        totalHours,
+        totalMinute,
+        goalTime,
+        totalSecond,
+      ];
+    }
   } catch (error) {
-
     console.error(error);
-    return [];
+    return [0, 0, 0, 0, 0, 0];
   }
 };

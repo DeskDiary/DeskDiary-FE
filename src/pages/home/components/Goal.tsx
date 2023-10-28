@@ -9,6 +9,7 @@ const Goal: React.FC<GoalProps> = () => {
   const [todayLerningTime, setTodayLerningTime] = useState<number[]>([
     0, 0, 0, 0, 100, 0,
   ]);
+  console.log('hi', todayLerningTime)
   const [goalPercent, setGoalPercent] = useState<number>(0);
   useEffect(() => {
     const fetchData = async () => {
@@ -21,7 +22,12 @@ const Goal: React.FC<GoalProps> = () => {
     };
 
     fetchData();
-    setGoalPercent((todayLerningTime[5] / todayLerningTime[4]) * 100);
+    if(todayLerningTime[5] === 0 && todayLerningTime[4] === 0) {
+      setGoalPercent(0)
+    } else {
+      setGoalPercent((todayLerningTime[5] / todayLerningTime[4]) * 100);
+    }
+    
   }, []);
 
   return (
