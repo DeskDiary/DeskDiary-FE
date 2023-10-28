@@ -1,4 +1,3 @@
-import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 type GoalProps = {};
@@ -7,64 +6,72 @@ const Goal: React.FC<GoalProps> = () => {
   const [current, setCurrent] = useState<number>(90);
 
   return (
-    <GoalDiv>
-      <Title>오늘의 책상 목표</Title>
-      <Content>목표의 {current}%이나 해냈어요.</Content>
+    <Container>
+      <GoalDiv>
+        <Title>오늘의 책상 목표</Title>
+        <Content>
+          <p>0시간 10분</p>
+          <p>목표 0시간 0분</p>
+        </Content>
+      </GoalDiv>
       <GoalGraph>
-        <FlagOutlinedIcon
-          style={{
-            fontSize: '50px',
-            position: 'absolute',
-            right: '27px',
-            top: '-44px',
-            color: '#337CCF'
-          }}
-        />
-
-        <CurrentGraph width={Math.min(current * 6.5, 682)}>
-        </CurrentGraph>
+        <CurrentGraph width={Math.min(30, 100)}></CurrentGraph>
       </GoalGraph>
-    </GoalDiv>
+    </Container>
+    // <FlagOutlinedIcon
+    //       style={{
+    //         fontSize: '50px',
+    //         position: 'absolute',
+    //         right: '27px',
+    //         top: '-44px',
+    //         color: '#337CCF'
+    //       }}
+    //     />
   );
 };
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const GoalDiv = styled.div`
-  width: 714px;
-  height: 211px;
-  /* background: #d9d9d9; */
-  padding: 16px;
+  width: 583px;
+  height: 149px;
 `;
 
 const Title = styled.p`
-  font-family: Inter;
   font-size: 24px;
-  font-weight: 500;
-  line-height: 150%;
-  letter-spacing: -0.24px;
-  margin-bottom: 16px;
+  font-weight: 700;
+  letter-spacing: 0.25px;
+  margin-bottom: 40px;
 `;
 
 const Content = styled.p`
-  color: #000;
-  font-family: Inter;
-  font-size: 36px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 150%; /* 54px */
-  letter-spacing: -0.36px;
-  margin-bottom: 67px;
+  display: flex;
+  justify-content: space-between;
+  p:first-child {
+    font-size: 40px;
+    font-weight: 700;
+    color: var(--primary-01);
+  }
+  p:last-child {
+    font-size: 24px;
+    color: var(--gray-07);
+  }
 `;
 
 const GoalGraph = styled.div`
   width: 100%;
-  background: #a9a9a9;
+  border-radius: 5px;
+  background: var(--gray-04, #e0e0e0);
   height: 18px;
-  position: relative;
 `;
 
 const CurrentGraph = styled.div<{ width: number }>`
-  width: ${props => `${props.width}px`};
-  background: #5b5b5b;
+  width: ${props => `${props.width}%`};
+  border-radius: 5px;
+  background: var(--primary-00, #1a81e8);
   height: 18px;
   position: relative;
 `;
