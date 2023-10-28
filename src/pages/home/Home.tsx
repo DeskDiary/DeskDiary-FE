@@ -23,6 +23,10 @@ const Home = () => {
     console.log(visited)
   }, []);
 
+  useEffect(() => {
+    console.log('⭕렌더링')
+  }, [])
+
   return (
     <Container>
       <MainTop />
