@@ -1,32 +1,54 @@
-import React, { useState } from 'react';
+import OutlinedFlagSharpIcon from '@mui/icons-material/OutlinedFlagSharp';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { todayLerningHistoryHome } from '../../../axios/historyApi';
 type GoalProps = {};
 
 const Goal: React.FC<GoalProps> = () => {
-  const [current, setCurrent] = useState<number>(90);
+
+  const [todayLerningTime, setTodayLerningTime] = useState<number[]>([
+    0, 0, 0, 0, 100, 0,
+  ]);
+  const [goalPercent, setGoalPercent] = useState<number>(0);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await todayLerningHistoryHome();
+        setTodayLerningTime(result);
+      } catch (error) {
+        console.error('데이터를 불러오는 중에 오류가 발생했습니다.', error);
+      }
+    };
+
+    fetchData();
+    setGoalPercent((todayLerningTime[5] / todayLerningTime[4]) * 100);
+  }, [todayLerningTime]);
 
   return (
-    <Container>
-      <GoalDiv>
-        <Title>오늘의 책상 목표</Title>
-        <Content>
-          <p>0시간 10분</p>
-          <p>목표 0시간 0분</p>
-        </Content>
-      </GoalDiv>
-      <GoalGraph>
-        <CurrentGraph width={Math.min(30, 100)}></CurrentGraph>
-      </GoalGraph>
-    </Container>
-    // <FlagOutlinedIcon
-    //       style={{
-    //         fontSize: '50px',
-    //         position: 'absolute',
-    //         right: '27px',
-    //         top: '-44px',
-    //         color: '#337CCF'
-    //       }}
-    //     />
+    <>
+      <Container>
+        <GoalDiv>
+          <Title>오늘의 책상 목표</Title>
+          <Content>
+            <p>{`${todayLerningTime[2]}시간 ${todayLerningTime[3]}분`}</p>
+            <p>목표 {`${todayLerningTime[0]}시간 ${todayLerningTime[1]}분`}</p>
+          </Content>
+        </GoalDiv>
+        <GoalGraph>
+          <CurrentGraph width={Math.min(goalPercent, 100)}></CurrentGraph>
+        </GoalGraph>
+        <OutlinedFlagSharpIcon
+          style={{
+            fontSize: '50px',
+            color: '#337CCF',
+            position: 'fixed',
+            marginLeft: '542px',
+            marginTop: '106px',
+            transform: 'scaleX(-1)',
+          }}
+        />
+      </Container>
+    </>
   );
 };
 
