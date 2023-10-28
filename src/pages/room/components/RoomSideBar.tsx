@@ -23,6 +23,8 @@ const RoomSideBar: React.FC<RoomSideBarProps> = () => {
 
   const { data } = useQuery<user>('user', fetchUser);
 
+
+
   return (
     <Body>
       <LogoImg
@@ -51,15 +53,15 @@ const RoomSideBar: React.FC<RoomSideBarProps> = () => {
           <p>참여인원</p>
           <DetailCount>
             <img src={사람} alt="인원수" />
-            <p>04</p>
+            <p>01</p>
           </DetailCount>
         </UserCount>
         <UserList>
           <img
-            src="https://avatars.githubusercontent.com/u/120389368?v=4"
+            src={data?.profileImage}
             alt="사용자프로필이미지"
           />
-          <p>User_ID</p>
+          <p>{data?.nickname}</p>
         </UserList>
       </JoinPeopleBox>
     </Body>
