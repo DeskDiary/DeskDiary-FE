@@ -110,8 +110,8 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = () => {
           onBlur={onBlur}
         />
       </Group>
-      {errorMessage}
-      <button type="submit">비밀번호 수정</button>
+      {errorMessage && errorMessage}
+      <button type="submit">비밀번호 저장</button>
     </Container>
   );
 };
@@ -141,6 +141,12 @@ const Container = styled.form`
   align-items: center;
   width: 100%;
   gap: 10px;
+  margin-top: 20px;
+
+  >button{
+    margin-left: auto;
+    color: var(--gray-07);
+  }
 `;
 
 const Label = styled.div``;
