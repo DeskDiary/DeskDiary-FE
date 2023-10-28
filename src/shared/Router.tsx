@@ -8,10 +8,11 @@ import HobbyCategory from '../pages/category/HobbyCategory';
 import StudyCategory from '../pages/category/StudyCategory';
 import MyRecord from '../pages/myRecord/MyDesk';
 import Lending from '../pages/auth/Lending';
-
+import { useEffect } from 'react';
 
 const Router = () => {
-  
+
+
   return (
     <BrowserRouter>
       <Routes>
@@ -20,7 +21,7 @@ const Router = () => {
           <Route path="/study" element={<StudyCategory />} />
           <Route path="/hobby" element={<HobbyCategory />} />
           <Route path="/mydesk" element={<MyRecord />} />
-          <Route path="/mypage/:id" element={<Mypage />} />
+          <Route path="/mypage" element={<Mypage />} />
         </Route>
         <Route element={<SideLayout />}>
           <Route path="/login" element={<Login />} />

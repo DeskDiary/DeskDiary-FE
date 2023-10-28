@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import sample from '../../images/lending-image.png';
 import { Link } from 'react-router-dom';
@@ -9,26 +9,20 @@ import { useNavigate } from 'react-router-dom';
 type LendingProps = {};
 
 const Lending: React.FC<LendingProps> = () => {
-
   useEffect(() => {
-    window.localStorage.setItem('visited', 'true');
+    window.sessionStorage.setItem('visited', 'true');
   }, []);
 
   return (
     <Container>
-      <Contents>
-        <Box>
-          <img src={sample} />
-        </Box>
-        <BoxContents>
-          <p>언제 어디든지 나의 책상이 될 수 있는 곳에서 만나요</p>
-          <Logo to="/" />
-          <Text>
-            온라인 캠 스터디 서비스<span>책상일기</span>
-          </Text>
-          <StartButton to="/">서비스 시작하기</StartButton>
-        </BoxContents>
-      </Contents>
+      <BoxContents>
+        <p>언제 어디든지 나의 책상이 될 수 있는 곳에서 만나요</p>
+        <Logo src={logo} alt={logo}/>
+        <Text>
+          온라인 캠 스터디 서비스<span>책상일기</span>
+        </Text>
+        <StartButton to="/">서비스 시작하기</StartButton>
+      </BoxContents>
       <Footer>
         <FooterBody>
           <FooterTitle>Site Map</FooterTitle>
@@ -50,10 +44,9 @@ const Lending: React.FC<LendingProps> = () => {
   );
 };
 
-const Logo = styled(Link)`
-  background: url(${logo}) no-repeat center;
-  width: 62px;
-  height: 73px;
+const Logo = styled.img`
+  width: 116px;
+  height: 141px;
 `;
 
 const FooterBody = styled.div`
@@ -99,17 +92,6 @@ const Container = styled.div`
   background-color: #86c9fa;
 `;
 
-const Contents = styled.div`
-  width: 1200px;
-  min-height: 100vh;
-  /* background-color: var(--gray-02); */
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: center;
-  position: relative;
-`;
-
 const Footer = styled.div`
   width: 100%;
   background-color: black;
@@ -132,7 +114,7 @@ const Box = styled.div`
   overflow: hidden;
 
   > img {
-    overflow: hidden;
+    /* overflow: hidden; */
     object-fit: cover;
     height: 100%;
     /* filter: grayscale(100%); */
@@ -140,22 +122,29 @@ const Box = styled.div`
 `;
 
 const BoxContents = styled.div`
-  position: absolute;
-  bottom: 500px;
-  z-index: 50;
-  gap: 30px;
+  gap: 20px;
 
-  width: 750px;
-  height: 330px;
+  width: 1000px;
+  height: 850px;
+
+  margin-top: 20px;
 
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
+  
+
+  background-image: url(${sample});
+  background-size: cover; // 이미지 사이즈 조절
+  background-repeat: no-repeat; // 이미지 반복 설정
+  background-position: center; // 이미지 위치 설정
 
   > p {
+    margin-top: 90px;
     color: white;
-    font-size:30px;
+    font-size: 30px;
+    margin-bottom: 10px;
   }
 `;
 
@@ -165,7 +154,7 @@ const Text = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  >span{
+  > span {
     color: var(--primary-01);
     font-weight: 600;
     margin-left: 5px;
@@ -175,15 +164,12 @@ const Text = styled.div`
 
 const StartButton = styled(Link)`
   background-color: var(--primary-01);
-  width: 400px;
-  height: 60px;
+  width: 300px;
+  height: 50px;
   font-size: 17px;
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
-  font-size: 24px;
-  box-shadow: 2px 2px 4px 2px rgba(155, 155, 155, 0.5);
 `;
 export default Lending;

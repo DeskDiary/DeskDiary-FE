@@ -22,3 +22,28 @@ export const getCookie = (name: string) => {
   }
   return null;
 };
+
+export const setRoomCookie = (room: string) => {
+  const expirationDate = new Date();
+  console.log(expirationDate);
+  expirationDate.setFullYear(expirationDate.getFullYear() + 1);
+
+
+  // 쿠키에 토큰을 저장합니다.
+  document.cookie = `room=room; expires=${expirationDate}; path=/`;
+};
+
+export const getRoomCookie = (room: string) => {
+  const cookies = document.cookie;
+  // console.log('cookies', cookies);
+  const cookieArray = cookies.split(';');
+  for (const cookie of cookieArray) {
+    const [cookieName, cookieValue] = cookie.trim().split('=');
+    // console.log(cookieName, cookieValue);
+    if (cookieName === 'room') {
+      // console.log(cookieValue)
+      return cookieValue;
+    }
+  }
+  return null;
+};

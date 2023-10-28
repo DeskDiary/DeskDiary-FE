@@ -3,14 +3,14 @@ import axios from 'axios';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { getCookie } from '../../../auth/cookie';
+import { getCookie, setRoomCookie } from '../../../auth/cookie';
 import { RoomAtom, RoomUUIDAtom } from '../../../recoil/RoomAtom';
 import MediaSetup from './MediaSetup';
 import BasicPrecautions from './BasicPrecautions';
 import io from 'socket.io-client';
 import { useQuery } from 'react-query';
 import { fetchUser } from '../../../axios/api';
-import socket from '../../room/components/chat/socketInstance';
+import socket from '../../room/socketInstance';
 
 type JoinRoomModal = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -99,6 +99,7 @@ const JoinRoomModal: React.FC<JoinRoomModal> = ({ setIsOpen, room }) => {
       socket.on('new-user', (nickname) => {
         console.log('새로운 유저가 방에 참석:✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨', nickname);
       });
+      
 
       navigate(`/room/${room.uuid}`);
     } catch (error) {

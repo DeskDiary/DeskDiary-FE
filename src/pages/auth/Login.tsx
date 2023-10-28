@@ -117,7 +117,7 @@ const Login: React.FC<LoginProps> = () => {
         <Ptag>ID</Ptag>
         <InputBox>
           <InputTag
-            type="email"
+            type="text"
             placeholder="이메일을 입력해주세요."
             name="email"
             value={id}
