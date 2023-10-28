@@ -16,12 +16,14 @@ const RoomModal: React.FC<RoomModalProps> = () => {
   const [outModalState, setOutModalState] =
     useRecoilState<boolean>(RoomModalAtom);
   const navigate = useNavigate();
-  console.log(outModalState);
+  
   const [joinUUID, setJoinUUID] = useRecoilState<string>(RoomUUIDAtom);
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const [storageStartData, setStorageStartData] = useState<string>('');
   const [storageEndData, setStorageEndData] = useState<string>('')
   const [timer, setTimer] = useRecoilState<string>(timerState);
+
+  
   useEffect(() => {
     const storageStartData = localStorage.getItem('startTime');
     if (storageStartData) {
@@ -51,8 +53,7 @@ const RoomModal: React.FC<RoomModalProps> = () => {
         totalHours: timer,
         historyType: 'hobby', // study, hobby
       };
-      console.log(token, data);
-      console.log(typeof data.checkIn, typeof data.checkOut)
+
       const response = await axios.post(
         `${serverUrl}/room/${joinUUID}/leave`,
         data,

@@ -22,7 +22,7 @@ const Goal: React.FC<GoalProps> = () => {
 
     fetchData();
     setGoalPercent((todayLerningTime[5] / todayLerningTime[4]) * 100);
-  }, [todayLerningTime]);
+  }, []);
 
   return (
     <>
