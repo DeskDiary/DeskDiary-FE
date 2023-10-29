@@ -5,13 +5,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { getCookie } from '../../../auth/cookie';
 import { RoomAtom, RoomUUIDAtom } from '../../../recoil/RoomAtom';
-import MediaSetup from './MediaSetup';
-import BasicPrecautions from './BasicPrecautions';
+import MediaSetup from '../../home/components/MediaSetup';
+import BasicPrecautions from '../../home/components/BasicPrecautions';
 import { useQuery } from 'react-query';
 import { fetchUser } from '../../../axios/api';
-import socket from '../../room/socketInstance';
+import socket from '../socketInstance';
 
-type JoinRoomModal = {
+type SetMediaModal = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   room: {
     agoraAppId: string;
@@ -31,7 +31,7 @@ type JoinRoomModal = {
   };
 };
 
-const JoinRoomModal: React.FC<JoinRoomModal> = ({ setIsOpen, room }) => {
+const SetMediaModal: React.FC<SetMediaModal> = ({ setIsOpen, room }) => {
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const navigate = useNavigate();
   const [joinUUID, setJoinUUID] = useRecoilState<string>(RoomUUIDAtom);
@@ -48,62 +48,37 @@ const JoinRoomModal: React.FC<JoinRoomModal> = ({ setIsOpen, room }) => {
     ));
   };
 
-
   const onClickJoinRoom = async () => {
     try {
-      const token = getCookie('token');
-      console.log('조인룸 토큰', token);
-      const response = await axios.post(
-        `${serverUrl}/room/${room.uuid}/join`,
-        {},
+      socket.emit(
+        'joinRoom',
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          nickname: data!.nickname,
+          uuid: room.uuid,
+          img: data!.profileImage,
+        },
+        (response: any) => {
+          // 서버로부터의 응답을 여기서 처리
+          if (response.success) {
+            console.log(
+              '방에 성공적으로 참여했어!✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨',
+            );
+          } else {
+            console.log('방 참여 실패😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭');
+          }
         },
       );
-      console.log(response);
-      setRoomInfo({
-        agoraAppId: room.agoraAppId,
-        agoraToken: room.agoraToken,
-        category: room.category,
-        count: room.count,
-        createdAt: room.createdAt,
-        maxHeadcount: room.maxHeadcount,
-        note: room.note,
-        nowHeadcount: room.nowHeadcount,
-        ownerId: room.ownerId,
-        roomId: room.roomId,
-        roomThumbnail: room.roomThumbnail ? room.roomThumbnail : '',
-        title: room.title,
-        updatedAt: room.updatedAt,
-        uuid: room.uuid,
+
+      socket.on('new-user', nickname => {
+        console.log(
+          '새로운 유저가 방에 참석:✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨',
+          nickname,
+        );
       });
-      setJoinUUID(room.uuid);
-
-
-      socket.emit('joinRoom', {
-        nickname: data!.nickname,
-        uuid: room.uuid,
-        img: data!.profileImage,
-      }, (response:any) => {
-        // 서버로부터의 응답을 여기서 처리
-        if (response.success) {
-          console.log('방에 성공적으로 참여했어!✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
-        } else {
-          console.log('방 참여 실패😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭');
-        }
-      });
-
-      socket.on('new-user', (nickname) => {
-        console.log('새로운 유저가 방에 참석:✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨', nickname);
-      });
-      
-
-      navigate(`/room/${room.uuid}`);
     } catch (error) {
       console.error(error);
     }
+    setIsOpen(false);
   };
 
   return (
@@ -125,10 +100,7 @@ const JoinRoomModal: React.FC<JoinRoomModal> = ({ setIsOpen, room }) => {
         </Content>
 
         <Button>
-          <EnterRoomButton onClick={onClickJoinRoom}>들어가기</EnterRoomButton>
-          <CancleButton to="/" onClick={() => setIsOpen(false)}>
-            취소
-          </CancleButton>
+          <EnterRoomButton onClick={onClickJoinRoom}>확인</EnterRoomButton>
         </Button>
       </ModalContent>
     </Container>
@@ -235,7 +207,7 @@ const ModalContent = styled.div`
   align-items: center;
 
   width: 600px;
-  height: 800px;
+  height: 650px;
   /* background-color: rgba(255, 255, 255, 0.8); */
   background-color: white;
   border-radius: 20px;
@@ -258,4 +230,4 @@ const Container = styled.div`
   cursor: auto;
 `;
 
-export default JoinRoomModal;
+export default SetMediaModal;

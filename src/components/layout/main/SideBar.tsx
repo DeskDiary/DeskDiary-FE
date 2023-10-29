@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import styled, { createGlobalStyle, css } from 'styled-components';
 import { hobby, home, logo, study, mydesk } from '../../../images';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { getCookie, setTokenCookie } from '../../../auth/cookie';
 import { useRecoilState } from 'recoil';
 import { SelectCateoryAtom } from '../../../recoil/RoomAtom';
+import { toast } from 'sonner';
 
 type SideBarProps = {};
 
@@ -30,13 +31,13 @@ const navItems = [
 ];
 
 const SideBar: React.FC<SideBarProps> = () => {
-  const [isCategory, setIsCategory] = useRecoilState(SelectCateoryAtom);
-
   const token = getCookie('token');
+  const navigate = useNavigate();
 
-  const ChangeCategory = (category: string) => {
-    alert(category);
-    console.log('클릭');
+  const delayedRedirect = (path: string) => {
+    setTimeout(() => {
+      navigate(path);
+    }, 1000);
   };
 
   return (
@@ -54,7 +55,22 @@ const SideBar: React.FC<SideBarProps> = () => {
                 <p>{item.title}</p>
               </SidebarButton>
             ))}
-            <SidebarButton to={token ? '/mydesk' : '/login'}>
+            <SidebarButton
+              to={token ? '/mydesk' : '/login'}
+              onClick={(e) => {
+                if (!token) {
+                  e.preventDefault(); // NavLink의 기본 이동을 막아줌
+                  toast.error('로그인이 필요합니다.', {
+                    style: {
+                      backgroundColor: '#ccdfff',
+                      opacity: 0.6,
+                      color: 'white'
+                    }
+                  })
+                  delayedRedirect('/login');
+                }
+              }}
+            >
               <img src={mydesk} alt="menu icon" />
               <p>책상 기록</p>
             </SidebarButton>
@@ -116,6 +132,27 @@ const SidebarButton = styled(NavLink)`
     opacity: 0;
     transition: opacity 0.4s ease-in-out;
     color: var(--gray-06);
+  }
+
+  > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    > img {
+      height: 35px;
+      border-radius: 50%;
+      filter: grayscale(100%);
+      padding: 0 10px;
+    }
+
+    > p {
+      width: 80px;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.4s ease-in-out;
+      color: var(--gray-06);
+    }
   }
 `;
 

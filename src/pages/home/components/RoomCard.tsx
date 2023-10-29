@@ -8,6 +8,10 @@ import { useQuery } from 'react-query';
 import { fetchUser } from '../../../axios/api';
 import { getCookie } from '../../../auth/cookie';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+import { RoomAtom, RoomUUIDAtom } from '../../../recoil/RoomAtom';
+import { useRecoilState } from 'recoil';
+import axios from 'axios';
 
 type RoomCardProps = {
   room: {
@@ -34,9 +38,12 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenDeleteRoomModal, setIsOpenDeleteRoomModal] = useState(false);
-
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [joinUUID, setJoinUUID] = useRecoilState<string>(RoomUUIDAtom);
+  const [roomInfo, setRoomInfo] = useRecoilState(RoomAtom);
+
   const navigate = useNavigate();
+
   const { data } = useQuery<user, Error>('userCreatedRoom', fetchUser, {
     staleTime: Infinity, // 캐시 시간을 무한대로 설정
   });
@@ -49,10 +56,51 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
     setIsImageLoaded(false);
   };
 
-  const onClickCard = () => {
+  const JoinRoomModal = async (token: any) => {
+    const response = await axios.post(
+      `${process.env.REACT_APP_SERVER_URL!}/room/${room.uuid}/join`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    console.log(response);
+    setRoomInfo({
+      agoraAppId: room.agoraAppId,
+      agoraToken: room.agoraToken,
+      category: room.category,
+      count: room.count,
+      createdAt: room.createdAt,
+      maxHeadcount: room.maxHeadcount,
+      note: room.note,
+      nowHeadcount: room.nowHeadcount,
+      ownerId: room.ownerId,
+      roomId: room.roomId,
+      roomThumbnail: room.roomThumbnail ? room.roomThumbnail : '',
+      title: room.title,
+      updatedAt: room.updatedAt,
+      uuid: room.uuid,
+    });
+    setJoinUUID(room.uuid);
+    console.log('roomInfo', roomInfo);
+
+    navigate(`/room/${room.uuid}`);
+  };
+
+  const onClickCard = async () => {
     if (token) {
-      setIsOpen(true);
+      // setIsOpen(true);
+      JoinRoomModal(token);
     } else {
+      toast.error('로그인이 필요합니다.', {
+        style: {
+          backgroundColor: '#ccdfff',
+          opacity: 0.6,
+          color: 'white',
+        },
+      });
       navigate('/login');
     }
   };
@@ -83,7 +131,7 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
       {data?.userId === room.ownerId && fetch === 'fetchCreatedRoom' && (
         <Delete onClick={() => setIsOpenDeleteRoomModal(true)}>삭제</Delete>
       )}
-      {isOpen && <JoinRoomModal setIsOpen={setIsOpen} room={room} />}
+      {/* {isOpen && <JoinRoomModal setIsOpen={setIsOpen} room={room} />} */}
       {isOpenDeleteRoomModal && (
         <ConfirmModal
           title="삭제"
