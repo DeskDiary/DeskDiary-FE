@@ -16,15 +16,6 @@ type MyDeskProps = {};
 
 const MyDesk: React.FC<MyDeskProps> = () => {
   const [GoalModal, setGoalModal] = useRecoilState<boolean>(GoalTimeModalState);
-  const token = getCookie('token');
-  const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   if(!token) {
-  //     navigate('/login');
-  //     return;
-  //   }
-  // }, [])
 
   return (
     <Container>

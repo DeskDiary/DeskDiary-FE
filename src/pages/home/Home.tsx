@@ -23,6 +23,10 @@ const Home = () => {
     console.log(visited)
   }, []);
 
+  useEffect(() => {
+    console.log('⭕렌더링')
+  }, [])
+
   return (
     <Container>
       <MainTop />
@@ -73,6 +77,7 @@ const Info = styled.div`
   align-items: center;
 
   width: 100%;
+  height: 190px;
 `;
 
 export default Home;

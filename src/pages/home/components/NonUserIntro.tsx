@@ -19,7 +19,6 @@ const Container = styled.div`
   justify-content: center;
   width: 100%;
   height: 100%;
-  background-color: #d9d9d9;
 
   >img{
     width: 100%;

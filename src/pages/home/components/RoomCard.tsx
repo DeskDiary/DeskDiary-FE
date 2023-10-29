@@ -26,9 +26,10 @@ type RoomCardProps = {
     updatedAt: string;
     uuid: string;
   };
+  fetch?: string;
 };
 
-const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
+const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
   const token = getCookie('token');
 
   const [isOpen, setIsOpen] = useState(false);
@@ -36,13 +37,9 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
 
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const navigate = useNavigate();
-  const { data } = useQuery<user, Error>(
-    'userCreatedRoom',
-    fetchUser,
-    {
-      staleTime: Infinity, // 캐시 시간을 무한대로 설정
-    }
-  );
+  const { data } = useQuery<user, Error>('userCreatedRoom', fetchUser, {
+    staleTime: Infinity, // 캐시 시간을 무한대로 설정
+  });
 
   const handleImageLoaded = () => {
     setIsImageLoaded(true);
@@ -53,12 +50,12 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
   };
 
   const onClickCard = () => {
-    if(token) {
-      setIsOpen(true)
+    if (token) {
+      setIsOpen(true);
     } else {
-      navigate("/login")
+      navigate('/login');
     }
-  }
+  };
 
   return (
     <Container>
@@ -83,7 +80,7 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
           </Tags>
         </ContentText>
       </Contents>
-      {data?.userId === room.ownerId && (
+      {data?.userId === room.ownerId && fetch === 'fetchCreatedRoom' && (
         <Delete onClick={() => setIsOpenDeleteRoomModal(true)}>삭제</Delete>
       )}
       {isOpen && <JoinRoomModal setIsOpen={setIsOpen} room={room} />}
