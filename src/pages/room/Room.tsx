@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import axios from 'axios';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { getCookie } from '../../auth/cookie';
@@ -12,6 +12,7 @@ import RoomHeader from './components/RoomHeader';
 import RoomSideBar from './components/RoomSideBar';
 import RoomUnderBar from './components/RoomUnderBar';
 import ChatBox from './components/chat/ChatBox';
+import SetMediaModal from './components/SetMediaModal';
 
 type RoomProps = {
   children?: React.ReactNode;
@@ -20,6 +21,8 @@ type RoomProps = {
 const Room: React.FC<RoomProps> = () => {
   const [roomInfo, setRoomInfo] = useRecoilState(RoomAtom);
   const [roomUUID, setRoomUUID] = useRecoilState(RoomUUIDAtom);
+  const [isOpenModal, setIsOpenModal] = useState(false);
+
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const location = useLocation();
   const token = getCookie('token');
@@ -29,17 +32,16 @@ const Room: React.FC<RoomProps> = () => {
   }, []);
   const navigate = useNavigate();
 
-const NotReload = (event:any) => {
-    if (
-      (event.ctrlKey === true && (event.keyCode === 78 || event.keyCode === 82)) ||
-      event.keyCode === 116
-    ) {
-      event.preventDefault();
-    }
-  }
-  
-  document.addEventListener("keydown", NotReload);
-  
+  // const NotReload = (event:any) => {
+  //     if (
+  //       (event.ctrlKey === true && (event.keyCode === 78 || event.keyCode === 82)) ||
+  //       event.keyCode === 116
+  //     ) {
+  //       event.preventDefault();
+  //     }
+  //   }
+
+  //   document.addEventListener("keydown", NotReload);
 
   useEffect(() => {
     const listenBackEvent = () => {
@@ -93,6 +95,10 @@ const NotReload = (event:any) => {
     }
   };
 
+  useEffect(() => {
+    setIsOpenModal(true);
+  }, []);
+
   return (
     <>
       <Container>
@@ -115,6 +121,9 @@ const NotReload = (event:any) => {
         </Content>
       </Container>
       <RoomUnderBar roomId={roomInfo.uuid} />
+      {isOpenModal && (
+        <SetMediaModal setIsOpen={setIsOpenModal} room={roomInfo} />
+      )}
     </>
   );
 };

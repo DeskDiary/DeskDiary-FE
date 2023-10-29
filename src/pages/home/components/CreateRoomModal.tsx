@@ -104,24 +104,24 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({
       );
       console.log(response);
 
-      socket.emit(
-        'joinRoom',
-        {
-          nickname: user.nickname,
-          uuid: uuid,
-          img: user.profileImage,
-        },
-        (response: any) => {
-          // 서버로부터의 응답을 여기서 처리
-          if (response.success) {
-            console.log(
-              '방에 성공적으로 참여했어!✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨',
-            );
-          } else {
-            console.log('방 참여 실패😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭');
-          }
-        },
-      );
+      // socket.emit(
+      //   'joinRoom',
+      //   {
+      //     nickname: user.nickname,
+      //     uuid: uuid,
+      //     img: user.profileImage,
+      //   },
+      //   (response: any) => {
+      //     // 서버로부터의 응답을 여기서 처리
+      //     if (response.success) {
+      //       console.log(
+      //         '방에 성공적으로 참여했어!✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨',
+      //       );
+      //     } else {
+      //       console.log('방 참여 실패😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭');
+      //     }
+      //   },
+      // );
 
       socket.on('new-user', nickname => {
         console.log(
