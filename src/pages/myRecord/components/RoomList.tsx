@@ -33,8 +33,8 @@ const RoomList: React.FC<RoomListProps> = ({ label, mydesk }) => {
       }
     },
     {
-      staleTime: 60000, // 캐시 시간을 무한대로 설정
-    },
+      refetchOnWindowFocus: false,
+    }
   );
 
   return (

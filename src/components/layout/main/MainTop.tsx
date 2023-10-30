@@ -44,7 +44,9 @@ const MainTop: React.FC<MainTopProps> = () => {
     toast.message('search click');
   };
 
-  const { data } = useQuery<user>('user', fetchUser);
+  const { data } = useQuery<user>('user', fetchUser, {
+    refetchOnWindowFocus: false,
+  });
   console.log('MainTop 렌더링');
 
   return (
