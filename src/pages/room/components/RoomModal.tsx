@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { getCookie } from '../../../auth/cookie';
-import { RoomModalAtom, RoomUUIDAtom } from '../../../recoil/RoomAtom';
+import { RoomInfo, RoomModalAtom, RoomUUIDAtom } from '../../../recoil/RoomAtom';
 import { timerState } from '../../../recoil/TimeAtom';
 import socket from '../socketInstance';
 import { getKoreanTime } from './Timer';
@@ -13,6 +13,7 @@ import { getKoreanTime } from './Timer';
 type RoomModalProps = {};
 
 const RoomModal: React.FC<RoomModalProps> = () => {
+  const [roomInfo, setRoomInfo] = useRecoilState(RoomInfo);
   const [outModalState, setOutModalState] =
     useRecoilState<boolean>(RoomModalAtom);
   const navigate = useNavigate();
@@ -51,7 +52,7 @@ const RoomModal: React.FC<RoomModalProps> = () => {
         checkIn: storageStartData !== '기록이 없습니다.' ? storageStartData : JSON.stringify(getKoreanTime()).replaceAll(/["/]/g, ''),
         checkOut: storageEndData !== '기록이 없습니다.' ? storageEndData : JSON.stringify(getKoreanTime()).replaceAll(/["/]/g, ''),
         totalHours: timer,
-        historyType: 'hobby', // study, hobby
+        historyType: roomInfo.category, // study, hobby
       };
 
       const response = await axios.post(
