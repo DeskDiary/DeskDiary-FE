@@ -2,19 +2,27 @@ import OutlinedFlagSharpIcon from '@mui/icons-material/OutlinedFlagSharp';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { todayLerningHistoryHome } from '../../../axios/historyApi';
+
 type GoalProps = {};
 
 const Goal: React.FC<GoalProps> = () => {
-
-  const [todayLerningTime, setTodayLerningTime] = useState<number[]>([
-    0, 0, 0, 0, 100, 0,
-  ]);
+  const [todayLerningTime, setTodayLerningTime] = useState<number[]>([0, 0, 0, 0, 100, 0]);
   const [goalPercent, setGoalPercent] = useState<number>(0);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const result = await todayLerningHistoryHome();
-        setTodayLerningTime(result);
+        const newTodayLerningTime = result;
+
+        if (newTodayLerningTime[5] === 0 && newTodayLerningTime[4] === 0) {
+          setGoalPercent(0);
+        } else {
+          setGoalPercent((newTodayLerningTime[5] / newTodayLerningTime[4]) * 100);
+        }
+
+        // todayLerningTime 업데이트
+        setTodayLerningTime(newTodayLerningTime);
       } catch (error) {
         console.error('데이터를 불러오는 중에 오류가 발생했습니다.', error);
       }
@@ -96,6 +104,6 @@ const CurrentGraph = styled.div<{ width: number }>`
   background: var(--primary-00, #1a81e8);
   height: 18px;
   position: relative;
-`;
+`
 
 export default Goal;

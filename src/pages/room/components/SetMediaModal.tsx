@@ -50,6 +50,36 @@ const SetMediaModal: React.FC<SetMediaModal> = ({ setIsOpen, room }) => {
 
   const onClickJoinRoom = async () => {
     try {
+      const token = getCookie('token');
+      console.log('조인룸 토큰', token);
+      const response = await axios.post(
+        `${serverUrl}/room/${room.uuid}/join`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      console.log(response);
+      setRoomInfo({
+        agoraAppId: room.agoraAppId,
+        agoraToken: room.agoraToken,
+        category: room.category,
+        count: room.count,
+        createdAt: room.createdAt,
+        maxHeadcount: room.maxHeadcount,
+        note: room.note,
+        nowHeadcount: room.nowHeadcount,
+        ownerId: room.ownerId,
+        roomId: room.roomId,
+        roomThumbnail: room.roomThumbnail ? room.roomThumbnail : '',
+        title: room.title,
+        updatedAt: room.updatedAt,
+        uuid: room.uuid,
+      });
+      setJoinUUID(room.uuid);
+
       socket.emit(
         'joinRoom',
         {
