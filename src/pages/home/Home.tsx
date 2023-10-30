@@ -18,31 +18,33 @@ const Home = () => {
   useEffect(() => {
     const visited = window.sessionStorage.getItem('visited');
     if (visited === null) {
-      navigate("/lending")
+      navigate('/lending');
     }
-    console.log(visited)
+    console.log(visited);
   }, []);
 
   useEffect(() => {
-    console.log('⭕렌더링')
-  }, [])
+    console.log('⭕렌더링');
+  }, []);
 
   return (
     <Container>
-      <MainTop />
+      <body>
+        {/* <MainTop /> */}
 
-      <Info>
-        {token ? (
-          <User>
-            <Goal />
-            <img src={userIntro} alt="user " />
-          </User>
-        ) : (
-          <NonUserIntro />
-        )}
-      </Info>
+        <Info>
+          {token ? (
+            <User>
+              <Goal />
+              <img src={userIntro} alt="user " />
+            </User>
+          ) : (
+            <NonUserIntro />
+          )}
+        </Info>
 
-      <RoomList label="엉덩이들이 많이 찾는 TOP 10" show="fetchRoomTop" />
+        <RoomList label="엉덩이들이 많이 찾는 TOP 10" show="fetchRoomTop" />
+      </body>
     </Container>
   );
 };
@@ -50,11 +52,19 @@ const Home = () => {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: center;
   align-items: center;
 
-  width: 1200px;
+
+
+  width: 100vw;
   min-height: 100vh;
+  background-color: #e8f1ff;
+
+  > body {
+    /* margin-top: 100px; */
+    width: 1200px;
+  }
 `;
 
 const User = styled.div`

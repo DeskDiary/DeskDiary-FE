@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from 'react';
-import io from 'socket.io-client';
 import styled from 'styled-components';
 import send from '../../../../images/send.svg';
 import 공지사진 from '../../../../images/공지.png';
@@ -8,7 +7,7 @@ import { fetchUser } from '../../../../axios/api';
 import { useQuery } from 'react-query';
 import socket from '../../socketInstance';
 
-type ChatBoxProps = { roomId: string; userCount: number };
+type ChatBoxProps = { roomId: string };
 
 type MessageData = {
   message: string;
@@ -23,44 +22,17 @@ type AllChatItem =
   | { type: 'new-user'; data: string }
   | { type: 'left-user'; data: string };
 
-const ChatBox: React.FC<ChatBoxProps> = ({ roomId, userCount }) => {
+const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
   const [newMessage, setNewMessage] = useState('');
   const [allChatList, setAllChatList] = useState<AllChatItem[]>([]);
-  const [isStartButton, setIsStartButton] = useState(true);
-  // const historyRoom = getRoomCookie('room');
-  // const [roomCookie, setRoomCookie] = useState<string>('');
 
   const { data } = useQuery<user>('chatUser', fetchUser, {
-    staleTime: Infinity, // 캐시 시간을 무한대로 설정
+    refetchOnWindowFocus: false,
   });
 
-  // 연결이 버튼
-  const restartSocket = () => {
-    socket.emit(
-      'joinRoom',
-      { nickname: data?.nickname, uuid: roomId, img: data?.profileImage },
-      (response: any) => {
-        // 서버로부터의 응답을 여기서 처리
-        if (response.success) {
-          console.log(
-            '방에 성공적으로 참여했어!✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨',
-          );
-        } else {
-          console.log('방 참여 실패😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭');
-        }
-      },
-    );
+  const historyRoom = localStorage.getItem('room');
 
-    setIsStartButton(false);
-  };
-
-  if (!localStorage.getItem('room')) {
-    localStorage.setItem('room', 'room');
-  }
-
-  const historyRoom = localStorage.getItem('room')
-
-  console.log('historyRoom==="room"', historyRoom==="room")
+  console.log('historyRoom==="room"', historyRoom === 'room');
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -123,8 +95,19 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId, userCount }) => {
     };
   }, [socket]);
 
+  useEffect(() => {
+    socket.on('disconnect_user', (byeUser: string) => {
+      setAllChatList(prevAllChatList => [
+        ...prevAllChatList,
+        { type: 'left-user', data: byeUser },
+      ]);
+      console.log('😭나간 유저', byeUser);
+    });
+  }, [socket]);
+
   const chatListRef = useRef<HTMLDivElement>(null); // ref 생성
 
+  // 채팅이 올라올 때 마다 채팅리스트의 맨 아래로 이동
   useEffect(() => {
     if (chatListRef.current) {
       chatListRef.current.scrollTop = chatListRef.current.scrollHeight; // 스크롤을 아래로 이동
@@ -154,21 +137,15 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId, userCount }) => {
         })}
       </ChatList>
       <ChatUnder>
-        {historyRoom==="room" ? (
-          <ChatForm onSubmit={handleSubmit}>
-            <UserInput
-              value={newMessage}
-              onChange={e => setNewMessage(e.target.value)}
-            ></UserInput>
-            <SendButton type="submit">
-              <img src={send} />
-            </SendButton>
-          </ChatForm>
-        ) : (
-          <button type="button" onClick={restartSocket}>
-            채팅 시작하기
-          </button>
-        )}
+        <ChatForm onSubmit={handleSubmit}>
+          <UserInput
+            value={newMessage}
+            onChange={e => setNewMessage(e.target.value)}
+          ></UserInput>
+          <SendButton type="submit">
+            <img src={send} />
+          </SendButton>
+        </ChatForm>
       </ChatUnder>
     </Container>
   );

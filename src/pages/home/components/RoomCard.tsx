@@ -57,34 +57,34 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
   };
 
   const JoinRoomModal = async (token: any) => {
-    const response = await axios.post(
-      `${process.env.REACT_APP_SERVER_URL!}/room/${room.uuid}/join`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
-    console.log(response);
-    setRoomInfo({
-      agoraAppId: room.agoraAppId,
-      agoraToken: room.agoraToken,
-      category: room.category,
-      count: room.count,
-      createdAt: room.createdAt,
-      maxHeadcount: room.maxHeadcount,
-      note: room.note,
-      nowHeadcount: room.nowHeadcount,
-      ownerId: room.ownerId,
-      roomId: room.roomId,
-      roomThumbnail: room.roomThumbnail ? room.roomThumbnail : '',
-      title: room.title,
-      updatedAt: room.updatedAt,
-      uuid: room.uuid,
-    });
-    setJoinUUID(room.uuid);
-    console.log('roomInfo', roomInfo);
+    // const response = await axios.post(
+    //   `${process.env.REACT_APP_SERVER_URL!}/room/${room.uuid}/join`,
+    //   {},
+    //   {
+    //     headers: {
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //   },
+    // );
+    // console.log(response);
+    // setRoomInfo({
+    //   agoraAppId: room.agoraAppId,
+    //   agoraToken: room.agoraToken,
+    //   category: room.category,
+    //   count: room.count,
+    //   createdAt: room.createdAt,
+    //   maxHeadcount: room.maxHeadcount,
+    //   note: room.note,
+    //   nowHeadcount: room.nowHeadcount,
+    //   ownerId: room.ownerId,
+    //   roomId: room.roomId,
+    //   roomThumbnail: room.roomThumbnail ? room.roomThumbnail : '',
+    //   title: room.title,
+    //   updatedAt: room.updatedAt,
+    //   uuid: room.uuid,
+    // });
+    // setJoinUUID(room.uuid);
+    // console.log('roomInfo', roomInfo);
 
     navigate(`/room/${room.uuid}`);
   };
