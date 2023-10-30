@@ -6,6 +6,7 @@ import { getCookie, setTokenCookie } from '../../../auth/cookie';
 import { useRecoilState } from 'recoil';
 import { SelectCateoryAtom } from '../../../recoil/RoomAtom';
 import { toast } from 'sonner';
+import test from '../../../images/test.png';
 
 type SideBarProps = {};
 
@@ -46,7 +47,7 @@ const SideBar: React.FC<SideBarProps> = () => {
       <SidebarInner>
         <div>
           <SidebarHeader>
-            <Logo src={logo} alt="Logo"></Logo>
+            <Logo src={test} alt="Logo"></Logo>
           </SidebarHeader>
           <SidebarMenu>
             {navItems.map(item => (
@@ -93,29 +94,29 @@ const SidebarButton = styled(NavLink)`
   text-transform: capitalize;
   line-height: 1;
   border-radius: 50px;
-  opacity: 0.8;
+  /* opacity: 0.8; */
   margin-left: 5px;
 
-  color: var(--primary-01);
+  color: white;
 
   &.active {
     > img {
       filter: grayscale(0); /* 회색조 */
     }
     > p {
-      color: var(--primary-01);
+      color: white;
     }
   }
 
   &:hover {
-    border: 1px solid var(--primary-01);
+    border: 1px solid white;
     opacity: 1;
     width: 90%;
     > img {
       filter: grayscale(0);
     }
     > p {
-      color: var(--primary-01);
+      color: white;
     }
   }
 
@@ -131,7 +132,7 @@ const SidebarButton = styled(NavLink)`
     white-space: nowrap;
     opacity: 0;
     transition: opacity 0.4s ease-in-out;
-    color: var(--gray-06);
+    color: white;
   }
 
   > div {
@@ -151,7 +152,7 @@ const SidebarButton = styled(NavLink)`
       white-space: nowrap;
       opacity: 0;
       transition: opacity 0.4s ease-in-out;
-      color: var(--gray-06);
+      color: var(--gray-03);
     }
   }
 `;
@@ -167,7 +168,7 @@ const SidebarMenu = styled.div`
   }
 
   &:hover {
-    width: 160px;
+    width: 180px;
 
     ${SidebarButton} img {
       transition: 0.3s;
@@ -192,7 +193,7 @@ const SidebarInner = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  width: 160px;
+  width: 180px;
   height: 100%;
 
   display: flex;
@@ -208,7 +209,7 @@ const Sidebar = styled.div`
   left: 0;
   width: 80px;
   height: 100vh;
-  background: white;
+  background: #4a65fd;
   transition: width 0.4s;
   z-index: 1000;
 
@@ -217,7 +218,7 @@ const Sidebar = styled.div`
   }
 
   &:hover {
-    width: 160px;
+    width: 180px;
 
     ${SidebarHeader} {
       width: 160px;
