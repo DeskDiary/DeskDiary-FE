@@ -3,9 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import MainTop from '../../components/layout/main/MainTop';
 
-import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { getCookie } from '../../auth/cookie';
 import { GoalTimeModalState } from '../../recoil/DeskAtom';
 import GoalSetTimeModal from './chart/GoalSetTimeModal';
 import RecordGraph from './chart/RecordGraph';
