@@ -69,6 +69,7 @@ const RoomModal: React.FC<RoomModalProps> = () => {
       localStorage.removeItem('endTime');
       setOutModalState(false);
       navigate('/');
+      // window.location.reload()
     } catch (error) {
       console.error(error);
     }
