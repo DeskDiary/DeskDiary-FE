@@ -123,12 +123,12 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({
       //   },
       // );
 
-      socket.on('new-user', nickname => {
-        console.log(
-          '새로운 유저가 방에 참석:✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨',
-          nickname,
-        );
-      });
+      // socket.on('new-user', nickname => {
+      //   console.log(
+      //     '새로운 유저가 방에 참석:✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨',
+      //     nickname,
+      //   );
+      // });
 
       navigate(`/room/${uuid}`);
     } catch (error) {
