@@ -104,7 +104,6 @@ const Info = styled.div`
   align-items: center;
   width: 100%;
   height: 190px;
-  border: 1px solid black;
   font-size: 40px;
   font-weight: 800;
 `;
