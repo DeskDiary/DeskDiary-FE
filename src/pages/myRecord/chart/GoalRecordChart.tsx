@@ -61,7 +61,6 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
   const [weeklyStudy, setWeeklyStudy] = useState<any[]>([]);
   const [monthlyHobby, setMonthlyHobby] = useState<any[]>([]);
   const [monthlyStudy, setMonthlyStudy] = useState<any[]>([]);
-
   const sevenData = async () => {
     try {
       const response = await axios.get(`${serverUrl}/learning-history/weekly`, {
@@ -70,26 +69,21 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
         },
       });
       const data = response.data;
-
       setWeeklyStudy(
         data.weeklyStudy.map((x: any) => {
-          const date = new Date(x.checkOut);
-
+          const date = new Date(x.checkIn);
           const dayOfWeek = date.getDay();
           const days = ['일', '월', '화', '수', '목', '금', '토'];
           const dayName = days[dayOfWeek];
-
           return { ...x, dayName: dayName };
         }),
       );
       setWeeklyHobby(
         data.weeklyHobby.map((x: any) => {
-          const date = new Date(x.checkOut);
-
+          const date = new Date(x.checkIn);
           const dayOfWeek = date.getDay();
           const days = ['일', '월', '화', '수', '목', '금', '토'];
           const dayName = days[dayOfWeek];
-
           return { ...x, dayName: dayName };
         }),
       );
@@ -139,31 +133,53 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
     datasets: [
       {
         label: '취미',
-        data: weeklyHobby.map(x => x.totalHours),
+        data: dateArray7.map((day, i) => {
+          const correspondingHobby = weeklyHobby.find(
+            x => x.dayName == day.dayOfWeek,
+          );
+
+          return correspondingHobby ? Number(correspondingHobby.totalHours) : 0;
+        }),
         stack: 'stack1',
         backgroundColor: ['#00C5FF'],
       },
       {
         label: '스터디',
-        data: weeklyStudy.map(x => x.totalHours),
+        data: dateArray7.map(day => {
+          const correspondingStudy = weeklyStudy.find(
+            x => x.dayName === day.dayOfWeek,
+          );
+          return correspondingStudy ? correspondingStudy.totalHours : 0;
+        }),
         stack: 'stack1',
         backgroundColor: ['#1A81E8'],
       },
     ],
   };
-
   const monthlyData = {
+    
     labels: dateArray30.map(x => x.date.slice(5)),
     datasets: [
       {
         label: '취미',
-        data: monthlyHobby.map(x => x.totalHours),
+        data: dateArray30.map((day, i) => {
+          
+          const correspondingHobby = monthlyHobby.find(
+            x => x.checkIn === day.date,
+          );
+          return correspondingHobby ? Number(correspondingHobby.totalHours) : 0;
+        }),
         stack: 'stack1',
         backgroundColor: ['#00C5FF'],
       },
       {
         label: '스터디',
-        data: monthlyStudy.map(x => x.totalHours),
+        data: dateArray30.map(day => {
+          const correspondingStudy = monthlyStudy.find(
+            x => x.date === day.date,
+          );
+          return correspondingStudy ? Number(correspondingStudy.totalHours) : 0;
+        }),
         stack: 'stack1',
         backgroundColor: ['#1A81E8'],
       },
