@@ -99,13 +99,11 @@ const Container = styled.div`
 
 const Info = styled.div`
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
   height: 190px;
-  font-size: 40px;
-  font-weight: 800;
+  gap: 24px;
 `;
 
 const User = styled.div`
