@@ -6,14 +6,29 @@ import 뒤로가기 from '../../../images/audio/back_button.svg';
 import 앞으로가기 from '../../../images/audio/front_button.svg';
 import 음소거 from '../../../images/audio/volume_off.svg';
 import 소리최대 from '../../../images/audio/volume_up.svg';
-import 이미지 from '../../../images/logo.svg';
 type AsmrPlayerProps = {};
 
 const asmrList = [
-  { title: '숲속강물소리', src: '/audio/숲속강물소리.mp3', img: '' },
-  { title: '숲속새소리', src: '/audio/숲속새소리.mp3', img: '' },
-  { title: '장작타는소리', src: '/audio/장작타는소리.mp3', img: '' },
-  { title: '조금강한비소리', src: '/audio/조금강한비소리.mp3', img: '' },
+  {
+    title: '숲속강물소리',
+    src: '/audio/숲속강물소리.mp3',
+    img: '/images/asmr_river.jpg',
+  },
+  {
+    title: '숲속새소리',
+    src: '/audio/숲속새소리.mp3',
+    img: '/images/asmr_bird.jpg',
+  },
+  {
+    title: '장작타는소리',
+    src: '/audio/장작타는소리.mp3',
+    img: '/images/asmr_fire.jpg',
+  },
+  {
+    title: '조금강한비소리',
+    src: '/audio/조금강한비소리.mp3',
+    img: '/images/asmr_rain.jpg',
+  },
 ];
 
 const AsmrPlayer: React.FC<AsmrPlayerProps> = () => {
@@ -67,7 +82,7 @@ const AsmrPlayer: React.FC<AsmrPlayerProps> = () => {
 
   return (
     <Body>
-      <AudioImg src={이미지} alt="" />
+      <AudioImg src={asmrList[current].img} alt="" />
       <div>
         <Title>{asmrList[current].title}</Title>
         <audio ref={audioRef} src={asmrList[current].src} />
