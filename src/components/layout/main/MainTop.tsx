@@ -9,6 +9,7 @@ import addroom from '../../../images/main/addroom.svg';
 import { fetchUser } from '../../../axios/api';
 import profile from '../../../images/profile.png';
 import axios from 'axios';
+import cloud from '../../../images/cloud.png';
 
 import { useQuery } from 'react-query';
 
@@ -147,9 +148,13 @@ const CreateRoomButton = styled.button`
   background-color: var(--primary-01);
   border: none;
   font-size: 14px;
+  background: url(${cloud}) ;
+  background-size: cover;
+  background-position: center;
+  
 
   min-width: 100px;
-  color: var(--bw-whtie);
+  /* color: var(--bw-whtie); */
 
   > img {
     width: 24px;

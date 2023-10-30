@@ -32,17 +32,6 @@ const Room: React.FC<RoomProps> = () => {
   }, []);
   const navigate = useNavigate();
 
-  // const NotReload = (event:any) => {
-  //     if (
-  //       (event.ctrlKey === true && (event.keyCode === 78 || event.keyCode === 82)) ||
-  //       event.keyCode === 116
-  //     ) {
-  //       event.preventDefault();
-  //     }
-  //   }
-
-  //   document.addEventListener("keydown", NotReload);
-
   useEffect(() => {
     const listenBackEvent = () => {
       alert(`뒤로가기이벤트를 감지했똬${'\n'}방 나가기 버튼으로 나가롸
@@ -114,7 +103,6 @@ const Room: React.FC<RoomProps> = () => {
               <AsmrPlayer />
               <ChatBox
                 roomId={roomInfo.uuid}
-                userCount={roomInfo.maxHeadcount}
               />
             </ChattingAreaDiv>
           </Area>
