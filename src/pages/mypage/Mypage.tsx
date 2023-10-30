@@ -46,7 +46,9 @@ const Mypage: React.FC<MypageProps> = () => {
     setIsOpenDeleteUser(!isOpenDeleteUser);
   };
 
-  const { data } = useQuery<user, Error>('mypageUser', fetchUser);
+  const { data } = useQuery<user, Error>('mypageUser', fetchUser, {
+    refetchOnWindowFocus: false,
+  });
 
   const joinMutation = useMutation(
     (nickname: string) =>
@@ -112,7 +114,9 @@ const Mypage: React.FC<MypageProps> = () => {
             <Group>
               <div>
                 <Label>닉네임</Label>
-                <EditButton onClick={() => setIsOpenNick(!isOpenNick)}>닉네임 수정</EditButton>
+                <EditButton onClick={() => setIsOpenNick(!isOpenNick)}>
+                  닉네임 수정
+                </EditButton>
               </div>
 
               {isOpenNick ? (
@@ -170,7 +174,7 @@ const Mypage: React.FC<MypageProps> = () => {
 };
 
 const EditButton = styled.button`
-color: var(--primary-01);
+  color: var(--primary-01);
 `;
 
 const EmailHover = styled.div<{ show: boolean }>`

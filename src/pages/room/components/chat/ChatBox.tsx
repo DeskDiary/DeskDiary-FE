@@ -4,12 +4,9 @@ import styled from 'styled-components';
 import send from '../../../../images/send.svg';
 import 공지사진 from '../../../../images/공지.png';
 import Chat from './Chat';
-import { ChatMessagesAtom } from '../../../../recoil/ChatAtom';
-import { useRecoilState } from 'recoil';
 import { fetchUser } from '../../../../axios/api';
 import { useQuery } from 'react-query';
 import socket from '../../socketInstance';
-import { getRoomCookie, setRoomCookie } from '../../../../auth/cookie';
 
 type ChatBoxProps = { roomId: string; userCount: number };
 
