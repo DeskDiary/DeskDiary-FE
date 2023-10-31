@@ -1,5 +1,8 @@
-import AgoraRTC from 'agora-rtc-sdk-ng';
 import { atom } from 'recoil';
+import AgoraRTC, {
+  IAgoraRTCRemoteUser,
+  createMicrophoneAndCameraTracks,
+} from 'agora-rtc-react';
 
 const APP_ID = 'a53d5f93a9934e0299413f35614fa485';
 const TOKEN =
@@ -40,3 +43,8 @@ export const choiceMicState = atom<string>({
   key: 'choiceMicState',
   default: '',
 });
+
+// export const TracksAtom = atom({
+//   key: 'tracksState',
+//   default: null as [IMicrophoneAudioTrack, ICameraVideoTrack] | null,
+// });

@@ -28,7 +28,7 @@ const Home = () => {
 
   return (
     <Container>
-      <div>
+      <Body>
         {/* <MainTop /> */}
 
         <Info>
@@ -43,10 +43,12 @@ const Home = () => {
         </Info>
 
         <RoomList label="엉덩이들이 많이 찾는 TOP 10" show="fetchRoomTop" />
-      </div>
+      </Body>
     </Container>
   );
 };
+
+const Body = styled.div``
 
 const Container = styled.div`
   display: flex;
@@ -60,7 +62,7 @@ const Container = styled.div`
   min-height: 100vh;
   background-color: #e8f1ff;
 
-  > div {
+  ${Body} {
     /* margin-top: 100px; */
     width: 1200px;
   }

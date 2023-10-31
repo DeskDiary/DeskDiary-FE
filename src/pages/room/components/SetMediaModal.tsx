@@ -36,6 +36,7 @@ const SetMediaModal: React.FC<SetMediaModal> = ({ setIsOpen, room }) => {
   const navigate = useNavigate();
   const [joinUUID, setJoinUUID] = useRecoilState<string>(RoomUUIDAtom);
   const [roomInfo, setRoomInfo] = useRecoilState(RoomAtom);
+  const [isClicked, setIsClicked] = useState(false);
 
   const { data } = useQuery<user>('joinRoomUserInfo', fetchUser);
 
@@ -49,6 +50,8 @@ const SetMediaModal: React.FC<SetMediaModal> = ({ setIsOpen, room }) => {
   };
 
   const onClickJoinRoom = async () => {
+    if (isClicked) return;
+    setIsClicked(true);
     try {
       const token = getCookie('token');
       console.log('조인룸 토큰', token);
@@ -105,6 +108,7 @@ const SetMediaModal: React.FC<SetMediaModal> = ({ setIsOpen, room }) => {
           nickname,
         );
       });
+      setIsClicked(false);
     } catch (error) {
       console.error(error);
     }
