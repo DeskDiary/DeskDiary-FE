@@ -137,7 +137,6 @@ const Area = styled.div`
 
 const CamAreaDiv = styled.div`
   width: calc(100% - 380px);
-  margin-top: 61px;
   height: calc(100vh - (217px - 61px));
   margin-left: 40px;
   margin-right: 40px;

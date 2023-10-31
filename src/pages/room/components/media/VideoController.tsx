@@ -73,6 +73,7 @@ const Controller = styled.div`
   align-items: center;
   justify-content: start;
   gap: 10px;
+  margin-left: 10px;
 
   > button {
     display: flex;

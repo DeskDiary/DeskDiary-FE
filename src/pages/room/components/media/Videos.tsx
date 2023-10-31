@@ -17,7 +17,7 @@ const Videos: React.FC<VideosProps> = ({ users, tracks }) => {
   return (
     <Container>
       <AgoraVideoPlayer
-        style={{ height: '360px', width: '600px', margin: '10px' }}
+        style={{ height: '360px', width: '500px', margin: '10px' }}
         className="video"
         videoTrack={tracks[1]}
       />
@@ -29,7 +29,7 @@ const Videos: React.FC<VideosProps> = ({ users, tracks }) => {
               <AgoraVideoPlayer
                 style={{
                   height: '360px',
-                  width: '600px',
+                  width: '500px',
                   margin: '10px',
                   display: 'inline',
                 }}
@@ -48,13 +48,14 @@ const Container = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
-  /* display: flex; */
-  /* flex-direction: row; */
+  flex-direction: row;
   flex-wrap: nowrap;
   gap: 20px;
+  align-items: center;
+  justify-content: center;
+  width: 1200px;
 
-  width: 100%;
-  height: 100%;
+  overflow: scroll;
   align-items: center;
 
   @media (max-width: 1800px) {
