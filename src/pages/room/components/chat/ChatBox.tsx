@@ -6,6 +6,8 @@ import Chat from './Chat';
 import { fetchUser } from '../../../../axios/api';
 import { useQuery } from 'react-query';
 import socket from '../../socketInstance';
+import { RoomUserList } from '../../../../recoil/RoomAtom';
+import { useRecoilState } from 'recoil';
 
 type ChatBoxProps = { roomId: string };
 
@@ -17,6 +19,11 @@ type MessageData = {
   roomId: string;
 };
 
+type UserListPayload = {
+  nickname: string;
+  userListArr: { nickname: string, img: string }[];
+};
+
 type AllChatItem =
   | { type: 'message'; data: MessageData }
   | { type: 'new-user'; data: string }
@@ -25,6 +32,7 @@ type AllChatItem =
 const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
   const [newMessage, setNewMessage] = useState('');
   const [allChatList, setAllChatList] = useState<AllChatItem[]>([]);
+  const [roomUserList, setRoomUserList] = useRecoilState(RoomUserList)
 
   const { data } = useQuery<user>('chatUser', fetchUser, {
     refetchOnWindowFocus: false,
@@ -71,23 +79,27 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
 
   // 나가고 들어온 유저 닉네임 받아오기
   useEffect(() => {
-    socket.on('new-user', (hiUser: string) => {
-      setAllChatList(prevAllChatList => [
-        ...prevAllChatList,
-        { type: 'new-user', data: hiUser },
-      ]);
-      console.log('🥰새로 들어온 유저', hiUser);
+    socket.on('user-list', (payload: UserListPayload) => {
+      const { nickname, userListArr } = payload;
+      if (userListArr.some(user => user.nickname === nickname)) {
+        setAllChatList(prevAllChatList => [
+          ...prevAllChatList,
+          { type: 'new-user', data: nickname },
+        ]);
+        setRoomUserList(userListArr)
+        console.log('🥰새로 들어온 유저', nickname);
+        console.log('🥰유저리스트', userListArr);
+        console.log('리코일', roomUserList)
+      } else {
+        setAllChatList(prevAllChatList => [
+          ...prevAllChatList,
+          { type: 'left-user', data: nickname },
+        ]);
+        setRoomUserList(userListArr)
+        console.log('😭나간 유저', nickname);
+        console.log('😭유저리스트', userListArr);
+      }
     });
-
-    socket.on('left-user', (byeUser: string) => {
-      setAllChatList(prevAllChatList => [
-        ...prevAllChatList,
-        { type: 'left-user', data: byeUser },
-      ]);
-      console.log('😭나간 유저', byeUser);
-    });
-
-    console.log('소켓연결');
 
     return () => {
       socket.off('user-list');
