@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { getCookie } from '../../../auth/cookie';
+import checkin from '../../../images/room/checkin.png';
+import checkout from '../../../images/room/checkout.png';
 import {
   RoomInfo,
   RoomModalAtom,
@@ -12,7 +14,6 @@ import {
 import { timerState } from '../../../recoil/TimeAtom';
 import socket from '../socketInstance';
 import { getKoreanTime } from './Timer';
-
 type RoomModalProps = {};
 
 const RoomModal: React.FC<RoomModalProps> = () => {
@@ -100,28 +101,48 @@ const RoomModal: React.FC<RoomModalProps> = () => {
       },
     );
     localStorage.removeItem('room');
+  };
 
+  const TimeFormatter = (str: any) => {
+    console.log(str)
+    if(str == '' || str == null || str == undefined || str == '기록이 없습니다.') {
+      return `0시 0분 0초`;
+    }
+    const formattedStr = str.replace('T', ' ').replace('Z', '');
+    const [date, time] = formattedStr.split(' ');
+    const [hour, minute, second] = time.split('.')[0].split(':');
+    return `${hour}시 ${minute}분 ${second}초`;
   };
 
   return (
-    <Body>
+    <Container>
       <ModalBox>
-        <p>여기에서 머무른 시간이에요</p>
+        <p>책상 기록 시간</p>
         <TimeBox>
-          <p>책상시간</p>
-          <p>{timer}</p>
+          <div>
+            <p
+              style={{ color: '#B695EC', fontSize: '16px', fontWeight: '600' }}
+            >
+              CHECK IN
+            </p>
+            <img src={checkin} alt="checkin" />
+            <p>{TimeFormatter(storageStartData)}</p>
+          </div>
+          <div>
+            <p
+              style={{ color: '#EBBD2D', fontSize: '16px', fontWeight: '600' }}
+            >
+              CHECK OUT
+            </p>
+            <img src={checkout} alt="checkout" />
+            <p>{TimeFormatter(storageEndData)}</p>
+          </div>
         </TimeBox>
-        <CheckInBox>
-          <div>
-            <p>First Check In</p>
-            <p>{storageStartData}</p>
-          </div>
-          <div>
-            <p>Last Check Out</p>
-            <p>{storageEndData}</p>
-          </div>
-        </CheckInBox>
-        <p>퇴장하시겠어요?</p>
+        <TimerText>
+          <span>{timer}</span>
+          <span> 앉아 있었어요</span>
+        </TimerText>
+        <p style={{color: '#757575', fontWeight: '500'}}>퇴장하시겠어요?</p>
         <ButtonBox>
           <button onClick={roomOutHandler}>저장 후 퇴장</button>
           <button
@@ -133,11 +154,11 @@ const RoomModal: React.FC<RoomModalProps> = () => {
           </button>
         </ButtonBox>
       </ModalBox>
-    </Body>
+    </Container>
   );
 };
 
-const Body = styled.div`
+const Container = styled.div`
   position: fixed;
   width: 100vw;
   height: 100vh;
@@ -164,32 +185,41 @@ const ModalBox = styled.div`
   border-radius: 50px;
   background: #fff;
   box-shadow: 0px 4px 32px 0px rgba(0, 0, 0, 0.25);
+  p:first-child {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--primary-01);
+  }
 `;
 
 const TimeBox = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  & > p:last-child {
-    font-size: 24px;
-    font-weight: 700;
-  }
-`;
-const CheckInBox = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 44px;
-  & > div {
+  gap: 24px;
+  div {
     display: flex;
+    gap: 7px;
     flex-direction: column;
     align-items: center;
+    p:last-child {
+      color: var(--primary-01);
+      font-weight: 700;
+      font-size: 18px;
+    }
   }
-  & > div > p:first-child {
+`;
+
+const TimerText = styled.div`
+  display: flex;
+  gap: 10px;
+  span:first-child {
+    color: var(--primary-01);
+    font-size: 28px;
+    font-weight: 700;
+  }
+  span:last-child {
+    color: var(--gray-07);
     font-size: 16px;
-  }
-  & > div > p:last-child {
-    font-size: 18px;
+    font-weight: 500;
   }
 `;
 
@@ -202,16 +232,17 @@ const ButtonBox = styled.div`
     border: none;
     font-size: 24px;
     font-weight: 700;
+    border-radius: 100px;
     cursor: pointer;
   }
   button:first-child {
-    background: var(--gray-07);
+    background: var(--primary-01);
     color: white;
   }
   button:last-child {
     background: white;
-    border: 1px solid var(--gray-07);
-    color: var(--gray-07);
+    border: 1px solid var(--primary-01);
+    color: var(--primary-01);
   }
 `;
 

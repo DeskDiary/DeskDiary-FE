@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import SearchIcon from '@mui/icons-material/Search';
-import { Link, useNavigate, NavLink } from 'react-router-dom';
-import { toast } from 'sonner';
 import styled from '@emotion/styled';
-import CreateRoomModal from '../../../pages/home/components/CreateRoomModal';
-import { getCookie, setTokenCookie } from '../../../auth/cookie';
-import addroom from '../../../images/main/addroom.svg';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+import { getCookie } from '../../../auth/cookie';
 import { fetchUser } from '../../../axios/api';
-import profile from '../../../images/profile.png';
-import axios from 'axios';
 import cloud from '../../../images/cloud.png';
+import addroom from '../../../images/main/addroom.svg';
+import profile from '../../../images/profile.png';
+import CreateRoomModal from '../../../pages/home/components/CreateRoomModal';
 
 import { useQuery } from 'react-query';
 
@@ -142,7 +140,8 @@ const User = styled(Link)`
 const CreateRoomButton = styled.button`
   display: flex;
   width: 200px;
-  padding: 10px;
+
+  padding: 15px 10px;
   justify-content: center;
   align-items: center;
   background-color: var(--primary-01);
@@ -151,7 +150,6 @@ const CreateRoomButton = styled.button`
   background: url(${cloud}) ;
   background-size: cover;
   background-position: center;
-  
 
   min-width: 100px;
   /* color: var(--bw-whtie); */

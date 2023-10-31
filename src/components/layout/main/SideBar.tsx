@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
-import styled, { createGlobalStyle, css } from 'styled-components';
-import { hobby, home, logo, study, mydesk } from '../../../images';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { getCookie, setTokenCookie } from '../../../auth/cookie';
-import { useRecoilState } from 'recoil';
-import { SelectCateoryAtom } from '../../../recoil/RoomAtom';
+import React from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import styled, { createGlobalStyle } from 'styled-components';
+import { getCookie } from '../../../auth/cookie';
+import { hobby, home, mydesk, study } from '../../../images';
 import test from '../../../images/test.png';
 
 type SideBarProps = {};
