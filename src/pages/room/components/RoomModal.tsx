@@ -101,17 +101,13 @@ const RoomModal: React.FC<RoomModalProps> = () => {
       },
     );
     localStorage.removeItem('room');
-
-    // 마이크와 캠을 닫는 코드
-    // if (tracks[0]) {
-    //   tracks[0].close();
-    // }
-    // if (tracks[1]) {
-    //   tracks[1].close();
-    // }
   };
 
-  const TimeFormatter = (str: string) => {
+  const TimeFormatter = (str: any) => {
+    console.log(str)
+    if(str == '' || str == null || str == undefined || str == '기록이 없습니다.') {
+      return `0시 0분 0초`;
+    }
     const formattedStr = str.replace('T', ' ').replace('Z', '');
     const [date, time] = formattedStr.split(' ');
     const [hour, minute, second] = time.split('.')[0].split(':');
@@ -157,32 +153,6 @@ const RoomModal: React.FC<RoomModalProps> = () => {
             취소
           </button>
         </ButtonBox>
-
-        {/* <TimeBox>
-          <p>책상시간</p>
-          <p>{timer}</p>
-        </TimeBox>
-        <CheckInBox>
-          <div>
-            <p>First Check In</p>
-            <p>{TimeFormatter(storageStartData)}</p>
-          </div>
-          <div>
-            <p>Last Check Out</p>
-            <p>{TimeFormatter(storageEndData)}</p>
-          </div>
-        </CheckInBox>
-        <p>퇴장하시겠어요?</p>
-        <ButtonBox>
-          <button onClick={roomOutHandler}>저장 후 퇴장</button>
-          <button
-            onClick={() => {
-              setOutModalState(false);
-            }}
-          >
-            취소
-          </button>
-        </ButtonBox> */}
       </ModalBox>
     </Container>
   );
