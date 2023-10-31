@@ -5,6 +5,9 @@ import styled, { createGlobalStyle } from 'styled-components';
 import { getCookie } from '../../../auth/cookie';
 import { hobby, home, mydesk, study } from '../../../images';
 import test from '../../../images/test.png';
+import profile from '../.././../images/profile.svg';
+import { useQuery } from 'react-query';
+import { fetchUser } from '../../../axios/api';
 
 type SideBarProps = {};
 
@@ -33,6 +36,10 @@ const SideBar: React.FC<SideBarProps> = () => {
   const token = getCookie('token');
   const navigate = useNavigate();
 
+  const { data } = useQuery<user>('sidebar-user', fetchUser, {
+    refetchOnWindowFocus: false,
+  });
+
   const delayedRedirect = (path: string) => {
     setTimeout(() => {
       navigate(path);
@@ -56,16 +63,16 @@ const SideBar: React.FC<SideBarProps> = () => {
             ))}
             <SidebarButton
               to={token ? '/mydesk' : '/login'}
-              onClick={(e) => {
+              onClick={e => {
                 if (!token) {
                   e.preventDefault(); // NavLink의 기본 이동을 막아줌
                   toast.error('로그인이 필요합니다.', {
                     style: {
                       backgroundColor: '#ccdfff',
                       opacity: 0.6,
-                      color: 'white'
-                    }
-                  })
+                      color: 'white',
+                    },
+                  });
                   delayedRedirect('/login');
                 }
               }}
@@ -74,6 +81,26 @@ const SideBar: React.FC<SideBarProps> = () => {
               <p>책상 기록</p>
             </SidebarButton>
           </SidebarMenu>
+          <SidebarButton
+            className="mypage"
+            to={token ? '/mypage' : '/login'}
+          >
+            {token ? <>
+              <img
+              src={data?.profileImage ? data.profileImage : profile}
+              alt="menu icon" 
+            ></img>
+            <p>{data?.nickname}</p>
+            </> :
+            <>
+            <img
+              src={profile}
+              alt="menu icon" 
+            ></img>
+            <p>로그인</p>
+            </>}
+            
+          </SidebarButton>
         </div>
       </SidebarInner>
     </Sidebar>
@@ -96,8 +123,10 @@ const SidebarButton = styled(NavLink)`
   margin-left: 5px;
 
   color: white;
+  opacity: 0.5;
 
   &.active {
+    opacity: 1;
     > img {
       filter: grayscale(0); /* 회색조 */
     }
@@ -107,22 +136,23 @@ const SidebarButton = styled(NavLink)`
   }
 
   &:hover {
-    border: 1px solid white;
     opacity: 1;
-    width: 90%;
+    width: 85%;
+    background-color: rgba(255, 255, 255, 0.2);
     > img {
       filter: grayscale(0);
     }
     > p {
       color: white;
+      font-weight: 500;
     }
   }
 
   > img {
-    height: 35px;
+    height: 25px;
     border-radius: 50%;
     filter: grayscale(100%);
-    padding: 0 10px;
+    padding: 0 15px;
   }
 
   > p {
@@ -153,13 +183,26 @@ const SidebarButton = styled(NavLink)`
       color: var(--gray-03);
     }
   }
+
+  &.mypage {
+    margin-left: 15px;
+    opacity: 1;
+    > img {
+      height: 35px;
+      border-radius: 50%;
+      padding: 0 10px;
+      filter: grayscale(0)
+    }
+  }
 `;
 
 const SidebarMenu = styled.div`
-  display: grid;
+  display: flex;
+  flex-direction: column;
   padding: 8px;
-  gap: 50px;
+  gap: 30px;
   margin-top: 50px;
+  margin-bottom: 50px;
 
   ${SidebarButton} img {
     transition: width 0.3s;
@@ -207,7 +250,7 @@ const Sidebar = styled.div`
   left: 0;
   width: 80px;
   height: 100vh;
-  background: #4a65fd;
+  background: #0054a8;
   transition: width 0.4s;
   z-index: 1000;
 

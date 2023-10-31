@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import { ICameraVideoTrack, IMicrophoneAudioTrack } from 'agora-rtc-react';
 import { useClient } from './config';
-import { FaVolumeMute, FaVolumeUp, FaVideo, FaVideoSlash } from 'react-icons/fa';
+import {
+  FaVolumeMute,
+  FaVolumeUp,
+  FaVideo,
+  FaVideoSlash,
+} from 'react-icons/fa';
+import styled from 'styled-components';
 
 type VideoControllerProps = {
   tracks: [IMicrophoneAudioTrack, ICameraVideoTrack];
@@ -42,7 +48,7 @@ const VideoController: React.FC<VideoControllerProps> = ({
   };
 
   return (
-    <div className="controls">
+    <Controller>
       <button
         className={trackState.audio ? 'on' : ''}
         onClick={() => mute('audio')}
@@ -55,8 +61,32 @@ const VideoController: React.FC<VideoControllerProps> = ({
       >
         {trackState.video ? <FaVideo /> : <FaVideoSlash />}
       </button>
-      <button onClick={() => leaveChannel()}>나가기</button>
-    </div>
+      {/* <button onClick={() => leaveChannel()}>나가기</button> */}
+    </Controller>
   );
 };
+
+const Controller = styled.div`
+  width: 600px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  gap: 10px;
+
+  > button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 70px;
+    height: 40px;
+    background-color: var(--gray-07);
+    border: none;
+    font-size: 25px;
+    border-radius: 20px;
+    &:hover{
+      background-color: var(--gray-06);
+    }
+  }
+`;
 export default VideoController;

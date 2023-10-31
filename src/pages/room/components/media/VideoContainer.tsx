@@ -18,9 +18,7 @@ type VideoContainerProps = {
 };
 const useMicrophoneAndCameraTracks = createMicrophoneAndCameraTracks();
 
-const VideoContainer: React.FC<VideoContainerProps> = ({
-  setInCall
-}) => {
+const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
   const token = getCookie('token');
   const getUUID = window.location.pathname.split('/room/')[1];
   const [recoilRoomInfo, setRecoilRoomInfo] = useRecoilState(RoomInfo);
@@ -78,30 +76,29 @@ const VideoContainer: React.FC<VideoContainerProps> = ({
 
   const handleUserLeft = async (currentTracks: any) => {
     console.log('✨아고라 연결 끊기');
-  
+
     if (currentTracks) {
-      for(const track of currentTracks) {
+      for (const track of currentTracks) {
         if (track) {
           try {
             await track.stop();
             await track.close();
             console.log(`✨Track 멈춤`);
           } catch (error) {
-            console.error("Error stopping or closing track:", error);
+            console.error('Error stopping or closing track:', error);
           }
         }
       }
     }
-  
+
     if (client && currentTracks) {
       await client.unpublish(currentTracks);
       console.log('✨unpublish 완료');
     }
-  
+
     await client.leave();
     console.log('✨✨✨✨✨');
   };
-  
 
   useEffect(() => {
     const init = async (name: string) => {
@@ -154,8 +151,6 @@ const VideoContainer: React.FC<VideoContainerProps> = ({
       console.log('===Current Tracks:', currentTracks);
 
       handleUserLeft(tracks);
-
-      
     };
   }, [CHANNEL, client, ready, tracks]);
 
