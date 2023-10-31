@@ -25,5 +25,6 @@ const Wrap = styled.div`
   justify-content: center;
   align-items: center;
   background-color: #E8F1FF;
+  margin-left: 60px;
 `;
 export default MainLayout;

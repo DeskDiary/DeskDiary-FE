@@ -76,7 +76,7 @@ const Title = styled.div`
 const LendingImg = styled.img`
   position: fixed;
   width: 800px;
-  bottom: 300px;
+  top: 200px;
 `;
 
 const Logo = styled.img`
@@ -200,7 +200,7 @@ const StartButton = styled.div`
   transition: transform 0.1s ease-in-out; // 버튼이 움직이는 걸 부드럽게!
   background-color: #1a81e8;
   padding: 5px;
-  margin-top: 580px;
+  margin-top: 600px;
   cursor: pointer;
 
   &:hover {
