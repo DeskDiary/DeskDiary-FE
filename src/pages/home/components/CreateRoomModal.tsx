@@ -91,18 +91,18 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({
 
   const handleJoinRoom = async (uuid: string) => {
     try {
-      const token = getCookie('token');
-      console.log('조인룸 토큰', token);
-      const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL!}/room/${uuid}/join`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-      console.log(response);
+      // const token = getCookie('token');
+      // console.log('조인룸 토큰', token);
+      // const response = await axios.post(
+      //   `${process.env.REACT_APP_SERVER_URL!}/room/${uuid}/join`,
+      //   {},
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   },
+      // );
+      // console.log(response);
 
       // socket.emit(
       //   'joinRoom',
