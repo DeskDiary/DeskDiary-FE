@@ -64,12 +64,12 @@ const GoalButtonBox = styled.div`
 
 const ButtonState7 = styled.button<{ viewstate: string }>`
   color: ${props => (props.viewstate === 'true' ? 'black' : 'rgba(0, 0, 0, 0.5)')};
-  text-decoration: ${props => (props.viewstate ? 'underline' : 'none')};
+  text-decoration: ${props => (props.viewstate === 'true' ? 'underline' : 'none')};
 `;
 
 const ButtonState30 = styled.button<{ viewstate: string }>`
   color: ${props => (props.viewstate === 'true' ? 'black' : 'rgba(0, 0, 0, 0.5)')};
-  text-decoration: ${props => (props.viewstate ? 'underline' : 'none')};
+  text-decoration: ${props => (props.viewstate === 'true' ? 'underline' : 'none')};
 `;
 
 const Titile = styled.div`
