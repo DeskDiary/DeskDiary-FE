@@ -13,6 +13,7 @@ import RoomSideBar from './components/RoomSideBar';
 import RoomUnderBar from './components/RoomUnderBar';
 import ChatBox from './components/chat/ChatBox';
 import SetMediaModal from './components/SetMediaModal';
+import VideoContainer from './components/media/VideoContainer';
 
 type RoomProps = {
   children?: React.ReactNode;
@@ -96,7 +97,8 @@ const Room: React.FC<RoomProps> = () => {
           <RoomHeader />
           <Area>
             <CamAreaDiv>
-              <RoomCamArea />
+              {/* <RoomCamArea /> */}
+              <VideoContainer />
             </CamAreaDiv>
             {/* 채팅이 들어갈 곳 */}
             <ChattingAreaDiv>
