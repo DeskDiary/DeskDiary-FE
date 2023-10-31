@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import SideBar from './SideBar';
+import CreateRoomButton from '../../CreateRoomButton';
 
 type MainLayoutProps = {};
 
@@ -10,6 +11,7 @@ const MainLayout: React.FC<MainLayoutProps> = () => {
     <Wrap>
       <SideBar />
       <Outlet />
+      <CreateRoomButton />
     </Wrap>
   );
 };

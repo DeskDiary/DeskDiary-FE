@@ -6,13 +6,13 @@ import { FaVolumeMute, FaVolumeUp, FaVideo, FaVideoSlash } from 'react-icons/fa'
 type VideoControllerProps = {
   tracks: [IMicrophoneAudioTrack, ICameraVideoTrack];
   setStart: React.Dispatch<React.SetStateAction<boolean>>;
-  // setInCall: React.Dispatch<React.SetStateAction<boolean>>;
+  setInCall: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const VideoController: React.FC<VideoControllerProps> = ({
   tracks,
   setStart,
-  // setInCall,
+  setInCall,
 }) => {
   const client = useClient();
   const [trackState, setTrackState] = useState({ video: true, audio: true });
@@ -38,7 +38,7 @@ const VideoController: React.FC<VideoControllerProps> = ({
     tracks[0].close();
     tracks[1].close();
     setStart(false);
-    // setInCall(false);
+    setInCall(false);
   };
 
   return (
