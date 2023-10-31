@@ -14,7 +14,6 @@ import socket from '../../room/socketInstance';
 
 type CreateRoomProps = {
   setOpenCreateRoom: React.Dispatch<React.SetStateAction<boolean>>;
-  user: user;
 };
 
 // 썸네일 등록 버튼 스타일
@@ -32,7 +31,6 @@ const VisuallyHiddenInput = styled('input')({
 
 const CreateRoomModal: React.FC<CreateRoomProps> = ({
   setOpenCreateRoom,
-  user,
 }) => {
   const token = getCookie('token');
 

@@ -1,7 +1,7 @@
 import { atom } from 'recoil';
 import AgoraRTC, {
-  IAgoraRTCRemoteUser,
-  createMicrophoneAndCameraTracks,
+  IMicrophoneAudioTrack,
+  ICameraVideoTrack
 } from 'agora-rtc-react';
 
 const APP_ID = 'a53d5f93a9934e0299413f35614fa485';
@@ -44,7 +44,12 @@ export const choiceMicState = atom<string>({
   default: '',
 });
 
-// export const TracksAtom = atom({
-//   key: 'tracksState',
-//   default: null as [IMicrophoneAudioTrack, ICameraVideoTrack] | null,
-// });
+export const TracksAtom = atom({
+  key: 'tracksState',
+  default: null as [IMicrophoneAudioTrack, ICameraVideoTrack] | null,
+});
+
+export const CloseMediaAtom = atom({
+  key: 'closeMediaAtom',
+  default: false,
+})

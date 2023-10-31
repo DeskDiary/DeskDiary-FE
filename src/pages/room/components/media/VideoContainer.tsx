@@ -12,6 +12,7 @@ import { useQuery } from 'react-query';
 import { fetchUser } from '../../../../axios/api';
 import { useRecoilState } from 'recoil';
 import { RoomInfo } from '../../../../recoil/RoomAtom';
+import { CloseMediaAtom } from '../../../../recoil/CamAtom';
 
 type VideoContainerProps = {};
 const useMicrophoneAndCameraTracks = createMicrophoneAndCameraTracks();
@@ -20,6 +21,7 @@ const VideoContainer: React.FC<VideoContainerProps> = ({}) => {
   const token = getCookie('token');
   const getUUID = window.location.pathname.split('/room/')[1];
   const [recoilRoomInfo, setRecoilRoomInfo] = useRecoilState(RoomInfo);
+  const [closeMedia, setCloseMedia] = useRecoilState<boolean>(CloseMediaAtom);
   const [roomInfo, setRoomInfo] = useState({
     agoraAppId: '',
     agoraToken: '',
@@ -116,6 +118,22 @@ const VideoContainer: React.FC<VideoContainerProps> = ({}) => {
       init(CHANNEL);
     }
   }, [CHANNEL, client, ready, tracks]);
+
+  useEffect(() => {
+    console.log('✨useEffect')
+    if (closeMedia) {
+      console.log('🥰if 0')
+      if (tracks![0]) {
+        tracks![0].close();
+        console.log('🥰if 1')
+      }
+      if (tracks![1]) {
+        tracks![1].close();
+        console.log('🥰if 2')
+      }
+      setCloseMedia(false); // 다시 초기화
+    }
+  }, [closeMedia]);
 
   return (
     <div>
