@@ -58,12 +58,9 @@ const StudyCategory: React.FC<StudyCategoryProps> = () => {
       <Info>
         {rankingList.map((item, i: number) => {
           return (
-            <User>
+            <User key={`${i+1}위`}>
               <p>{i + 1}위</p>
-              <UserImage
-                borderColor={rankingImg[i].borderColor}
-                imgSrc={item.profileImage}
-              >
+              <UserImage $bordercolor={rankingImg[i].borderColor} $imgsrc={item.profileImage}>
                 <RankingImg src={rankingImg[i].img} alt={`${i + 1}등이미지`} />
               </UserImage>
               <p>{item.nickname}</p>
@@ -130,12 +127,12 @@ const User = styled.div`
   }
 `;
 
-const UserImage = styled.div<{ borderColor: string; imgSrc: null | string }>`
+const UserImage = styled.div<{ $bordercolor: string,$imgsrc: null | string }>`
   width: 100px;
   height: 100px;
-  border: 2px solid ${props => props.borderColor};
+  border: 2px solid ${props => props.$bordercolor};
   border-radius: 50%;
-  background-image: url(${(props) => props.imgSrc !== null ? props.imgSrc : profileDefaultImg});
+  background-image: url(${(props) => (props.$imgsrc !== null) ? props.$imgsrc : profileDefaultImg});
   background-size: cover;
   background-position: center;
 `;

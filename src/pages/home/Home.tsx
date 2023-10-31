@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import styled from 'styled-components';
-import MainTop from '../../components/layout/main/MainTop';
 
-import { Goal, NonUserIntro } from './components';
-import { getCookie } from '../../auth/cookie';
-import RoomList from './components/RoomList';
-import userIntro from '../../images/main/userIntro.svg';
 import { useNavigate } from 'react-router';
+import { getCookie } from '../../auth/cookie';
+import userIntro from '../../images/main/userIntro.svg';
+import { Goal, NonUserIntro } from './components';
+import RoomList from './components/RoomList';
 
 const Home = () => {
   const navigate = useNavigate();

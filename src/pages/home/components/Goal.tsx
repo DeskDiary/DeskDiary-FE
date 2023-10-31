@@ -77,7 +77,7 @@ const Title = styled.p`
   margin-bottom: 40px;
 `;
 
-const Content = styled.p`
+const Content = styled.div`
   display: flex;
   justify-content: space-between;
   p:first-child {

@@ -11,7 +11,22 @@ type GoalPercentGraphProps = {};
 const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
   const [GoalModal, setGoalModal] = useRecoilState<boolean>(GoalTimeModalState);
   const [목표시간, set목표시간] = useState<string>('??시간 ??분');
+  const [목표시간sec, set목표시간sec] = useState<number>(0);
   const [취미누적시간, set취미누적시간] = useState<string>('??시간 ??분');
+  const [스터디누적시간, set스터디누적시간] = useState<string>('??시간 ??분');
+  const [percent, setPercent] = useState(0);
+
+  useEffect(() => {
+    const time = (+취미누적시간) + (+스터디누적시간);
+    setPercent(Math.floor((time / 목표시간sec) *100) );
+  }, [목표시간, 취미누적시간, 스터디누적시간])
+
+  const 누적시간forMatter = (취미누적시간:string, 스터디누적시간:string) => {
+    const time = (+취미누적시간) + (+스터디누적시간);
+    const hour = Math.floor(time / 3600);
+      const minute = Math.floor((time % 3600) / 60).toString().padStart(2, '0');
+    return `${hour}시간 ${minute}분`;
+  }
 
   const goalModalOnclickHandler = () => {
     setGoalModal(!GoalModal);
@@ -26,6 +41,7 @@ const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
         },
       });
       const time = response.data.goalTime;
+      set목표시간sec(time);
       const hour = Math.floor(time / 3600);
       const minute = ((time % 3600) / 60).toString().padStart(2, '0');
       set목표시간(`${hour}시간 ${minute}분`);
@@ -41,8 +57,8 @@ const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
         },
       });
       const data = response.data;
-      console.log('취미누적시간', data)
-      set취미누적시간(data.hobbyTotalHours+'');
+      set취미누적시간(data.hobbyTotalHours + '');
+      set스터디누적시간(data.studyTotalHours + '');
     } catch (error) {
       console.error(error);
     }
@@ -50,14 +66,14 @@ const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
   useEffect(() => {
     목표시간조회();
     누적시간조회();
-  }, []);
+  }, [GoalModal]);
 
   return (
     <Body>
-      <Title>오늘의 취미 목표</Title>
+      <Title>오늘의 목표</Title>
       <PercentImg>
         <img src={아무사진} />
-        <p>40%</p>
+        <p>{percent}%</p>
       </PercentImg>
       <DetailTimeInfo>
         <DetailTimeInfoPBox>
@@ -66,7 +82,7 @@ const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
         </DetailTimeInfoPBox>
         <DetailTimeInfoPBox>
           <p>누적시간</p>
-          <p>{취미누적시간}</p>
+          <p>{누적시간forMatter(취미누적시간, 스터디누적시간)}</p>
         </DetailTimeInfoPBox>
       </DetailTimeInfo>
 

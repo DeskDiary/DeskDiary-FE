@@ -23,13 +23,13 @@ const GoalRecoard: React.FC<GoalRecoardProps> = () => {
         <GoalButtonBox>
           <ButtonState7
             onClick={view7OnclickHandler}
-            state={view7 ? true : false}
+            viewstate={`${view7}`}
           >
             일주일 기록 보기
           </ButtonState7>
           <ButtonState30
             onClick={view30OnclickHandler}
-            state={view30 ? true : false}
+            viewstate={`${view30}`}
           >
             한달 기록 보기
           </ButtonState30>
@@ -62,14 +62,14 @@ const GoalButtonBox = styled.div`
   font-size: 14px;
 `;
 
-const ButtonState7 = styled.button<{ state: boolean }>`
-  color: ${props => (props.state ? 'black' : 'rgba(0, 0, 0, 0.5)')};
-  text-decoration: ${props => (props.state ? 'underline' : 'none')};
+const ButtonState7 = styled.button<{ viewstate: string }>`
+  color: ${props => (props.viewstate === 'true' ? 'black' : 'rgba(0, 0, 0, 0.5)')};
+  text-decoration: ${props => (props.viewstate ? 'underline' : 'none')};
 `;
 
-const ButtonState30 = styled.button<{ state: boolean }>`
-  color: ${props => (props.state ? 'black' : 'rgba(0, 0, 0, 0.5)')};
-  text-decoration: ${props => (props.state ? 'underline' : 'none')};
+const ButtonState30 = styled.button<{ viewstate: string }>`
+  color: ${props => (props.viewstate === 'true' ? 'black' : 'rgba(0, 0, 0, 0.5)')};
+  text-decoration: ${props => (props.viewstate ? 'underline' : 'none')};
 `;
 
 const Titile = styled.div`

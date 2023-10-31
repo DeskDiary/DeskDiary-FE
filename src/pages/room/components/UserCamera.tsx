@@ -35,9 +35,9 @@ const UserCamera: React.FC<CameraProps> = () => {
 
       if (mediaType === 'video') {
         console.log('mediaType', mediaType);
-        setUsers(previousUsers => [...previousUsers, user]);
+        setUsers(previousUsers => [...new Set([...previousUsers, user])]);
       }
-
+//[...new Set([...prevUsers, user])]
       if (mediaType === 'audio') {
         // user.audioTrack.play();
       }
@@ -88,7 +88,7 @@ const UserCamera: React.FC<CameraProps> = () => {
       newClient.on('user-left', handleUserLeft);
 
       newClient
-        .join(APP_ID, CHANNEL, TOKEN, null)
+        .join(APP_ID, CHANNEL, TOKEN, 0)
         .then(uid => {
           return Promise.all([AgoraRTC.createMicrophoneAndCameraTracks(), uid]);
         })
