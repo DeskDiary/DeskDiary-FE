@@ -17,16 +17,18 @@ const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
   const [percent, setPercent] = useState(0);
 
   useEffect(() => {
-    const time = (+취미누적시간) + (+스터디누적시간);
-    setPercent(Math.floor((time / 목표시간sec) *100) );
-  }, [목표시간, 취미누적시간, 스터디누적시간])
+    const time = +취미누적시간 + +스터디누적시간;
+    setPercent(Math.floor((time / 목표시간sec) * 100));
+  }, [목표시간, 취미누적시간, 스터디누적시간]);
 
-  const 누적시간forMatter = (취미누적시간:string, 스터디누적시간:string) => {
-    const time = (+취미누적시간) + (+스터디누적시간);
+  const 누적시간forMatter = (취미누적시간: string, 스터디누적시간: string) => {
+    const time = +취미누적시간 + +스터디누적시간;
     const hour = Math.floor(time / 3600);
-      const minute = Math.floor((time % 3600) / 60).toString().padStart(2, '0');
+    const minute = Math.floor((time % 3600) / 60)
+      .toString()
+      .padStart(2, '0');
     return `${hour}시간 ${minute}분`;
-  }
+  };
 
   const goalModalOnclickHandler = () => {
     setGoalModal(!GoalModal);
@@ -70,11 +72,27 @@ const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
 
   return (
     <Body>
-      <Title>오늘의 목표</Title>
-      <PercentImg>
-        <img src={아무사진} />
-        <p>{percent}%</p>
-      </PercentImg>
+      <Title>목표 달성</Title>
+      {
+        (목표시간sec > 0) 
+        ? 
+        <Text>
+          <p>목표한 공부 시간 중</p>
+          <p><span>{percent}%</span> 를</p>
+          <p>해냈어요</p>
+        </Text> 
+      : 
+        <Text>
+          <p><br /></p>
+          <p>목표를 설정해주세요</p>
+          <p><br /></p>
+        </Text>
+      }
+      
+
+
+      <Image src={아무사진} />
+
       <DetailTimeInfo>
         <DetailTimeInfoPBox>
           <p>목표시간</p>
@@ -103,28 +121,42 @@ const Body = styled.div`
 `;
 
 const Title = styled.p`
-  font-size: 16px;
+  font-size: 24px;
   font-weight: 700;
-  margin-bottom: 35px;
+  margin-bottom: 27px;
 `;
 
-const PercentImg = styled.div`
+const Text = styled.div`
   display: flex;
-  justify-content: space-between;
-  img {
-    width: 234px;
-    height: 234px;
-    background-image: linear-gradient(to top, yellow 50%, grey 50%);
-  }
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   p {
-    font-size: 30px;
-    font-weight: 700;
-    margin-top: 200px;
+    font-size: 18px;
+    line-height: 123.5%;
+    letter-spacing: 0.25px;
+    font-weight: 400;
   }
+  p > span {
+    color: var(--primary-01);
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 123.5%;
+    letter-spacing: 0.25px;
+  }
+`
+
+const Image = styled.img`
+  margin-top: 24px;
+  display: flex;
+  width: 220px;
+  height: 170px;
+  margin-left: auto;
+  margin-right: auto;
 `;
 
 const DetailTimeInfo = styled.div`
-  margin-top: 40px;
+  margin-top: 24px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -145,8 +177,8 @@ const DetailTimeInfoPBox = styled.div`
 `;
 
 const PageMoveButton = styled.button`
-  margin-left: 200px;
-  margin-top: 36px;
+  margin-left: 221px;
+  margin-top: 18px;
   border: none;
   font-size: 16px;
   align-self: flex-end;

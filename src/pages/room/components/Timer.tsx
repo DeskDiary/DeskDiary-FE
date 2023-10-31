@@ -34,7 +34,6 @@ const Timer: React.FC<TimerProps> = () => {
   const [startLocalStorageData, setStartLocalStorageData] = useState<any[]>([]);
 
   const [endLocalStorageData, setEndLocalStorageData] = useState<any[]>([]);
-  console.log('시작 끝',startLocalStorageData, endLocalStorageData)
   const [누적시간State, set누적시간State] = useState(0);
 
   useEffect(() => {
@@ -105,6 +104,7 @@ const Timer: React.FC<TimerProps> = () => {
 
         누적시간 += 종료시간 - 시작시간;
       }
+      set누적시간State(누적시간);
   }, []);
 
   const timerButtonHandler = () => {
@@ -253,7 +253,6 @@ const Timer: React.FC<TimerProps> = () => {
             return acc;
           }, 0);
         const 누적시간 = 현재시간초 - 마지막시간초 + 누적시간State;
-        console.log((현재시간초 - 마지막시간초) , 누적시간State);
         setTimer(formatTime(누적시간));
       } else {
         // 일시정지상태
@@ -261,7 +260,7 @@ const Timer: React.FC<TimerProps> = () => {
     };
     // 1초마다 updateTimer 함수 실행
     if (timerButtonState) {
-      timerIntervalRef.current = setInterval(updateTimer, 200);
+      timerIntervalRef.current = setInterval(updateTimer, 500);
     } else {
       if (timerIntervalRef.current) {
         clearInterval(timerIntervalRef.current);

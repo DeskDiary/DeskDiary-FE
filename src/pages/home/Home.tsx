@@ -61,7 +61,6 @@ const Container = styled.div`
   width: 100vw;
   min-height: 100vh;
   background-color: #e8f1ff;
-
   ${Body} {
     /* margin-top: 100px; */
     width: 1200px;
