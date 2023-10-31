@@ -54,8 +54,9 @@ const HobbyCategory: React.FC<HobbyCategoryProps> = () => {
   }, []);
   return (
     <Container>
-      <MainTop />
-      <Info>
+      <Body>
+{/* <MainTop /> */}
+<Info>
         {rankingList.map((item, i: number) => {
           return (
             <User key={`${i+1}위`}>
@@ -73,9 +74,21 @@ const HobbyCategory: React.FC<HobbyCategoryProps> = () => {
       <Rooms>
         <RoomList label="전체 취미룸" show="fetchHobby" />
       </Rooms>
+      </Body>
+      
     </Container>
   );
 };
+
+const Body = styled.div`
+display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  width: 1200px;
+  height: 100vh;
+  margin-top: 100px;
+`
 
 const Rooms = styled.div`
   display: flex;
@@ -90,8 +103,9 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: start;
   align-items: center;
-  width: 1200px;
-  height: 100vh;
+  width: 100vh;
+  height: 100%;
+  background-color: #e8f1ff;
 `;
 
 const Info = styled.div`
