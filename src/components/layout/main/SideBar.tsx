@@ -8,6 +8,7 @@ import test from '../../../images/test.png';
 import profile from '../.././../images/profile.svg';
 import { useQuery } from 'react-query';
 import { fetchUser } from '../../../axios/api';
+import logo from '../../../images/logo.svg';
 
 type SideBarProps = {};
 
@@ -52,7 +53,7 @@ const SideBar: React.FC<SideBarProps> = () => {
       <SidebarInner>
         <div>
           <SidebarHeader>
-            <Logo src={test} alt="Logo"></Logo>
+            <Logo src={logo} alt="Logo"></Logo>
           </SidebarHeader>
           <SidebarMenu>
             {navItems.map(item => (
@@ -189,6 +190,7 @@ const SidebarButton = styled(NavLink)`
       width: 35px;
       padding: 0;
       margin-left: 7px;
+      margin-right: 15px;
       border-radius: 50%;
       filter: grayscale(0);
     }
@@ -227,6 +229,7 @@ const SidebarHeader = styled.div`
   justify-content: center;
   height: 72px;
   width: 80px;
+  margin-top: 10px;
 `;
 
 const SidebarInner = styled.div`

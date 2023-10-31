@@ -48,7 +48,7 @@ const Button = styled.button`
   box-shadow: 2px 4px 9px 0px rgba(0, 0, 0, 0.25);
 
   > img {
-    width: 50px;
+    width: 45px;
     margin-left: 5px;
   }
   > p {
