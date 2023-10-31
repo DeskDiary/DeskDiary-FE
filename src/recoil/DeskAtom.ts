@@ -4,3 +4,4 @@ export const GoalTimeModalState = atom({
   key: 'GoalTimeModalState',
   default: false,
 });
+

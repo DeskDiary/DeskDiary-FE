@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import styled from 'styled-components';
-import MainTop from '../../components/layout/main/MainTop';
 
-import { Goal, NonUserIntro } from './components';
-import { getCookie } from '../../auth/cookie';
-import RoomList from './components/RoomList';
-import userIntro from '../../images/main/userIntro.svg';
 import { useNavigate } from 'react-router';
+import { getCookie } from '../../auth/cookie';
+import userIntro from '../../images/main/userIntro.svg';
+import { Goal, NonUserIntro } from './components';
+import RoomList from './components/RoomList';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -29,7 +28,7 @@ const Home = () => {
 
   return (
     <Container>
-      <body>
+      <div>
         {/* <MainTop /> */}
 
         <Info>
@@ -44,7 +43,7 @@ const Home = () => {
         </Info>
 
         <RoomList label="엉덩이들이 많이 찾는 TOP 10" show="fetchRoomTop" />
-      </body>
+      </div>
     </Container>
   );
 };
@@ -61,7 +60,7 @@ const Container = styled.div`
   min-height: 100vh;
   background-color: #e8f1ff;
 
-  > body {
+  > div {
     /* margin-top: 100px; */
     width: 1200px;
   }

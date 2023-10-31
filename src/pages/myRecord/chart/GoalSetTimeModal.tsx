@@ -12,7 +12,7 @@ const GoalSetTimeModal: React.FC<GoalSetTimeModalProps> = () => {
   const token = getCookie('token');
   const [hour, setHour] = useState<number>(0);
   const [minute, setMinute] = useState<number>(0);
-
+  const [목표시간sec, set목표시간sec] = useState<number>(0);
   const hourOnchangeHandler = (e: any) => {
     setHour(e.target.value);
   };
@@ -23,6 +23,8 @@ const GoalSetTimeModal: React.FC<GoalSetTimeModalProps> = () => {
   const onClickSetTime = () => {
     목표시간설정();
   };
+
+  
 
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const 목표시간설정 = async () => {
@@ -38,7 +40,7 @@ const GoalSetTimeModal: React.FC<GoalSetTimeModalProps> = () => {
           },
         );
         setGoalModal(false);
-        window.location.reload();
+
       } catch (error) {
         console.error(error);
       }
