@@ -81,25 +81,21 @@ const SideBar: React.FC<SideBarProps> = () => {
               <p>책상 기록</p>
             </SidebarButton>
           </SidebarMenu>
-          <SidebarButton
-            className="mypage"
-            to={token ? '/mypage' : '/login'}
-          >
-            {token ? <>
-              <img
-              src={data?.profileImage ? data.profileImage : profile}
-              alt="menu icon" 
-            ></img>
-            <p>{data?.nickname}</p>
-            </> :
-            <>
-            <img
-              src={profile}
-              alt="menu icon" 
-            ></img>
-            <p>로그인</p>
-            </>}
-            
+          <SidebarButton className="mypage" to={token ? '/mypage' : '/login'}>
+            {token ? (
+              <>
+                <img
+                  src={data?.profileImage ? data.profileImage : profile}
+                  alt="menu icon"
+                ></img>
+                <p>{data?.nickname}</p>
+              </>
+            ) : (
+              <>
+                <img src={profile} alt="menu icon"></img>
+                <p>로그인</p>
+              </>
+            )}
           </SidebarButton>
         </div>
       </SidebarInner>
@@ -180,6 +176,7 @@ const SidebarButton = styled(NavLink)`
       white-space: nowrap;
       opacity: 0;
       transition: opacity 0.4s ease-in-out;
+      
       color: var(--gray-03);
     }
   }
@@ -189,9 +186,11 @@ const SidebarButton = styled(NavLink)`
     opacity: 1;
     > img {
       height: 35px;
+      width: 35px;
+      padding: 0;
+      margin-left: 7px;
       border-radius: 50%;
-      padding: 0 10px;
-      filter: grayscale(0)
+      filter: grayscale(0);
     }
   }
 `;

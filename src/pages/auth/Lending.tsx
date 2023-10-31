@@ -5,24 +5,40 @@ import { Link } from 'react-router-dom';
 import { getCookie } from '../../auth/cookie';
 import logo from '../../images/logo.svg';
 import { useNavigate } from 'react-router-dom';
+import { AnyNsRecord } from 'dns';
 
 type LendingProps = {};
 
 const Lending: React.FC<LendingProps> = () => {
+  const navigate = useNavigate();
+
   useEffect(() => {
     window.sessionStorage.setItem('visited', 'true');
   }, []);
 
+  const goService = (event: any) => {
+    event.preventDefault();
+    navigate('/');
+  };
+
   return (
     <Container>
       <BoxContents>
-        <p>언제 어디든지 나의 책상이 될 수 있는 곳에서 만나요</p>
-        <Logo src={logo} alt={logo}/>
+        <Logo src={logo} alt={logo} />
+        <Title>
+          <div>언제 어디든지</div>
+          <div>나의 책상이 될 수 있는 곳에서 만나요</div>
+        </Title>
+
         <Text>
-          온라인 캠 스터디 서비스<span>책상일기</span>
+          <div>공부,취미 혼자 시작하기 힘들다면</div>
+          <div>같은 고민을 가진 사람들과 캠으로 소통하면서</div>
+          <div>서로의 의지를 책상 위에서 응원 해주는 온라인 캠서비스</div>
+          <div>책상일기</div>
         </Text>
-        <StartButton to="/">서비스 시작하기</StartButton>
       </BoxContents>
+      <StartButton onClick={e => goService(e)}>서비스 시작하기</StartButton>
+      <LendingImg src={sample} alt="lending-image" />
       <Footer>
         <FooterBody>
           <FooterTitle>Site Map</FooterTitle>
@@ -44,9 +60,27 @@ const Lending: React.FC<LendingProps> = () => {
   );
 };
 
+const Title = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  > div {
+    color: white;
+    height: 35px;
+    font-size: 30px;
+    font-weight: 700;
+  }
+`;
+
+const LendingImg = styled.img`
+  position: fixed;
+  width: 800px;
+  bottom: 300px;
+`;
+
 const Logo = styled.img`
-  width: 116px;
-  height: 141px;
+  width: 50px;
 `;
 
 const FooterBody = styled.div`
@@ -84,12 +118,14 @@ const FooterTitle = styled.div`
 
 const Container = styled.div`
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: start;
   align-items: center;
-  background-color: #86c9fa;
+  background-color: #1a81e8;
+
+  position: relative;
 `;
 
 const Footer = styled.div`
@@ -99,7 +135,9 @@ const Footer = styled.div`
   justify-content: center;
   align-items: center;
   padding: 30px;
-  margin-top: 300px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
 `;
 
 const Box = styled.div`
@@ -122,54 +160,63 @@ const Box = styled.div`
 `;
 
 const BoxContents = styled.div`
-  gap: 20px;
-
-  width: 1000px;
-  height: 850px;
-
-  margin-top: 20px;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: start;
-  
-
-  background-image: url(${sample});
-  background-size: cover; // 이미지 사이즈 조절
-  background-repeat: no-repeat; // 이미지 반복 설정
-  background-position: center; // 이미지 위치 설정
-
-  > p {
-    margin-top: 90px;
-    color: white;
-    font-size: 30px;
-    margin-bottom: 10px;
-  }
+  gap: 20px;
+  position: absolute;
+  top: 50px;
+  z-index: 50;
 `;
 
 const Text = styled.div`
   color: var(--primary-01);
-  font-size: 15px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  > span {
-    color: var(--primary-01);
-    font-weight: 600;
-    margin-left: 5px;
+  background-color: rgba(26, 129, 232, 0.2);
+  border-radius: 20px;
+
+  > div {
+    height: 22px;
     font-size: 17px;
+    color: white;
   }
 `;
 
-const StartButton = styled(Link)`
-  background-color: var(--primary-01);
-  width: 300px;
-  height: 50px;
-  font-size: 17px;
+const StartButton = styled.div`
+  /* background-color: var(--primary-01); */
+  width: 180px;
+  height: 40px;
+  font-size: 20px;
   color: white;
+  border: 5px solid white;
+  border-radius: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: transform 0.1s ease-in-out; // 버튼이 움직이는 걸 부드럽게!
+  background-color: #1a81e8;
+  padding: 5px;
+  margin-top: 580px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #4a9cee;
+  }
+
+  box-shadow: 0 0 0 1px #6698cb inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset,
+    0 8px 0 0 rgba(110, 164, 219, 0.7), 0 8px 0 1px rgba(0, 0, 0, 0.4),
+    0 8px 8px 1px rgba(0, 0, 0, 0.5);
+
+  &:active {
+    transform: translateY(4px); // 버튼을 아래로 4px 움직여
+    box-shadow: 0 0 0 1px #6191c2 inset,
+      0 0 0 2px rgba(255, 255, 255, 0.15) inset,
+      0 4px 0 0 rgba(110, 164, 219, 0.7), 0 4px 0 1px rgba(0, 0, 0, 0.4),
+      0 4px 8px 1px rgba(0, 0, 0, 0.5);
+  }
 `;
 export default Lending;

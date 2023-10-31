@@ -51,10 +51,10 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: start;
   align-items: center;
-  margin-top : 110px;
+  margin-top : 120px;
 
   width: 1200px;
-  min-height: 100vh;
+  min-height: calc(100vh - 120px);
   background-color: #e8f1ff;
 `;
 

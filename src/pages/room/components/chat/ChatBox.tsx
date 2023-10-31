@@ -21,7 +21,7 @@ type MessageData = {
 
 type UserListPayload = {
   nickname: string;
-  userListArr: { nickname: string, img: string }[];
+  userListArr: { nickname: string; img: string }[];
 };
 
 type AllChatItem =
@@ -32,7 +32,7 @@ type AllChatItem =
 const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
   const [newMessage, setNewMessage] = useState('');
   const [allChatList, setAllChatList] = useState<AllChatItem[]>([]);
-  const [roomUserList, setRoomUserList] = useRecoilState(RoomUserList)
+  const [roomUserList, setRoomUserList] = useRecoilState(RoomUserList);
 
   const { data } = useQuery<user>('chatUser', fetchUser, {
     refetchOnWindowFocus: false,
@@ -79,26 +79,27 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
 
   // 나가고 들어온 유저 닉네임 받아오기
   useEffect(() => {
-    socket.on('user-list', (payload: UserListPayload) => {
+    socket.on('new-user', (payload: UserListPayload) => {
       const { nickname, userListArr } = payload;
-      if (userListArr.some(user => user.nickname === nickname)) {
-        setAllChatList(prevAllChatList => [
-          ...prevAllChatList,
-          { type: 'new-user', data: nickname },
-        ]);
-        setRoomUserList(userListArr)
-        console.log('🥰새로 들어온 유저', nickname);
-        console.log('🥰유저리스트', userListArr);
-        console.log('리코일', roomUserList)
-      } else {
-        setAllChatList(prevAllChatList => [
-          ...prevAllChatList,
-          { type: 'left-user', data: nickname },
-        ]);
-        setRoomUserList(userListArr)
-        console.log('😭나간 유저', nickname);
-        console.log('😭유저리스트', userListArr);
-      }
+      setAllChatList(prevAllChatList => [
+        ...prevAllChatList,
+        { type: 'new-user', data: nickname },
+      ]);
+      setRoomUserList(userListArr);
+      console.log('🥰새로 들어온 유저', nickname);
+      console.log('🥰유저리스트', userListArr);
+      console.log('리코일', roomUserList);
+    });
+
+    socket.on('leave-user', (payload: UserListPayload) => {
+      const { nickname, userListArr } = payload;
+      setAllChatList(prevAllChatList => [
+        ...prevAllChatList,
+        { type: 'left-user', data: nickname },
+      ]);
+      setRoomUserList(userListArr);
+      console.log('😭나간 유저', nickname);
+      console.log('😭유저리스트', userListArr);
     });
 
     return () => {
