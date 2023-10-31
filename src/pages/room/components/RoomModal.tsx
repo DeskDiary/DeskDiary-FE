@@ -4,11 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { getCookie } from '../../../auth/cookie';
-import { RoomInfo, RoomModalAtom, RoomUUIDAtom } from '../../../recoil/RoomAtom';
+import {
+  RoomInfo,
+  RoomModalAtom,
+  RoomUUIDAtom,
+} from '../../../recoil/RoomAtom';
 import { timerState } from '../../../recoil/TimeAtom';
 import socket from '../socketInstance';
 import { getKoreanTime } from './Timer';
-
 
 type RoomModalProps = {};
 
@@ -17,14 +20,13 @@ const RoomModal: React.FC<RoomModalProps> = () => {
   const [outModalState, setOutModalState] =
     useRecoilState<boolean>(RoomModalAtom);
   const navigate = useNavigate();
-  
+
   const [joinUUID, setJoinUUID] = useRecoilState<string>(RoomUUIDAtom);
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const [storageStartData, setStorageStartData] = useState<string>('');
-  const [storageEndData, setStorageEndData] = useState<string>('')
+  const [storageEndData, setStorageEndData] = useState<string>('');
   const [timer, setTimer] = useRecoilState<string>(timerState);
 
-  
   useEffect(() => {
     const storageStartData = localStorage.getItem('startTime');
     if (storageStartData) {
@@ -38,7 +40,9 @@ const RoomModal: React.FC<RoomModalProps> = () => {
     const storageEndData = localStorage.getItem('endTime');
     if (storageEndData) {
       setStorageEndData(
-        JSON.parse(storageEndData)[JSON.parse(storageEndData).length -1].replaceAll(/["/]/g, '')
+        JSON.parse(storageEndData)[
+          JSON.parse(storageEndData).length - 1
+        ].replaceAll(/["/]/g, ''),
       );
     } else {
       setStorageEndData('기록이 없습니다.');
@@ -49,11 +53,18 @@ const RoomModal: React.FC<RoomModalProps> = () => {
     try {
       const token = getCookie('token');
       const data = {
-        checkIn: storageStartData !== '기록이 없습니다.' ? storageStartData : JSON.stringify(getKoreanTime()).replaceAll(/["/]/g, ''),
-        checkOut: storageEndData !== '기록이 없습니다.' ? storageEndData : JSON.stringify(getKoreanTime()).replaceAll(/["/]/g, ''),
+        checkIn:
+          storageStartData !== '기록이 없습니다.'
+            ? storageStartData
+            : JSON.stringify(getKoreanTime()).replaceAll(/["/]/g, ''),
+        checkOut:
+          storageEndData !== '기록이 없습니다.'
+            ? storageEndData
+            : JSON.stringify(getKoreanTime()).replaceAll(/["/]/g, ''),
         totalHours: timer,
         historyType: roomInfo.category, // study, hobby
       };
+      console.log('❤️roomInfo.category', roomInfo);
 
       const response = await axios.post(
         `${serverUrl}/room/${joinUUID}/leave`,
@@ -89,6 +100,14 @@ const RoomModal: React.FC<RoomModalProps> = () => {
       },
     );
     localStorage.removeItem('room');
+
+    // 마이크와 캠을 닫는 코드
+    // if (tracks[0]) {
+    //   tracks[0].close();
+    // }
+    // if (tracks[1]) {
+    //   tracks[1].close();
+    // }
   };
 
   return (
