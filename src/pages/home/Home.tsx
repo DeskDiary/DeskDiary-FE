@@ -56,8 +56,6 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
 
-
-
   width: 100vw;
   min-height: 100vh;
   background-color: #e8f1ff;

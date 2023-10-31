@@ -139,7 +139,7 @@ const JoinedRooms = styled.div`
   grid-template-columns: repeat(5, 1fr);
   gap: 12px;
   width: 1215px;
-  min-height: 470px;
+  min-height: 420px;
 
   overflow: scroll;
 
