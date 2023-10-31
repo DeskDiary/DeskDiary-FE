@@ -28,11 +28,13 @@ export const getKoreanTime = () => {
 };
 const Timer: React.FC<TimerProps> = () => {
   const [timer, setTimer] = useRecoilState<string>(timerState);
-
+  const [buttonDisabled, setButtonDisabled] = useState<boolean>(false);
   const [timerButtonState, setTimerButtonState] = useState<boolean>(false);
   const timerIntervalRef = useRef<any>(null);
   const [startLocalStorageData, setStartLocalStorageData] = useState<any[]>([]);
+
   const [endLocalStorageData, setEndLocalStorageData] = useState<any[]>([]);
+  console.log('시작 끝',startLocalStorageData, endLocalStorageData)
   const [누적시간State, set누적시간State] = useState(0);
 
   useEffect(() => {
@@ -106,6 +108,12 @@ const Timer: React.FC<TimerProps> = () => {
   }, []);
 
   const timerButtonHandler = () => {
+    setButtonDisabled(true);
+
+    // 1초 뒤에 버튼 다시 활성화
+    setTimeout(() => {
+      setButtonDisabled(false);
+    }, 1000);
     setTimerButtonState(!timerButtonState);
   };
 
@@ -174,6 +182,7 @@ const Timer: React.FC<TimerProps> = () => {
 
         누적시간 += 종료시간 - 시작시간;
       }
+      set누적시간State(0);
       set누적시간State(누적시간);
     } else if (
       startLocalStorageData.length === 1 &&
@@ -198,6 +207,7 @@ const Timer: React.FC<TimerProps> = () => {
         Number(종료시간[2]);
 
       누적시간 += 종료시간 - 시작시간;
+      set누적시간State(0);
       set누적시간State(누적시간);
     }
 
@@ -243,6 +253,7 @@ const Timer: React.FC<TimerProps> = () => {
             return acc;
           }, 0);
         const 누적시간 = 현재시간초 - 마지막시간초 + 누적시간State;
+        console.log((현재시간초 - 마지막시간초) , 누적시간State);
         setTimer(formatTime(누적시간));
       } else {
         // 일시정지상태
@@ -250,7 +261,7 @@ const Timer: React.FC<TimerProps> = () => {
     };
     // 1초마다 updateTimer 함수 실행
     if (timerButtonState) {
-      timerIntervalRef.current = setInterval(updateTimer, 1000);
+      timerIntervalRef.current = setInterval(updateTimer, 200);
     } else {
       if (timerIntervalRef.current) {
         clearInterval(timerIntervalRef.current);
@@ -264,6 +275,7 @@ const Timer: React.FC<TimerProps> = () => {
       <p>{timer}</p>
       <StartButton
         timerButtonState={timerButtonState}
+        disabled={buttonDisabled}
         onClick={timerButtonHandler}
       >
         <img src={timerButtonState ? 일시정지 : 타이머} alt="" />
