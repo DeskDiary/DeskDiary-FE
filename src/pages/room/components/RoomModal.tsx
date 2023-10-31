@@ -12,7 +12,6 @@ import {
 import { timerState } from '../../../recoil/TimeAtom';
 import socket from '../socketInstance';
 import { getKoreanTime } from './Timer';
-import { CloseMediaAtom } from '../../../recoil/CamAtom';
 
 type RoomModalProps = {};
 
@@ -27,7 +26,6 @@ const RoomModal: React.FC<RoomModalProps> = () => {
   const [storageStartData, setStorageStartData] = useState<string>('');
   const [storageEndData, setStorageEndData] = useState<string>('');
   const [timer, setTimer] = useRecoilState<string>(timerState);
-  const [closeMedia, setCloseMedia] = useRecoilState<boolean>(CloseMediaAtom);
 
   useEffect(() => {
     const storageStartData = localStorage.getItem('startTime');
@@ -102,15 +100,7 @@ const RoomModal: React.FC<RoomModalProps> = () => {
       },
     );
     localStorage.removeItem('room');
-    setCloseMedia(true);
 
-    // 마이크와 캠을 닫는 코드
-    // if (tracks[0]) {
-    //   tracks[0].close();
-    // }
-    // if (tracks[1]) {
-    //   tracks[1].close();
-    // }
   };
 
   return (

@@ -44,12 +44,3 @@ export const choiceMicState = atom<string>({
   default: '',
 });
 
-export const TracksAtom = atom({
-  key: 'tracksState',
-  default: null as [IMicrophoneAudioTrack, ICameraVideoTrack] | null,
-});
-
-export const CloseMediaAtom = atom({
-  key: 'closeMediaAtom',
-  default: false,
-})

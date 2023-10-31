@@ -12,16 +12,18 @@ import { useQuery } from 'react-query';
 import { fetchUser } from '../../../../axios/api';
 import { useRecoilState } from 'recoil';
 import { RoomInfo } from '../../../../recoil/RoomAtom';
-import { CloseMediaAtom } from '../../../../recoil/CamAtom';
 
-type VideoContainerProps = {};
+type VideoContainerProps = {
+  setInCall: React.Dispatch<React.SetStateAction<boolean>>;
+};
 const useMicrophoneAndCameraTracks = createMicrophoneAndCameraTracks();
 
-const VideoContainer: React.FC<VideoContainerProps> = ({}) => {
+const VideoContainer: React.FC<VideoContainerProps> = ({
+  setInCall
+}) => {
   const token = getCookie('token');
   const getUUID = window.location.pathname.split('/room/')[1];
   const [recoilRoomInfo, setRecoilRoomInfo] = useRecoilState(RoomInfo);
-  const [closeMedia, setCloseMedia] = useRecoilState<boolean>(CloseMediaAtom);
   const [roomInfo, setRoomInfo] = useState({
     agoraAppId: '',
     agoraToken: '',
@@ -41,7 +43,7 @@ const VideoContainer: React.FC<VideoContainerProps> = ({}) => {
 
   const [users, setUsers] = useState<IAgoraRTCRemoteUser[]>([]);
   const [start, setStart] = useState<boolean>(false);
-  
+
   const APP_ID = roomInfo.agoraAppId;
   const TOKEN = roomInfo.agoraToken;
   const CHANNEL = roomInfo.uuid;
@@ -69,10 +71,37 @@ const VideoContainer: React.FC<VideoContainerProps> = ({}) => {
       console.error(error);
     }
   };
-  console.log('😭확인',recoilRoomInfo )
+  console.log('😭확인', recoilRoomInfo);
   useEffect(() => {
     getRoomInfo();
   }, []);
+
+  const handleUserLeft = async (currentTracks: any) => {
+    console.log('✨아고라 연결 끊기');
+  
+    if (currentTracks) {
+      for(const track of currentTracks) {
+        if (track) {
+          try {
+            await track.stop();
+            await track.close();
+            console.log(`✨Track 멈춤`);
+          } catch (error) {
+            console.error("Error stopping or closing track:", error);
+          }
+        }
+      }
+    }
+  
+    if (client && currentTracks) {
+      await client.unpublish(currentTracks);
+      console.log('✨unpublish 완료');
+    }
+  
+    await client.leave();
+    console.log('✨✨✨✨✨');
+  };
+  
 
   useEffect(() => {
     const init = async (name: string) => {
@@ -112,28 +141,23 @@ const VideoContainer: React.FC<VideoContainerProps> = ({}) => {
       if (tracks) await client.publish([tracks[0], tracks[1]]);
       setStart(true);
     };
+    const currentTracks = tracks;
 
     if (ready && tracks) {
       console.log('init ready');
       init(CHANNEL);
     }
-  }, [CHANNEL, client, ready, tracks]);
 
-  useEffect(() => {
-    console.log('✨useEffect')
-    if (closeMedia) {
-      console.log('🥰if 0')
-      if (tracks![0]) {
-        tracks![0].close();
-        console.log('🥰if 1')
-      }
-      if (tracks![1]) {
-        tracks![1].close();
-        console.log('🥰if 2')
-      }
-      setCloseMedia(false); // 다시 초기화
-    }
-  }, [closeMedia]);
+    return () => {
+      // 아고라 연결 끊기 로직
+      console.log('===Tracks:', tracks);
+      console.log('===Current Tracks:', currentTracks);
+
+      handleUserLeft(tracks);
+
+      
+    };
+  }, [CHANNEL, client, ready, tracks]);
 
   return (
     <div>
@@ -141,7 +165,7 @@ const VideoContainer: React.FC<VideoContainerProps> = ({}) => {
         <VideoController
           tracks={tracks}
           setStart={setStart}
-          // setInCall={setInCall}
+          setInCall={setInCall}
         />
       )}
       {start && tracks && <Videos users={users} tracks={tracks} />}
