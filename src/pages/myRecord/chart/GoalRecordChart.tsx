@@ -109,7 +109,6 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
       console.error(error);
     }
   };
-
   useEffect(() => {
     sevenData();
     monthData();
@@ -176,7 +175,7 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
         label: '스터디',
         data: dateArray30.map(day => {
           const correspondingStudy = monthlyStudy.find(
-            x => x.date === day.date,
+            x => x.checkIn === day.date,
           );
           return correspondingStudy ? Number(correspondingStudy.totalHours) : 0;
         }),
