@@ -24,5 +24,6 @@ const Wrap = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: #E8F1FF;
 `;
 export default MainLayout;

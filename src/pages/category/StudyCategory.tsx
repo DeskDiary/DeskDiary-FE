@@ -54,7 +54,6 @@ const StudyCategory: React.FC<StudyCategoryProps> = () => {
 
   return (
     <Container>
-      <MainTop />
       <Info>
         {rankingList.map((item, i: number) => {
           return (
@@ -92,6 +91,7 @@ const Container = styled.div`
   align-items: center;
   width: 1200px;
   height: 100vh;
+  margin-top: 80px;
 `;
 
 const Info = styled.div`

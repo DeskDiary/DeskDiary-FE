@@ -54,14 +54,15 @@ const HobbyCategory: React.FC<HobbyCategoryProps> = () => {
   }, []);
   return (
     <Container>
-      <Body>
-{/* <MainTop /> */}
-<Info>
+      <Info>
         {rankingList.map((item, i: number) => {
           return (
-            <User key={`${i+1}위`}>
+            <User key={`${i + 1}위`}>
               <p>{i + 1}위</p>
-              <UserImage $bordercolor={rankingImg[i].borderColor} $imgsrc={item.profileImage}>
+              <UserImage
+                $bordercolor={rankingImg[i].borderColor}
+                $imgsrc={item.profileImage}
+              >
                 <RankingImg src={rankingImg[i].img} alt={`${i + 1}등이미지`} />
               </UserImage>
               <p>{item.nickname}</p>
@@ -74,21 +75,9 @@ const HobbyCategory: React.FC<HobbyCategoryProps> = () => {
       <Rooms>
         <RoomList label="전체 취미룸" show="fetchHobby" />
       </Rooms>
-      </Body>
-      
     </Container>
   );
 };
-
-const Body = styled.div`
-display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: center;
-  width: 1200px;
-  height: 100vh;
-  margin-top: 100px;
-`
 
 const Rooms = styled.div`
   display: flex;
@@ -103,9 +92,10 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: start;
   align-items: center;
-  width: 100vh;
+  width: 1200px;
   height: 100%;
   background-color: #e8f1ff;
+  margin-top: 80px;
 `;
 
 const Info = styled.div`
@@ -130,7 +120,6 @@ const User = styled.div`
     font-size: 24px;
     font-weight: 700;
   }
-  
 
   p:nth-child(3) {
     color: var(--gray-07, #757575);
@@ -142,12 +131,12 @@ const User = styled.div`
   }
 `;
 
-const UserImage = styled.div<{ $bordercolor: string,$imgsrc: null | string }>`
+const UserImage = styled.div<{ $bordercolor: string; $imgsrc: null | string }>`
   width: 100px;
   height: 100px;
   border: 2px solid ${props => props.$bordercolor};
   border-radius: 50%;
-  background-image: url(${(props) => (props.$imgsrc !== null) ? props.$imgsrc : profileDefaultImg});
+  background-image: url(${props =>props.$imgsrc !== null ? props.$imgsrc : profileDefaultImg});
   background-size: cover;
   background-position: center;
 `;

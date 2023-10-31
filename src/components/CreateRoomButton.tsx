@@ -20,9 +20,12 @@ const CreateRoomButton: React.FC<CreateRoomButtonProps> = () => {
       {token && (
         <Button onClick={onClickCreateRoomButton}>
           <img src={addroom} alt="add-room" />
+          <p>방만들기</p>
         </Button>
       )}
-      {openCreateRoom && <CreateRoomModal setOpenCreateRoom={setOpenCreateRoom} />}
+      {openCreateRoom && (
+        <CreateRoomModal setOpenCreateRoom={setOpenCreateRoom} />
+      )}
     </>
   );
 };
@@ -35,16 +38,23 @@ const Button = styled.button`
   position: fixed;
   bottom: 100px;
   right: 100px;
+
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 
+  border: 5px solid white;
+  box-shadow: 2px 4px 9px 0px rgba(0, 0, 0, 0.25);
+
   > img {
-    width: 50%;
+    width: 50px;
     margin-left: 5px;
   }
-  /* background-image: url(${addroom});
-  background-size: cover;
-  background-position: center; */
+  > p {
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+  }
 `;
 export default CreateRoomButton;
