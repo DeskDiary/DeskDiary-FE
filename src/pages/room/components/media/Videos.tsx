@@ -53,12 +53,13 @@ const Container = styled.div`
   gap: 20px;
   align-items: center;
   justify-content: center;
-  width: 1200px;
+  /* width: 1200px; */
 
   overflow: scroll;
+  overflow-y: hidden;
   align-items: center;
 
-  @media (max-width: 1800px) {
+  @media (max-width: 1200px) {
     grid-template-columns: repeat(1, 1fr);
   }
 `;
