@@ -1,10 +1,14 @@
 import React from 'react';
+import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import 예시이미지 from '../../../images/ranking/3rd.svg';
+import { GoalTime } from '../../../recoil/DeskAtom';
 
 type LevelProps = {};
 
 const Level: React.FC<LevelProps> = () => {
+  const [time, setTime] = useRecoilState(GoalTime);
+  console.log(time);
   return (
     <Container>
       <TextBox>
@@ -24,6 +28,7 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: white;
   img {
     width: 120px;
   }
