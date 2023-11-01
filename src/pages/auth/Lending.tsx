@@ -1,11 +1,8 @@
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import sample from '../../images/lending-image.png';
-import { Link } from 'react-router-dom';
-import { getCookie } from '../../auth/cookie';
 import logo from '../../images/logo.svg';
-import { useNavigate } from 'react-router-dom';
-import { AnyNsRecord } from 'dns';
 
 type LendingProps = {};
 
@@ -45,8 +42,7 @@ const Lending: React.FC<LendingProps> = () => {
         <FooterBody>
           <FooterTitle>Site Map</FooterTitle>
           <FooterContents>
-            <FooterContent>개인정보처리방침</FooterContent>
-            <FooterContent>개인정보처리방침</FooterContent>
+            <FooterContent>이용약관</FooterContent>
             <FooterContent>개인정보처리방침</FooterContent>
           </FooterContents>
           <hr />
