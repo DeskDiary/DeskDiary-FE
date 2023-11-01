@@ -3,7 +3,6 @@ import { useQuery } from 'react-query';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import styled, { createGlobalStyle } from 'styled-components';
-import { useQuery } from 'react-query';
 import { getCookie } from '../../../auth/cookie';
 import { fetchUser } from '../../../axios/api';
 import { hobby, home, mydesk, study } from '../../../images/main';
