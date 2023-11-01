@@ -150,10 +150,7 @@ const JoinedRooms = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 12px;
-  width: 1215px;
-  min-height: 420px;
-
-  overflow: scroll;
+  width: 1200px;
 
   @media (max-width: 1000px) {
     grid-template-columns: repeat(4, 1fr);

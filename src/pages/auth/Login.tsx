@@ -175,7 +175,6 @@ const Login: React.FC<LoginProps> = () => {
         {/* <SNSButton bgImg={카카오로그인}></SNSButton> */}
         <Kakao />
         <Google />
-        <SNSButton bgImg={google}></SNSButton>
       </SNSDiv>
       <Ptag2>아직 회원이 아니신가요?</Ptag2>
       <JoinButton

@@ -7,6 +7,9 @@ import socket from '../../socketInstance';
 import { RoomUserList } from '../../../../recoil/RoomAtom';
 import { useRecoilState } from 'recoil';
 import {chat, send} from '../../../../images/room'
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { getCookie } from '../../../../auth/cookie';
 
 type ChatBoxProps = { roomId: string };
 
@@ -32,8 +35,10 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
   const [newMessage, setNewMessage] = useState('');
   const [allChatList, setAllChatList] = useState<AllChatItem[]>([]);
   const [roomUserList, setRoomUserList] = useRecoilState(RoomUserList);
+  const navigate =useNavigate();
+  const token = getCookie('token');
 
-  const { data } = useQuery<user>('chatUser', fetchUser, {
+  const { data } = useQuery<user>('chat-user', fetchUser, {
     refetchOnWindowFocus: false,
   });
 
@@ -106,6 +111,32 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
       socket.off('left-user');
     };
   }, [socket]);
+
+  const socketJoinError = async (message:string) => {
+    alert(message);
+    const response = await axios.post(
+      `${process.env.REACT_APP_SERVER_URL!}/room/${roomId}/leave`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    navigate('/');
+    window.location.reload();
+  }
+
+  useEffect(() => {
+    socket.on('joinError', (message: string) => {
+      console.log('✨✨✨✨✨✨✨✨✨✨✨✨')
+      socketJoinError(message)
+    });
+
+    return () => {
+      socket.off('joinError');
+    };
+  })
 
   useEffect(() => {
     socket.on('disconnect_user', (byeUser: string) => {

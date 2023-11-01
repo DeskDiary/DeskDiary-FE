@@ -12,6 +12,7 @@ import { UserAtom } from '../../recoil/UserAtom';
 
 import { useMutation } from 'react-query';
 import Kakao from './components/Kakao';
+import Google from './components/Google';
 
 type JoinProps = {};
 
@@ -276,24 +277,8 @@ const Join: React.FC<JoinProps> = () => {
       </JoinButton>
       <SocialLoginText>SNS 계정으로 시작하기</SocialLoginText>
       <SocialLoginGroup>
-        <SocialLoginLink
-          to="/"
-          onClick={() => {
-            const SERVER_URL = process.env.REACT_APP_SERVER_URL;
-
-            const kakaoOauthURL = `https://kauth.kakao.com/oauth/authorize?response_type=code&redirect_uri=${encodeURIComponent(
-              `${SERVER_URL}/kakao-callback`,
-            )}&client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}`;
-
-            window.location.href = kakaoOauthURL;
-          }}
-        >
-          <img src={kakao} />
-        </SocialLoginLink>
-
-        <SocialLoginLink to="/">
-          <img src={google} />
-        </SocialLoginLink>
+        <Kakao />
+        <Google />
       </SocialLoginGroup>
     </JoinForm>
   );
