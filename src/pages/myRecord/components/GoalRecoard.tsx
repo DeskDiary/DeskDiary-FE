@@ -19,7 +19,7 @@ const GoalRecoard: React.FC<GoalRecoardProps> = () => {
   return (
     <Container>
       <TitleBox>
-        <Titile>목표 달성 기록 모음</Titile>
+        <Titile>목표 달성 기록 모음 (%)</Titile>
         <GoalButtonBox>
           <ButtonState7
             onClick={view7OnclickHandler}

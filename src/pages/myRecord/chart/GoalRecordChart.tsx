@@ -113,7 +113,6 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
         },
       );
       const data = response.data;
-      console.log('한달 데이터',data);
       setMonthlyHobby(data.monthlyHobby);
       setMonthlyStudy(data.monthlyStudy);
     } catch (error) {
@@ -124,7 +123,6 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
     sevenData();
     monthData();
   }, []);
-  console.log(monthlyHobby)
 
   const options = {
     responsive: true,
@@ -139,33 +137,38 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
     },
   };
   const weeklyData = {
-    labels: dateArray7.map(x => x.dayOfWeek),
+    labels: dateArray7.map((x) => x.dayOfWeek),
     datasets: [
       {
         label: '취미',
         data: dateArray7.map((day, i) => {
           const correspondingHobby = weeklyHobby.find(
-            x => x.dayName == day.dayOfWeek,
+            (x) => x.dayName == day.dayOfWeek
           );
-
-          return correspondingHobby ? Number(correspondingHobby.totalHours) : 0;
+  
+          return correspondingHobby
+            ? Math.floor((Number(correspondingHobby.totalHours) / Number(goalTime.goalTime)) * 100)
+            : 0;
         }),
         stack: 'stack1',
         backgroundColor: ['#00C5FF'],
       },
       {
         label: '스터디',
-        data: dateArray7.map(day => {
+        data: dateArray7.map((day) => {
           const correspondingStudy = weeklyStudy.find(
-            x => x.dayName === day.dayOfWeek,
+            (x) => x.dayName === day.dayOfWeek
           );
-          return correspondingStudy ? correspondingStudy.totalHours : 0;
+          return correspondingStudy
+            ? Math.floor((Number(correspondingStudy.totalHours) / Number(goalTime.goalTime)) * 100)
+            : 0;
         }),
         stack: 'stack1',
         backgroundColor: ['#1A81E8'],
       },
     ],
   };
+  
   const monthlyData = {
     labels: dateArray30.map(x => x.date.slice(5)),
     datasets: [
@@ -173,10 +176,12 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
         label: '취미',
         data: dateArray30.map((day, i) => {
           const correspondingHobby = monthlyHobby.find(
-            x => x.checkIn === day.date,
+            (x) => x.checkIn === day.date
           );
-          return correspondingHobby ? Number(correspondingHobby.totalHours) : 0;
-        }).map((x) => Math.floor((x / Number(goalTime.goalTime)) * 100)),
+          const totalHours = correspondingHobby ? Number(correspondingHobby.totalHours) : 0;
+          const percentage = totalHours > 0 ? Math.floor((totalHours / Number(goalTime.goalTime)) * 100) : 0;
+          return percentage;
+        }),
         stack: 'stack1',
         backgroundColor: ['#00C5FF'],
       },
@@ -186,7 +191,9 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
           const correspondingStudy = monthlyStudy.find(
             x => x.checkIn === day.date,
           );
-          return correspondingStudy ? Number(correspondingStudy.totalHours) : 0;
+          const totalHours = correspondingStudy ? Number(correspondingStudy.totalHours) : 0;
+          const percentage = totalHours > 0 ? Math.floor((totalHours / Number(goalTime.goalTime)) * 100) : 0;
+          return percentage;
         }),
         stack: 'stack1',
         backgroundColor: ['#1A81E8'],
@@ -194,8 +201,6 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
     ],
   };
 
-  
-  console.log('zz',monthlyData)
   return (
     <Body>
       {view7 && (
