@@ -7,7 +7,6 @@ import { getCookie } from '../../auth/cookie';
 import history from '../../history';
 import { RoomAtom, RoomUUIDAtom } from '../../recoil/RoomAtom';
 import AsmrPlayer from './components/AsmrPlayer';
-import RoomCamArea from './components/RoomCamArea';
 import RoomHeader from './components/RoomHeader';
 import RoomSideBar from './components/RoomSideBar';
 import RoomUnderBar from './components/RoomUnderBar';

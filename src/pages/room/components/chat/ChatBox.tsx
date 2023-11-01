@@ -1,13 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
-import send from '../../../../images/send.svg';
-import 공지사진 from '../../../../images/공지.png';
 import Chat from './Chat';
 import { fetchUser } from '../../../../axios/api';
 import { useQuery } from 'react-query';
 import socket from '../../socketInstance';
 import { RoomUserList } from '../../../../recoil/RoomAtom';
 import { useRecoilState } from 'recoil';
+import {chat, send} from '../../../../images/room'
 
 type ChatBoxProps = { roomId: string };
 
@@ -129,7 +128,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
 
   return (
     <Container>
-      <ChatImg src={공지사진} />
+      <ChatImg src={chat} />
       <ChatList ref={chatListRef}>
         {allChatList.map((chat, index) => {
           if (chat.type === 'message') {

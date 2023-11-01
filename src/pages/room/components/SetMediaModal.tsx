@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import axios from 'axios';
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { getCookie } from '../../../auth/cookie';
@@ -54,7 +54,6 @@ const SetMediaModal: React.FC<SetMediaModal> = ({ setIsOpen, room }) => {
     setIsClicked(true);
     try {
       const token = getCookie('token');
-      console.log('조인룸 토큰', token);
       const response = await axios.post(
         `${serverUrl}/room/${room.uuid}/join`,
         {},
@@ -64,7 +63,6 @@ const SetMediaModal: React.FC<SetMediaModal> = ({ setIsOpen, room }) => {
           },
         },
       );
-      console.log(response);
       setRoomInfo({
         agoraAppId: room.agoraAppId,
         agoraToken: room.agoraToken,
@@ -91,23 +89,8 @@ const SetMediaModal: React.FC<SetMediaModal> = ({ setIsOpen, room }) => {
           img: data!.profileImage,
         },
         (response: any) => {
-          // 서버로부터의 응답을 여기서 처리
-          if (response.success) {
-            console.log(
-              '방에 성공적으로 참여했어!✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨',
-            );
-          } else {
-            console.log('방 참여 실패😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭');
-          }
         },
       );
-
-      socket.on('new-user', nickname => {
-        console.log(
-          '새로운 유저가 방에 참석:✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨',
-          nickname,
-        );
-      });
       setIsClicked(false);
     } catch (error) {
       console.error(error);
@@ -121,21 +104,14 @@ const SetMediaModal: React.FC<SetMediaModal> = ({ setIsOpen, room }) => {
       <ModalContent>
         <Title>{room.title}</Title>
 
-        <MediaSetupGroup>
-          <MediaSetup></MediaSetup>
-        </MediaSetupGroup>
-
         <Content>
-          <Group>
-            <Label>방 입장 시 유의 사항</Label>
-            <BasicPrecautions />
-            <Note>{renderNoteWithBreaks(room.note)}</Note>
-          </Group>
+          <Label>방 입장 시 유의 사항</Label>
+          <BasicPrecautions />
+          <Note>{renderNoteWithBreaks(room.note)}</Note>
         </Content>
-
-        <Button>
-          <EnterRoomButton onClick={onClickJoinRoom}>확인</EnterRoomButton>
-        </Button>
+        <EnterRoomButton onClick={onClickJoinRoom}>
+          확인
+          </EnterRoomButton>
       </ModalContent>
     </Container>
   );
@@ -147,37 +123,21 @@ const Note = styled.div`
   margin-right: auto;
 `;
 
-const MediaSetupGroup = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-
-  width: 400px;
-`;
-
 const Content = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: start;
   gap: 15px;
   display: flex;
   width: 400px;
   margin-top: 14px;
+
+  overflow: scroll;
 `;
 
 const Label = styled.div`
   padding: 10px 0;
-`;
-
-const Group = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: start;
-
-  width: 100%;
 `;
 
 const Title = styled.div`
@@ -186,37 +146,16 @@ const Title = styled.div`
   margin-bottom: 25px;
 `;
 
-const Button = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-
-  width: 400px;
-  margin-top: auto;
-`;
-
 const EnterRoomButton = styled.button`
-  width: 195px;
+  width: 400px;
   height: 50px;
   border: none;
+  border-radius: 30px;
   background-color: var(--primary-01);
   color: white;
   font-size: 16px;
   font-weight: 600;
-`;
-
-const CancleButton = styled(Link)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 195px;
-  height: 50px;
-  border: 1px solid var(--primary-01);
-  color: var(--primary-01);
-  background-color: rgba(110, 110, 110, 0);
-  font-size: 16px;
-  font-weight: 600;
+  margin-top: auto;
 `;
 
 const BackGround = styled.div`
@@ -241,7 +180,7 @@ const ModalContent = styled.div`
   align-items: center;
 
   width: 600px;
-  height: 650px;
+  height: 400px;
   /* background-color: rgba(255, 255, 255, 0.8); */
   background-color: white;
   border-radius: 20px;

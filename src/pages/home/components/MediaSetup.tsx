@@ -9,10 +9,8 @@ import {
   choiceMicState,
   micListState,
 } from '../../../recoil/CamAtom';
-import mic from '../../../images/main/mic.svg';
-import cam from '../../../images/main/cam.svg';
-import down from '../../../images/mypage/down.svg';
-import VideocamIcon from '@mui/icons-material/Videocam';
+import { mic, cam } from '../../../images/room';
+import { down } from '../../../images/mypage';
 
 type MediaSetupProps = {};
 

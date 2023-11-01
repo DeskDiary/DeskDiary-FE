@@ -1,20 +1,18 @@
 import styled from '@emotion/styled';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router';
 import { useMutation, useQuery } from 'react-query';
 import axios from 'axios';
 
 import { getCookie } from '../../auth/cookie';
 import { fetchUser } from '../../axios/api';
 
-import MainTop from '../../components/layout/main/MainTop';
 import ChangePasswordModal from './components/ChangePasswordModal';
 import ConfirmModal from '../../components/ConfirmModal';
 import EditProfileImg from './components/EditProfileImg';
 
 import { profile } from '../../images';
-import send from '../../images/send.svg';
-import { logo, kakao } from '../../images';
+import { logoColor } from '../../images';
+import { kakao, google } from '../../images/main';
 
 type MypageProps = {};
 
@@ -46,7 +44,7 @@ const Mypage: React.FC<MypageProps> = () => {
     setIsOpenDeleteUser(!isOpenDeleteUser);
   };
 
-  const { data, refetch  } = useQuery<user, Error>('mypageUser', fetchUser, {
+  const { data, refetch } = useQuery<user, Error>('mypageUser', fetchUser, {
     refetchOnWindowFocus: false,
   });
 
@@ -97,7 +95,7 @@ const Mypage: React.FC<MypageProps> = () => {
     e.preventDefault();
     const trimmedNickname = nickname.trim();
     if (!trimmedNickname) {
-      alert("닉네임을 입력해주세요!");
+      alert('닉네임을 입력해주세요!');
       return;
     }
 
@@ -148,7 +146,7 @@ const Mypage: React.FC<MypageProps> = () => {
                 <span>{data?.email ? data?.email : 'abcd@email.com'}</span>
               </Group>
               <img
-                src={data?.provider === 'local' ? logo : kakao}
+                src={data?.provider === 'local' ? logoColor : kakao}
                 alt="login-info"
               />
               <EmailHover show={isHovered}>
@@ -235,11 +233,9 @@ const EditNickname = styled.form`
   padding: 5px;
   border-radius: 5px;
 
-  >input{
-    background-color: #E8F1FF;
+  > input {
+    background-color: #e8f1ff;
   }
-
-  
 
   width: 100%;
   > input {
@@ -305,6 +301,7 @@ const UserInfo = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: start;
+  margin-top: 50px;
   gap: 30px;
 
   width: 100%;

@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import sample from '../../images/lending-image.png';
-import logo from '../../images/logo.svg';
+import { logo, lendingImage } from '../../images';
 
 type LendingProps = {};
 
@@ -34,7 +33,7 @@ const Lending: React.FC<LendingProps> = () => {
           <div>책상일기</div>
         </Text>
 
-        <LendingImg src={sample} alt="lending-image" />
+        <LendingImg src={lendingImage} alt="lending-image" />
         <StartButton onClick={e => goService(e)}>서비스 시작하기</StartButton>
       </BoxContents>
 

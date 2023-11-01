@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import volumOffImg from '../../../images/volume_off.png';
-import volumOnImg from '../../../images/volume_up.png';
+import {volume_off, volume_up} from '../../../images/audio';
 type VideoPlayerProps = {
   user: any;
 };
@@ -19,7 +18,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ user }) => {
       <CamDivBox ref={ref}>
         <UserInfoDivBox>
           <p>닉네임닉네임닉네임닉네임</p>
-          <img src={sound ? volumOnImg : volumOffImg} alt="" />
+          <img src={sound ? volume_up : volume_off} alt="" />
         </UserInfoDivBox>
       </CamDivBox>
     </Body>

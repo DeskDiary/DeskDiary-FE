@@ -4,8 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { getCookie } from '../../../auth/cookie';
-import checkin from '../../../images/room/checkin.png';
-import checkout from '../../../images/room/checkout.png';
+import {checkin, checkout} from '../../../images/room';
 import {
   RoomInfo,
   RoomModalAtom,

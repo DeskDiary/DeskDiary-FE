@@ -27,6 +27,6 @@ const Wrap = styled.div`
 
   margin-left: 60px;
   margin-top: 80px;
-  margin-bottom: 100px;
+  margin-bottom: 80px;
 `;
 export default MainLayout;

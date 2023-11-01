@@ -61,3 +61,8 @@ export const RoomUserList = atom({
   key: 'RoomUserList',
   default: [{nickname:'', img:''}],
 })
+
+export const RefetchAtom = atom({
+  key: 'RefetchAtom',
+  default: false,
+})

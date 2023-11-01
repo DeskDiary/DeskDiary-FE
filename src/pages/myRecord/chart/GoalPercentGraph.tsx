@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import { getCookie } from '../../../auth/cookie';
-import 아무사진 from '../../../images/logo.svg';
+import logo from '../../../images/logo.svg';
 import { GoalTime, GoalTimeModalState } from '../../../recoil/DeskAtom';
 
 type GoalPercentGraphProps = {};
@@ -103,7 +103,7 @@ const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
       
 
 
-      <Image src={아무사진} />
+      <Image src={logo} />
 
       <DetailTimeInfo>
         <DetailTimeInfoPBox>

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { kakao, } from '../../../images';
+import { kakao } from '../../../images/main';
 import { Link } from 'react-router-dom';
 
 
