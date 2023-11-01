@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import MaxUser from '../../../images/room/MaxUser.svg';
 import sample from '../../../images/sample.svg';
-import JoinRoomModal from './JoinRoomModal';
 import ConfirmModal from '../../../components/ConfirmModal';
 import { useQuery } from 'react-query';
 import { fetchUser } from '../../../axios/api';
@@ -11,7 +10,8 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { RoomAtom, RoomUUIDAtom } from '../../../recoil/RoomAtom';
 import { useRecoilState } from 'recoil';
-import axios from 'axios';
+import { QueryObserverResult } from 'react-query';
+
 
 type RoomCardProps = {
   room: {
@@ -57,39 +57,14 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
   };
 
   const JoinRoomModal = async (token: any) => {
-    // const response = await axios.post(
-    //   `${process.env.REACT_APP_SERVER_URL!}/room/${room.uuid}/join`,
-    //   {},
-    //   {
-    //     headers: {
-    //       Authorization: `Bearer ${token}`,
-    //     },
-    //   },
-    // );
-    // console.log(response);
-    // setRoomInfo({
-    //   agoraAppId: room.agoraAppId,
-    //   agoraToken: room.agoraToken,
-    //   category: room.category,
-    //   count: room.count,
-    //   createdAt: room.createdAt,
-    //   maxHeadcount: room.maxHeadcount,
-    //   note: room.note,
-    //   nowHeadcount: room.nowHeadcount,
-    //   ownerId: room.ownerId,
-    //   roomId: room.roomId,
-    //   roomThumbnail: room.roomThumbnail ? room.roomThumbnail : '',
-    //   title: room.title,
-    //   updatedAt: room.updatedAt,
-    //   uuid: room.uuid,
-    // });
-    // setJoinUUID(room.uuid);
-    // console.log('roomInfo', roomInfo);
-
     navigate(`/room/${room.uuid}`);
   };
 
   const onClickCard = async () => {
+    if(room.nowHeadcount === room.maxHeadcount) {
+      alert('가득 찬 방')
+      return;
+    }
     if (token) {
       // setIsOpen(true);
       JoinRoomModal(token);

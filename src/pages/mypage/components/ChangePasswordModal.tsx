@@ -1,10 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { useRecoilState } from 'recoil';
 import { useMutation } from 'react-query';
-import { useNavigate } from 'react-router';
 import styled from 'styled-components';
-import { UserAtom } from '../../../recoil/UserAtom';
 import { getCookie } from '../../../auth/cookie';
 
 type ChangePasswordModalProps = {};

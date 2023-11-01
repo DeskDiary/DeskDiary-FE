@@ -4,12 +4,11 @@ import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { getCookie, setTokenCookie } from '../../auth/cookie';
-import XIcon from '../../images/Vector.svg';
-import { logo, kakao, google } from '../../images';
-import 아이디저장o from '../../images/radio_button_checked.svg';
-import 아이디저장x from '../../images/radio_button_unchecked.svg';
+import { google } from '../../images/main';
+import { logoColor, x, radio_button_checked, radio_button_unchecked} from '../../images';
 import { Link } from 'react-router-dom';
 import Kakao from './components/Kakao';
+import Google from './components/Google';
 
 type LoginProps = {};
 
@@ -124,7 +123,7 @@ const Login: React.FC<LoginProps> = () => {
           />
           {id.length !== 0 && (
             <img
-              src={XIcon}
+              src={x}
               alt="clear"
               onClick={() => {
                 inputClear('id');
@@ -147,7 +146,7 @@ const Login: React.FC<LoginProps> = () => {
           />
           {pw.length !== 0 && (
             <img
-              src={XIcon}
+              src={x}
               alt="clear"
               onClick={() => {
                 inputClear('pw');
@@ -160,9 +159,9 @@ const Login: React.FC<LoginProps> = () => {
       <IdSaveBox>
         <IdDiv>
           {idSaveCheckButton ? (
-            <img src={아이디저장o} alt="" onClick={handleCheckChange} />
+            <img src={radio_button_checked} alt="" onClick={handleCheckChange} />
           ) : (
-            <img src={아이디저장x} alt="" onClick={handleCheckChange} />
+            <img src={radio_button_unchecked} alt="" onClick={handleCheckChange} />
           )}
           <p>아이디 저장</p>
         </IdDiv>
@@ -175,6 +174,7 @@ const Login: React.FC<LoginProps> = () => {
       <SNSDiv>
         {/* <SNSButton bgImg={카카오로그인}></SNSButton> */}
         <Kakao />
+        <Google />
         <SNSButton bgImg={google}></SNSButton>
       </SNSDiv>
       <Ptag2>아직 회원이 아니신가요?</Ptag2>
@@ -203,7 +203,7 @@ const Error = styled.div`
 `
 
 const Logo = styled(Link)`
-  background: url(${logo}) no-repeat center;
+  background: url(${logoColor}) no-repeat center;
   width: 62px;
   height: 73px;
 `;

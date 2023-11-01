@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router';
 
 import axios from 'axios';
 import { getCookie } from '../auth/cookie';
+import { useRecoilState } from 'recoil';
+import { RefetchAtom } from '../recoil/RoomAtom';
 
 type ConfirmModalProps = {
   title: string;
@@ -17,6 +19,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
   setIsOpen,
 }) => {
   const navigate = useNavigate();
+  const [isRefetch, setIsRefetch] = useRecoilState(RefetchAtom);
 
   const handleDeleteRoom = async (uuid: string) => {
     try {
@@ -29,8 +32,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
           },
         },
       );
-      window.location.reload();
-      console.log(response);
+      setIsRefetch(true);
       setIsOpen(false);
     } catch (error) {
       console.error(error);

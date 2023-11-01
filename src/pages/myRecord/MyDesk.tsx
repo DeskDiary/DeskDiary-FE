@@ -1,7 +1,6 @@
 import React from 'react';
 
 import styled from 'styled-components';
-import MainTop from '../../components/layout/main/MainTop';
 
 import { useRecoilState } from 'recoil';
 import { GoalTimeModalState } from '../../recoil/DeskAtom';

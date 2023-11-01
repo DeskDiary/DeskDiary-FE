@@ -2,13 +2,12 @@ import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import styled, { createGlobalStyle } from 'styled-components';
-import { getCookie } from '../../../auth/cookie';
-import { hobby, home, mydesk, study } from '../../../images';
-import test from '../../../images/test.png';
-import profile from '../.././../images/profile.svg';
 import { useQuery } from 'react-query';
-import { fetchUser } from '../../../axios/api';
+import { getCookie } from '../../../auth/cookie';
+import { home, hobby, mydesk, study, profile } from '../../../images/main';
 import logo from '../../../images/logo.svg';
+import { fetchUser } from '../../../axios/api';
+
 
 type SideBarProps = {};
 
@@ -136,12 +135,16 @@ const SidebarButton = styled(NavLink)`
     opacity: 1;
     width: 85%;
     background-color: rgba(255, 255, 255, 0.2);
+
     > img {
       filter: grayscale(0);
     }
     > p {
       color: white;
       font-weight: 500;
+    }
+    &.mypage {
+      background-color: rgba(255, 255, 255, 0.0);
     }
   }
 
@@ -185,12 +188,13 @@ const SidebarButton = styled(NavLink)`
   &.mypage {
     margin-left: 15px;
     opacity: 1;
+    background-color: none;
     > img {
       height: 35px;
       width: 35px;
       padding: 0;
       margin-left: 7px;
-      margin-right: 15px;
+      margin-right: 10px;
       border-radius: 50%;
       filter: grayscale(0);
     }

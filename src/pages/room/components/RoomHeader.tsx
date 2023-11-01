@@ -1,9 +1,7 @@
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
-import 공지사진 from '../../../images/공지.png';
-import 알림사진 from '../../../images/알림.png';
-import 음표사진 from '../../../images/음표.png';
 import { RoomInfo } from '../../../recoil/RoomAtom';
+import {bell, chat, music} from '../../../images/room';
 
 type Props = {};
 
@@ -16,9 +14,9 @@ function RoomHeader({}: Props) {
     <HeaderBG>
       <RoomName>{roomInfo.title}</RoomName>
       <IconDiv>
-        <img src={알림사진} alt="" />
-        <img src={음표사진} alt="" />
-        <img src={공지사진} alt="" />
+        <img src={bell} alt="" />
+        <img src={music} alt="" />
+        <img src={chat} alt="" />
       </IconDiv>
     </HeaderBG>
   );

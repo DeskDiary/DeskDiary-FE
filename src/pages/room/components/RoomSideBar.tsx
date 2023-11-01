@@ -2,9 +2,6 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../../../images/logo.svg';
-import 마이크 from '../../../images/room/mic_none.svg';
-import 사람 from '../../../images/room/people_outline.svg';
-import 카메라 from '../../../images/room/videocam.svg';
 import Timer from './Timer';
 import profile from '../../../images/profile.png';
 import { fetchUser } from '../../../axios/api';
@@ -12,6 +9,7 @@ import { useQuery } from 'react-query';
 import { useRecoilState } from 'recoil';
 import { RoomUserList } from '../../../recoil/RoomAtom';
 import socket from '../socketInstance';
+import {micNone, MaxUser, videocam} from '../../../images/room';
 
 type RoomSideBarProps = {};
 
@@ -68,14 +66,14 @@ const RoomSideBar: React.FC<RoomSideBarProps> = () => {
         <Timer />
       </TimerBox>
       <CamAndMicSettingsBox>
-        <img src={마이크} alt="마이크" />
-        <img src={카메라} alt="카메라" />
+        <img src={micNone} alt="마이크" />
+        <img src={videocam} alt="카메라" />
       </CamAndMicSettingsBox>
       <JoinPeopleBox>
         <UserCount>
           <p>참여인원</p>
           <DetailCount>
-            <img src={사람} alt="인원수" />
+            <img src={MaxUser} alt="인원수" />
             <p>{roomUserList.length}</p>
           </DetailCount>
         </UserCount>
