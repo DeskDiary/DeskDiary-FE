@@ -10,6 +10,7 @@ import { RoomUserList } from '../../../recoil/RoomAtom';
 import socket from '../socketInstance';
 import {micNone, MaxUser, videocam} from '../../../images/room';
 import { useQuery } from 'react-query';
+import { toast } from 'sonner';
 
 type RoomSideBarProps = {};
 
@@ -28,7 +29,7 @@ const RoomSideBar: React.FC<RoomSideBarProps> = () => {
   const navigate = useNavigate();
 
   const [roomUserList, setRoomUserList] = useRecoilState(RoomUserList);
-  console.log('사이드바', roomUserList);
+  // console.log('사이드바', roomUserList);
 
   const { data } = useQuery<user>('user', fetchUser);
 
@@ -37,7 +38,7 @@ const RoomSideBar: React.FC<RoomSideBarProps> = () => {
     socket.on('user-list', (payload: UserListPayload) => {
       const { nickname, userListArr } = payload;
       setRoomUserList(userListArr);
-      console.log('리코일', roomUserList);
+      // console.log('리코일', roomUserList);
     });
 
     return () => {
@@ -52,7 +53,7 @@ const RoomSideBar: React.FC<RoomSideBarProps> = () => {
         src={logo}
         alt="로고이미지"
         onClick={() => {
-          alert('방에 나갈 때는 방 나가기 버튼을 이용해주세요.');
+          toast.error('방에 나갈 때는 방 나가기 버튼을 이용해주세요.');
         }}
       />
       <UserInfoBox>

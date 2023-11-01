@@ -33,8 +33,6 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
   const [isPopular, setIsPopular] = useState(true);
   const [sort, setSort] = useState('Popular');
 
-  console.log('룸리스트렌더링')
-
   const changePopular = (value: boolean) => {
     setIsPopular(value);
     if (value) {

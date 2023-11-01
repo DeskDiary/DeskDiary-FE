@@ -12,6 +12,7 @@ import { useRecoilValue } from 'recoil';
 import { RoomAtom } from '../../../recoil/RoomAtom';
 import { fetchUser } from '../../../axios/api';
 import { getCookie, setTokenCookie } from '../../../auth/cookie';
+import { toast } from 'sonner';
 
 type EditProfileImgProps = {};
 
@@ -48,7 +49,7 @@ const EditProfileImg: React.FC<EditProfileImgProps> = () => {
     if (image) {
       const reader = new FileReader();
       reader.readAsDataURL(image);
-      console.log('이미지확인', image);
+      // console.log('이미지확인', image);
       reader.onload = () => {
         const base64 = reader.result;
         setImage(base64 as string);
@@ -62,38 +63,38 @@ const EditProfileImg: React.FC<EditProfileImgProps> = () => {
     const formData = new FormData();
 
     if (image) {
-      console.log('이미지 있음');
+      // console.log('이미지 있음');
       formData.append('image', image);
     }
 
-    console.log('프로필 이미지 선택', formData.get('image'));
+    // console.log('프로필 이미지 선택', formData.get('image'));
 
     try {
-      console.log('try');
+      // console.log('try');
       const config = {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`, // JWT 토큰을 여기에 삽입해주세요
         },
       };
-      console.log('===')
+      // console.log('===')
       const response = await axios.post(
         `${process.env.REACT_APP_SERVER_URL!}/me/profile/image`,
         formData,
         config,
       );
 
-      console.log('프로필 수정 서버로 전송', response.data);
+      // console.log('프로필 수정 서버로 전송', response.data);
 
       // 성공시 로직
       if (response.data.success) {
-        console.log('성공');
-        alert('프로필 수정 성공!');
+        // console.log('성공');
+        toast.success('프로필 수정 성공🤗');
       } else {
-        console.log('실패ddzz', response.data);
+        // console.log('실패ddzz', response.data);
       }
     } catch (error) {
-      console.log('프로필 수정 실패', error);
+      // console.log('프로필 수정 실패', error);
     }
   };
 

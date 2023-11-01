@@ -9,7 +9,7 @@ type Props = {};
 function RoomHeader({}: Props) {
 
   const [roomInfo, setRoomInfo] = useRecoilState(RoomInfo);
-  console.log('헤더',roomInfo) 
+  // console.log('헤더',roomInfo) 
   return (
     <HeaderBG>
       <RoomName>{roomInfo.title}</RoomName>

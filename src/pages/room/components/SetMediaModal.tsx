@@ -10,6 +10,7 @@ import BasicPrecautions from '../../home/components/BasicPrecautions';
 import { useQuery } from 'react-query';
 import { fetchUser } from '../../../axios/api';
 import socket from '../socketInstance';
+import { toast } from 'sonner';
 
 type SetMediaModal = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -94,13 +95,13 @@ const SetMediaModal: React.FC<SetMediaModal> = ({ setIsOpen, room }) => {
       );
       setIsClicked(false);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     }
     setIsOpen(false);
   };
 
   const socketJoinError = async (message: string) => {
-    alert(message);
+    toast.error(message);
     navigate('/');
     window.location.reload();
   };

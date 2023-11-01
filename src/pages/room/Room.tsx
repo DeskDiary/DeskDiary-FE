@@ -14,6 +14,7 @@ import ChatBox from './components/chat/ChatBox';
 import SetMediaModal from './components/SetMediaModal';
 import VideoContainer from './components/media/VideoContainer';
 import arrow from '../../images/red-arrow.png';
+import { toast } from 'sonner';
 
 type RoomProps = {
   children?: React.ReactNode;
@@ -42,17 +43,17 @@ const Room: React.FC<RoomProps> = () => {
       setIsArrow(false);
     }, 2000); // 5000 밀리초는 5초야
   };
-  console.log('😢isArrow',isArrow);
+  // console.log('😢isArrow',isArrow);
   useEffect(() => {
     const listenBackEvent = () => {
       showArrow();
-      alert(`왼쪽 하단의 방 나가기 버튼을 이용 해 주세요.
+      toast.error(`왼쪽 하단의 방 나가기 버튼을 이용 해 주세요.
       `);
       navigate(`/room/${roomUUID}`);
     };
 
     const unlistenHistoryEvent = history.listen(({ action }) => {
-      console.log(action);
+      // console.log(action);
       
       if (action === 'POP') {
         
@@ -69,7 +70,7 @@ const Room: React.FC<RoomProps> = () => {
 
   const getRoomInfo = async () => {
     const url = `${serverUrl}/room/${location.pathname.split('/')[2]}`;
-    console.log('url', url);
+    // console.log('url', url);
     try {
       const response = await axios.get(url, {
         headers: {
@@ -94,7 +95,7 @@ const Room: React.FC<RoomProps> = () => {
         uuid: data.uuid,
       });
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     }
   };
 

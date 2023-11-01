@@ -64,7 +64,7 @@ const RoomModal: React.FC<RoomModalProps> = () => {
         totalHours: timer,
         historyType: roomInfo.category, // study, hobby
       };
-      console.log('❤️roomInfo.category', roomInfo);
+      // console.log('❤️roomInfo.category', roomInfo);
 
       const response = await axios.post(
         `${serverUrl}/room/${joinUUID}/leave`,
@@ -75,7 +75,7 @@ const RoomModal: React.FC<RoomModalProps> = () => {
           },
         },
       );
-      
+
       setTimer('00:00:00');
       localStorage.removeItem('startTime');
       localStorage.removeItem('endTime');
@@ -83,7 +83,7 @@ const RoomModal: React.FC<RoomModalProps> = () => {
       navigate('/');
       window.location.reload();
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     }
 
     socket.emit(
@@ -94,9 +94,9 @@ const RoomModal: React.FC<RoomModalProps> = () => {
       (response: any) => {
         // 서버로부터의 응답을 여기서 처리
         if (response.success) {
-          console.log('방에서 나가기 성공!✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
+          // console.log('방에서 나가기 성공!✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
         } else {
-          console.log('방 나가기 실패😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭');
+          // console.log('방 나가기 실패😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭');
         }
       },
     );

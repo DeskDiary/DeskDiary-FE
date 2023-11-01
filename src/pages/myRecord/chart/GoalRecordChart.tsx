@@ -108,7 +108,7 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
         }),
       );
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     }
   };
 
@@ -126,7 +126,7 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
       setMonthlyHobby(data.monthlyHobby);
       setMonthlyStudy(data.monthlyStudy);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     }
   };
   useEffect(() => {
@@ -228,7 +228,7 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
       },
     ],
   };
-  console.log(goalTime.goalTime);
+  // console.log(goalTime.goalTime);
   return (
     <Body>
       {view7 && goalTime.goalTime !== undefined && (

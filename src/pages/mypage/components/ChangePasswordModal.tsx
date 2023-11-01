@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useMutation } from 'react-query';
 import styled from 'styled-components';
 import { getCookie } from '../../../auth/cookie';
+import { toast } from 'sonner';
 
 type ChangePasswordModalProps = {};
 
@@ -35,12 +36,12 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = () => {
         setNewPassword('');
         setConfirmNewPassword('');
         setErrorMessage('');
-        alert('비밀번호 변경 완료');
+        toast.success('비밀번호 변경 완료🤗');
       },
       onError: (error: any) => {
         if (error.response) {
           const message = error.response.data.message;
-          console.log(message);
+          // console.log(message);
 
           switch (true) {
             case message.includes('비밀번호가 비어 있으면 안됩니다.'):
@@ -57,7 +58,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = () => {
               setErrorMessage('비밀번호는 8자 이상이어야 합니다');
               break;
             default:
-              console.log('회원가입에 실패했습니다. 관리자에게 문의해주세요.');
+              // console.log('회원가입에 실패했습니다. 관리자에게 문의해주세요.');
           }
         }
       },

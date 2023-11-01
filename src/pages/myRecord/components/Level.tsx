@@ -16,7 +16,7 @@ const Level: React.FC<LevelProps> = () => {
   const { data } = useQuery<user>('lever-user', fetchUser, {
     refetchOnWindowFocus: false,
   });
-  console.log('데이타', data);
+  // console.log('데이타', data);
   useEffect(() => {
     if (monthTime === 0) {
       setLevel(0);

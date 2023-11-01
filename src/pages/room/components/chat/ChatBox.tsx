@@ -11,6 +11,7 @@ import axios from 'axios';
 import { getCookie } from '../../../../auth/cookie';
 import socket from '../../socketInstance';
 import Chat from './Chat';
+import { toast } from 'sonner';
 
 type ChatBoxProps = { roomId: string };
 
@@ -59,7 +60,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
     console.log('전송전', messageData);
     newMessage !== ''
       ? socket.emit('msgToServer', messageData)
-      : alert('메세지를 입력해주세요');
+      : toast.error('메세지를 입력해주세요');
     setNewMessage('');
     console.log('전송후');
   };
@@ -110,22 +111,6 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
       socket.off('left-user');
     };
   }, [socket]);
-
-  const socketJoinError = async (message:string) => {
-    alert(message);
-    console.log('🎃🎃🎃🎃🎃🎃🎃🎃🎃🎃🎃🎃🎃🎃🎃🎃🎃')
-    const response = await axios.post(
-      `${process.env.REACT_APP_SERVER_URL!}/room/${roomId}/leave`,
-      data,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
-    navigate('/');
-    window.location.reload();
-  }
 
   useEffect(() => {
     socket.on('disconnect_user', (byeUser: string) => {

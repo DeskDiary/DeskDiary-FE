@@ -42,7 +42,7 @@ const GoalSetTimeModal: React.FC<GoalSetTimeModalProps> = () => {
         setGoalModal(false);
 
       } catch (error) {
-        console.error(error);
+        // console.error(error);
       }
     } else {
       alert(`24시간 이내로 설정해주세요.`);
