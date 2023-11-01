@@ -56,3 +56,8 @@ export const RoomInfo = atom({
     uuid: '',
   },
 });
+
+export const RoomUserList = atom({
+  key: 'RoomUserList',
+  default: [{nickname:'', img:''}],
+})

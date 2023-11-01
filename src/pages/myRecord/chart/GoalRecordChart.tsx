@@ -10,8 +10,10 @@ import {
 } from 'chart.js';
 import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
+import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { getCookie } from '../../../auth/cookie';
+import { GoalTime } from '../../../recoil/DeskAtom';
 
 ChartJS.register(
   CategoryScale,
@@ -25,6 +27,12 @@ ChartJS.register(
 type GoalRecordChartProps = {
   view7: boolean;
   view30: boolean;
+};
+
+type GoalTimeProps = {
+  goaltime: number | string;
+  studyTotalHours: number | string;
+  hobbyTotalHours: number | string;
 };
 
 const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
@@ -61,6 +69,8 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
   const [weeklyStudy, setWeeklyStudy] = useState<any[]>([]);
   const [monthlyHobby, setMonthlyHobby] = useState<any[]>([]);
   const [monthlyStudy, setMonthlyStudy] = useState<any[]>([]);
+  const [goalTime, setGoalTime] = useRecoilState(GoalTime); // 목표시간
+  console.log('그래프', goalTime)
   const sevenData = async () => {
     try {
       const response = await axios.get(`${serverUrl}/learning-history/weekly`, {
@@ -103,6 +113,7 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
         },
       );
       const data = response.data;
+      console.log('한달 데이터',data);
       setMonthlyHobby(data.monthlyHobby);
       setMonthlyStudy(data.monthlyStudy);
     } catch (error) {
@@ -113,6 +124,7 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
     sevenData();
     monthData();
   }, []);
+  console.log(monthlyHobby)
 
   const options = {
     responsive: true,
@@ -126,7 +138,6 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
       },
     },
   };
-
   const weeklyData = {
     labels: dateArray7.map(x => x.dayOfWeek),
     datasets: [
@@ -156,18 +167,16 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
     ],
   };
   const monthlyData = {
-    
     labels: dateArray30.map(x => x.date.slice(5)),
     datasets: [
       {
         label: '취미',
         data: dateArray30.map((day, i) => {
-          
           const correspondingHobby = monthlyHobby.find(
             x => x.checkIn === day.date,
           );
           return correspondingHobby ? Number(correspondingHobby.totalHours) : 0;
-        }),
+        }).map((x) => Math.floor((x / Number(goalTime.goalTime)) * 100)),
         stack: 'stack1',
         backgroundColor: ['#00C5FF'],
       },
@@ -185,6 +194,8 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
     ],
   };
 
+  
+  console.log('zz',monthlyData)
   return (
     <Body>
       {view7 && (

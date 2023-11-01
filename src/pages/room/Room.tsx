@@ -23,6 +23,7 @@ const Room: React.FC<RoomProps> = () => {
   const [roomInfo, setRoomInfo] = useRecoilState(RoomAtom);
   const [roomUUID, setRoomUUID] = useRecoilState(RoomUUIDAtom);
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [inCall, setInCall] = useState(false);
 
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const location = useLocation();
@@ -98,7 +99,7 @@ const Room: React.FC<RoomProps> = () => {
           <Area>
             <CamAreaDiv>
               {/* <RoomCamArea /> */}
-              <VideoContainer />
+              <VideoContainer setInCall={setInCall}/>
             </CamAreaDiv>
             {/* 채팅이 들어갈 곳 */}
             <ChattingAreaDiv>
@@ -136,7 +137,6 @@ const Area = styled.div`
 
 const CamAreaDiv = styled.div`
   width: calc(100% - 380px);
-  margin-top: 61px;
   height: calc(100vh - (217px - 61px));
   margin-left: 40px;
   margin-right: 40px;

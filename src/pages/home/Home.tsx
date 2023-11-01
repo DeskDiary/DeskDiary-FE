@@ -28,7 +28,6 @@ const Home = () => {
 
   return (
     <Container>
-      <Body>
         {/* <MainTop /> */}
 
         <Info>
@@ -43,28 +42,19 @@ const Home = () => {
         </Info>
 
         <RoomList label="엉덩이들이 많이 찾는 TOP 10" show="fetchRoomTop" />
-      </Body>
     </Container>
   );
 };
 
-const Body = styled.div``
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
 
-
-
-  width: 100vw;
-  min-height: 100vh;
+  width: 1200px;
+  min-height: calc(100vh - 120px);
   background-color: #e8f1ff;
-  ${Body} {
-    /* margin-top: 100px; */
-    width: 1200px;
-  }
 `;
 
 const User = styled.div`

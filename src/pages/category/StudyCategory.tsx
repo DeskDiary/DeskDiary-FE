@@ -54,7 +54,6 @@ const StudyCategory: React.FC<StudyCategoryProps> = () => {
 
   return (
     <Container>
-      <MainTop />
       <Info>
         {rankingList.map((item, i: number) => {
           return (

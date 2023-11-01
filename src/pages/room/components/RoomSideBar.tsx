@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../../../images/logo.svg';
@@ -9,8 +9,16 @@ import Timer from './Timer';
 import profile from '../../../images/profile.png';
 import { fetchUser } from '../../../axios/api';
 import { useQuery } from 'react-query';
+import { useRecoilState } from 'recoil';
+import { RoomUserList } from '../../../recoil/RoomAtom';
+import socket from '../socketInstance';
 
 type RoomSideBarProps = {};
+
+type UserListPayload = {
+  nickname: string;
+  userListArr: { nickname: string, img: string }[];
+};
 
 const RoomSideBar: React.FC<RoomSideBarProps> = () => {
   // const [timerState, setTimerState] = useState<boolean>(false);
@@ -21,9 +29,24 @@ const RoomSideBar: React.FC<RoomSideBarProps> = () => {
 
   const navigate = useNavigate();
 
+  const [roomUserList, setRoomUserList] = useRecoilState(RoomUserList);
+  console.log('사이드바', roomUserList);
+
   const { data } = useQuery<user>('user', fetchUser);
 
+  // 나가고 들어온 유저 닉네임 받아오기
+  useEffect(() => {
+    socket.on('user-list', (payload: UserListPayload) => {
+      const { nickname, userListArr } = payload;
+      setRoomUserList(userListArr);
+      console.log('리코일', roomUserList);
+    });
 
+    return () => {
+      socket.off('user-list');
+      socket.off('left-user');
+    };
+  }, [socket]);
 
   return (
     <Body>
@@ -53,16 +76,15 @@ const RoomSideBar: React.FC<RoomSideBarProps> = () => {
           <p>참여인원</p>
           <DetailCount>
             <img src={사람} alt="인원수" />
-            <p>01</p>
+            <p>{roomUserList.length}</p>
           </DetailCount>
         </UserCount>
-        <UserList>
-          <img
-            src={data?.profileImage}
-            alt="사용자프로필이미지"
-          />
-          <p>{data?.nickname}</p>
-        </UserList>
+        {roomUserList.map((user, index) => 
+          <UserList key={index}>
+            <img src={user.img} alt="사용자프로필이미지" />
+            <p>{user.nickname}</p>
+          </UserList>
+        )}
       </JoinPeopleBox>
     </Body>
   );

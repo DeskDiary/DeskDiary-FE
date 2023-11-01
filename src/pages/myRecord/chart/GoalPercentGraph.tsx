@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import { getCookie } from '../../../auth/cookie';
 import 아무사진 from '../../../images/logo.svg';
-import { GoalTimeModalState } from '../../../recoil/DeskAtom';
+import { GoalTime, GoalTimeModalState } from '../../../recoil/DeskAtom';
 
 type GoalPercentGraphProps = {};
 const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
@@ -15,7 +15,7 @@ const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
   const [취미누적시간, set취미누적시간] = useState<string>('??시간 ??분');
   const [스터디누적시간, set스터디누적시간] = useState<string>('??시간 ??분');
   const [percent, setPercent] = useState(0);
-
+  const [goalTime, setGoalTime] = useRecoilState(GoalTime); // 목표시간
   useEffect(() => {
     const time = +취미누적시간 + +스터디누적시간;
     setPercent(Math.floor((time / 목표시간sec) * 100));
@@ -42,6 +42,7 @@ const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
           Authorization: `Bearer ${token}`,
         },
       });
+      setGoalTime(response.data);
       const time = response.data.goalTime;
       set목표시간sec(time);
       const hour = Math.floor(time / 3600);

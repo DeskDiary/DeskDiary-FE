@@ -1,18 +1,24 @@
 import React, { useState } from 'react';
 import { ICameraVideoTrack, IMicrophoneAudioTrack } from 'agora-rtc-react';
 import { useClient } from './config';
-import { FaVolumeMute, FaVolumeUp, FaVideo, FaVideoSlash } from 'react-icons/fa';
+import {
+  FaVolumeMute,
+  FaVolumeUp,
+  FaVideo,
+  FaVideoSlash,
+} from 'react-icons/fa';
+import styled from 'styled-components';
 
 type VideoControllerProps = {
   tracks: [IMicrophoneAudioTrack, ICameraVideoTrack];
   setStart: React.Dispatch<React.SetStateAction<boolean>>;
-  // setInCall: React.Dispatch<React.SetStateAction<boolean>>;
+  setInCall: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const VideoController: React.FC<VideoControllerProps> = ({
   tracks,
   setStart,
-  // setInCall,
+  setInCall,
 }) => {
   const client = useClient();
   const [trackState, setTrackState] = useState({ video: true, audio: true });
@@ -38,11 +44,11 @@ const VideoController: React.FC<VideoControllerProps> = ({
     tracks[0].close();
     tracks[1].close();
     setStart(false);
-    // setInCall(false);
+    setInCall(false);
   };
 
   return (
-    <div className="controls">
+    <Controller>
       <button
         className={trackState.audio ? 'on' : ''}
         onClick={() => mute('audio')}
@@ -55,8 +61,35 @@ const VideoController: React.FC<VideoControllerProps> = ({
       >
         {trackState.video ? <FaVideo /> : <FaVideoSlash />}
       </button>
-      <button onClick={() => leaveChannel()}>나가기</button>
-    </div>
+      {/* <button onClick={() => leaveChannel()}>나가기</button> */}
+    </Controller>
   );
 };
+
+const Controller = styled.div`
+  width: 600px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  gap: 10px;
+  margin-left: 10px;
+
+  > button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--gray-07);
+    width: 50px;
+    height: 40px;
+    background-color: var(--gray-07);
+    transition: 0.5;
+    border: none;
+    font-size: 20px;
+    border-radius: 10px;
+    &:hover{
+      background-color: var(--gray-06);
+    }
+  }
+`;
 export default VideoController;

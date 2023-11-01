@@ -82,8 +82,8 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
       <ListInfo>
         <ListTitle>{label}</ListTitle>
         <Categorys>
-          <Category onClick={() => changePopular(true)}>인기순</Category>
-          <Category onClick={() => changePopular(false)}>최신순</Category>
+          <Category isSelected={sort === 'Popular'} onClick={() => changePopular(true)}>인기순</Category>
+          <Category isSelected={sort === 'Latest'} onClick={() => changePopular(false)}>최신순</Category>
         </Categorys>
       </ListInfo>
 
@@ -113,9 +113,21 @@ const Categorys = styled.div`
   margin-bottom: 10px;
 `;
 
-const Category = styled.button`
+const Category = styled.button<{isSelected: boolean}>`
   font-size: 14px;
   font-weight: 400;
+  width: 50px;
+  
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  padding-bottom: 2px;
+
+  color: ${props => props.isSelected ? 'var(--primary-01)' : 'var(--gray-07)'};
+  ${props => props.isSelected && 'border-bottom: 1px solid var(--primary-01)'};
+
+  &:hover{
+   color: var(--primary-01); 
+  }
 `;
 
 const List = styled.div`
@@ -124,7 +136,7 @@ const List = styled.div`
   justify-content: start;
   align-items: start;
 
-  margin-top: 72px;
+  margin-top: 60px;
   height: 100%;
   width: 100%;
 `;
@@ -139,7 +151,7 @@ const JoinedRooms = styled.div`
   grid-template-columns: repeat(5, 1fr);
   gap: 12px;
   width: 1215px;
-  min-height: 470px;
+  min-height: 420px;
 
   overflow: scroll;
 

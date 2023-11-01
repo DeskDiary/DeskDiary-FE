@@ -90,7 +90,7 @@ const MainTop: React.FC<MainTopProps> = () => {
       )}
 
       {openCreateRoom && (
-        <CreateRoomModal setOpenCreateRoom={setOpenCreateRoom} user={data!} />
+        <CreateRoomModal setOpenCreateRoom={setOpenCreateRoom} />
       )}
     </NavHeader>
   );
