@@ -1,6 +1,6 @@
 import hobby from './main/hobby.svg'
 import home from './main/home.svg'
-import logo from './logo.svg'
+import logo from './logo-color.svg'
 import profile from './profile.png'
 import study from './main/study.svg'
 import mydesk from './main/mydesk.svg'
