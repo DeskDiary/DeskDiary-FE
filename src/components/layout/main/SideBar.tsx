@@ -7,7 +7,7 @@ import { getCookie } from '../../../auth/cookie';
 import { fetchUser } from '../../../axios/api';
 import { hobby, home, mydesk, study } from '../../../images/main';
 import logo from '../../../images/logo.svg';
-import profile from '../.././../images/profile.svg';
+import profile from '../.././../images/main/profile.svg';
 
 
 type SideBarProps = {};
