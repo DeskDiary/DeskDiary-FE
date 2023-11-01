@@ -184,7 +184,7 @@ const EditButton = styled.button`
 const EmailHover = styled.div<{ show: boolean }>`
   position: absolute;
   top: 15px;
-  right: 200px;
+  right: 40px;
   font-size: 12px;
   font-weight: 500;
   background-color: white;

@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import SideBar from './SideBar';
-import CreateRoomButton from '../../CreateRoomButton';
+import CreateRoomButton from '../../CreateRoomButton2';
 
 type MainLayoutProps = {};
 

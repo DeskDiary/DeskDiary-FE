@@ -52,7 +52,7 @@ const SetMediaModal: React.FC<SetMediaModal> = ({ setIsOpen, room }) => {
 
   const onClickJoinRoom = async () => {
     if (isClicked) return;
-      setIsClicked(true);
+    setIsClicked(true);
     try {
       const token = getCookie('token');
       const response = await axios.post(
@@ -88,10 +88,9 @@ const SetMediaModal: React.FC<SetMediaModal> = ({ setIsOpen, room }) => {
           nickname: data!.nickname,
           uuid: room.uuid,
           img: data!.profileImage,
-          userId : data!.userId
+          userId: data!.userId,
         },
-        (response: any) => {
-        },
+        (response: any) => {},
       );
       setIsClicked(false);
     } catch (error) {
@@ -100,37 +99,21 @@ const SetMediaModal: React.FC<SetMediaModal> = ({ setIsOpen, room }) => {
     setIsOpen(false);
   };
 
-  const socketJoinError = async (message:string) => {
+  const socketJoinError = async (message: string) => {
     alert(message);
-    console.log('🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸', message)
-    console.log('🎃🎃🎃🎃🎃🎃🎃🎃🎃🎃🎃🎃🎃🎃🎃🎃🎃')
-    const response = await axios.post(
-      `${process.env.REACT_APP_SERVER_URL!}/room/${room.uuid}/leave`,
-      data,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
     navigate('/');
     window.location.reload();
-  }
+  };
 
   useEffect(() => {
-    console.log("🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸Socket 연결 상태:", socket.connected);
-
     socket.on('joinError', (message: string) => {
-      console.log('🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸joinError', message)
-      
-      socketJoinError(message)
-      
+      socketJoinError(message);
     });
 
-    return () => {
-      socket.off('joinError');
-    };
-  }, [isClicked, socket])
+    // return () => {
+    //   socket.off('joinError');
+    // };
+  }, [socket]);
 
   return (
     <Container>
@@ -143,9 +126,7 @@ const SetMediaModal: React.FC<SetMediaModal> = ({ setIsOpen, room }) => {
           <BasicPrecautions />
           <Note>{renderNoteWithBreaks(room.note)}</Note>
         </Content>
-        <EnterRoomButton onClick={onClickJoinRoom}>
-          확인
-          </EnterRoomButton>
+        <EnterRoomButton onClick={onClickJoinRoom}>확인</EnterRoomButton>
       </ModalContent>
     </Container>
   );
