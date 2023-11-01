@@ -52,6 +52,7 @@ const GlobalStyle = createGlobalStyle`
     line-height: 123.5%; /* 29.64px */
     letter-spacing: 0.25px;
     font-feature-settings: 'clig' off, 'liga' off;
+    background-color: #E8F1FF;
   }
 
   *{

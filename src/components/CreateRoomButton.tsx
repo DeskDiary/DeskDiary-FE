@@ -4,6 +4,7 @@ import addroom from '../images/main/addroom.svg';
 import { getCookie } from '../auth/cookie';
 import { Link, useNavigate, NavLink } from 'react-router-dom';
 import CreateRoomModal from '../pages/home/components/CreateRoomModal';
+import {MdOutlineAddHome} from 'react-icons/md'
 
 type CreateRoomButtonProps = {};
 
@@ -19,7 +20,8 @@ const CreateRoomButton: React.FC<CreateRoomButtonProps> = () => {
     <>
       {token && (
         <Button onClick={onClickCreateRoomButton}>
-          <img src={addroom} alt="add-room" />
+          {/* <img src={addroom} alt="add-room" /> */}
+          <Icon><MdOutlineAddHome/></Icon>
           <p>방만들기</p>
         </Button>
       )}
@@ -29,6 +31,12 @@ const CreateRoomButton: React.FC<CreateRoomButtonProps> = () => {
     </>
   );
 };
+
+const Icon = styled.div`
+  color: white;
+  font-size: 40px;
+  margin-bottom: 5px;
+`
 
 const Button = styled.button`
   width: 100px;

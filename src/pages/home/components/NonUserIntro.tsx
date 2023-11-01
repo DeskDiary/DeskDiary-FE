@@ -29,26 +29,38 @@ const NonUserIntro: React.FC<NonUserIntroProps> = () => {
 
 const Blue = styled.div`
   position : absolute;
-  top: -85px;
+  top: -60px;
   left: 0px;
+  >img{
+    width: 70%;
+  }
 `
 
 const Orange = styled.div`
   position : absolute;
-  top: -120px;
+  top: -85px;
   right: 0px;
+  >img{
+    width: 70%;
+  }
 `
 
 const Purple = styled.div`
   position : absolute;
-  top: -90px;
+  top: -60px;
   right: 250px;
+  >img{
+    width: 70%;
+  }
 `
 
 const Yellow = styled.div`
   position : absolute;
-  top: -110px;
+  top: -75px;
   left: 200px;
+  >img{
+    width: 70%;
+  }
 `
 
 const Container = styled.div`
@@ -58,6 +70,7 @@ const Container = styled.div`
   justify-content: center;
   width: 100%;
   height: 100%;
+  margin-top: 30px;
 
   position: relative;
 
