@@ -18,14 +18,14 @@ const CreateRoomButton: React.FC<CreateRoomButtonProps> = () => {
 
   return (
     <>
-      <Button onClick={onClickCreateRoomButton}>
+      <Button>
         {token ? (
-          <>
+          <div onClick={onClickCreateRoomButton}>
             <Icon>
               <MdOutlineAddHome />
             </Icon>
             <p>방만들기</p>
-          </>
+          </div>
         ) : (
           <Login to="/login">로그인</Login>
         )}
