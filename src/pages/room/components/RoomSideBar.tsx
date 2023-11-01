@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react';
+import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
+import { fetchUser } from '../../../axios/api';
 import logo from '../../../images/logo.svg';
+import profile from '../../../images/profile.png';
 import 마이크 from '../../../images/room/mic_none.svg';
 import 사람 from '../../../images/room/people_outline.svg';
 import 카메라 from '../../../images/room/videocam.svg';
-import Timer from './Timer';
-import profile from '../../../images/profile.png';
-import { fetchUser } from '../../../axios/api';
-import { useQuery } from 'react-query';
-import { useRecoilState } from 'recoil';
 import { RoomUserList } from '../../../recoil/RoomAtom';
 import socket from '../socketInstance';
+import Timer from './Timer';
 
 type RoomSideBarProps = {};
 
@@ -81,7 +81,7 @@ const RoomSideBar: React.FC<RoomSideBarProps> = () => {
         </UserCount>
         {roomUserList.map((user, index) => 
           <UserList key={index}>
-            <img src={user.img} alt="사용자프로필이미지" />
+            <img src={user.img ? user.img : profile} alt="사용자프로필이미지" />
             <p>{user.nickname}</p>
           </UserList>
         )}
