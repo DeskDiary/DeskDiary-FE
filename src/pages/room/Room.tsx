@@ -166,8 +166,7 @@ const Container = styled.div`
   display: flex;
   width: 100%;
   height: calc(100vh - 60px);
-  /* background: var(--gray-09); */
-  background-color: white;
+  background: var(--gray-09);
 `;
 
 const Content = styled.div`
@@ -196,13 +195,9 @@ const CamAreaDiv = styled.div`
 
 const ChattingAreaDiv = styled.div`
   width: 380px;
-  height: 85%;
+  height: 99%;
   display: flex;
   flex-direction: column;
-  position: fixed;
-  bottom: 100px;
-  right: 20px;
-  gap: 20px;
 `;
 
 export default Room;

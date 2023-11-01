@@ -4,6 +4,7 @@ import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { fetchUser } from '../../../../axios/api';
 import { chat, send } from '../../../../images/room';
+import { blue } from '../../../../images/character'
 import { RoomUserList } from '../../../../recoil/RoomAtom';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -127,17 +128,6 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
   }
 
   useEffect(() => {
-    socket.on('joinError', (message: string) => {
-      console.log('🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸')
-      socketJoinError(message)
-    });
-
-    return () => {
-      socket.off('joinError');
-    };
-  })
-
-  useEffect(() => {
     socket.on('disconnect_user', (byeUser: string) => {
       setAllChatList(prevAllChatList => [
         ...prevAllChatList,
@@ -183,9 +173,10 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
           <UserInput
             value={newMessage}
             onChange={e => setNewMessage(e.target.value)}
+            placeholder='메세지를 입력 해 주세요'
           ></UserInput>
           <SendButton type="submit">
-            <img src={send} />
+            <img src={blue} />
           </SendButton>
         </ChatForm>
       </ChatUnder>
@@ -236,6 +227,9 @@ const SendButton = styled.button`
   margin: 10px;
   background-color: transparent;
   cursor: pointer;
+  >img{
+    width: 30px;
+  }
 `;
 
 const UserInput = styled.input`
@@ -274,7 +268,7 @@ const ChatList = styled.div`
   min-height: calc(100% - 145px);
   width: calc(100% - 40px);
   padding: 20px;
-  border-bottom: 1px solid var(--gray-05);
+  /* border-bottom: 1px solid var(--gray-05); */
   overflow: scroll;
 `;
 
@@ -288,9 +282,7 @@ const Container = styled.div`
   min-height: calc(100% - 145px);
   /* border-left: 1px solid var(--gray-07); */
   position: relative;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 4px 4px 10px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 2px 6px 2px rgba(0, 0, 0, 0.3);
 
   /* 스크롤바 트랙(배경) 디자인 */
   ::-webkit-scrollbar-track {

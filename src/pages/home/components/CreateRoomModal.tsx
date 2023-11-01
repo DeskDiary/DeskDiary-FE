@@ -11,6 +11,7 @@ import { study, hobby, upload } from '../../../images/main';
 import BasicPrecautions from './BasicPrecautions';
 import { blue } from '../../../images/character';
 import { lendingImage } from '../../../images';
+import { toast } from 'sonner';
 
 type CreateRoomProps = {
   setOpenCreateRoom: React.Dispatch<React.SetStateAction<boolean>>;
@@ -97,17 +98,18 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
     e.preventDefault();
 
     if (+userCount > 10 || +userCount < 1) {
-      alert('1명 이상, 10명 이하로 설정 해 주세요');
+      toast.error('1명 이상, 10명 이하로 설정 해 주세요');
+      return;
     }
 
     // 카테고리나 인원이 설정되지 않았다면 알림을 주고 함수를 종료
     if (!isStudyActive && !isHobbyActive) {
-      alert('카테고리를 선택해주세요.');
+      toast.error('카테고리를 선택해주세요.');
       return;
     }
 
-    if (selectedUserCount === null) {
-      alert('인원을 설정해주세요.');
+    if (userCount === '') {
+      toast.error('인원을 설정해주세요.');
       return;
     }
 

@@ -111,10 +111,9 @@ const Body = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: white;
 
   border-radius: 10px;
-  box-shadow: 4px 4px 10px 2px rgba(0, 0, 0, 0.5);
+  box-shadow: 2px 2px 6px 2px rgba(0, 0, 0, 0.3);
 `;
 
 const Icon = styled.img`

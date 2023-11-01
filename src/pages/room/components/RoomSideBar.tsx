@@ -92,8 +92,7 @@ const Body = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* background: var(--gray-09); */
-  background-color: white;
+  background: var(--gray-09);
   width: 200px;
   height: calc(100vh - 60);
   margin-left: 10px;

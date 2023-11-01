@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { getCookie } from '../../../auth/cookie';
@@ -39,6 +39,7 @@ const SetMediaModal: React.FC<SetMediaModal> = ({ setIsOpen, room }) => {
   const [isClicked, setIsClicked] = useState(false);
 
   const { data } = useQuery<user>('joinRoomUserInfo', fetchUser);
+  const token = getCookie('token');
 
   const renderNoteWithBreaks = (text: string) => {
     return text.split('\n').map((line, index) => (
@@ -51,7 +52,7 @@ const SetMediaModal: React.FC<SetMediaModal> = ({ setIsOpen, room }) => {
 
   const onClickJoinRoom = async () => {
     if (isClicked) return;
-    setIsClicked(true);
+      setIsClicked(true);
     try {
       const token = getCookie('token');
       const response = await axios.post(
@@ -92,13 +93,44 @@ const SetMediaModal: React.FC<SetMediaModal> = ({ setIsOpen, room }) => {
         (response: any) => {
         },
       );
-      
       setIsClicked(false);
     } catch (error) {
       console.error(error);
     }
     setIsOpen(false);
   };
+
+  const socketJoinError = async (message:string) => {
+    alert(message);
+    console.log('🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸', message)
+    console.log('🎃🎃🎃🎃🎃🎃🎃🎃🎃🎃🎃🎃🎃🎃🎃🎃🎃')
+    const response = await axios.post(
+      `${process.env.REACT_APP_SERVER_URL!}/room/${room.uuid}/leave`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    navigate('/');
+    window.location.reload();
+  }
+
+  useEffect(() => {
+    console.log("🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸Socket 연결 상태:", socket.connected);
+
+    socket.on('joinError', (message: string) => {
+      console.log('🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸joinError', message)
+      
+      socketJoinError(message)
+      
+    });
+
+    return () => {
+      socket.off('joinError');
+    };
+  }, [isClicked, socket])
 
   return (
     <Container>
