@@ -89,7 +89,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
     try {
       navigate(`/room/${uuid}`);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     }
   };
 

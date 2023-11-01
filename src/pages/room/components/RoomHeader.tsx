@@ -25,7 +25,8 @@ function RoomHeader({}: Props) {
 }
 
 const HeaderBG = styled.div`
-  background: var(--gray-09, #424242);
+  /* background: var(--gray-09, #424242); */
+  background-color: white;
   height: 96px;
   display: flex;
   align-items: center;

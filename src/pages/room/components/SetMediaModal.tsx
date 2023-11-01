@@ -87,10 +87,12 @@ const SetMediaModal: React.FC<SetMediaModal> = ({ setIsOpen, room }) => {
           nickname: data!.nickname,
           uuid: room.uuid,
           img: data!.profileImage,
+          userId : data!.userId
         },
         (response: any) => {
         },
       );
+      
       setIsClicked(false);
     } catch (error) {
       console.error(error);

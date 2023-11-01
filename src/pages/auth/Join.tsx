@@ -46,7 +46,6 @@ const Join: React.FC<JoinProps> = () => {
         setUser(prevUser => ({ ...prevUser, password: '' }));
         break;
       case 'confirmPassword':
-        console.log('클릭클릭');
         setconfirmPassword('');
         break;
       case 'nickname':
@@ -83,13 +82,12 @@ const Join: React.FC<JoinProps> = () => {
       axios.post(`${process.env.REACT_APP_SERVER_URL!}/auth/join`, userData),
     {
       onSuccess: () => {
-        alert('회원가입 성공');
         navigate('/login');
       },
       onError: (error: any) => {
         if (error.response) {
           const message = error.response.data.message;
-          console.log(message);
+          // console.log(message);
 
           switch (true) {
             case message.includes('이메일이 이미'):
@@ -128,7 +126,7 @@ const Join: React.FC<JoinProps> = () => {
               setPasswordError('비밀번호는 8자 이상이어야 합니다');
               break;
             default:
-              console.log('회원가입에 실패했습니다. 관리자에게 문의해주세요.');
+
           }
         }
       },

@@ -44,8 +44,6 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
 
   const historyRoom = localStorage.getItem('room');
 
-  console.log('historyRoom==="room"', historyRoom === 'room');
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -114,6 +112,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
 
   const socketJoinError = async (message:string) => {
     alert(message);
+    console.log('🎃🎃🎃🎃🎃🎃🎃🎃🎃🎃🎃🎃🎃🎃🎃🎃🎃')
     const response = await axios.post(
       `${process.env.REACT_APP_SERVER_URL!}/room/${roomId}/leave`,
       data,
@@ -129,7 +128,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
 
   useEffect(() => {
     socket.on('joinError', (message: string) => {
-      console.log('✨✨✨✨✨✨✨✨✨✨✨✨')
+      console.log('🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸🐸')
       socketJoinError(message)
     });
 
@@ -285,10 +284,13 @@ const Container = styled.div`
   justify-content: start;
   align-items: center;
 
-  width: 96%;
+  width: 100%;
   min-height: calc(100% - 145px);
-  border-left: 1px solid var(--gray-07);
+  /* border-left: 1px solid var(--gray-07); */
   position: relative;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 4px 4px 10px 10px rgba(0, 0, 0, 0.2);
 
   /* 스크롤바 트랙(배경) 디자인 */
   ::-webkit-scrollbar-track {

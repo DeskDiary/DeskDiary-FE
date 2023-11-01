@@ -69,7 +69,7 @@ const SideBar: React.FC<SideBarProps> = () => {
                   e.preventDefault(); // NavLink의 기본 이동을 막아줌
                   toast.error('로그인이 필요합니다.', {
                     style: {
-                      backgroundColor: '#ccdfff',
+                      backgroundColor: '#ffdcdc',
                       opacity: 0.6,
                       color: 'white',
                     },

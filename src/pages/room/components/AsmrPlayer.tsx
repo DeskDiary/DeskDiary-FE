@@ -107,10 +107,14 @@ const AsmrPlayer: React.FC<AsmrPlayerProps> = () => {
 
 const Body = styled.div`
   width: 100%;
-  border: 1px solid var(--gray-07);
+  /* border: 1px solid var(--gray-07); */
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: white;
+
+  border-radius: 10px;
+  box-shadow: 4px 4px 10px 2px rgba(0, 0, 0, 0.5);
 `;
 
 const Icon = styled.img`

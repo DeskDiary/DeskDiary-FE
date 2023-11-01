@@ -26,7 +26,7 @@ const HobbyCategory: React.FC<HobbyCategoryProps> = () => {
     { borderColor: 'rgba(79, 72, 145, 1)', img: fifth },
   ];
   const [rankingList, setRankingList] = useState<RankingList[]>([]);
-  console.log(rankingList);
+  // console.log(rankingList);
 
   const hobbyRanking = async () => {
     try {
@@ -34,7 +34,7 @@ const HobbyCategory: React.FC<HobbyCategoryProps> = () => {
 
       setRankingList(response.data);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     }
   };
   const timeFormat = (num: number | string) => {

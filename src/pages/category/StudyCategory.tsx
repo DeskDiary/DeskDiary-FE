@@ -25,14 +25,14 @@ const StudyCategory: React.FC<StudyCategoryProps> = () => {
     { borderColor: 'rgba(79, 72, 145, 1)', img: fifth },
   ];
   const [rankingList, setRankingList] = useState<RankingList[]>([]);
-  console.log(rankingList);
+  // console.log(rankingList);
   const studyRanking = async () => {
     try {
       const response = await axios.get(`${serverUrl}/study-room/rankings`);
 
       setRankingList(response.data);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     }
   };
 

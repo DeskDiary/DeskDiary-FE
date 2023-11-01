@@ -35,7 +35,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
       setIsRefetch(true);
       setIsOpen(false);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     }
   };
 
@@ -50,7 +50,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
           },
         },
       );
-      console.log(response);
+      // console.log(response);
       setIsOpen(false);
 
       document.cookie =
@@ -59,7 +59,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
       navigate('/');
       window.location.reload();
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     }
   };
 

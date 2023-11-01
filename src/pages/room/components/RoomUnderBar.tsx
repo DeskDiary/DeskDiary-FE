@@ -45,7 +45,8 @@ const RoomUnderBar: React.FC<RoomUnderBarProps> = ({ roomId }) => {
 const Body = styled.div`
   width: 100%;
   height: 60px;
-  background-color: var(--gray-09);
+  /* background-color: var(--gray-09); */
+  background-color: white;
   display: flex;
   align-items: center;
 `;

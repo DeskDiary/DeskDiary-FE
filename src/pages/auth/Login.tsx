@@ -9,6 +9,7 @@ import { logoColor, x, radio_button_checked, radio_button_unchecked} from '../..
 import { Link } from 'react-router-dom';
 import Kakao from './components/Kakao';
 import Google from './components/Google';
+import { toast } from 'sonner';
 
 type LoginProps = {};
 
@@ -20,7 +21,8 @@ const Login: React.FC<LoginProps> = () => {
   const [idSaveCheckButton, setIdSaveCheckButton] = useState<boolean>(false);
   useEffect(() => {
     if (token) {
-      alert('이미 로그인했습니다.');
+      // alert('이미 로그인했습니다.');
+      toast.error('이미 로그인이 되어있습니다.');
       navigate(-1);
     }
   }, [token, navigate]);
@@ -52,7 +54,7 @@ const Login: React.FC<LoginProps> = () => {
       const response = await axios.post(url, requestBody);
       const token = response.headers.authorization.split(' ')[1];
       setErrorMessage([]);
-      console.log(token);
+      // console.log(token);
       setTokenCookie(token);
       if (idSaveCheckButton === true) {
         saveIdLocalStorage(id);
@@ -64,7 +66,7 @@ const Login: React.FC<LoginProps> = () => {
       } else if (error.response.message.includes("이메일 혹은") && error.response.status === 400 ) {
         setShowErrorMessage("* 이메일 혹은 비밀번호를 확인 해 주세요");
       }
-      console.error(error);
+      // console.error(error);
     }
   });
 
@@ -72,10 +74,10 @@ const Login: React.FC<LoginProps> = () => {
     event.preventDefault(); // 이벤트의 기본 동작 ( 리렌더링 ) 차단
     const formData = new FormData(event.currentTarget);
     // form 내의 데이터를 읽어온다. name 속성을 키로 그 값들을 가지고 있다.
-    console.log({
-      email: formData.get('email'),
-      password: formData.get('password'),
-    });
+    // console.log({
+    //   email: formData.get('email'),
+    //   password: formData.get('password'),
+    // });
     loginMutation.mutate(formData);
   };
 

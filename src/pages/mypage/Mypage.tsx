@@ -13,6 +13,7 @@ import EditProfileImg from './components/EditProfileImg';
 import { profile } from '../../images';
 import { logoColor } from '../../images';
 import { kakao, google } from '../../images/main';
+import { toast } from 'sonner';
 
 type MypageProps = {};
 
@@ -61,7 +62,6 @@ const Mypage: React.FC<MypageProps> = () => {
       ),
     {
       onSuccess: () => {
-        alert('닉네임 수정 성공');
         refetch();
         setIsOpenNick(false);
         setErrorMessage('')
@@ -81,7 +81,7 @@ const Mypage: React.FC<MypageProps> = () => {
     e.preventDefault();
     const trimmedNickname = nickname.trim();
     if (!trimmedNickname) {
-      alert('닉네임을 입력해주세요!');
+      toast.error('닉네임을 입력해주세요!');
       return;
     }
 
