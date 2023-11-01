@@ -104,8 +104,8 @@ const EditProfileImg: React.FC<EditProfileImgProps> = () => {
       sx={{
         color: 'var(--primary-01)',
         '&:hover': {
-          backgroundColor: 'initial', // 여기서 'initial' 대신 원래 배경색을 넣어도 돼
-          boxShadow: 'none', // 그림자 효과 제거
+          backgroundColor: 'initial',
+          boxShadow: 'none',
         },
       }}
     >

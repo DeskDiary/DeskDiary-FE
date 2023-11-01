@@ -33,6 +33,5 @@ const SocialLoginLink = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 130px;
 `;
 export default Kakao;

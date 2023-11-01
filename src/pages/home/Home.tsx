@@ -28,7 +28,6 @@ const Home = () => {
 
   return (
     <Container>
-        {/* <MainTop /> */}
 
         <Info>
           {token ? (

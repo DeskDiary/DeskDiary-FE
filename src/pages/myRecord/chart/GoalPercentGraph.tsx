@@ -23,11 +23,16 @@ const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
 
   const 누적시간forMatter = (취미누적시간: string, 스터디누적시간: string) => {
     const time = +취미누적시간 + +스터디누적시간;
-    const hour = Math.floor(time / 3600);
-    const minute = Math.floor((time % 3600) / 60)
-      .toString()
-      .padStart(2, '0');
-    return `${hour}시간 ${minute}분`;
+    if(time >= 0) {
+  const hour = Math.floor(time / 3600);
+      const minute = Math.floor((time % 3600) / 60)
+        .toString()
+        .padStart(2, '0');
+      return `${hour}시간 ${minute}분`;
+    } else {
+      return `00시간 00분`
+    }
+    
   };
 
   const goalModalOnclickHandler = () => {
@@ -47,7 +52,13 @@ const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
       set목표시간sec(time);
       const hour = Math.floor(time / 3600);
       const minute = ((time % 3600) / 60).toString().padStart(2, '0');
-      set목표시간(`${hour}시간 ${minute}분`);
+      console.log('time', time);
+      if(time >= 0) {
+        set목표시간(`${hour}시간 ${minute}분`);
+      } else {
+        set목표시간(`00시간 00분`);
+      }
+      
     } catch (error) {
       console.error(error);
     }

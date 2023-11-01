@@ -46,7 +46,7 @@ const Mypage: React.FC<MypageProps> = () => {
     setIsOpenDeleteUser(!isOpenDeleteUser);
   };
 
-  const { data } = useQuery<user, Error>('mypageUser', fetchUser, {
+  const { data, refetch  } = useQuery<user, Error>('mypageUser', fetchUser, {
     refetchOnWindowFocus: false,
   });
 
@@ -64,7 +64,8 @@ const Mypage: React.FC<MypageProps> = () => {
     {
       onSuccess: () => {
         alert('닉네임 수정 성공');
-        // navigate('/login');
+        refetch();
+        setIsOpenNick(false);
       },
       onError: (error: any) => {
         if (error.response) {
@@ -94,7 +95,11 @@ const Mypage: React.FC<MypageProps> = () => {
 
   const onSubmitNickname = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('nickname', nickname);
+    const trimmedNickname = nickname.trim();
+    if (!trimmedNickname) {
+      alert("닉네임을 입력해주세요!");
+      return;
+    }
 
     joinMutation.mutate(nickname);
   };
@@ -182,7 +187,7 @@ const EmailHover = styled.div<{ show: boolean }>`
   left: 170px;
   font-size: 12px;
   font-weight: 500;
-  background-color: var(--gray-03);
+  background-color: white;
   border-radius: 15px;
   padding: 3px 10px;
   opacity: ${props => (props.show ? 1 : 0)};
@@ -229,6 +234,12 @@ const EditNickname = styled.form`
   border: 1px solid var(--gray-07);
   padding: 5px;
   border-radius: 5px;
+
+  >input{
+    background-color: #E8F1FF;
+  }
+
+  
 
   width: 100%;
   > input {
