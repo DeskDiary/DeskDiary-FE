@@ -1,12 +1,12 @@
-import React, { useEffect, useState, useRef } from 'react';
-import styled from 'styled-components';
-import Chat from './Chat';
-import { fetchUser } from '../../../../axios/api';
+import React, { useEffect, useRef, useState } from 'react';
 import { useQuery } from 'react-query';
-import socket from '../../socketInstance';
-import { RoomUserList } from '../../../../recoil/RoomAtom';
 import { useRecoilState } from 'recoil';
-import {chat, send} from '../../../../images/room'
+import styled from 'styled-components';
+import { fetchUser } from '../../../../axios/api';
+import { chat, send } from '../../../../images/room';
+import { RoomUserList } from '../../../../recoil/RoomAtom';
+import socket from '../../socketInstance';
+import Chat from './Chat';
 
 type ChatBoxProps = { roomId: string };
 

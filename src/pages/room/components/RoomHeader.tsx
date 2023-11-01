@@ -1,7 +1,7 @@
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
+import { blue, orange, purple, yellow } from '../../../images/character';
 import { RoomInfo } from '../../../recoil/RoomAtom';
-import {bell, chat, music} from '../../../images/room';
 
 type Props = {};
 
@@ -14,9 +14,11 @@ function RoomHeader({}: Props) {
     <HeaderBG>
       <RoomName>{roomInfo.title}</RoomName>
       <IconDiv>
-        <img src={bell} alt="" />
-        <img src={music} alt="" />
-        <img src={chat} alt="" />
+        <img src={yellow} alt="" />
+        <img src={orange} alt="" />
+        <img src={purple} alt="" />
+        <img src={blue} alt="" />
+
       </IconDiv>
     </HeaderBG>
   );
@@ -33,16 +35,12 @@ const IconDiv = styled.div`
   display: flex;
   width: 350px;
   height: 100%;
-  align-items: center;
+  align-items: end;
   gap: 24px;
   justify-content: space-around;
   img {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    border: 2px solid var(--primary-01, rgba(0, 197, 255, 1));
-    padding: 10px;
-    overflow: inherit;
+    width: 50px;
+    height: 50px;
   }
 `;
 

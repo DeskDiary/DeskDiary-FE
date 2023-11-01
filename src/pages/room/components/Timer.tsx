@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
-import {pause, timer} from '../../../images/room';
+import { pause } from '../../../images/room';
+import timerImg from '../../../images/room/timerImg.svg';
 import { timerState } from '../../../recoil/TimeAtom';
 type TimerProps = {};
 
@@ -272,11 +273,11 @@ const Timer: React.FC<TimerProps> = () => {
     <Container>
       <p>{timer}</p>
       <StartButton
-        timerButtonState={timerButtonState}
+        timerbuttonstate={timerButtonState.toString()}
         disabled={buttonDisabled}
         onClick={timerButtonHandler}
       >
-        <img src={timerButtonState ? pause : timer} alt="" />
+        <img src={timerButtonState ? pause : timerImg} alt="" />
         <p>{timerButtonState ? '일시정지' : '기록시작'}</p>
       </StartButton>
     </Container>
@@ -291,7 +292,7 @@ const Container = styled.div`
   gap: 8px;
 `;
 
-const StartButton = styled.button<{ timerButtonState: boolean }>`
+const StartButton = styled.button<{ timerbuttonstate: string }>`
   width: 180px;
   height: 48px;
   border: none;
@@ -301,10 +302,11 @@ const StartButton = styled.button<{ timerButtonState: boolean }>`
   align-items: center;
   gap: 10px;
   background: ${props =>
-    props.timerButtonState ? 'none' : 'var(--primary-01)'};
+    props.timerbuttonstate === 'true' ? 'none' : 'var(--primary-01)'};
   p {
     color: var(--gray-01);
     font-size: 16px;
   }
+  border-radius: 24px;
 `;
 export default Timer;

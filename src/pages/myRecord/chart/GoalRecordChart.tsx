@@ -13,7 +13,7 @@ import { Bar } from 'react-chartjs-2';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { getCookie } from '../../../auth/cookie';
-import { GoalTime } from '../../../recoil/DeskAtom';
+import { GoalTime, MonthTime } from '../../../recoil/DeskAtom';
 
 ChartJS.register(
   CategoryScale,
@@ -70,7 +70,17 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
   const [monthlyHobby, setMonthlyHobby] = useState<any[]>([]);
   const [monthlyStudy, setMonthlyStudy] = useState<any[]>([]);
   const [goalTime, setGoalTime] = useRecoilState(GoalTime); // 목표시간
-  console.log('그래프', goalTime)
+  const [monthTime, setMonthTime] = useRecoilState(MonthTime);
+
+  useEffect(() => {
+    const a = monthlyHobby.map(x => +x.totalHours);
+    const b = monthlyStudy.map(x => +x.totalHours);
+    const sumA = a.reduce((acc, curr) => acc + curr, 0);
+    const sumB = b.reduce((acc, curr) => acc + curr, 0);
+
+    setMonthTime(sumA + sumB);
+  }, [monthlyHobby, monthlyStudy]);
+
   const sevenData = async () => {
     try {
       const response = await axios.get(`${serverUrl}/learning-history/weekly`, {
@@ -137,17 +147,21 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
     },
   };
   const weeklyData = {
-    labels: dateArray7.map((x) => x.dayOfWeek),
+    labels: dateArray7.map(x => x.dayOfWeek),
     datasets: [
       {
         label: '취미',
         data: dateArray7.map((day, i) => {
           const correspondingHobby = weeklyHobby.find(
-            (x) => x.dayName == day.dayOfWeek
+            x => x.dayName == day.dayOfWeek,
           );
-  
+
           return correspondingHobby
-            ? Math.floor((Number(correspondingHobby.totalHours) / Number(goalTime.goalTime)) * 100)
+            ? Math.floor(
+                (Number(correspondingHobby.totalHours) /
+                  Number(goalTime.goalTime)) *
+                  100,
+              )
             : 0;
         }),
         stack: 'stack1',
@@ -155,12 +169,16 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
       },
       {
         label: '스터디',
-        data: dateArray7.map((day) => {
+        data: dateArray7.map(day => {
           const correspondingStudy = weeklyStudy.find(
-            (x) => x.dayName === day.dayOfWeek
+            x => x.dayName === day.dayOfWeek,
           );
           return correspondingStudy
-            ? Math.floor((Number(correspondingStudy.totalHours) / Number(goalTime.goalTime)) * 100)
+            ? Math.floor(
+                (Number(correspondingStudy.totalHours) /
+                  Number(goalTime.goalTime)) *
+                  100,
+              )
             : 0;
         }),
         stack: 'stack1',
@@ -168,7 +186,7 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
       },
     ],
   };
-  
+
   const monthlyData = {
     labels: dateArray30.map(x => x.date.slice(5)),
     datasets: [
@@ -176,10 +194,15 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
         label: '취미',
         data: dateArray30.map((day, i) => {
           const correspondingHobby = monthlyHobby.find(
-            (x) => x.checkIn === day.date
+            x => x.checkIn === day.date,
           );
-          const totalHours = correspondingHobby ? Number(correspondingHobby.totalHours) : 0;
-          const percentage = totalHours > 0 ? Math.floor((totalHours / Number(goalTime.goalTime)) * 100) : 0;
+          const totalHours = correspondingHobby
+            ? Number(correspondingHobby.totalHours)
+            : 0;
+          const percentage =
+            totalHours > 0
+              ? Math.floor((totalHours / Number(goalTime.goalTime)) * 100)
+              : 0;
           return percentage;
         }),
         stack: 'stack1',
@@ -191,8 +214,13 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
           const correspondingStudy = monthlyStudy.find(
             x => x.checkIn === day.date,
           );
-          const totalHours = correspondingStudy ? Number(correspondingStudy.totalHours) : 0;
-          const percentage = totalHours > 0 ? Math.floor((totalHours / Number(goalTime.goalTime)) * 100) : 0;
+          const totalHours = correspondingStudy
+            ? Number(correspondingStudy.totalHours)
+            : 0;
+          const percentage =
+            totalHours > 0
+              ? Math.floor((totalHours / Number(goalTime.goalTime)) * 100)
+              : 0;
           return percentage;
         }),
         stack: 'stack1',
@@ -200,18 +228,16 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
       },
     ],
   };
-  console.log(goalTime.goalTime)
+  console.log(goalTime.goalTime);
   return (
     <Body>
-      {(view7 && goalTime.goalTime !== undefined) && (
+      {view7 && goalTime.goalTime !== undefined && (
         <Bar options={options} data={weeklyData} width={730} height={240} />
       )}
-      {(view30 && goalTime.goalTime !== undefined) && (
+      {view30 && goalTime.goalTime !== undefined && (
         <Bar options={options} data={monthlyData} width={730} height={240} />
       )}
-      {
-        goalTime.goalTime === undefined && <Text>목표를 설정해주세요</Text>
-      }
+      {goalTime.goalTime === undefined && <Text>목표를 설정해주세요</Text>}
     </Body>
   );
 };
@@ -224,6 +250,6 @@ const Text = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 30px;
-`
+`;
 
 export default GoalRecordChart;

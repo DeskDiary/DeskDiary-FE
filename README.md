@@ -1,7 +1,6 @@
-![이미지](/src/images/nonUserIntro.png)
+![배너이미지](/src/images/main/nonUserIntro.svg)
 
 ## <a href="https://deskdiary-fe-brown.vercel.app/" target="_blank">책상일기</a>
-
 
 <b>책상에서 취미활동 및 학습의 목적을 가진 사용자들이 방에 모여 동기 부여 및 대화를 나누는 아늑한 공간</b>
 
@@ -44,7 +43,7 @@
 
 ### 기술 아키텍처
 
-![아키텍처](/src/images/아키텍처.jpg)
+![아키텍처](/src/images/Architecture.jpg)
 
 ## 🛠 Tools
 

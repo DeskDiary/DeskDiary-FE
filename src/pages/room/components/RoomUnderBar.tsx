@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
-import {logout, help_outline, build} from '../../../images/room';
+import { build, help_outline, logout } from '../../../images/room';
 import { RoomModalAtom } from '../../../recoil/RoomAtom';
 import RoomModal from './RoomModal';
 
@@ -60,14 +60,16 @@ const OutRoomButton = styled.button`
   align-items: center;
   gap: 10px;
   margin-left: 20px;
-  border: 1px solid var(--primary-01);
-
+  /* border: 1px solid var(--primary-01); */
+  background-color: white;
+  border-radius: 24px;
   img {
     width: 24px;
     height: 24px;
   }
   p {
     color: var(--primary-01);
+    font-weight: 600;
   }
 `;
 
