@@ -19,7 +19,7 @@ const MainLayout: React.FC<MainLayoutProps> = () => {
 const Wrap = styled.div`
   min-height: calc(100vh - 110px);
   position: relative;
-  width: 100vw;
+  width: calc(100vw - 65px);
   display: flex;
   flex-direction: column;
   justify-content: center;

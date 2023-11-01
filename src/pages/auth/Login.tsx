@@ -5,9 +5,7 @@ import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { getCookie, setTokenCookie } from '../../auth/cookie';
 import XIcon from '../../images/Vector.svg';
-import logo from '../../images/logo.svg';
-import 구글로그인 from '../../images/main/구글사진.svg';
-import 카카오로그인 from '../../images/main/카카오사진.svg';
+import { logo, kakao, google } from '../../images';
 import 아이디저장o from '../../images/radio_button_checked.svg';
 import 아이디저장x from '../../images/radio_button_unchecked.svg';
 import { Link } from 'react-router-dom';
@@ -60,13 +58,12 @@ const Login: React.FC<LoginProps> = () => {
       if (idSaveCheckButton === true) {
         saveIdLocalStorage(id);
       }
-      alert(`로그인 성공`);
       navigate('/');
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        setErrorMessage(error.response.data.message);
+        setShowErrorMessage("* 이메일 혹은 비밀번호를 확인 해 주세요");
       } else if (error.response.message.includes("이메일 혹은") && error.response.status === 400 ) {
-        setShowErrorMessage("이메일 혹은 비밀번호를 확인 해 주세요");
+        setShowErrorMessage("* 이메일 혹은 비밀번호를 확인 해 주세요");
       }
       console.error(error);
     }
@@ -158,7 +155,7 @@ const Login: React.FC<LoginProps> = () => {
             />
           )}
         </InputBox>
-        {showErrorMessage && <Error>showErrorMessage</Error>}
+        {showErrorMessage && <Error>{showErrorMessage}</Error>}
       </InputDiv>
       <IdSaveBox>
         <IdDiv>
@@ -178,7 +175,7 @@ const Login: React.FC<LoginProps> = () => {
       <SNSDiv>
         {/* <SNSButton bgImg={카카오로그인}></SNSButton> */}
         <Kakao />
-        <SNSButton bgImg={구글로그인}></SNSButton>
+        <SNSButton bgImg={google}></SNSButton>
       </SNSDiv>
       <Ptag2>아직 회원이 아니신가요?</Ptag2>
       <JoinButton
@@ -199,7 +196,10 @@ const Error = styled.div`
   font-size: 14px;
   font-weight: 400;
 
+  color: red;
+  margin-left: 10px;
   top: 85px;
+
 `
 
 const Logo = styled(Link)`
