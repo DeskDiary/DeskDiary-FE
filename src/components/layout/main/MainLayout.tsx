@@ -24,7 +24,9 @@ const Wrap = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #E8F1FF;
+
   margin-left: 60px;
+  margin-top: 80px;
+  margin-bottom: 100px;
 `;
 export default MainLayout;

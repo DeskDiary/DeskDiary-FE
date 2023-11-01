@@ -95,7 +95,6 @@ const Container = styled.div`
   width: 1200px;
   height: 100%;
   background-color: #e8f1ff;
-  margin-top: 120px;
 `;
 
 const Info = styled.div`

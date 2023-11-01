@@ -101,7 +101,6 @@ const Mypage: React.FC<MypageProps> = () => {
 
   return (
     <Container>
-      <MainTop />
       <Contants>
         <UserProfile>
           <ProfileImg
@@ -315,7 +314,6 @@ const UserProfile = styled.div`
   align-items: center;
 
   width: 100%;
-  margin-top: 70px;
 `;
 
 const Contants = styled.div`

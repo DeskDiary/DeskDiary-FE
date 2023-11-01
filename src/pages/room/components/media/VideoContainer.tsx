@@ -12,6 +12,7 @@ import { useQuery } from 'react-query';
 import { fetchUser } from '../../../../axios/api';
 import { useRecoilState } from 'recoil';
 import { RoomInfo } from '../../../../recoil/RoomAtom';
+import styled from 'styled-components';
 
 type VideoContainerProps = {
   setInCall: React.Dispatch<React.SetStateAction<boolean>>;
@@ -155,7 +156,8 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
   }, [CHANNEL, client, ready, tracks]);
 
   return (
-    <div>
+    <Container>
+      <Controller>
       {ready && tracks && (
         <VideoController
           tracks={tracks}
@@ -163,8 +165,21 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
           setInCall={setInCall}
         />
       )}
+      </Controller>
+      
       {start && tracks && <Videos users={users} tracks={tracks} />}
-    </div>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  position: relative;
+`
+
+const Controller = styled.div`
+  position: absolute;
+  top: 260px;
+  left: 10px;
+  z-index: 10;
+`
 export default VideoContainer;

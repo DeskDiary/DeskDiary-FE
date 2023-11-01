@@ -36,9 +36,11 @@ const Lending: React.FC<LendingProps> = () => {
           <div>서로의 의지를 책상 위에서 응원 해주는 온라인 캠서비스</div>
           <div>책상일기</div>
         </Text>
+
+        <LendingImg src={sample} alt="lending-image" />
+        <StartButton onClick={e => goService(e)}>서비스 시작하기</StartButton>
       </BoxContents>
-      <StartButton onClick={e => goService(e)}>서비스 시작하기</StartButton>
-      <LendingImg src={sample} alt="lending-image" />
+
       <Footer>
         <FooterBody>
           <FooterTitle>Site Map</FooterTitle>
@@ -61,6 +63,7 @@ const Lending: React.FC<LendingProps> = () => {
 };
 
 const Title = styled.div`
+margin-top: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -74,9 +77,9 @@ const Title = styled.div`
 `;
 
 const LendingImg = styled.img`
-  position: fixed;
   width: 800px;
-  top: 200px;
+  position: absolute;
+  top: 150px;
 `;
 
 const Logo = styled.img`
@@ -91,7 +94,7 @@ const FooterBody = styled.div`
   align-items: start;
   > hr {
     width: 100%;
-    margin: 30px 0;
+    margin: 15px 0;
   }
 `;
 
@@ -111,14 +114,14 @@ const FooterContent = styled.div`
 
 const FooterTitle = styled.div`
   color: white;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 500;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 `;
 
 const Container = styled.div`
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: start;
@@ -134,29 +137,11 @@ const Footer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 30px;
-  position: fixed;
+  padding: 20px;
   bottom: 0;
   left: 0;
-`;
-
-const Box = styled.div`
-  width: 100%;
-  /* background-color: var(--gray-03); */
-  height: 100vh;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-
-  > img {
-    /* overflow: hidden; */
-    object-fit: cover;
-    height: 100%;
-    /* filter: grayscale(100%); */
-  }
+  height: 150px;
+  position: absolute;
 `;
 
 const BoxContents = styled.div`
@@ -164,10 +149,9 @@ const BoxContents = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: start;
-  gap: 20px;
-  position: absolute;
-  top: 50px;
-  z-index: 50;
+  margin-top: 100px;
+  padding-bottom: 250px;
+  position: relative;
 `;
 
 const Text = styled.div`
@@ -178,29 +162,33 @@ const Text = styled.div`
   justify-content: center;
   background-color: rgba(26, 129, 232, 0.2);
   border-radius: 20px;
+  margin-top: 10px;
 
   > div {
     height: 22px;
     font-size: 17px;
+    font-weight: 500;
     color: white;
   }
 `;
 
 const StartButton = styled.div`
-  /* background-color: var(--primary-01); */
   width: 180px;
   height: 40px;
-  font-size: 20px;
+  font-size: 17px;
+  font-weight: 500;
   color: white;
   border: 5px solid white;
   border-radius: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.1s ease-in-out; // 버튼이 움직이는 걸 부드럽게!
+  transition: transform 0.2s ease-in-out; // 버튼이 움직이는 걸 부드럽게!
   background-color: #1a81e8;
   padding: 5px;
-  margin-top: 600px;
+  margin-top: 280px;
+  z-index: 100;
+
   cursor: pointer;
 
   &:hover {
