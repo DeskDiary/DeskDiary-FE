@@ -1,14 +1,13 @@
 import React from 'react';
+import { useQuery } from 'react-query';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import styled, { createGlobalStyle } from 'styled-components';
 import { getCookie } from '../../../auth/cookie';
-import { hobby, home, mydesk, study } from '../../../images';
-import test from '../../../images/test.png';
-import profile from '../.././../images/profile.svg';
-import { useQuery } from 'react-query';
 import { fetchUser } from '../../../axios/api';
+import { hobby, home, mydesk, study } from '../../../images';
 import logo from '../../../images/logo.svg';
+import profile from '../.././../images/profile.svg';
 
 type SideBarProps = {};
 
@@ -142,6 +141,7 @@ const SidebarButton = styled(NavLink)`
     > p {
       color: white;
       font-weight: 500;
+      overflow: hidden;
     }
   }
 
@@ -177,7 +177,6 @@ const SidebarButton = styled(NavLink)`
       white-space: nowrap;
       opacity: 0;
       transition: opacity 0.4s ease-in-out;
-      
       color: var(--gray-03);
     }
   }
