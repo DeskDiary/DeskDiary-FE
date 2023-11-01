@@ -52,7 +52,7 @@ const Goal: React.FC<GoalProps> = () => {
             style={{
               fontSize: '50px',
               color: '#337CCF',
-              position: 'fixed',
+              position: 'absolute',
               marginLeft: '542px',
               marginTop: '-62px',
               transform: 'scaleX(-1)',
