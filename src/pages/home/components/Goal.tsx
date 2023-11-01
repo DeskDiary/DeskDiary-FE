@@ -6,7 +6,9 @@ import { todayLerningHistoryHome } from '../../../axios/historyApi';
 type GoalProps = {};
 
 const Goal: React.FC<GoalProps> = () => {
-  const [todayLerningTime, setTodayLerningTime] = useState<number[]>([0, 0, 0, 0, 100, 0]);
+  const [todayLerningTime, setTodayLerningTime] = useState<number[]>([
+    0, 0, 0, 0, 100, 0,
+  ]);
   const [goalPercent, setGoalPercent] = useState<number>(0);
 
   useEffect(() => {
@@ -18,7 +20,9 @@ const Goal: React.FC<GoalProps> = () => {
         if (newTodayLerningTime[5] === 0 && newTodayLerningTime[4] === 0) {
           setGoalPercent(0);
         } else {
-          setGoalPercent((newTodayLerningTime[5] / newTodayLerningTime[4]) * 100);
+          setGoalPercent(
+            (newTodayLerningTime[5] / newTodayLerningTime[4]) * 100,
+          );
         }
 
         // todayLerningTime 업데이트
@@ -44,17 +48,17 @@ const Goal: React.FC<GoalProps> = () => {
         </GoalDiv>
         <GoalGraph>
           <CurrentGraph width={Math.min(goalPercent, 100)}></CurrentGraph>
+          <OutlinedFlagSharpIcon
+            style={{
+              fontSize: '50px',
+              color: '#337CCF',
+              position: 'absolute',
+              marginLeft: '542px',
+              marginTop: '-62px',
+              transform: 'scaleX(-1)',
+            }}
+          />
         </GoalGraph>
-        <OutlinedFlagSharpIcon
-          style={{
-            fontSize: '50px',
-            color: '#337CCF',
-            position: 'fixed',
-            marginLeft: '542px',
-            marginTop: '106px',
-            transform: 'scaleX(-1)',
-          }}
-        />
       </Container>
     </>
   );
@@ -104,6 +108,6 @@ const CurrentGraph = styled.div<{ width: number }>`
   background: var(--primary-00, #1a81e8);
   height: 18px;
   position: relative;
-`
+`;
 
 export default Goal;
