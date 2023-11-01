@@ -200,19 +200,30 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
       },
     ],
   };
-
+  console.log(goalTime.goalTime)
   return (
     <Body>
-      {view7 && (
+      {(view7 && goalTime.goalTime !== undefined) && (
         <Bar options={options} data={weeklyData} width={730} height={240} />
       )}
-      {view30 && (
+      {(view30 && goalTime.goalTime !== undefined) && (
         <Bar options={options} data={monthlyData} width={730} height={240} />
       )}
+      {
+        goalTime.goalTime === undefined && <Text>목표를 설정해주세요</Text>
+      }
     </Body>
   );
 };
 
 const Body = styled.div``;
+
+const Text = styled.div`
+  height: 230px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+`
 
 export default GoalRecordChart;
