@@ -22,7 +22,7 @@ const Wrap = styled.div`
   width: calc(100vw - 65px);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
 
   margin-left: 60px;
