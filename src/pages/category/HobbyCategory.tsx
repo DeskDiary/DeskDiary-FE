@@ -1,7 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import MainTop from '../../components/layout/main/MainTop';
 import profileDefaultImg from '../../images/profile.png';
 import first from '../../images/ranking/1st.svg';
 import second from '../../images/ranking/2nd.svg';

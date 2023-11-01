@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import 재생 from '../../../images/audio/Button_Play.svg';
-import 일시정지 from '../../../images/audio/audio_stop.svg';
-import 뒤로가기 from '../../../images/audio/back_button.svg';
-import 앞으로가기 from '../../../images/audio/front_button.svg';
-import 음소거 from '../../../images/audio/volume_off.svg';
-import 소리최대 from '../../../images/audio/volume_up.svg';
+import {audio_stop, back_button, Button_Play, front_button, volume_off, volume_up} from '../../../images/audio';
+
 type AsmrPlayerProps = {};
 
 const asmrList = [
@@ -88,12 +84,12 @@ const AsmrPlayer: React.FC<AsmrPlayerProps> = () => {
         <audio ref={audioRef} src={asmrList[current].src} />
       </div>
       <PlayBox>
-        <BackButton onClick={backCurrentHandler} img={뒤로가기} />
+        <BackButton onClick={backCurrentHandler} img={back_button} />
         <PlayButton onClick={togglePlay} isPlaying={isPlaying} />
-        <FrontButton onClick={nextCurrentHandler} img={앞으로가기} />
+        <FrontButton onClick={nextCurrentHandler} img={front_button} />
       </PlayBox>
       <VolumeBox>
-        <MuteButton img={음소거} />
+        <MuteButton img={volume_off} />
         <VolumeSlider
           type="range"
           min="0"
@@ -102,7 +98,7 @@ const AsmrPlayer: React.FC<AsmrPlayerProps> = () => {
           value={volume}
           onChange={handleVolumeChange}
         />
-        <MaxSoundButton img={소리최대} />
+        <MaxSoundButton img={volume_up} />
       </VolumeBox>
     </Body>
   );
@@ -141,7 +137,7 @@ const PlayBox = styled.div`
 `;
 
 const PlayButton = styled.button<{ isPlaying: boolean }>`
-  background-image: url(${props => (props.isPlaying ? 일시정지 : 재생)});
+  background-image: url(${props => (props.isPlaying ? audio_stop : Button_Play)});
   background-size: cover;
   width: 40px;
   height: 40px;

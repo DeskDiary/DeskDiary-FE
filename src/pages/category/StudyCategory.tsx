@@ -1,7 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import MainTop from '../../components/layout/main/MainTop';
 import profileDefaultImg from '../../images/profile.png';
 import first from '../../images/ranking/1st.svg';
 import second from '../../images/ranking/2nd.svg';
@@ -90,7 +89,7 @@ const Container = styled.div`
   justify-content: start;
   align-items: center;
   width: 1200px;
-  height: 100vh;
+  height: 100%;
 `;
 
 const Info = styled.div`

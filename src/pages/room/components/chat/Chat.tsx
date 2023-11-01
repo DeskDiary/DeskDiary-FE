@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
-
-import { useQuery } from 'react-query';
 import styled from 'styled-components';
-import { getCookie } from '../../../../auth/cookie';
-import { fetchUser } from '../../../../axios/api';
-
 import { profile } from '../../../../images';
 
 type ChatProps = {

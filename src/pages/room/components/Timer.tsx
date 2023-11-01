@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
-import 일시정지 from '../../../images/room/pause.svg';
-import 타이머 from '../../../images/room/timer.svg';
+import {pause, timer} from '../../../images/room';
 import { timerState } from '../../../recoil/TimeAtom';
 type TimerProps = {};
 
@@ -277,7 +276,7 @@ const Timer: React.FC<TimerProps> = () => {
         disabled={buttonDisabled}
         onClick={timerButtonHandler}
       >
-        <img src={timerButtonState ? 일시정지 : 타이머} alt="" />
+        <img src={timerButtonState ? pause : timer} alt="" />
         <p>{timerButtonState ? '일시정지' : '기록시작'}</p>
       </StartButton>
     </Container>

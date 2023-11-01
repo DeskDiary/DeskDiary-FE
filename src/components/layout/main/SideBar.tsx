@@ -5,9 +5,10 @@ import { toast } from 'sonner';
 import styled, { createGlobalStyle } from 'styled-components';
 import { getCookie } from '../../../auth/cookie';
 import { fetchUser } from '../../../axios/api';
-import { hobby, home, mydesk, study } from '../../../images';
+import { hobby, home, mydesk, study } from '../../../images/main';
 import logo from '../../../images/logo.svg';
 import profile from '../.././../images/profile.svg';
+
 
 type SideBarProps = {};
 
@@ -135,6 +136,7 @@ const SidebarButton = styled(NavLink)`
     opacity: 1;
     width: 85%;
     background-color: rgba(255, 255, 255, 0.2);
+
     > img {
       filter: grayscale(0);
     }
@@ -142,6 +144,9 @@ const SidebarButton = styled(NavLink)`
       color: white;
       font-weight: 500;
       overflow: hidden;
+    }
+    &.mypage {
+      background-color: rgba(255, 255, 255, 0.0);
     }
   }
 
@@ -184,12 +189,13 @@ const SidebarButton = styled(NavLink)`
   &.mypage {
     margin-left: 15px;
     opacity: 1;
+    background-color: none;
     > img {
       height: 35px;
       width: 35px;
       padding: 0;
       margin-left: 7px;
-      margin-right: 15px;
+      margin-right: 10px;
       border-radius: 50%;
       filter: grayscale(0);
     }

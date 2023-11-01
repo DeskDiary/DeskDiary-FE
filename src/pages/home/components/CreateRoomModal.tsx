@@ -1,16 +1,14 @@
 import React, { ChangeEvent, useState } from 'react';
 import styled from '@emotion/styled';
-import upload from '../../../images/main/upload.svg';
 import { Button } from '@mui/material';
 import { useRecoilState } from 'recoil';
-import { RoomAtom, RoomUUIDAtom } from '../../../recoil/RoomAtom';
+import { RoomAtom } from '../../../recoil/RoomAtom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { getCookie } from '../../../auth/cookie';
 
-import { study, hobby } from '../../../images';
+import { study_color, hobby_color, upload } from '../../../images/main';
 import BasicPrecautions from './BasicPrecautions';
-import socket from '../../room/socketInstance';
 
 type CreateRoomProps = {
   setOpenCreateRoom: React.Dispatch<React.SetStateAction<boolean>>;
@@ -29,9 +27,7 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 
-const CreateRoomModal: React.FC<CreateRoomProps> = ({
-  setOpenCreateRoom,
-}) => {
+const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
   const token = getCookie('token');
 
   const [room, setRoom] = useRecoilState(RoomAtom);
@@ -80,7 +76,6 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    console.log(file);
 
     if (file) {
       setFile(file); // 바로 파일 객체 저장
@@ -89,45 +84,6 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({
 
   const handleJoinRoom = async (uuid: string) => {
     try {
-      // const token = getCookie('token');
-      // console.log('조인룸 토큰', token);
-      // const response = await axios.post(
-      //   `${process.env.REACT_APP_SERVER_URL!}/room/${uuid}/join`,
-      //   {},
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   },
-      // );
-      // console.log(response);
-
-      // socket.emit(
-      //   'joinRoom',
-      //   {
-      //     nickname: user.nickname,
-      //     uuid: uuid,
-      //     img: user.profileImage,
-      //   },
-      //   (response: any) => {
-      //     // 서버로부터의 응답을 여기서 처리
-      //     if (response.success) {
-      //       console.log(
-      //         '방에 성공적으로 참여했어!✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨',
-      //       );
-      //     } else {
-      //       console.log('방 참여 실패😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭');
-      //     }
-      //   },
-      // );
-
-      // socket.on('new-user', nickname => {
-      //   console.log(
-      //     '새로운 유저가 방에 참석:✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨',
-      //     nickname,
-      //   );
-      // });
-
       navigate(`/room/${uuid}`);
     } catch (error) {
       console.error(error);
@@ -161,7 +117,6 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({
     formData.append('note', room.note);
 
     try {
-      console.log('try');
       const config = {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -176,15 +131,13 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({
 
       // 성공시 로직
       if (response.data.createdRoom) {
-        console.log('성공', response.data);
         alert('방만들기 성공!');
         handleJoinRoom(response.data.createdRoom.uuid);
-        // console.log(response.data.createdRoom.uuid)
       } else {
-        console.log('실패ddzz', response.data);
+
       }
     } catch (error) {
-      console.log('방 만들기 실패', error);
+
     }
   };
 
@@ -216,7 +169,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({
             <VisuallyHiddenInput type="file" onChange={handleFileChange} />
           </Button>
 
-          <button onClick={() => setFile(null)}>삭제</button>
+          <button type='button' onClick={() => setFile(null)}>삭제</button>
         </ThumbnailButtonGroup>
 
         <Content>
@@ -242,7 +195,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({
                   isActive={activeStates[category as 'study' | 'hobby']}
                 >
                   <CategoryImg
-                    src={category === 'study' ? study : hobby}
+                    src={category === 'study' ? study_color : hobby_color}
                     isActive={activeStates[category as 'study' | 'hobby']}
                   ></CategoryImg>
                   {category === 'study' ? '스터디' : '취미'}
@@ -252,9 +205,9 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({
           </Group>
 
           <Group>
-            <Label>인원설정 (최대 4인 가능)</Label>
+            <Label>인원설정 (최대 10인 가능)</Label>
             <CategoryGroup>
-              {[1, 2, 3, 4, 5, 6, 7, 100].map((i, index) => (
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i, index) => (
                 <MaxUser
                   key={index}
                   type="button"
@@ -334,16 +287,17 @@ const MaxUser = styled.button<{ isActive: boolean }>`
   font-size: 16px;
   font-weight: 500;
 
-  width: 40px;
+  width: 60px;
   padding: 4px;
 `;
 
 const CategoryGroup = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 11px;
+  gap: 10px;
 `;
 
 const Category = styled.button<{ isActive: boolean }>`

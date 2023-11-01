@@ -1,8 +1,11 @@
 import React from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
-import 예시이미지 from '../../../images/ranking/3rd.svg';
+
 import { GoalTime } from '../../../recoil/DeskAtom';
+
+import sample from '../../../images/ranking/3rd.svg';
+
 
 type LevelProps = {};
 
@@ -15,7 +18,7 @@ const Level: React.FC<LevelProps> = () => {
         <p>000님은</p>
         <p>Level 0 무거운엉덩이</p>
       </TextBox>
-      <img src={예시이미지} alt="Level" />
+      <img src={sample} alt="Level" />
     </Container>
   );
 };
