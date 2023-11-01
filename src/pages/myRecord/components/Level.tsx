@@ -1,22 +1,40 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 
-import { GoalTime } from '../../../recoil/DeskAtom';
-
 import sample from '../../../images/ranking/3rd.svg';
-
+import { MonthTime } from '../../../recoil/DeskAtom';
+import { UserAtom } from '../../../recoil/UserAtom';
+import { useQuery } from 'react-query';
+import { fetchUser } from '../../../axios/api';
 
 type LevelProps = {};
 
 const Level: React.FC<LevelProps> = () => {
-  const [time, setTime] = useRecoilState(GoalTime);
-  console.log(time);
+  const [monthTime, setMonthTime] = useRecoilState(MonthTime);
+  const [level, setLevel] = useState<number>(0);
+  const { data } = useQuery<user>('lever-user', fetchUser, {
+    refetchOnWindowFocus: false,
+  });
+  console.log('데이타', data);
+  useEffect(() => {
+    if (monthTime === 0) {
+      setLevel(0);
+    } else if (monthTime > 0) {
+      setLevel(1);
+    } else if (monthTime >= 86400) {
+      setLevel(2);
+    } else if (monthTime >= 604800) {
+      setLevel(3);
+    } else if (monthTime >= 128600) {
+      setLevel(4);
+    }
+  }, [monthTime]);
   return (
     <Container>
       <TextBox>
-        <p>000님은</p>
-        <p>Level 0 무거운엉덩이</p>
+        <p>{data?.nickname ? data.nickname : '???'} 님은</p>
+        <p>{`Level ${level} 무거운엉덩이`}</p>
       </TextBox>
       <img src={sample} alt="Level" />
     </Container>
