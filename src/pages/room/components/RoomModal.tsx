@@ -103,9 +103,11 @@ const RoomModal: React.FC<RoomModalProps> = () => {
     localStorage.removeItem('room');
   };
 
-  const TimeFormatter = (str: any) => {
-    console.log(str)
-    if(str == '' || str == null || str == undefined || str == '기록이 없습니다.') {
+  const TimeFormatter = (str: string) => {
+    if(str === '기록이 없습니다.') {
+      return `기록이 없습니다.`
+    }
+    if(str == '') {
       return `0시 0분 0초`;
     }
     const formattedStr = str.replace('T', ' ').replace('Z', '');
