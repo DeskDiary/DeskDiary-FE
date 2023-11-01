@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { kakao, google } from '../../images/main';
-import {logoColor, x} from '../../images'
+import { logoColor, x } from '../../images';
 import 아이디저장o from '../../images/radio_button_checked.svg';
 import 아이디저장x from '../../images/radio_button_unchecked.svg';
 
@@ -107,6 +107,11 @@ const Join: React.FC<JoinProps> = () => {
               '닉네임은 한글, 알파벳, 숫자만 포함해야 합니다',
             ):
               setNicknameError('닉네임은 특수문자가 포함될 수 없습니다.');
+              break;
+            case message.includes(
+              'nickname must be',
+            ):
+              setNicknameError('닉네임은 2개 이상 5개 이하의 문자로 이루어져야 합니다.');
               break;
             case message.includes('비밀번호가 비어 있으면 안됩니다.'):
               setPasswordError('비밀번호가 비어 있으면 안됩니다.');
@@ -296,7 +301,7 @@ const Join: React.FC<JoinProps> = () => {
 
 const LoginLink = styled(Link)`
   margin-left: auto;
-`
+`;
 
 const Logo = styled(Link)`
   background: url(${logoColor}) no-repeat center;

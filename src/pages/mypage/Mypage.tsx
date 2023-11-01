@@ -146,12 +146,12 @@ const Mypage: React.FC<MypageProps> = () => {
                 <span>{data?.email ? data?.email : 'abcd@email.com'}</span>
               </Group>
               <img
-                src={data?.provider === 'local' ? logoColor : kakao}
+                src={data?.provider === 'local' ? logoColor : data?.provider === 'kakao' ? kakao : google}
                 alt="login-info"
               />
               <EmailHover show={isHovered}>
-                {data?.provider === 'local' ? '일반로그인으' : '카카오로그인으'}
-                로 로그인 하셨습니다.
+                {data?.provider === 'local' ? '일반로그인 ' : data?.provider === 'kakao'? '카카오로그인 ' : '구글로그인 '}
+                입니다.
               </EmailHover>
             </EmailInfo>
           </UserInfo>
