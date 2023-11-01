@@ -68,7 +68,7 @@ const List = styled.div`
   justify-content: start;
   align-items: start;
 
-  margin-top: 72px;
+  margin-top: 40px;
   height: 100%;
   width: 100%;
 `;

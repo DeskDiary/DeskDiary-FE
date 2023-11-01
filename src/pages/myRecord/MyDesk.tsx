@@ -9,7 +9,6 @@ import GoalSetTimeModal from './chart/GoalSetTimeModal';
 import RecordGraph from './chart/RecordGraph';
 import RoomList from './components/RoomList';
 
-
 type MyDeskProps = {};
 
 const MyDesk: React.FC<MyDeskProps> = () => {
@@ -17,52 +16,44 @@ const MyDesk: React.FC<MyDeskProps> = () => {
 
   return (
     <Container>
-      <MainTop />
       <MyDeskTop>
         <RecordGraph />
       </MyDeskTop>
 
-      <RoomList label="최근에 들어간 방 목록" mydesk="fetchJoinRoom"/>
-      <RoomList label="내가 만든 방 목록" mydesk="fetchCreatedRoom"/>
-      {
-        GoalModal && <GoalSetTimeModal />
-      }
+      <RoomList label="최근에 들어간 방 목록" mydesk="fetchJoinRoom" />
+      <RoomList label="내가 만든 방 목록" mydesk="fetchCreatedRoom" />
+      {GoalModal && <GoalSetTimeModal />}
     </Container>
   );
 };
 
 const MyDeskTop = styled.div`
-display: flex;
-flex-direction: row;
-justify-content: center;
-align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 
   margin: 30px 0 24px 0;
 `;
 
 const List = styled.div`
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
 
   margin-top: 30px;
   width: 100%;
 `;
 
-const ListTitle = styled.div`
-  margin-bottom: 16px;
-  font-size: 24px;
-`;
-
 const Container = styled.div`
-display: flex;
-flex-direction: column;
-justify-content: start;
-align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
 
   width: 1200px;
-  height: 100vh;
+  min-height: 100vh;
 `;
 
 const JoinedRooms = styled.div`

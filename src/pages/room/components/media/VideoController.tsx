@@ -79,12 +79,14 @@ const Controller = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 70px;
+    border: 1px solid var(--gray-07);
+    width: 50px;
     height: 40px;
     background-color: var(--gray-07);
+    transition: 0.5;
     border: none;
-    font-size: 25px;
-    border-radius: 20px;
+    font-size: 20px;
+    border-radius: 10px;
     &:hover{
       background-color: var(--gray-06);
     }
