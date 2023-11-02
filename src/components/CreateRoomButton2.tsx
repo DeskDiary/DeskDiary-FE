@@ -19,7 +19,7 @@ const CreateRoomButton2: React.FC<CreateRoomButtonProps> = () => {
   };
 
   return (
-    <>
+    <Container>
       {token ? (
         <Button>
           <div onClick={onClickCreateRoomButton}>
@@ -36,9 +36,13 @@ const CreateRoomButton2: React.FC<CreateRoomButtonProps> = () => {
       {openCreateRoom && (
         <CreateRoomModal setOpenCreateRoom={setOpenCreateRoom} />
       )}
-    </>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  z-index: 50;
+`
 
 const Login = styled(Link)`
   font-size: 17px;
@@ -95,8 +99,8 @@ const Button = styled.div`
   width: 100px;
   height: 100px;
   position: fixed;
-  bottom: 10px;
-  right: 0px;
+  bottom: 30px;
+  right: 30px;
   cursor: pointer;
 
   display: flex;
@@ -130,6 +134,8 @@ const Button = styled.div`
       font-weight: 500;
       width: 120px;
       text-align: center;
+      background-color: #e8f1ffae;
+      border-radius: 10px;
     }
   }
 `;
