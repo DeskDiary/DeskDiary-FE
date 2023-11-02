@@ -80,8 +80,8 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
       <ListInfo>
         <ListTitle>{label}</ListTitle>
         <Categorys>
-          <Category cate={'Popular'} onClick={() => changePopular(true)}>인기순</Category>
-          <Category cate={'Latest'} onClick={() => changePopular(false)}>최신순</Category>
+          <Category cute={`${sort}`} me={'Popular'} onClick={() => changePopular(true)}>인기순</Category>
+          <Category cute={`${sort}`} me={'Latest'} onClick={() => changePopular(false)}>최신순</Category>
         </Categorys>
       </ListInfo>
 
@@ -111,7 +111,7 @@ const Categorys = styled.div`
   margin-bottom: 10px;
 `;
 
-const Category = styled.button<{cate: string}>`
+const Category = styled.button<{cute: string, me:string}>`
   font-size: 14px;
   font-weight: 400;
   width: 50px;
@@ -120,8 +120,8 @@ const Category = styled.button<{cate: string}>`
   border-top-right-radius: 10px;
   padding-bottom: 2px;
 
-  color: ${props => props.cate === 'Popular' ? 'var(--primary-01)' : 'var(--gray-07)'};
-  ${props => props.cate === 'Popular' && 'border-bottom: 1px solid var(--primary-01)'};
+  color: ${props => props.cute === props.me ? 'var(--primary-01)' : 'var(--gray-07)'};
+  border-bottom: 1px solid ${props => props.cute === props.me ? 'var(--primary-01)' : 'none' };
 
   &:hover{
    color: var(--primary-01); 
