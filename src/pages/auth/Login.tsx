@@ -4,12 +4,12 @@ import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { getCookie, setTokenCookie } from '../../auth/cookie';
-import XIcon from '../../images/Vector.svg';
-import { logo, kakao, google } from '../../images';
-import 아이디저장o from '../../images/radio_button_checked.svg';
-import 아이디저장x from '../../images/radio_button_unchecked.svg';
+import { google } from '../../images/main';
+import { logoColor, x, radio_button_checked, radio_button_unchecked} from '../../images';
 import { Link } from 'react-router-dom';
 import Kakao from './components/Kakao';
+import Google from './components/Google';
+import { toast } from 'sonner';
 
 type LoginProps = {};
 
@@ -21,7 +21,8 @@ const Login: React.FC<LoginProps> = () => {
   const [idSaveCheckButton, setIdSaveCheckButton] = useState<boolean>(false);
   useEffect(() => {
     if (token) {
-      alert('이미 로그인했습니다.');
+      // alert('이미 로그인했습니다.');
+      toast.error('이미 로그인이 되어있습니다.');
       navigate(-1);
     }
   }, [token, navigate]);
@@ -53,7 +54,7 @@ const Login: React.FC<LoginProps> = () => {
       const response = await axios.post(url, requestBody);
       const token = response.headers.authorization.split(' ')[1];
       setErrorMessage([]);
-      console.log(token);
+      // console.log(token);
       setTokenCookie(token);
       if (idSaveCheckButton === true) {
         saveIdLocalStorage(id);
@@ -65,7 +66,7 @@ const Login: React.FC<LoginProps> = () => {
       } else if (error.response.message.includes("이메일 혹은") && error.response.status === 400 ) {
         setShowErrorMessage("* 이메일 혹은 비밀번호를 확인 해 주세요");
       }
-      console.error(error);
+      // console.error(error);
     }
   });
 
@@ -73,10 +74,10 @@ const Login: React.FC<LoginProps> = () => {
     event.preventDefault(); // 이벤트의 기본 동작 ( 리렌더링 ) 차단
     const formData = new FormData(event.currentTarget);
     // form 내의 데이터를 읽어온다. name 속성을 키로 그 값들을 가지고 있다.
-    console.log({
-      email: formData.get('email'),
-      password: formData.get('password'),
-    });
+    // console.log({
+    //   email: formData.get('email'),
+    //   password: formData.get('password'),
+    // });
     loginMutation.mutate(formData);
   };
 
@@ -124,7 +125,7 @@ const Login: React.FC<LoginProps> = () => {
           />
           {id.length !== 0 && (
             <img
-              src={XIcon}
+              src={x}
               alt="clear"
               onClick={() => {
                 inputClear('id');
@@ -147,7 +148,7 @@ const Login: React.FC<LoginProps> = () => {
           />
           {pw.length !== 0 && (
             <img
-              src={XIcon}
+              src={x}
               alt="clear"
               onClick={() => {
                 inputClear('pw');
@@ -160,9 +161,9 @@ const Login: React.FC<LoginProps> = () => {
       <IdSaveBox>
         <IdDiv>
           {idSaveCheckButton ? (
-            <img src={아이디저장o} alt="" onClick={handleCheckChange} />
+            <img src={radio_button_checked} alt="" onClick={handleCheckChange} />
           ) : (
-            <img src={아이디저장x} alt="" onClick={handleCheckChange} />
+            <img src={radio_button_unchecked} alt="" onClick={handleCheckChange} />
           )}
           <p>아이디 저장</p>
         </IdDiv>
@@ -175,7 +176,7 @@ const Login: React.FC<LoginProps> = () => {
       <SNSDiv>
         {/* <SNSButton bgImg={카카오로그인}></SNSButton> */}
         <Kakao />
-        <SNSButton bgImg={google}></SNSButton>
+        <Google />
       </SNSDiv>
       <Ptag2>아직 회원이 아니신가요?</Ptag2>
       <JoinButton
@@ -203,7 +204,7 @@ const Error = styled.div`
 `
 
 const Logo = styled(Link)`
-  background: url(${logo}) no-repeat center;
+  background: url(${logoColor}) no-repeat center;
   width: 62px;
   height: 73px;
 `;

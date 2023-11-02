@@ -1,16 +1,17 @@
 import React, { ChangeEvent, useState } from 'react';
 import styled from '@emotion/styled';
-import upload from '../../../images/main/upload.svg';
 import { Button } from '@mui/material';
 import { useRecoilState } from 'recoil';
-import { RoomAtom, RoomUUIDAtom } from '../../../recoil/RoomAtom';
+import { RoomAtom } from '../../../recoil/RoomAtom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { getCookie } from '../../../auth/cookie';
 
-import { study, hobby } from '../../../images';
+import { study, hobby, upload } from '../../../images/main';
 import BasicPrecautions from './BasicPrecautions';
-import socket from '../../room/socketInstance';
+import { blue } from '../../../images/character';
+import { lendingImage } from '../../../images';
+import { toast } from 'sonner';
 
 type CreateRoomProps = {
   setOpenCreateRoom: React.Dispatch<React.SetStateAction<boolean>>;
@@ -29,9 +30,7 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 
-const CreateRoomModal: React.FC<CreateRoomProps> = ({
-  setOpenCreateRoom,
-}) => {
+const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
   const token = getCookie('token');
 
   const [room, setRoom] = useRecoilState(RoomAtom);
@@ -43,6 +42,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({
   const activeStates = { study: isStudyActive, hobby: isHobbyActive };
 
   const [maxUser, setMaxUser] = useState(1);
+  const [userCount, setUserCount] = useState('');
 
   const [selectedUserCount, setSelectedUserCount] = useState<number | null>(
     null,
@@ -80,7 +80,6 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    console.log(file);
 
     if (file) {
       setFile(file); // 바로 파일 객체 저장
@@ -89,62 +88,28 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({
 
   const handleJoinRoom = async (uuid: string) => {
     try {
-      // const token = getCookie('token');
-      // console.log('조인룸 토큰', token);
-      // const response = await axios.post(
-      //   `${process.env.REACT_APP_SERVER_URL!}/room/${uuid}/join`,
-      //   {},
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   },
-      // );
-      // console.log(response);
-
-      // socket.emit(
-      //   'joinRoom',
-      //   {
-      //     nickname: user.nickname,
-      //     uuid: uuid,
-      //     img: user.profileImage,
-      //   },
-      //   (response: any) => {
-      //     // 서버로부터의 응답을 여기서 처리
-      //     if (response.success) {
-      //       console.log(
-      //         '방에 성공적으로 참여했어!✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨',
-      //       );
-      //     } else {
-      //       console.log('방 참여 실패😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭');
-      //     }
-      //   },
-      // );
-
-      // socket.on('new-user', nickname => {
-      //   console.log(
-      //     '새로운 유저가 방에 참석:✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨',
-      //     nickname,
-      //   );
-      // });
-
       navigate(`/room/${uuid}`);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     }
   };
 
   const onSubmitRoom = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // 카테고리나 인원이 설정되지 않았다면 알림을 주고 함수를 종료
-    if (!isStudyActive && !isHobbyActive) {
-      alert('카테고리를 선택해주세요.');
+    if (+userCount > 10 || +userCount < 1) {
+      toast.error('1명 이상, 10명 이하로 설정 해 주세요');
       return;
     }
 
-    if (selectedUserCount === null) {
-      alert('인원을 설정해주세요.');
+    // 카테고리나 인원이 설정되지 않았다면 알림을 주고 함수를 종료
+    if (!isStudyActive && !isHobbyActive) {
+      toast.error('카테고리를 선택해주세요.');
+      return;
+    }
+
+    if (userCount === '') {
+      toast.error('인원을 설정해주세요.');
       return;
     }
 
@@ -156,12 +121,11 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({
     }
 
     formData.append('title', room.title);
-    formData.append('maxHeadcount', maxUser.toString());
+    formData.append('maxHeadcount', userCount.toString());
     formData.append('category', isStudyActive ? 'study' : 'hobby');
     formData.append('note', room.note);
 
     try {
-      console.log('try');
       const config = {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -176,16 +140,11 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({
 
       // 성공시 로직
       if (response.data.createdRoom) {
-        console.log('성공', response.data);
         alert('방만들기 성공!');
         handleJoinRoom(response.data.createdRoom.uuid);
-        // console.log(response.data.createdRoom.uuid)
       } else {
-        console.log('실패ddzz', response.data);
       }
-    } catch (error) {
-      console.log('방 만들기 실패', error);
-    }
+    } catch (error) {}
   };
 
   return (
@@ -194,44 +153,55 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({
 
       <ModalContent>
         <Title>방 만들기</Title>
-        <Thumbnail>
-          {file ? (
-            <ThumbnailImg src={URL.createObjectURL(file)} />
-          ) : (
-            <img src={upload} />
-          )}
-        </Thumbnail>
-        <ThumbnailButtonGroup>
-          <Button
-            component="label"
-            sx={{
-              color: 'gray',
-              '&:hover': {
-                backgroundColor: 'initial', // 여기서 'initial' 대신 원래 배경색을 넣어도 돼
-                boxShadow: 'none', // 그림자 효과 제거
-              },
-            }}
-          >
-            썸네일 등록
-            <VisuallyHiddenInput type="file" onChange={handleFileChange} />
-          </Button>
+        <Top>
+          <TopThumbnail>
+            <Thumbnail>
+              {file ? (
+                <ThumbnailImg src={URL.createObjectURL(file)} />
+              ) : (
+                <img src={lendingImage} />
+              )}
+            </Thumbnail>
+            <ThumbnailButtonGroup>
+              <CustomButton>
+                <Button
+                  component="label"
+                  sx={{
+                    color: 'black',
+                    fontSize: '13px',
+                    '&:hover': {
+                      backgroundColor: 'initial', // 여기서 'initial' 대신 원래 배경색을 넣어도 돼
+                      boxShadow: 'none', // 그림자 효과 제거
+                    },
+                  }}
+                >
+                  사진추가
+                  <VisuallyHiddenInput
+                    type="file"
+                    onChange={handleFileChange}
+                  />
+                </Button>
+              </CustomButton>
+              <button type="button" onClick={() => setFile(null)}>
+                삭제
+              </button>
+            </ThumbnailButtonGroup>
+          </TopThumbnail>
+        </Top>
 
-          <button onClick={() => setFile(null)}>삭제</button>
-        </ThumbnailButtonGroup>
+        <RoomName>
+          <Label>방 이름</Label>
+          <RoomTitle
+            type="text"
+            // onChange={e => setRoom({ ...room, title: e.target.value })}
+            onChange={e => updateFormData('title', e.target.value)}
+            required
+          />
+        </RoomName>
 
         <Content>
           <Group>
-            <Label>방 이름</Label>
-            <RoomTitle
-              type="text"
-              // onChange={e => setRoom({ ...room, title: e.target.value })}
-              onChange={e => updateFormData('title', e.target.value)}
-              required
-            />
-          </Group>
-
-          <Group>
-            <Label>목적 정하기</Label>
+            <Label>카테고리</Label>
 
             <CategoryGroup>
               {categories.map((category, index) => (
@@ -252,19 +222,14 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({
           </Group>
 
           <Group>
-            <Label>인원설정 (최대 4인 가능)</Label>
-            <CategoryGroup>
-              {[1, 2, 3, 4, 5, 6, 7, 100].map((i, index) => (
-                <MaxUser
-                  key={index}
-                  type="button"
-                  onClick={() => handleUserCountClick(i)}
-                  isActive={i === selectedUserCount}
-                >
-                  {i}인
-                </MaxUser>
-              ))}
-            </CategoryGroup>
+            <Label>인원설정</Label>
+            <UserCounter
+              type="number"
+              max={10}
+              min={1}
+              value={userCount}
+              onChange={e => setUserCount(e.target.value)}
+            />
           </Group>
         </Content>
 
@@ -291,6 +256,46 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({
   );
 };
 
+const RoomName = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  margin-top: 20px;
+`;
+
+const UserCounter = styled.input`
+  width: 80px;
+  height: 35px;
+  padding: 10px 15px;
+  border-radius: 30px;
+  border: 2px solid var(--gray-06);
+  font-size: 16px;
+`;
+
+const Top = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+  gap: 20px;
+  margin-top: 20px;
+`;
+
+const CustomButton = styled.div`
+  background-color: var(--gray-03);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 30px;
+  border-radius: 10px;
+`;
+
+const TopThumbnail = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
 const CategoryImg = styled.img<{ isActive: boolean }>`
   filter: grayscale(${props => (props.isActive ? '0%' : '100%')});
   width: 20px;
@@ -303,6 +308,14 @@ const ThumbnailButtonGroup = styled.div`
   align-items: center;
   gap: 10px;
   height: 20px;
+  margin-top: 10px;
+  > button {
+    width: 50px;
+    background-color: var(--gray-03);
+    height: 30px;
+    font-size: 15px;
+    border-radius: 10px;
+  }
 `;
 
 const ThumbnailImg = styled.img`
@@ -326,50 +339,67 @@ const Precautions = styled.textarea`
 `;
 
 const MaxUser = styled.button<{ isActive: boolean }>`
-  color: ${props => (props.isActive ? 'var(--primary-01)' : 'var(--gray-05)')};
-  border: 2px solid
-    ${props => (props.isActive ? 'var(--primary-01)' : 'var(--gray-05)')};
-
+  color: white;
+  border: ${props =>
+    props.isActive ? '2px solid var(--primary-01)' : '2px solid white'};
+  background-color: ${props =>
+    props.isActive ? 'var(--primary-01)' : 'var(--gray-05)'};
   border-radius: 50px;
   font-size: 16px;
   font-weight: 500;
 
-  width: 40px;
+  width: 60px;
   padding: 4px;
+  &:hover {
+    border: ${props =>
+      props.isActive
+        ? '2px solid var(--primary-01)'
+        : '2px solid var(--gray-05)'};
+  }
 `;
 
 const CategoryGroup = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  gap: 11px;
+  gap: 5px;
+  flex-wrap: wrap;
 `;
 
 const Category = styled.button<{ isActive: boolean }>`
   padding: 7px 10px;
-  width: 100px;
+
   font-size: 16px;
-  color: ${props => (props.isActive ? 'var(--primary-01)' : 'var(--gray-05)')};
+  color: white;
   display: flex;
   gap: 9px;
   justify-content: center;
   align-items: center;
-  border: 2px solid
-    ${props => (props.isActive ? 'var(--primary-01)' : 'var(--gray-05)')};
+  background-color: ${props =>
+    props.isActive ? 'var(--primary-01)' : 'var(--gray-05)'};
+
+  border: ${props =>
+    props.isActive ? '2px solid var(--primary-01)' : '2px solid white'};
   border-radius: 100px;
+  &:hover {
+    border: ${props =>
+      props.isActive
+        ? '2px solid var(--primary-01)'
+        : '2px solid var(--gray-05)'};
+  }
 `;
 
 const Content = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: srart;
   align-items: center;
-  gap: 15px;
 
   display: flex;
   width: 400px;
-  margin-top: 14px;
+  margin-top: 20px;
+  gap: 20px;
 `;
 
 const Label = styled.div`
@@ -428,8 +458,6 @@ const Group = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: start;
-
-  width: 100%;
 `;
 
 const Thumbnail = styled.div`
@@ -442,6 +470,10 @@ const Thumbnail = styled.div`
   height: 100px;
   border-radius: 10px;
   overflow: hidden;
+  background-color: var(--primary-01);
+  > img {
+    width: 100%;
+  }
 `;
 
 const SampleImg = styled.img`

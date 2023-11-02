@@ -1,9 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
-import 환경설정 from '../../../images/room/build.svg';
-import 도움말 from '../../../images/room/help_outline.svg';
-import 방나가기 from '../../../images/room/logout.svg';
+import { build, help_outline, logout } from '../../../images/room';
 import { RoomModalAtom } from '../../../recoil/RoomAtom';
 import RoomModal from './RoomModal';
 
@@ -30,13 +28,13 @@ const RoomUnderBar: React.FC<RoomUnderBarProps> = ({ roomId }) => {
 
       <Body>
         <OutRoomButton onClick={roomOutButtonHandler}>
-          <img src={방나가기} alt="방나가기" />
+          <img src={logout} alt="방나가기" />
           <p>방 나가기</p>
         </OutRoomButton>
         <SettingList>
-          <img src={환경설정} alt="" />
+          <img src={build} alt="" />
           <p>환경설정</p>
-          <img src={도움말} alt="" />
+          <img src={help_outline} alt="" />
           <p>도움말</p>
         </SettingList>
       </Body>
@@ -62,14 +60,16 @@ const OutRoomButton = styled.button`
   align-items: center;
   gap: 10px;
   margin-left: 20px;
-  border: 1px solid var(--primary-01);
-
+  /* border: 1px solid var(--primary-01); */
+  background-color: white;
+  border-radius: 24px;
   img {
     width: 24px;
     height: 24px;
   }
   p {
     color: var(--primary-01);
+    font-weight: 600;
   }
 `;
 

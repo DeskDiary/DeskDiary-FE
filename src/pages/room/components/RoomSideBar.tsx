@@ -1,17 +1,16 @@
 import React, { useEffect } from 'react';
-import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { fetchUser } from '../../../axios/api';
 import logo from '../../../images/logo.svg';
+import Timer from './Timer';
 import profile from '../../../images/profile.png';
-import 마이크 from '../../../images/room/mic_none.svg';
-import 사람 from '../../../images/room/people_outline.svg';
-import 카메라 from '../../../images/room/videocam.svg';
 import { RoomUserList } from '../../../recoil/RoomAtom';
 import socket from '../socketInstance';
-import Timer from './Timer';
+import {micNone, MaxUser, videocam} from '../../../images/room';
+import { useQuery } from 'react-query';
+import { toast } from 'sonner';
 
 type RoomSideBarProps = {};
 
@@ -30,7 +29,7 @@ const RoomSideBar: React.FC<RoomSideBarProps> = () => {
   const navigate = useNavigate();
 
   const [roomUserList, setRoomUserList] = useRecoilState(RoomUserList);
-  console.log('사이드바', roomUserList);
+  // console.log('사이드바', roomUserList);
 
   const { data } = useQuery<user>('user', fetchUser);
 
@@ -39,7 +38,7 @@ const RoomSideBar: React.FC<RoomSideBarProps> = () => {
     socket.on('user-list', (payload: UserListPayload) => {
       const { nickname, userListArr } = payload;
       setRoomUserList(userListArr);
-      console.log('리코일', roomUserList);
+      // console.log('리코일', roomUserList);
     });
 
     return () => {
@@ -54,7 +53,7 @@ const RoomSideBar: React.FC<RoomSideBarProps> = () => {
         src={logo}
         alt="로고이미지"
         onClick={() => {
-          alert('방에 나갈 때는 방 나가기 버튼을 이용해주세요.');
+          toast.error('방에 나갈 때는 방 나가기 버튼을 이용해주세요.');
         }}
       />
       <UserInfoBox>
@@ -68,14 +67,14 @@ const RoomSideBar: React.FC<RoomSideBarProps> = () => {
         <Timer />
       </TimerBox>
       <CamAndMicSettingsBox>
-        <img src={마이크} alt="마이크" />
-        <img src={카메라} alt="카메라" />
+        <img src={micNone} alt="마이크" />
+        <img src={videocam} alt="카메라" />
       </CamAndMicSettingsBox>
       <JoinPeopleBox>
         <UserCount>
           <p>참여인원</p>
           <DetailCount>
-            <img src={사람} alt="인원수" />
+            <img src={MaxUser} alt="인원수" />
             <p>{roomUserList.length}</p>
           </DetailCount>
         </UserCount>

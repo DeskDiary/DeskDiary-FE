@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect} from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { fetchJoinRoom, fetchCreatedRoom } from '../../../axios/api';
 import RoomCard from '../../home/components/RoomCard';
 import { getCookie } from '../../../auth/cookie';
+import { useRecoilState } from 'recoil';
+import { RefetchAtom } from '../../../recoil/RoomAtom';
 
 type RoomListProps = {
   label: string;
@@ -17,6 +19,7 @@ const fetchFunctions = {
 
 const RoomList: React.FC<RoomListProps> = ({ label, mydesk }) => {
   const token = getCookie('token');
+  const [isRefetch, setIsRefetch] = useRecoilState(RefetchAtom);
 
   let fetchName = mydesk;
 
@@ -36,6 +39,11 @@ const RoomList: React.FC<RoomListProps> = ({ label, mydesk }) => {
       refetchOnWindowFocus: false,
     }
   );
+
+  useEffect(()=> {
+    refetch();
+    setIsRefetch(false);
+  }, [isRefetch])
 
   return (
     <List>
@@ -77,10 +85,8 @@ const JoinedRooms = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 12px;
-  width: 1215px;
-  /* min-height: 470px; */
+  width: 1200px;
 
-  overflow: scroll;
 
   @media (max-width: 1000px) {
     grid-template-columns: repeat(4, 1fr);

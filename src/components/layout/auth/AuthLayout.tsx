@@ -8,7 +8,6 @@ type SideLayoutProps = {};
 const SideLayout: React.FC<SideLayoutProps> = () => {
   return (
     <Wrap>
-      {/* <AuthHeader /> */}
       <Outlet />
     </Wrap>
   );

@@ -3,8 +3,8 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { logo, kakao, google } from '../../images';
-import { colorChecked, unchecked, XIcon } from '../../images';
+import { kakao, google } from '../../images/main';
+import { logoColor, x } from '../../images';
 import 아이디저장o from '../../images/radio_button_checked.svg';
 import 아이디저장x from '../../images/radio_button_unchecked.svg';
 
@@ -12,6 +12,7 @@ import { UserAtom } from '../../recoil/UserAtom';
 
 import { useMutation } from 'react-query';
 import Kakao from './components/Kakao';
+import Google from './components/Google';
 
 type JoinProps = {};
 
@@ -45,7 +46,6 @@ const Join: React.FC<JoinProps> = () => {
         setUser(prevUser => ({ ...prevUser, password: '' }));
         break;
       case 'confirmPassword':
-        console.log('클릭클릭');
         setconfirmPassword('');
         break;
       case 'nickname':
@@ -82,13 +82,12 @@ const Join: React.FC<JoinProps> = () => {
       axios.post(`${process.env.REACT_APP_SERVER_URL!}/auth/join`, userData),
     {
       onSuccess: () => {
-        alert('회원가입 성공');
         navigate('/login');
       },
       onError: (error: any) => {
         if (error.response) {
           const message = error.response.data.message;
-          console.log(message);
+          // console.log(message);
 
           switch (true) {
             case message.includes('이메일이 이미'):
@@ -108,6 +107,11 @@ const Join: React.FC<JoinProps> = () => {
             ):
               setNicknameError('닉네임은 특수문자가 포함될 수 없습니다.');
               break;
+            case message.includes(
+              'nickname must be',
+            ):
+              setNicknameError('닉네임은 2개 이상 5개 이하의 문자로 이루어져야 합니다.');
+              break;
             case message.includes('비밀번호가 비어 있으면 안됩니다.'):
               setPasswordError('비밀번호가 비어 있으면 안됩니다.');
               break;
@@ -122,7 +126,7 @@ const Join: React.FC<JoinProps> = () => {
               setPasswordError('비밀번호는 8자 이상이어야 합니다');
               break;
             default:
-              console.log('회원가입에 실패했습니다. 관리자에게 문의해주세요.');
+
           }
         }
       },
@@ -158,7 +162,7 @@ const Join: React.FC<JoinProps> = () => {
             />
             {user.email.length !== 0 && (
               <Clear type="button" onClick={() => handleClearInput('email')}>
-                <img src={XIcon} />
+                <img src={x} />
               </Clear>
             )}
           </InputBox>
@@ -185,7 +189,7 @@ const Join: React.FC<JoinProps> = () => {
             />
             {user.password.length !== 0 && (
               <Clear type="button" onClick={() => handleClearInput('password')}>
-                <img src={XIcon} />
+                <img src={x} />
               </Clear>
             )}
           </InputBox>
@@ -219,7 +223,7 @@ const Join: React.FC<JoinProps> = () => {
                 type="button"
                 onClick={() => handleClearInput('confirmPassword')}
               >
-                <img src={XIcon} />
+                <img src={x} />
               </Clear>
             )}
           </InputBox>
@@ -247,7 +251,7 @@ const Join: React.FC<JoinProps> = () => {
             />
             {user.nickname.length !== 0 && (
               <Clear type="button" onClick={() => handleClearInput('nickname')}>
-                <img src={XIcon} />
+                <img src={x} />
               </Clear>
             )}
           </InputBox>
@@ -271,24 +275,8 @@ const Join: React.FC<JoinProps> = () => {
       </JoinButton>
       <SocialLoginText>SNS 계정으로 시작하기</SocialLoginText>
       <SocialLoginGroup>
-        <SocialLoginLink
-          to="/"
-          onClick={() => {
-            const SERVER_URL = process.env.REACT_APP_SERVER_URL;
-
-            const kakaoOauthURL = `https://kauth.kakao.com/oauth/authorize?response_type=code&redirect_uri=${encodeURIComponent(
-              `${SERVER_URL}/kakao-callback`,
-            )}&client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}`;
-
-            window.location.href = kakaoOauthURL;
-          }}
-        >
-          <img src={kakao} />
-        </SocialLoginLink>
-
-        <SocialLoginLink to="/">
-          <img src={google} />
-        </SocialLoginLink>
+        <Kakao />
+        <Google />
       </SocialLoginGroup>
     </JoinForm>
   );
@@ -296,10 +284,10 @@ const Join: React.FC<JoinProps> = () => {
 
 const LoginLink = styled(Link)`
   margin-left: auto;
-`
+`;
 
 const Logo = styled(Link)`
-  background: url(${logo}) no-repeat center;
+  background: url(${logoColor}) no-repeat center;
   width: 62px;
   height: 73px;
 `;

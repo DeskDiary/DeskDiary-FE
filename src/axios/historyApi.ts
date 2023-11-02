@@ -22,7 +22,7 @@ export const todayLerningHistoryHome = async () => {
       `${serverUrl}/learning-history/today`,
       headers,
     );
-    console.log('api 1일 학습 기록 조회', response.data);
+    // console.log('api 1일 학습 기록 조회', response.data);
     const data = response.data;
     if (data.message === '등록된 목표시간이 없습니다.') {
       return [0, 0, 0, 0, 0, 0];
@@ -43,7 +43,7 @@ export const todayLerningHistoryHome = async () => {
       ];
     }
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return [0, 0, 0, 0, 0, 0];
   }
 };

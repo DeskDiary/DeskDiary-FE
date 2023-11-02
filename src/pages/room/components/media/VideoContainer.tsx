@@ -67,16 +67,16 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
       setRoomInfo(data);
       setRecoilRoomInfo(data);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     }
   };
-  console.log('😭확인', recoilRoomInfo);
+  // console.log('😭확인', recoilRoomInfo);
   useEffect(() => {
     getRoomInfo();
   }, []);
 
   const handleUserLeft = async (currentTracks: any) => {
-    console.log('✨아고라 연결 끊기');
+    // console.log('✨아고라 연결 끊기');
 
     if (currentTracks) {
       for (const track of currentTracks) {
@@ -84,9 +84,9 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
           try {
             await track.stop();
             await track.close();
-            console.log(`✨Track 멈춤`);
+            // console.log(`✨Track 멈춤`);
           } catch (error) {
-            console.error('Error stopping or closing track:', error);
+            // console.error('Error stopping or closing track:', error);
           }
         }
       }
@@ -94,18 +94,18 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
 
     if (client && currentTracks) {
       await client.unpublish(currentTracks);
-      console.log('✨unpublish 완료');
+      // console.log('✨unpublish 완료');
     }
 
     await client.leave();
-    console.log('✨✨✨✨✨');
+    // console.log('✨✨✨✨✨');
   };
 
   useEffect(() => {
     const init = async (name: string) => {
       client.on('user-published', async (user, mediaType) => {
         await client.subscribe(user, mediaType);
-        console.log('subscribe success');
+        // console.log('subscribe success');
         if (mediaType === 'video') {
           setUsers(prevUsers => {
             return [...prevUsers, user];
@@ -117,7 +117,7 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
       });
 
       client.on('user-unpublished', (user, type) => {
-        console.log('unpublished', user, type);
+        // console.log('unpublished', user, type);
         if (type === 'audio') {
           user.audioTrack?.stop();
         }
@@ -129,7 +129,7 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
       });
 
       client.on('user-left', user => {
-        console.log('leaving', user);
+        // console.log('leaving', user);
         setUsers(prevUsers => {
           return prevUsers.filter(User => User.uid !== user.uid);
         });
@@ -142,14 +142,14 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
     const currentTracks = tracks;
 
     if (ready && tracks) {
-      console.log('init ready');
+      // console.log('init ready');
       init(CHANNEL);
     }
 
     return () => {
       // 아고라 연결 끊기 로직
-      console.log('===Tracks:', tracks);
-      console.log('===Current Tracks:', currentTracks);
+      // console.log('===Tracks:', tracks);
+      // console.log('===Current Tracks:', currentTracks);
 
       handleUserLeft(tracks);
     };

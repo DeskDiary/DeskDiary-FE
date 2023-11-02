@@ -11,3 +11,8 @@ export const GoalTime = atom({
     goalTime: 0
   },
 });
+
+export const MonthTime = atom({
+  key: 'MonthTime',
+  default : 0
+})

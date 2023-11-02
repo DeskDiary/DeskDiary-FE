@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import 재생 from '../../../images/audio/Button_Play.svg';
-import 일시정지 from '../../../images/audio/audio_stop.svg';
-import 뒤로가기 from '../../../images/audio/back_button.svg';
-import 앞으로가기 from '../../../images/audio/front_button.svg';
-import 음소거 from '../../../images/audio/volume_off.svg';
-import 소리최대 from '../../../images/audio/volume_up.svg';
+import { Button_Play, audio_stop, back_button, front_button, volume_off, volume_up } from '../../../images/audio';
+import audiotrack from '../../../images/audio/audiotrack.svg';
 type AsmrPlayerProps = {};
 
 const asmrList = [
@@ -82,18 +78,19 @@ const AsmrPlayer: React.FC<AsmrPlayerProps> = () => {
 
   return (
     <Body>
+      <Icon src={audiotrack} alt="" />
       <AudioImg src={asmrList[current].img} alt="" />
       <div>
         <Title>{asmrList[current].title}</Title>
         <audio ref={audioRef} src={asmrList[current].src} />
       </div>
       <PlayBox>
-        <BackButton onClick={backCurrentHandler} img={뒤로가기} />
-        <PlayButton onClick={togglePlay} isPlaying={isPlaying} />
-        <FrontButton onClick={nextCurrentHandler} img={앞으로가기} />
+        <BackButton onClick={backCurrentHandler} img={back_button} />
+        <PlayButton onClick={togglePlay} isplaying={isPlaying.toString()} />
+        <FrontButton onClick={nextCurrentHandler} img={front_button} />
       </PlayBox>
       <VolumeBox>
-        <MuteButton img={음소거} />
+        <MuteButton img={volume_off} />
         <VolumeSlider
           type="range"
           min="0"
@@ -102,7 +99,7 @@ const AsmrPlayer: React.FC<AsmrPlayerProps> = () => {
           value={volume}
           onChange={handleVolumeChange}
         />
-        <MaxSoundButton img={소리최대} />
+        <MaxSoundButton img={volume_up} />
       </VolumeBox>
     </Body>
   );
@@ -110,14 +107,21 @@ const AsmrPlayer: React.FC<AsmrPlayerProps> = () => {
 
 const Body = styled.div`
   width: 100%;
-  background-color: gray;
-  border: 1px solid black;
+  /* border: 1px solid var(--gray-07); */
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  border-radius: 10px;
+  box-shadow: 2px 2px 6px 2px rgba(0, 0, 0, 0.3);
 `;
+
+const Icon = styled.img`
+  margin: 5px auto 0 5px;
+  filter: grayscale(100%);
+`
+
 const AudioImg = styled.img`
-  margin-top: 21px;
   width: 54px;
   height: 54px;
   border-radius: 50%;
@@ -140,8 +144,8 @@ const PlayBox = styled.div`
   gap: 25px;
 `;
 
-const PlayButton = styled.button<{ isPlaying: boolean }>`
-  background-image: url(${props => (props.isPlaying ? 일시정지 : 재생)});
+const PlayButton = styled.button<{ isplaying: string }>`
+  background-image: url(${props => (props.isplaying === 'true' ? audio_stop : Button_Play)});
   background-size: cover;
   width: 40px;
   height: 40px;

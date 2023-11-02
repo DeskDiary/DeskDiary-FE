@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import axios from 'axios';
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { getCookie } from '../../../auth/cookie';
@@ -52,7 +52,7 @@ const JoinRoomModal: React.FC<JoinRoomModal> = ({ setIsOpen, room }) => {
   const onClickJoinRoom = async () => {
     try {
       const token = getCookie('token');
-      console.log('조인룸 토큰', token);
+      // console.log('조인룸 토큰', token);
       const response = await axios.post(
         `${serverUrl}/room/${room.uuid}/join`,
         {},
@@ -62,7 +62,7 @@ const JoinRoomModal: React.FC<JoinRoomModal> = ({ setIsOpen, room }) => {
           },
         },
       );
-      console.log(response);
+      // console.log(response);
       setRoomInfo({
         agoraAppId: room.agoraAppId,
         agoraToken: room.agoraToken,
@@ -89,20 +89,20 @@ const JoinRoomModal: React.FC<JoinRoomModal> = ({ setIsOpen, room }) => {
       }, (response:any) => {
         // 서버로부터의 응답을 여기서 처리
         if (response.success) {
-          console.log('방에 성공적으로 참여했어!✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
+          // console.log('방에 성공적으로 참여했어!✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
         } else {
-          console.log('방 참여 실패😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭');
+          // console.log('방 참여 실패😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭');
         }
       });
 
       socket.on('new-user', (nickname) => {
-        console.log('새로운 유저가 방에 참석:✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨', nickname);
+        // console.log('새로운 유저가 방에 참석:✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨', nickname);
       });
       
 
       navigate(`/room/${room.uuid}`);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     }
   };
 

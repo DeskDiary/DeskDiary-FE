@@ -8,7 +8,7 @@ const token = getCookie('token');
 export const fetchUser = async () => {
   const token = getCookie('token');
   if (!token) {
-    console.log("fetchUser 로그인이 필요해요!");
+    // console.log("fetchUser 로그인이 필요해요!");
     return null;
   }
   const { data } = await axios.get(
@@ -19,7 +19,7 @@ export const fetchUser = async () => {
       },
     },
   );
-  console.log('❤️user 프로필 가져오기')
+  // console.log('❤️user 프로필 가져오기')
   return data;
 };
 
@@ -33,7 +33,7 @@ export const fetchJoinRoom = async () => {
       },
     },
   );
-  console.log('❤️내가 참여한 방 조회')
+  // console.log('❤️내가 참여한 방 조회')
   return data;
 };
 
@@ -47,7 +47,7 @@ export const fetchCreatedRoom = async () => {
       },
     },
   );
-  console.log('❤️내가 만든 방 조회')
+  // console.log('❤️내가 만든 방 조회')
   return data;
 };
 
@@ -57,10 +57,10 @@ export const fetchRoomPopular = async () => {
     const { data } = await axios.get(
       `${process.env.REACT_APP_SERVER_URL!}/rooms/popular`,
     );
-    console.log('❤️전체방 인기순')
+    // console.log('❤️전체방 인기순')
     return data;
   } catch (error) {
-    console.error('전체방 인기순 정보를 불러오는 데 실패했어요!', error);
+    // console.error('전체방 인기순 정보를 불러오는 데 실패했어요!', error);
     return null;
   }
 };
@@ -71,10 +71,10 @@ export const fetchRoomLatest = async () => {
     const { data } = await axios.get(
       `${process.env.REACT_APP_SERVER_URL!}/rooms/latest`,
     );
-    console.log('❤️전체방 최신순')
+    // console.log('❤️전체방 최신순')
     return data;
   } catch (error) {
-    console.error('전체방 최신순 정보를 불러오는 데 실패했어요!', error);
+    // console.error('전체방 최신순 정보를 불러오는 데 실패했어요!', error);
     return null;
   }
 };
@@ -85,10 +85,10 @@ export const fetchRoomTopPopular = async () => {
     const { data } = await axios.get(
       `${process.env.REACT_APP_SERVER_URL!}/rooms/popular-top`,
     );
-    console.log('❤️전체방 인기순 top10')
+    // console.log('❤️전체방 인기순 top10')
     return data;
   } catch (error) {
-    console.error('전체방 인기순 top10 정보를 불러오는 데 실패했어요!', error);
+    // console.error('전체방 인기순 top10 정보를 불러오는 데 실패했어요!', error);
     return null;
   }
 };
@@ -99,10 +99,10 @@ export const fetchRoomTopLatest = async () => {
     const { data } = await axios.get(
       `${process.env.REACT_APP_SERVER_URL!}/rooms/latest-top`,
     );
-    console.log('❤️전체방 최신순 top10')
+    // console.log('❤️전체방 최신순 top10')
     return data;
   } catch (error) {
-    console.error('전체방 최신순 top10 정보를 불러오는 데 실패했어요!', error);
+    // console.error('전체방 최신순 top10 정보를 불러오는 데 실패했어요!', error);
     return null;
   }
 };
@@ -113,10 +113,10 @@ export const fetchStudyPopular = async () => {
     const { data } = await axios.get(
       `${process.env.REACT_APP_SERVER_URL!}/study-rooms/popular`,
     );
-    console.log('❤️스터디 인기순')
+    // console.log('❤️스터디 인기순')
     return data;
   } catch (error) {
-    console.error('스터디 인기순 정보를 불러오는 데 실패했어요!', error);
+    // console.error('스터디 인기순 정보를 불러오는 데 실패했어요!', error);
     return null;
   }
 };
@@ -127,10 +127,10 @@ export const fetchHobbyPopular = async () => {
     const { data } = await axios.get(
       `${process.env.REACT_APP_SERVER_URL!}/hobby-rooms/popular`,
     );
-    console.log('❤️취미룸 인기순')
+    // console.log('❤️취미룸 인기순')
     return data;
   } catch (error) {
-    console.error('취미 인기순 정보를 불러오는 데 실패했어요!', error);
+    // console.error('취미 인기순 정보를 불러오는 데 실패했어요!', error);
     return null;
   }
 };
@@ -141,10 +141,10 @@ export const fetchStudyLatest = async () => {
     const { data } = await axios.get(
       `${process.env.REACT_APP_SERVER_URL!}/study-rooms/latest`,
     );
-    console.log('❤️스터디 최신순')
+    // console.log('❤️스터디 최신순')
     return data;
   } catch (error) {
-    console.error('스터디 최신순 정보를 불러오는 데 실패했어요!', error);
+    // console.error('스터디 최신순 정보를 불러오는 데 실패했어요!', error);
     return null;
   }
 };
@@ -155,10 +155,10 @@ export const fetchHobbyLatest = async () => {
     const { data } = await axios.get(
       `${process.env.REACT_APP_SERVER_URL!}/hobby-rooms/latest`,
     );
-    console.log('❤️취미룸 최신순')
+    // console.log('❤️취미룸 최신순')
     return data;
   } catch (error) {
-    console.error('취미 최신순 정보를 불러오는 데 실패했어요!', error);
+    // console.error('취미 최신순 정보를 불러오는 데 실패했어요!', error);
     return null;
   }
 };
@@ -169,10 +169,10 @@ export const fetchTopStudy = async () => {
     const { data } = await axios.get(
       `${process.env.REACT_APP_SERVER_URL!}/study-rooms/popular-top`,
     );
-    console.log('❤️스터디 top10')
+    // console.log('❤️스터디 top10')
     return data;
   } catch (error) {
-    console.error('스터디 top10 정보를 불러오는 데 실패했어요!', error);
+    // console.error('스터디 top10 정보를 불러오는 데 실패했어요!', error);
     return null;
   }
 };
@@ -183,10 +183,10 @@ export const fetchTopHobby = async () => {
     const { data } = await axios.get(
       `${process.env.REACT_APP_SERVER_URL!}/hobby-rooms/popular-top`,
     );
-    console.log('❤️취미룸 top10')
+    // console.log('❤️취미룸 top10')
     return data;
   } catch (error) {
-    console.error('취미 top10 정보를 불러오는 데 실패했어요!', error);
+    // console.error('취미 top10 정보를 불러오는 데 실패했어요!', error);
     return null;
   }
 };
@@ -199,12 +199,12 @@ const instance = axios.create({
 instance.interceptors.request.use(
   // 요청을 보내기 전 수행되는 함수
   function (config) {
-    console.log("인터셉터 요청 성공");
+    // console.log("인터셉터 요청 성공");
     return config;
   },
   // 오류 요청을 보내기 전 수행되는 함수
   function (error) {
-    console.log("인터셉터 요청 오류");
+    // console.log("인터셉터 요청 오류");
     return Promise.reject(error);
   }
 );
@@ -212,12 +212,12 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   // 응답을 내보내기 전 수행되는 함수
   function (response) {
-    console.log("인터셉터 응답 받았습니다");
+    // console.log("인터셉터 응답 받았습니다");
     return response;
   },
   // 오류 응답을 내보내기 전 수행되는 함수
   function (error) {
-    console.log("인터셉터 응답 오류 발생");
+    // console.log("인터셉터 응답 오류 발생");
     return Promise.reject(error);
   }
 );

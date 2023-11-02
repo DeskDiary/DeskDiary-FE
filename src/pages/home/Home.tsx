@@ -11,7 +11,6 @@ import RoomList from './components/RoomList';
 const Home = () => {
   const navigate = useNavigate();
 
-  console.log('홈화면 렌더링');
   const token = getCookie('token');
 
   useEffect(() => {
@@ -19,11 +18,9 @@ const Home = () => {
     if (visited === null) {
       navigate('/lending');
     }
-    console.log(visited);
   }, []);
 
   useEffect(() => {
-    console.log('⭕렌더링');
   }, []);
 
   return (

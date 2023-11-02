@@ -1,7 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import MainTop from '../../components/layout/main/MainTop';
 import profileDefaultImg from '../../images/profile.png';
 import first from '../../images/ranking/1st.svg';
 import second from '../../images/ranking/2nd.svg';
@@ -26,14 +25,14 @@ const StudyCategory: React.FC<StudyCategoryProps> = () => {
     { borderColor: 'rgba(79, 72, 145, 1)', img: fifth },
   ];
   const [rankingList, setRankingList] = useState<RankingList[]>([]);
-  console.log(rankingList);
+  // console.log(rankingList);
   const studyRanking = async () => {
     try {
       const response = await axios.get(`${serverUrl}/study-room/rankings`);
 
       setRankingList(response.data);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     }
   };
 
@@ -90,7 +89,7 @@ const Container = styled.div`
   justify-content: start;
   align-items: center;
   width: 1200px;
-  height: 100vh;
+  height: 100%;
 `;
 
 const Info = styled.div`

@@ -1,13 +1,13 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled from '@emotion/styled';
-import { kakao, } from '../../../images';
+import { kakao } from '../../../images/main';
 import { Link } from 'react-router-dom';
 
 
 type KakaoProps = {};
 
 const Kakao: React.FC<KakaoProps> = () => {
-
+  
   return (
     <SocialLoginLink
       to="/"
@@ -21,7 +21,7 @@ const Kakao: React.FC<KakaoProps> = () => {
         window.location.href = kakaoOauthURL;
       }}
     >
-      <img src={kakao} />
+      <img src={kakao} alt="KaKao Login" />
     </SocialLoginLink>
   );
 };

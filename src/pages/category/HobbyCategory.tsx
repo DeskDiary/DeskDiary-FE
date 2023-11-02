@@ -1,7 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import MainTop from '../../components/layout/main/MainTop';
 import profileDefaultImg from '../../images/profile.png';
 import first from '../../images/ranking/1st.svg';
 import second from '../../images/ranking/2nd.svg';
@@ -27,7 +26,7 @@ const HobbyCategory: React.FC<HobbyCategoryProps> = () => {
     { borderColor: 'rgba(79, 72, 145, 1)', img: fifth },
   ];
   const [rankingList, setRankingList] = useState<RankingList[]>([]);
-  console.log(rankingList);
+  // console.log(rankingList);
 
   const hobbyRanking = async () => {
     try {
@@ -35,7 +34,7 @@ const HobbyCategory: React.FC<HobbyCategoryProps> = () => {
 
       setRankingList(response.data);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     }
   };
   const timeFormat = (num: number | string) => {
