@@ -15,6 +15,7 @@ import chat from './chat.svg';
 import bell from './bell.svg';
 import music from './music.svg';
 import send from './send.svg';
+import timerImg from './timerImg.svg'
 
 export {
   build,
@@ -33,5 +34,6 @@ export {
   chat,
   bell,
   music,
-  send
+  send,
+  timerImg
 };

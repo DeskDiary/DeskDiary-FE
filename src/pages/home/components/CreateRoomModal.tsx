@@ -140,7 +140,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
 
       // 성공시 로직
       if (response.data.createdRoom) {
-        alert('방만들기 성공!');
+        toast.message('방만들기 성공!');
         handleJoinRoom(response.data.createdRoom.uuid);
       } else {
       }

@@ -95,8 +95,8 @@ const Button = styled.div`
   width: 100px;
   height: 100px;
   position: fixed;
-  bottom: 80px;
-  right: 80px;
+  bottom: 10px;
+  right: 0px;
   cursor: pointer;
 
   display: flex;

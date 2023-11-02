@@ -36,7 +36,6 @@ const Room: React.FC<RoomProps> = () => {
   }, []);
   const navigate = useNavigate();
   const showArrow = () => {
-    
     setIsArrow(true);
 
     setTimeout(() => {
@@ -47,16 +46,18 @@ const Room: React.FC<RoomProps> = () => {
   useEffect(() => {
     const listenBackEvent = () => {
       showArrow();
-      toast.error(`왼쪽 하단의 방 나가기 버튼을 이용 해 주세요.
-      `);
+      toast.error(
+        `왼쪽 하단의 방 나가기 버튼을 이용 해 주세요.
+      `,
+      {duration: 2000},
+      );
       navigate(`/room/${roomUUID}`);
     };
 
     const unlistenHistoryEvent = history.listen(({ action }) => {
       // console.log(action);
-      
+
       if (action === 'POP') {
-        
         listenBackEvent();
       }
     });

@@ -113,7 +113,7 @@ const Categorys = styled.div`
 
 const Category = styled.button<{cute: string, me:string}>`
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 500;
   width: 50px;
   
   border-top-left-radius: 10px;
