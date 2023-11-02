@@ -134,9 +134,10 @@ const SetMediaModal: React.FC<SetMediaModal> = ({ setIsOpen, room }) => {
 };
 
 const Note = styled.div`
-  font-size: 12px;
+  font-size: 15px;
   color: var(--gray-07);
   margin-right: auto;
+  margin-bottom: 50px;
 `;
 
 const Content = styled.div`
@@ -148,6 +149,7 @@ const Content = styled.div`
   display: flex;
   width: 400px;
   margin-top: 14px;
+  max-height: 700px;
 
   overflow: scroll;
 `;
@@ -196,7 +198,7 @@ const ModalContent = styled.div`
   align-items: center;
 
   width: 600px;
-  height: 400px;
+  /* height: 600px; */
   /* background-color: rgba(255, 255, 255, 0.8); */
   background-color: white;
   border-radius: 20px;

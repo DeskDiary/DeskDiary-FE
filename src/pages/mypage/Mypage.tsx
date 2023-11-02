@@ -7,7 +7,7 @@ import { useRecoilState } from 'recoil';
 import { getCookie } from '../../auth/cookie';
 import { fetchUser } from '../../axios/api';
 import { UserAtom } from '../../recoil/UserAtom';
-import { RoomAtom } from '../../recoil/RoomAtom';
+import { RoomAtom, DeleteRoomAtom, RoomUUIDAtom } from '../../recoil/RoomAtom';
 
 import ChangePasswordModal from './components/ChangePasswordModal';
 import ConfirmModal from '../../components/ConfirmModal';
@@ -44,7 +44,7 @@ const Mypage: React.FC<MypageProps> = () => {
   const [nickname, setNickname] = useState('');
   const [image, setImage] = useState('');
   const [user, setUser] = useRecoilState(UserAtom);
-  const [test, setTest] = useState(false)
+  const [test, setTest] = useState(false);
 
   const [formData, setFormData] = useRecoilState(RoomAtom);
 
@@ -167,7 +167,7 @@ const Mypage: React.FC<MypageProps> = () => {
         formData,
         config,
       );
-      
+
       // console.log('프로필 수정 서버로 전송', response.data);
       refetch();
       // 성공시 로직
@@ -181,7 +181,7 @@ const Mypage: React.FC<MypageProps> = () => {
     } catch (error) {
       // console.log('프로필 수정 실패', error);
     }
-    setTest(!test)
+    setTest(!test);
   };
 
   return (
@@ -264,7 +264,9 @@ const Mypage: React.FC<MypageProps> = () => {
         </UserProfile>
 
         <Lists>
-          <List onClick={() => setIsOpen(!isOpen)}>정보수정</List>
+          {data?.provider === 'local' && (
+            <List onClick={() => setIsOpen(!isOpen)}>비밀번호 수정</List>
+          )}
           <List onClick={handleLogout}>로그아웃</List>
           <List onClick={handleDeleteUser}>회원탈퇴</List>
         </Lists>
@@ -275,8 +277,6 @@ const Mypage: React.FC<MypageProps> = () => {
           <ConfirmModal title="회원탈퇴" setIsOpen={setIsOpenDeleteUser} />
         )}
       </Contants>
-
-      {/* <GoalRecordChart /> */}
     </Container>
   );
 };

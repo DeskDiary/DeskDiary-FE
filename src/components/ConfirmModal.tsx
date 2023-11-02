@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router';
 
@@ -6,6 +6,7 @@ import axios from 'axios';
 import { getCookie } from '../auth/cookie';
 import { useRecoilState } from 'recoil';
 import { RefetchAtom } from '../recoil/RoomAtom';
+import ConfirmInput from './ConfirmInput';
 
 type ConfirmModalProps = {
   title: string;
@@ -20,6 +21,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
 }) => {
   const navigate = useNavigate();
   const [isRefetch, setIsRefetch] = useRecoilState(RefetchAtom);
+  const [isDeleteUser, setIsDeleteUser] = useState(false);
 
   const handleDeleteRoom = async (uuid: string) => {
     try {
@@ -34,8 +36,15 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
       );
       setIsRefetch(true);
       setIsOpen(false);
-    } catch (error) {
+      // if(response.data.message)
+    } catch (error: any) {
       // console.error(error);
+
+      // 에러 메시지에서 '방안에'가 포함되어 있는지 확인
+      if (error.response && error.response.data.message.includes('방안에')) {
+        alert('방안에 사용자가 존재하는 경우 삭제할 수 없습니다.');
+        setIsOpen(false);
+      }
     }
   };
 
@@ -62,6 +71,12 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
       // console.error(error);
     }
   };
+
+  useEffect(() => {
+    if (title === '회원탈퇴') {
+      setIsDeleteUser(true);
+    }
+  }, []);
 
   const handleButton = (title: string) => {
     switch (title) {
@@ -92,6 +107,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
           <Button type="button" onClick={() => handleButton(title)}>
             {title}
           </Button>
+          {isDeleteUser && <ConfirmInput setIsDeleteUser={setIsDeleteUser}/>}
           <Button
             type="button"
             buttontype="cancel"

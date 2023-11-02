@@ -106,7 +106,7 @@ const AsmrPlayer: React.FC<AsmrPlayerProps> = () => {
 };
 
 const Body = styled.div`
-  width: 100%;
+  width: 97%;
   /* border: 1px solid var(--gray-07); */
   display: flex;
   flex-direction: column;
