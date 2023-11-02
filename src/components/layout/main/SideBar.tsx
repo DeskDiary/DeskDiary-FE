@@ -80,7 +80,6 @@ const SideBar: React.FC<SideBarProps> = () => {
             >
               <img src={mydesk} alt="menu icon" />
               <p>책상 기록</p>
-              <Hover />
             </SidebarButton>
           </SidebarMenu>
           <SidebarButton className="mypage" to={token ? '/mypage' : '/login'}>
@@ -104,7 +103,6 @@ const SideBar: React.FC<SideBarProps> = () => {
     </Sidebar>
   );
 };
-const Hover = styled.div``
 const SidebarButton = styled(NavLink)`
   display: flex;
   align-items: center;
