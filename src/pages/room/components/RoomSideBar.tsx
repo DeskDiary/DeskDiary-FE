@@ -8,7 +8,7 @@ import Timer from './Timer';
 import profile from '../../../images/profile.png';
 import { RoomUserList } from '../../../recoil/RoomAtom';
 import socket from '../socketInstance';
-import {micNone, MaxUser, videocam} from '../../../images/room';
+import { micNone, MaxUser, videocam } from '../../../images/room';
 import { useQuery } from 'react-query';
 import { toast } from 'sonner';
 
@@ -16,7 +16,7 @@ type RoomSideBarProps = {};
 
 type UserListPayload = {
   nickname: string;
-  userListArr: { nickname: string, img: string }[];
+  userListArr: { nickname: string; img: string }[];
 };
 
 const RoomSideBar: React.FC<RoomSideBarProps> = () => {
@@ -78,12 +78,12 @@ const RoomSideBar: React.FC<RoomSideBarProps> = () => {
             <p>{roomUserList.length}</p>
           </DetailCount>
         </UserCount>
-        {roomUserList.map((user, index) => 
+        {roomUserList.map((user, index) => (
           <UserList key={index}>
             <img src={user.img ? user.img : profile} alt="사용자프로필이미지" />
             <p>{user.nickname}</p>
           </UserList>
-        )}
+        ))}
       </JoinPeopleBox>
     </Body>
   );
@@ -177,14 +177,15 @@ const CamAndMicSettingsBox = styled.div`
 `;
 
 const JoinPeopleBox = styled.div`
-  margin-top: 130px;
+  margin-top: 50px;
   width: 152px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
   gap: 8px;
   color: white;
+  height: 400px;
 `;
 
 const UserCount = styled.div`
@@ -214,7 +215,10 @@ const UserList = styled.div`
   display: flex;
   width: 100%;
   gap: 8px;
-  align-items: center;
+  align-items: start;
+  height: 100%;
+  overflow: scroll;
+
   img {
     width: 24px;
     height: 24px;
