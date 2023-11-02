@@ -115,7 +115,7 @@ const FooterTitle = styled.div`
 `;
 
 const Container = styled.div`
-  width: 100%;
+  width: calc(100vw - 10px);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -127,12 +127,12 @@ const Container = styled.div`
 `;
 
 const Footer = styled.div`
-  width: 100%;
+  width: calc(100vw - 10px);
   background-color: black;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 20px 0;
   bottom: 0;
   left: 0;
   height: 150px;
