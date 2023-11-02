@@ -214,10 +214,9 @@ const DetailCount = styled.div`
 const UserList = styled.div`
   display: flex;
   width: 100%;
+  height: 25px;
   gap: 8px;
   align-items: start;
-  height: 100%;
-  overflow: scroll;
 
   img {
     width: 24px;
