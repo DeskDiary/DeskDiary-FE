@@ -66,10 +66,10 @@ const RoomSideBar: React.FC<RoomSideBarProps> = () => {
       <TimerBox>
         <Timer />
       </TimerBox>
-      <CamAndMicSettingsBox>
+      {/* <CamAndMicSettingsBox>
         <img src={micNone} alt="마이크" />
         <img src={videocam} alt="카메라" />
-      </CamAndMicSettingsBox>
+      </CamAndMicSettingsBox> */}
       <JoinPeopleBox>
         <UserCount>
           <p>참여인원</p>
