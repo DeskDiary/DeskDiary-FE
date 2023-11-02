@@ -6,6 +6,7 @@ import { useRecoilState } from 'recoil';
 import { getCookie } from '../../../auth/cookie';
 import logo from '../../../images/logo.svg';
 import { GoalTime, GoalTimeModalState } from '../../../recoil/DeskAtom';
+import graph from '../../../images/desk/graph.png'
 
 type GoalPercentGraphProps = {};
 const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
@@ -84,7 +85,6 @@ const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
 
   return (
     <Body>
-      <Title>목표 달성</Title>
       {
         (목표시간sec > 0) 
         ? 
@@ -103,7 +103,7 @@ const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
       
 
 
-      <Image src={logo} />
+      <Image src={graph} alt='그래프' percent={percent} />
 
       <DetailTimeInfo>
         <DetailTimeInfoPBox>
@@ -127,7 +127,7 @@ const Body = styled.div`
   width: 378px;
   height: 478px;
   border-radius: 20px;
-  background-color: white;
+  background-color: #1A81E8;
   box-shadow: 2px 4px 9px 0px rgba(0, 0, 0, 0.25);
   padding: 20px;
 `;
@@ -148,9 +148,10 @@ const Text = styled.div`
     line-height: 123.5%;
     letter-spacing: 0.25px;
     font-weight: 400;
+    color: white;
   }
   p > span {
-    color: var(--primary-01);
+    color: white;
     font-size: 40px;
     font-weight: 700;
     line-height: 123.5%;
@@ -158,14 +159,17 @@ const Text = styled.div`
   }
 `
 
-const Image = styled.img`
+const Image = styled.img<{ percent: number }>`
   margin-top: 24px;
   display: flex;
-  width: 220px;
-  height: 170px;
+  width: 200px;
+  height: 196px;
   margin-left: auto;
   margin-right: auto;
+  background-image: linear-gradient(to bottom, white, white ${(props) => 100 - props.percent}%, #FFBB00, #FFBB00 ${(props) => 100 - props.percent}%);
 `;
+
+
 
 const DetailTimeInfo = styled.div`
   margin-top: 24px;
@@ -180,11 +184,12 @@ const DetailTimeInfoPBox = styled.div`
   p:first-child {
     font-size: 16px;
     font-weight: 700;
+    color: white;
   }
   p:last-child {
     font-size: 22px;
     font-weight: 700;
-    color: var(--primary-00);
+    color: white;
   }
 `;
 
@@ -194,5 +199,6 @@ const PageMoveButton = styled.button`
   border: none;
   font-size: 16px;
   align-self: flex-end;
+  color: white;
 `;
 export default GoalPercentGraph;
