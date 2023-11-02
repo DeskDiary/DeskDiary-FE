@@ -90,7 +90,7 @@ const AsmrPlayer: React.FC<AsmrPlayerProps> = () => {
         <FrontButton onClick={nextCurrentHandler} img={front_button} />
       </PlayBox>
       <VolumeBox>
-        <MuteButton img={volume_off} />
+        <MuteButton img={volume_off} onClick={() => {setVolume(0)}}/>
         <VolumeSlider
           type="range"
           min="0"
@@ -99,7 +99,7 @@ const AsmrPlayer: React.FC<AsmrPlayerProps> = () => {
           value={volume}
           onChange={handleVolumeChange}
         />
-        <MaxSoundButton img={volume_up} />
+        <MaxSoundButton img={volume_up} onClick={() => {setVolume(1)}}/>
       </VolumeBox>
     </Body>
   );
