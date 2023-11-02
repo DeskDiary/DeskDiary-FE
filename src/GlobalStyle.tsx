@@ -44,7 +44,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     width: 100vw;
     scroll-behavior: smooth;
-    /* overflow-x: hidden; */
+    overflow: scroll;
 
     font-family: Pretendard;
     font-style: normal;
@@ -85,7 +85,6 @@ const GlobalStyle = createGlobalStyle`
   ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
-    display: none;
   }
 
   button {

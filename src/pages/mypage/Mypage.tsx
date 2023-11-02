@@ -18,6 +18,7 @@ import { kakao, google } from '../../images/main';
 import { edit } from '../../images/mypage';
 import { toast } from 'sonner';
 import { Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 type MypageProps = {};
 
@@ -48,6 +49,8 @@ const Mypage: React.FC<MypageProps> = () => {
   const [formData, setFormData] = useRecoilState(RoomAtom);
 
   const [isHovered, setIsHovered] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -98,6 +101,13 @@ const Mypage: React.FC<MypageProps> = () => {
       },
     },
   );
+
+  useEffect(() => {
+    if(!token) {
+      toast.error('로그인 후 이용 가능합니다.')
+      navigate('/login');
+    }
+  }, [])
 
   const onSubmitNickname = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -229,7 +239,7 @@ const Mypage: React.FC<MypageProps> = () => {
             >
               <Group>
                 <Label>이메일 계정 </Label>
-                <span>{data?.email ? data?.email : 'abcd@email.com'}</span>
+                <span>{data?.email ? data?.email : '로그인을 해주세요'}</span>
               </Group>
               <img
                 src={

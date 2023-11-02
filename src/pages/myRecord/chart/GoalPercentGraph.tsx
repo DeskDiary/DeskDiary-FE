@@ -6,7 +6,7 @@ import { useRecoilState } from 'recoil';
 import { getCookie } from '../../../auth/cookie';
 import logo from '../../../images/logo.svg';
 import { GoalTime, GoalTimeModalState } from '../../../recoil/DeskAtom';
-import graph from '../../../images/desk/graph.png'
+import graph from '../../../images/desk/graph.png';
 
 type GoalPercentGraphProps = {};
 const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
@@ -24,16 +24,17 @@ const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
 
   const 누적시간forMatter = (취미누적시간: string, 스터디누적시간: string) => {
     const time = +취미누적시간 + +스터디누적시간;
-    if(time >= 0) {
-  const hour = Math.floor(time / 3600);
+    if (time >= 0) {
+      const hour = Math.floor(time / 3600)
+        .toString()
+        .padStart(2, '0');
       const minute = Math.floor((time % 3600) / 60)
         .toString()
         .padStart(2, '0');
       return `${hour}시간 ${minute}분`;
     } else {
-      return `00시간 00분`
+      return `00시간 00분`;
     }
-    
   };
 
   const goalModalOnclickHandler = () => {
@@ -54,12 +55,11 @@ const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
       const hour = Math.floor(time / 3600);
       const minute = ((time % 3600) / 60).toString().padStart(2, '0');
       // console.log('time', time);
-      if(time >= 0) {
+      if (time >= 0) {
         set목표시간(`${hour}시간 ${minute}분`);
       } else {
         set목표시간(`00시간 00분`);
       }
-      
     } catch (error) {
       // console.error(error);
     }
@@ -85,25 +85,27 @@ const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
 
   return (
     <Body>
-      {
-        (목표시간sec > 0) 
-        ? 
+      {목표시간sec > 0 ? (
         <Text>
           <p>목표한 공부 시간 중</p>
-          <p><span>{percent}%</span> 를</p>
+          <p>
+            <span>{percent}%</span> 를
+          </p>
           <p>해냈어요</p>
-        </Text> 
-      : 
-        <Text>
-          <p><br /></p>
-          <p>목표를 설정해주세요</p>
-          <p><br /></p>
         </Text>
-      }
-      
+      ) : (
+        <Text>
+          <p>
+            <br />
+          </p>
+          <p>목표를 설정해주세요</p>
+          <p>
+            <br />
+          </p>
+        </Text>
+      )}
 
-
-      <Image src={graph} alt='그래프' percent={percent} />
+      <Image src={graph} alt="그래프" percent={percent} />
 
       <DetailTimeInfo>
         <DetailTimeInfoPBox>
@@ -127,7 +129,7 @@ const Body = styled.div`
   width: 378px;
   height: 478px;
   border-radius: 20px;
-  background-color: #1A81E8;
+  background-color: #1a81e8;
   box-shadow: 2px 4px 9px 0px rgba(0, 0, 0, 0.25);
   padding: 20px;
 `;
@@ -157,7 +159,7 @@ const Text = styled.div`
     line-height: 123.5%;
     letter-spacing: 0.25px;
   }
-`
+`;
 
 const Image = styled.img<{ percent: number }>`
   margin-top: 24px;
@@ -166,10 +168,14 @@ const Image = styled.img<{ percent: number }>`
   height: 196px;
   margin-left: auto;
   margin-right: auto;
-  background-image: linear-gradient(to bottom, white, white ${(props) => 100 - props.percent}%, #FFBB00, #FFBB00 ${(props) => 100 - props.percent}%);
+  background-image: linear-gradient(
+    to bottom,
+    white,
+    white ${props => 100 - props.percent}%,
+    #ffbb00,
+    #ffbb00 ${props => 100 - props.percent}%
+  );
 `;
-
-
 
 const DetailTimeInfo = styled.div`
   margin-top: 24px;
