@@ -196,9 +196,10 @@ const CamAreaDiv = styled.div`
 
 const ChattingAreaDiv = styled.div`
   width: 380px;
-  height: 99%;
+  height: 98%;
   display: flex;
   flex-direction: column;
+  gap: 10px;
 `;
 
 export default Room;
