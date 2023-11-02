@@ -5,7 +5,12 @@ import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { getCookie, setTokenCookie } from '../../auth/cookie';
 import { google } from '../../images/main';
-import { logoColor, x, radio_button_checked, radio_button_unchecked} from '../../images';
+import {
+  logoColor,
+  x,
+  radio_button_checked,
+  radio_button_unchecked,
+} from '../../images';
 import { Link } from 'react-router-dom';
 import Kakao from './components/Kakao';
 import Google from './components/Google';
@@ -39,10 +44,10 @@ const Login: React.FC<LoginProps> = () => {
   }, []);
 
   const [errorMessage, setErrorMessage] = useState<any[]>([]);
-  const [showErrorMessage, setShowErrorMessage] = useState("");
+  const [showErrorMessage, setShowErrorMessage] = useState('');
 
   const serverUrl = process.env.REACT_APP_SERVER_URL;
-  
+
   const loginMutation = useMutation(async (formData: FormData) => {
     try {
       const url = `${serverUrl}/auth/login`;
@@ -61,10 +66,14 @@ const Login: React.FC<LoginProps> = () => {
       }
       navigate('/');
     } catch (error: any) {
-      if (error.response && error.response.status === 400) {
-        setShowErrorMessage("* 이메일 혹은 비밀번호를 확인 해 주세요");
-      } else if (error.response.message.includes("이메일 혹은") && error.response.status === 400 ) {
-        setShowErrorMessage("* 이메일 혹은 비밀번호를 확인 해 주세요");
+      // if (error.response && error.response.status === 400) {
+      if (error.response) {
+        setShowErrorMessage('* 이메일 혹은 비밀번호를 확인 해 주세요');
+      } else if (
+        error.response.message.includes('이메일 혹은') &&
+        error.response.status === 400
+      ) {
+        setShowErrorMessage('* 이메일 혹은 비밀번호를 확인 해 주세요');
       }
       // console.error(error);
     }
@@ -161,9 +170,17 @@ const Login: React.FC<LoginProps> = () => {
       <IdSaveBox>
         <IdDiv>
           {idSaveCheckButton ? (
-            <img src={radio_button_checked} alt="" onClick={handleCheckChange} />
+            <img
+              src={radio_button_checked}
+              alt=""
+              onClick={handleCheckChange}
+            />
           ) : (
-            <img src={radio_button_unchecked} alt="" onClick={handleCheckChange} />
+            <img
+              src={radio_button_unchecked}
+              alt=""
+              onClick={handleCheckChange}
+            />
           )}
           <p>아이디 저장</p>
         </IdDiv>
@@ -200,8 +217,7 @@ const Error = styled.div`
   color: red;
   margin-left: 10px;
   top: 85px;
-
-`
+`;
 
 const Logo = styled(Link)`
   background: url(${logoColor}) no-repeat center;

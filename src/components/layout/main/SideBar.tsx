@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useQuery } from 'react-query';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -37,7 +37,7 @@ const SideBar: React.FC<SideBarProps> = () => {
   const token = getCookie('token');
   const navigate = useNavigate();
 
-  const { data } = useQuery<user>('sidebar-user', fetchUser, {
+  const { data, refetch } = useQuery<user>('sidebar-user', fetchUser, {
     refetchOnWindowFocus: false,
   });
 

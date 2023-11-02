@@ -12,7 +12,6 @@ import { RoomAtom, RoomUUIDAtom } from '../../../recoil/RoomAtom';
 import { useRecoilState } from 'recoil';
 import { QueryObserverResult } from 'react-query';
 
-
 type RoomCardProps = {
   room: {
     agoraAppId: string;
@@ -61,8 +60,8 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
   };
 
   const onClickCard = async () => {
-    if(room.nowHeadcount === room.maxHeadcount) {
-      alert('가득 찬 방')
+    if (room.nowHeadcount === room.maxHeadcount) {
+      alert('가득 찬 방');
       return;
     }
     if (token) {
@@ -83,6 +82,7 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
   return (
     <Container>
       {!isImageLoaded && <img src={sample} alt="thumbnail" />}
+      <Black />
       <Thumbmail
         onLoad={handleImageLoaded}
         onError={handleImageError}
@@ -90,7 +90,7 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
         src={room.roomThumbnail ? room.roomThumbnail : sample}
         alt="room thumbnail"
         onClick={onClickCard}
-      ></Thumbmail>
+      />
       <Contents onClick={onClickCard}>
         {/* <Img></Img> */}
         <ContentText>
@@ -117,6 +117,16 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
     </Container>
   );
 };
+
+const Black = styled.div`
+  /* width: 223px;
+height: 148px;
+border-radius: 10px;
+position: absolute;
+top: 0;
+
+background-color: black; */
+`;
 
 const ContentText = styled.div`
   display: flex;
@@ -179,7 +189,7 @@ const Contents = styled.div`
   justify-content: start;
   align-items: center;
   gap: 10px;
-  margin-top: 12px;
+  margin-top: 5px;
   height: 50px;
   width: 100%;
 `;
@@ -189,6 +199,13 @@ const Thumbmail = styled.img`
   border-radius: 10px;
   overflow: hidden;
   object-fit: cover;
+  transition: transform 0.3s ease-in-out; // <-- 이 부분 추가
+  /* z-index: 10;
+
+  &:hover {
+    transform: translateY(-10px); // <-- 이 부분 추가
+    box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.3);
+  } */
 `;
 
 const Container = styled.div`
@@ -200,6 +217,20 @@ const Container = styled.div`
   height: 200px;
   cursor: pointer;
   position: relative;
+  transition: transform 0.3s ease-in-out; // <-- 이 부분 추가
+  z-index: 10;
+
+  &:hover {
+    /* ${Thumbmail} {
+      transform: translateY(-10px); // <-- 이 부분 추가
+      transform: scale(1.05);
+      box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.3);
+      background-color: #cfcfcf2d;
+    } */
+    transform: translateY(-10px); // <-- 이 부분 추가
+      transform: scale(1.07);
+      /* box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.1); */
+  }
 
   > img {
     width: 97%;

@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { pause } from '../../../images/room';
-import timerImg from '../../../images/room/timerImg.svg';
+import { pause, timerImg } from '../../../images/room';
 import { timerState } from '../../../recoil/TimeAtom';
 type TimerProps = {};
 

@@ -18,7 +18,7 @@ const Videos: React.FC<VideosProps> = ({ users, tracks }) => {
     <Container>
       <Video>
         <AgoraVideoPlayer
-          style={{ height: '360px', width: '600px' }}
+          style={{ height: '360px', width: '600px' , backgroundColor: 'black',}}
           className="video"
           videoTrack={tracks[1]}
         />
@@ -34,6 +34,7 @@ const Videos: React.FC<VideosProps> = ({ users, tracks }) => {
                     height: '360px',
                     width: '600px',
                     display: 'inline',
+                    backgroundColor: 'black',
                   }}
                   className="video"
                   videoTrack={user.videoTrack}
