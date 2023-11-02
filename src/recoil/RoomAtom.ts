@@ -66,3 +66,8 @@ export const RefetchAtom = atom({
   key: 'RefetchAtom',
   default: false,
 })
+
+export const DeleteRoomAtom = atom({
+  key: 'DeleteRoomAtom',
+  default: false,
+})

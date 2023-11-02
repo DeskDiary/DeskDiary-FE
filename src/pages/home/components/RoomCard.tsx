@@ -8,9 +8,10 @@ import { fetchUser } from '../../../axios/api';
 import { getCookie } from '../../../auth/cookie';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { RoomAtom, RoomUUIDAtom } from '../../../recoil/RoomAtom';
+import { DeleteRoomAtom, RoomAtom, RoomUUIDAtom } from '../../../recoil/RoomAtom';
 import { useRecoilState } from 'recoil';
 import { QueryObserverResult } from 'react-query';
+
 
 type RoomCardProps = {
   room: {
@@ -36,7 +37,7 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
   const token = getCookie('token');
 
   const [isOpen, setIsOpen] = useState(false);
-  const [isOpenDeleteRoomModal, setIsOpenDeleteRoomModal] = useState(false);
+  const [isOpenDeleteRoomModal, setIsOpenDeleteRoomModal] = useRecoilState(DeleteRoomAtom);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [joinUUID, setJoinUUID] = useRecoilState<string>(RoomUUIDAtom);
   const [roomInfo, setRoomInfo] = useRecoilState(RoomAtom);
@@ -59,6 +60,13 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
     navigate(`/room/${room.uuid}`);
   };
 
+  const deleteRoomHandler = async () => {
+    console.log('삭제버튼');
+    await setIsOpenDeleteRoomModal(true)
+    await setJoinUUID(room.uuid);
+    console.log(joinUUID, isOpenDeleteRoomModal)
+  }
+
   const onClickCard = async () => {
     if (room.nowHeadcount === room.maxHeadcount) {
       alert('가득 찬 방');
@@ -78,6 +86,8 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
       navigate('/login');
     }
   };
+
+  console.log(room)
 
   return (
     <Container>
@@ -104,15 +114,7 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
         </ContentText>
       </Contents>
       {data?.userId === room.ownerId && fetch === 'fetchCreatedRoom' && (
-        <Delete onClick={() => setIsOpenDeleteRoomModal(true)}>삭제</Delete>
-      )}
-      {/* {isOpen && <JoinRoomModal setIsOpen={setIsOpen} room={room} />} */}
-      {isOpenDeleteRoomModal && (
-        <ConfirmModal
-          title="삭제"
-          uuid={room.uuid}
-          setIsOpen={setIsOpenDeleteRoomModal}
-        />
+        <Delete onClick={deleteRoomHandler}>삭제</Delete>
       )}
     </Container>
   );

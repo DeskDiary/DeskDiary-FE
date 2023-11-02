@@ -123,7 +123,7 @@ const Room: React.FC<RoomProps> = () => {
           </Area>
         </Content>
       </Container>
-      <RoomUnderBar roomId={roomInfo.uuid} />
+      <RoomUnderBar note={roomInfo.note} roomId={roomInfo.uuid} />
       {isOpenModal && (
         <SetMediaModal setIsOpen={setIsOpenModal} room={roomInfo} />
       )}

@@ -262,9 +262,10 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: start;
   align-items: center;
+  border-radius: 10px;
 
-  width: 100%;
-  min-height: calc(100% - 145px);
+  width: 97%;
+  min-height: calc(100% - 160px);
   /* border-left: 1px solid var(--gray-07); */
   position: relative;
   box-shadow: 2px 2px 6px 2px rgba(0, 0, 0, 0.3);

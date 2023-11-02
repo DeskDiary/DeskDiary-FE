@@ -32,19 +32,20 @@ const BasicPrecautions: React.FC<BasicPrecautionsProps> = () => {
 };
 
 const Number = styled.div`
-  font-size: 12px;
+  font-size: 15px;
   color: var(--gray-07);
   width: 15px;
   height: 100%;
+  margin-right: 2px;
 `;
 
 const BoxGroup = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center;
+  align-items: start;
   > span {
-    font-size: 12px;
+    font-size: 15px;
     color: var(--gray-07);
   }
 `;

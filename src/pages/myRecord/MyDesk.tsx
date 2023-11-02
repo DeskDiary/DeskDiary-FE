@@ -7,12 +7,17 @@ import { GoalTimeModalState } from '../../recoil/DeskAtom';
 import GoalSetTimeModal from './chart/GoalSetTimeModal';
 import RecordGraph from './chart/RecordGraph';
 import RoomList from './components/RoomList';
+import { RoomAtom, DeleteRoomAtom, RoomUUIDAtom } from '../../recoil/RoomAtom';
+import ConfirmModal from '../../components/ConfirmModal';
 
 type MyDeskProps = {};
 
 const MyDesk: React.FC<MyDeskProps> = () => {
+  const [isOpenDeleteRoomModal, setIsOpenDeleteRoomModal] =
+  useRecoilState(DeleteRoomAtom);
+const [roomUUID, setRoomUUID] = useRecoilState(RoomUUIDAtom);
   const [GoalModal, setGoalModal] = useRecoilState<boolean>(GoalTimeModalState);
-
+  console.log('💙',roomUUID)
   return (
     <Container>
       <MyDeskTop>
@@ -22,6 +27,14 @@ const MyDesk: React.FC<MyDeskProps> = () => {
       <RoomList label="최근에 들어간 방 목록" mydesk="fetchJoinRoom" />
       <RoomList label="내가 만든 방 목록" mydesk="fetchCreatedRoom" />
       {GoalModal && <GoalSetTimeModal />}
+      
+      {isOpenDeleteRoomModal && (
+        <ConfirmModal
+          title="삭제"
+          uuid={roomUUID}
+          setIsOpen={setIsOpenDeleteRoomModal}
+        />
+      )}
     </Container>
   );
 };
