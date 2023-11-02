@@ -9,7 +9,7 @@ const BasicPrecautions: React.FC<BasicPrecautionsProps> = () => {
       <BoxGroup>
         <Number>1.</Number>
         <span>
-          화상 채팅 중에도 개인 정보를 보호해야 해. 화상 채팅 중에
+          화상 채팅 중에도 개인 정보를 보호해야 합니다. 화상 채팅 중에
           화면을 녹화하거나 스크린샷을 찍지 않도록 주의 해 주세요.
         </span>
       </BoxGroup>
