@@ -50,11 +50,11 @@ const Goal: React.FC<GoalProps> = () => {
           <CurrentGraph width={Math.min(goalPercent, 100)}></CurrentGraph>
           <OutlinedFlagSharpIcon
             style={{
-              fontSize: '50px',
+              fontSize: '35px',
               color: '#337CCF',
               position: 'absolute',
-              marginLeft: '542px',
-              marginTop: '-62px',
+              marginLeft: '523px',
+              marginTop: '-48px',
               transform: 'scaleX(-1)',
             }}
           />
@@ -67,11 +67,15 @@ const Goal: React.FC<GoalProps> = () => {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  padding: 15px;
+  background-color: white;
 `;
 
 const GoalDiv = styled.div`
-  width: 583px;
-  height: 149px;
+  width: 553px;
+  height: 117px;
 `;
 
 const Title = styled.p`

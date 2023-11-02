@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import SideBar from './SideBar';
-import CreateRoomButton from '../../CreateRoomButton';
+import CreateRoomButton from '../../CreateRoomButton2';
 
 type MainLayoutProps = {};
 
@@ -22,7 +22,7 @@ const Wrap = styled.div`
   width: calc(100vw - 65px);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
 
   margin-left: 60px;

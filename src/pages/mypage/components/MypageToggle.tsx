@@ -9,7 +9,7 @@ const MypageToggle: React.FC<MypageToggleProps> = () => {
   const [edit, setEdit] = useRecoilState(ProfiltUpdate);
 
   const onClickEdicProfile = () => {
-    console.log(edit.open);
+    // console.log(edit.open);
     setEdit(prevEdit => ({ ...prevEdit, open: true }));
   };
 

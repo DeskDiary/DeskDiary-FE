@@ -7,8 +7,11 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { getCookie } from '../../../auth/cookie';
 
-import { study_color, hobby_color, upload } from '../../../images/main';
+import { study, hobby, upload } from '../../../images/main';
 import BasicPrecautions from './BasicPrecautions';
+import { blue } from '../../../images/character';
+import { lendingImage } from '../../../images';
+import { toast } from 'sonner';
 
 type CreateRoomProps = {
   setOpenCreateRoom: React.Dispatch<React.SetStateAction<boolean>>;
@@ -39,6 +42,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
   const activeStates = { study: isStudyActive, hobby: isHobbyActive };
 
   const [maxUser, setMaxUser] = useState(1);
+  const [userCount, setUserCount] = useState('');
 
   const [selectedUserCount, setSelectedUserCount] = useState<number | null>(
     null,
@@ -86,21 +90,26 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
     try {
       navigate(`/room/${uuid}`);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     }
   };
 
   const onSubmitRoom = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // 카테고리나 인원이 설정되지 않았다면 알림을 주고 함수를 종료
-    if (!isStudyActive && !isHobbyActive) {
-      alert('카테고리를 선택해주세요.');
+    if (+userCount > 10 || +userCount < 1) {
+      toast.error('1명 이상, 10명 이하로 설정 해 주세요');
       return;
     }
 
-    if (selectedUserCount === null) {
-      alert('인원을 설정해주세요.');
+    // 카테고리나 인원이 설정되지 않았다면 알림을 주고 함수를 종료
+    if (!isStudyActive && !isHobbyActive) {
+      toast.error('카테고리를 선택해주세요.');
+      return;
+    }
+
+    if (userCount === '') {
+      toast.error('인원을 설정해주세요.');
       return;
     }
 
@@ -112,7 +121,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
     }
 
     formData.append('title', room.title);
-    formData.append('maxHeadcount', maxUser.toString());
+    formData.append('maxHeadcount', userCount.toString());
     formData.append('category', isStudyActive ? 'study' : 'hobby');
     formData.append('note', room.note);
 
@@ -134,11 +143,8 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
         alert('방만들기 성공!');
         handleJoinRoom(response.data.createdRoom.uuid);
       } else {
-
       }
-    } catch (error) {
-
-    }
+    } catch (error) {}
   };
 
   return (
@@ -147,44 +153,55 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
 
       <ModalContent>
         <Title>방 만들기</Title>
-        <Thumbnail>
-          {file ? (
-            <ThumbnailImg src={URL.createObjectURL(file)} />
-          ) : (
-            <img src={upload} />
-          )}
-        </Thumbnail>
-        <ThumbnailButtonGroup>
-          <Button
-            component="label"
-            sx={{
-              color: 'gray',
-              '&:hover': {
-                backgroundColor: 'initial', // 여기서 'initial' 대신 원래 배경색을 넣어도 돼
-                boxShadow: 'none', // 그림자 효과 제거
-              },
-            }}
-          >
-            썸네일 등록
-            <VisuallyHiddenInput type="file" onChange={handleFileChange} />
-          </Button>
+        <Top>
+          <TopThumbnail>
+            <Thumbnail>
+              {file ? (
+                <ThumbnailImg src={URL.createObjectURL(file)} />
+              ) : (
+                <img src={lendingImage} />
+              )}
+            </Thumbnail>
+            <ThumbnailButtonGroup>
+              <CustomButton>
+                <Button
+                  component="label"
+                  sx={{
+                    color: 'black',
+                    fontSize: '13px',
+                    '&:hover': {
+                      backgroundColor: 'initial', // 여기서 'initial' 대신 원래 배경색을 넣어도 돼
+                      boxShadow: 'none', // 그림자 효과 제거
+                    },
+                  }}
+                >
+                  사진추가
+                  <VisuallyHiddenInput
+                    type="file"
+                    onChange={handleFileChange}
+                  />
+                </Button>
+              </CustomButton>
+              <button type="button" onClick={() => setFile(null)}>
+                삭제
+              </button>
+            </ThumbnailButtonGroup>
+          </TopThumbnail>
+        </Top>
 
-          <button type='button' onClick={() => setFile(null)}>삭제</button>
-        </ThumbnailButtonGroup>
+        <RoomName>
+          <Label>방 이름</Label>
+          <RoomTitle
+            type="text"
+            // onChange={e => setRoom({ ...room, title: e.target.value })}
+            onChange={e => updateFormData('title', e.target.value)}
+            required
+          />
+        </RoomName>
 
         <Content>
           <Group>
-            <Label>방 이름</Label>
-            <RoomTitle
-              type="text"
-              // onChange={e => setRoom({ ...room, title: e.target.value })}
-              onChange={e => updateFormData('title', e.target.value)}
-              required
-            />
-          </Group>
-
-          <Group>
-            <Label>목적 정하기</Label>
+            <Label>카테고리</Label>
 
             <CategoryGroup>
               {categories.map((category, index) => (
@@ -195,7 +212,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
                   isActive={activeStates[category as 'study' | 'hobby']}
                 >
                   <CategoryImg
-                    src={category === 'study' ? study_color : hobby_color}
+                    src={category === 'study' ? study : hobby}
                     isActive={activeStates[category as 'study' | 'hobby']}
                   ></CategoryImg>
                   {category === 'study' ? '스터디' : '취미'}
@@ -205,19 +222,14 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
           </Group>
 
           <Group>
-            <Label>인원설정 (최대 10인 가능)</Label>
-            <CategoryGroup>
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i, index) => (
-                <MaxUser
-                  key={index}
-                  type="button"
-                  onClick={() => handleUserCountClick(i)}
-                  isActive={i === selectedUserCount}
-                >
-                  {i}인
-                </MaxUser>
-              ))}
-            </CategoryGroup>
+            <Label>인원설정</Label>
+            <UserCounter
+              type="number"
+              max={10}
+              min={1}
+              value={userCount}
+              onChange={e => setUserCount(e.target.value)}
+            />
           </Group>
         </Content>
 
@@ -244,6 +256,46 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
   );
 };
 
+const RoomName = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  margin-top: 20px;
+`;
+
+const UserCounter = styled.input`
+  width: 80px;
+  height: 35px;
+  padding: 10px 15px;
+  border-radius: 30px;
+  border: 2px solid var(--gray-06);
+  font-size: 16px;
+`;
+
+const Top = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+  gap: 20px;
+  margin-top: 20px;
+`;
+
+const CustomButton = styled.div`
+  background-color: var(--gray-03);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 30px;
+  border-radius: 10px;
+`;
+
+const TopThumbnail = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
 const CategoryImg = styled.img<{ isActive: boolean }>`
   filter: grayscale(${props => (props.isActive ? '0%' : '100%')});
   width: 20px;
@@ -256,6 +308,14 @@ const ThumbnailButtonGroup = styled.div`
   align-items: center;
   gap: 10px;
   height: 20px;
+  margin-top: 10px;
+  > button {
+    width: 50px;
+    background-color: var(--gray-03);
+    height: 30px;
+    font-size: 15px;
+    border-radius: 10px;
+  }
 `;
 
 const ThumbnailImg = styled.img`
@@ -279,51 +339,67 @@ const Precautions = styled.textarea`
 `;
 
 const MaxUser = styled.button<{ isActive: boolean }>`
-  color: ${props => (props.isActive ? 'var(--primary-01)' : 'var(--gray-05)')};
-  border: 2px solid
-    ${props => (props.isActive ? 'var(--primary-01)' : 'var(--gray-05)')};
-
+  color: white;
+  border: ${props =>
+    props.isActive ? '2px solid var(--primary-01)' : '2px solid white'};
+  background-color: ${props =>
+    props.isActive ? 'var(--primary-01)' : 'var(--gray-05)'};
   border-radius: 50px;
   font-size: 16px;
   font-weight: 500;
 
   width: 60px;
   padding: 4px;
+  &:hover {
+    border: ${props =>
+      props.isActive
+        ? '2px solid var(--primary-01)'
+        : '2px solid var(--gray-05)'};
+  }
 `;
 
 const CategoryGroup = styled.div`
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
+  flex-wrap: wrap;
 `;
 
 const Category = styled.button<{ isActive: boolean }>`
   padding: 7px 10px;
-  width: 100px;
+
   font-size: 16px;
-  color: ${props => (props.isActive ? 'var(--primary-01)' : 'var(--gray-05)')};
+  color: white;
   display: flex;
   gap: 9px;
   justify-content: center;
   align-items: center;
-  border: 2px solid
-    ${props => (props.isActive ? 'var(--primary-01)' : 'var(--gray-05)')};
+  background-color: ${props =>
+    props.isActive ? 'var(--primary-01)' : 'var(--gray-05)'};
+
+  border: ${props =>
+    props.isActive ? '2px solid var(--primary-01)' : '2px solid white'};
   border-radius: 100px;
+  &:hover {
+    border: ${props =>
+      props.isActive
+        ? '2px solid var(--primary-01)'
+        : '2px solid var(--gray-05)'};
+  }
 `;
 
 const Content = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: srart;
   align-items: center;
-  gap: 15px;
 
   display: flex;
   width: 400px;
-  margin-top: 14px;
+  margin-top: 20px;
+  gap: 20px;
 `;
 
 const Label = styled.div`
@@ -382,8 +458,6 @@ const Group = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: start;
-
-  width: 100%;
 `;
 
 const Thumbnail = styled.div`
@@ -396,6 +470,10 @@ const Thumbnail = styled.div`
   height: 100px;
   border-radius: 10px;
   overflow: hidden;
+  background-color: var(--primary-01);
+  > img {
+    width: 100%;
+  }
 `;
 
 const SampleImg = styled.img`

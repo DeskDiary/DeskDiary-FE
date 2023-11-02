@@ -1,12 +1,17 @@
-import React, { useEffect, useState, useRef } from 'react';
-import styled from 'styled-components';
-import Chat from './Chat';
-import { fetchUser } from '../../../../axios/api';
+import React, { useEffect, useRef, useState } from 'react';
 import { useQuery } from 'react-query';
-import socket from '../../socketInstance';
-import { RoomUserList } from '../../../../recoil/RoomAtom';
 import { useRecoilState } from 'recoil';
-import {chat, send} from '../../../../images/room'
+import styled from 'styled-components';
+import { fetchUser } from '../../../../axios/api';
+import { chat, send } from '../../../../images/room';
+import { blue } from '../../../../images/character'
+import { RoomUserList } from '../../../../recoil/RoomAtom';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { getCookie } from '../../../../auth/cookie';
+import socket from '../../socketInstance';
+import Chat from './Chat';
+import { toast } from 'sonner';
 
 type ChatBoxProps = { roomId: string };
 
@@ -32,14 +37,14 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
   const [newMessage, setNewMessage] = useState('');
   const [allChatList, setAllChatList] = useState<AllChatItem[]>([]);
   const [roomUserList, setRoomUserList] = useRecoilState(RoomUserList);
+  const navigate =useNavigate();
+  const token = getCookie('token');
 
-  const { data } = useQuery<user>('chatUser', fetchUser, {
+  const { data } = useQuery<user>('chat-user', fetchUser, {
     refetchOnWindowFocus: false,
   });
 
   const historyRoom = localStorage.getItem('room');
-
-  console.log('historyRoom==="room"', historyRoom === 'room');
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -55,7 +60,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
     console.log('전송전', messageData);
     newMessage !== ''
       ? socket.emit('msgToServer', messageData)
-      : alert('메세지를 입력해주세요');
+      : toast.error('메세지를 입력해주세요');
     setNewMessage('');
     console.log('전송후');
   };
@@ -153,9 +158,10 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
           <UserInput
             value={newMessage}
             onChange={e => setNewMessage(e.target.value)}
+            placeholder='메세지를 입력 해 주세요'
           ></UserInput>
           <SendButton type="submit">
-            <img src={send} />
+            <img src={blue} />
           </SendButton>
         </ChatForm>
       </ChatUnder>
@@ -206,6 +212,9 @@ const SendButton = styled.button`
   margin: 10px;
   background-color: transparent;
   cursor: pointer;
+  >img{
+    width: 30px;
+  }
 `;
 
 const UserInput = styled.input`
@@ -244,7 +253,7 @@ const ChatList = styled.div`
   min-height: calc(100% - 145px);
   width: calc(100% - 40px);
   padding: 20px;
-  border-bottom: 1px solid var(--gray-05);
+  /* border-bottom: 1px solid var(--gray-05); */
   overflow: scroll;
 `;
 
@@ -254,10 +263,11 @@ const Container = styled.div`
   justify-content: start;
   align-items: center;
 
-  width: 96%;
+  width: 100%;
   min-height: calc(100% - 145px);
-  border-left: 1px solid var(--gray-07);
+  /* border-left: 1px solid var(--gray-07); */
   position: relative;
+  box-shadow: 2px 2px 6px 2px rgba(0, 0, 0, 0.3);
 
   /* 스크롤바 트랙(배경) 디자인 */
   ::-webkit-scrollbar-track {

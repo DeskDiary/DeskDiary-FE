@@ -1,12 +1,13 @@
 import React from 'react';
+import { useQuery } from 'react-query';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import styled, { createGlobalStyle } from 'styled-components';
-import { useQuery } from 'react-query';
 import { getCookie } from '../../../auth/cookie';
-import { home, hobby, mydesk, study, profile } from '../../../images/main';
-import logo from '../../../images/logo.svg';
 import { fetchUser } from '../../../axios/api';
+import { hobby, home, mydesk, study } from '../../../images/main';
+import logo from '../../../images/logo.svg';
+import profile from '../.././../images/main/profile.svg';
 
 
 type SideBarProps = {};
@@ -68,7 +69,7 @@ const SideBar: React.FC<SideBarProps> = () => {
                   e.preventDefault(); // NavLink의 기본 이동을 막아줌
                   toast.error('로그인이 필요합니다.', {
                     style: {
-                      backgroundColor: '#ccdfff',
+                      backgroundColor: '#ffdcdc',
                       opacity: 0.6,
                       color: 'white',
                     },
@@ -142,6 +143,7 @@ const SidebarButton = styled(NavLink)`
     > p {
       color: white;
       font-weight: 500;
+      overflow: hidden;
     }
     &.mypage {
       background-color: rgba(255, 255, 255, 0.0);
@@ -180,7 +182,6 @@ const SidebarButton = styled(NavLink)`
       white-space: nowrap;
       opacity: 0;
       transition: opacity 0.4s ease-in-out;
-      
       color: var(--gray-03);
     }
   }

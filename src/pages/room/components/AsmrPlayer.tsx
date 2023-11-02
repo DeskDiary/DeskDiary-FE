@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import {audio_stop, back_button, Button_Play, front_button, volume_off, volume_up} from '../../../images/audio';
-
+import { Button_Play, audio_stop, back_button, front_button, volume_off, volume_up } from '../../../images/audio';
+import audiotrack from '../../../images/audio/audiotrack.svg';
 type AsmrPlayerProps = {};
 
 const asmrList = [
@@ -78,6 +78,7 @@ const AsmrPlayer: React.FC<AsmrPlayerProps> = () => {
 
   return (
     <Body>
+      <Icon src={audiotrack} alt="" />
       <AudioImg src={asmrList[current].img} alt="" />
       <div>
         <Title>{asmrList[current].title}</Title>
@@ -85,7 +86,7 @@ const AsmrPlayer: React.FC<AsmrPlayerProps> = () => {
       </div>
       <PlayBox>
         <BackButton onClick={backCurrentHandler} img={back_button} />
-        <PlayButton onClick={togglePlay} isPlaying={isPlaying} />
+        <PlayButton onClick={togglePlay} isplaying={isPlaying.toString()} />
         <FrontButton onClick={nextCurrentHandler} img={front_button} />
       </PlayBox>
       <VolumeBox>
@@ -106,14 +107,21 @@ const AsmrPlayer: React.FC<AsmrPlayerProps> = () => {
 
 const Body = styled.div`
   width: 100%;
-  background-color: gray;
-  border: 1px solid black;
+  /* border: 1px solid var(--gray-07); */
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  border-radius: 10px;
+  box-shadow: 2px 2px 6px 2px rgba(0, 0, 0, 0.3);
 `;
+
+const Icon = styled.img`
+  margin: 5px auto 0 5px;
+  filter: grayscale(100%);
+`
+
 const AudioImg = styled.img`
-  margin-top: 21px;
   width: 54px;
   height: 54px;
   border-radius: 50%;
@@ -136,8 +144,8 @@ const PlayBox = styled.div`
   gap: 25px;
 `;
 
-const PlayButton = styled.button<{ isPlaying: boolean }>`
-  background-image: url(${props => (props.isPlaying ? audio_stop : Button_Play)});
+const PlayButton = styled.button<{ isplaying: string }>`
+  background-image: url(${props => (props.isplaying === 'true' ? audio_stop : Button_Play)});
   background-size: cover;
   width: 40px;
   height: 40px;

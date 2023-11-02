@@ -52,7 +52,7 @@ const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
       set목표시간sec(time);
       const hour = Math.floor(time / 3600);
       const minute = ((time % 3600) / 60).toString().padStart(2, '0');
-      console.log('time', time);
+      // console.log('time', time);
       if(time >= 0) {
         set목표시간(`${hour}시간 ${minute}분`);
       } else {
@@ -60,7 +60,7 @@ const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
       }
       
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     }
   };
   const 누적시간조회 = async () => {
@@ -74,7 +74,7 @@ const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
       set취미누적시간(data.hobbyTotalHours + '');
       set스터디누적시간(data.studyTotalHours + '');
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     }
   };
   useEffect(() => {

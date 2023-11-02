@@ -13,16 +13,14 @@ const Google:React.FC<GoogleProps> = () => {
     <SocialLoginLink
       to="/"
       onClick={() => {
-        const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+        const googleOauthURL = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&redirect_uri=${encodeURIComponent(
+          process.env.REACT_APP_GOOGLE_CALLBACK_URL!,
+        )}&client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID}&scope=${process.env.REACT_APP_GOOGLE_SCOPE_PROFILE} ${process.env.REACT_APP_GOOGLE_SCOPE_EMAIL}`;
 
-        const kakaoOauthURL = `https://kauth.kakao.com/oauth/authorize?response_type=code&redirect_uri=${encodeURIComponent(
-          `${SERVER_URL}/kakao-callback`,
-        )}&client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}`;
-
-        window.location.href = kakaoOauthURL;
+        window.location.href = googleOauthURL;
       }}
     >
-      <img src={google} />
+      <img src={google} alt="Google Login" />
     </SocialLoginLink>
   );
 };

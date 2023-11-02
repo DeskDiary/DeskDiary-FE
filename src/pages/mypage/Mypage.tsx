@@ -13,6 +13,7 @@ import EditProfileImg from './components/EditProfileImg';
 import { profile } from '../../images';
 import { logoColor } from '../../images';
 import { kakao, google } from '../../images/main';
+import { toast } from 'sonner';
 
 type MypageProps = {};
 
@@ -61,41 +62,26 @@ const Mypage: React.FC<MypageProps> = () => {
       ),
     {
       onSuccess: () => {
-        alert('닉네임 수정 성공');
         refetch();
         setIsOpenNick(false);
+        setErrorMessage('')
       },
       onError: (error: any) => {
         if (error.response) {
           const message = error.response.data.message;
-          console.log(message);
-
-          switch (true) {
-            case message.includes('닉네임이 비어 있으면 안됩니다.'):
-              setErrorMessage('닉네임이 비어 있으면 안됩니다.');
-              break;
-            case message.includes(
-              '닉네임은 한글, 알파벳, 숫자만 포함해야 합니다',
-            ):
-              setErrorMessage('닉네임은 특수문자가 포함될 수 없습니다.');
-              break;
-            default:
-              console.log(
-                '닉네임변경에 실패했습니다. 관리자에게 문의해주세요.',
-              );
-          }
+          setErrorMessage(
+            '닉네임은 2개 이상 5개 이하의 문자로 이루어져야 합니다.',
+          );
         }
       },
     },
   );
 
-  console.log('🎈user', data);
-
   const onSubmitNickname = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const trimmedNickname = nickname.trim();
     if (!trimmedNickname) {
-      alert('닉네임을 입력해주세요!');
+      toast.error('닉네임을 입력해주세요!');
       return;
     }
 
@@ -135,6 +121,7 @@ const Mypage: React.FC<MypageProps> = () => {
               ) : (
                 data?.nickname
               )}
+              {errorMessage && <Error>{errorMessage}</Error>}
             </Group>
             {isOpen && <ChangePasswordModal />}
             <EmailInfo
@@ -146,12 +133,22 @@ const Mypage: React.FC<MypageProps> = () => {
                 <span>{data?.email ? data?.email : 'abcd@email.com'}</span>
               </Group>
               <img
-                src={data?.provider === 'local' ? logoColor : kakao}
+                src={
+                  data?.provider === 'local'
+                    ? logoColor
+                    : data?.provider === 'Kakao'
+                    ? kakao
+                    : google
+                }
                 alt="login-info"
               />
               <EmailHover show={isHovered}>
-                {data?.provider === 'local' ? '일반로그인으' : '카카오로그인으'}
-                로 로그인 하셨습니다.
+                {data?.provider === 'local'
+                  ? '일반로그인 '
+                  : data?.provider === 'Kakao'
+                  ? '카카오로그인 '
+                  : '구글로그인 '}
+                입니다.
               </EmailHover>
             </EmailInfo>
           </UserInfo>
@@ -175,6 +172,11 @@ const Mypage: React.FC<MypageProps> = () => {
   );
 };
 
+const Error = styled.div`
+  color: red;
+  margin-top: 5px;
+`
+
 const EditButton = styled.button`
   color: var(--primary-01);
 `;
@@ -182,7 +184,7 @@ const EditButton = styled.button`
 const EmailHover = styled.div<{ show: boolean }>`
   position: absolute;
   top: 15px;
-  left: 170px;
+  right: 40px;
   font-size: 12px;
   font-weight: 500;
   background-color: white;

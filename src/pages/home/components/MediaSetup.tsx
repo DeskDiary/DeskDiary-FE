@@ -53,11 +53,11 @@ const MediaSetup: React.FC<MediaSetupProps> = () => {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { deviceId: { exact: choiceCamera } },
       });
-      console.log('카메라 시작 스트림', stream);
+      // console.log('카메라 시작 스트림', stream);
       setLocalStream(stream);
       setCameraTesting(true);
     } catch (error) {
-      console.error('Camera test failed:', error);
+      // console.error('Camera test failed:', error);
     }
   };
 
@@ -66,16 +66,16 @@ const MediaSetup: React.FC<MediaSetupProps> = () => {
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: { deviceId: { exact: choiceMic } },
       });
-      console.log('마이크 시작 스트림', stream);
+      // console.log('마이크 시작 스트림', stream);
       setLocalStream(stream);
       setMicTesting(true);
     } catch (error) {
-      console.error('Microphone test failed:', error);
+      // console.error('Microphone test failed:', error);
     }
   };
 
   const stopTest = () => {
-    console.log('테스트 종료 버튼 눌림');
+    // console.log('테스트 종료 버튼 눌림');
     if (localStream) {
       localStream.getTracks().forEach(track => track.stop());
       setLocalStream(null);
@@ -87,18 +87,18 @@ const MediaSetup: React.FC<MediaSetupProps> = () => {
   const getCamerasAndMics = async () => {
     try {
       const cameraList = await AgoraRTC.getCameras();
-      console.log('카메라 목록', cameraList);
+      // console.log('카메라 목록', cameraList);
       setCameras(cameraList);
     } catch (error) {
-      console.error('카메라 목록을 가져오는 중 오류 발생:', error);
+      // console.error('카메라 목록을 가져오는 중 오류 발생:', error);
     }
 
     try {
       const micList = await AgoraRTC.getMicrophones();
-      console.log('마이크 목록:', micList);
+      // console.log('마이크 목록:', micList);
       setMics(micList);
     } catch (error) {
-      console.error('마이크 목록을 가져오지 못했습니다.', error);
+      // console.error('마이크 목록을 가져오지 못했습니다.', error);
     }
   };
 
