@@ -50,7 +50,6 @@ const Container = styled.div`
 
   width: 1200px;
   min-height: calc(100vh - 120px);
-  background-color: #e8f1ff;
 `;
 
 const Img = styled.div`

@@ -13,11 +13,14 @@ import { UserAtom } from '../../recoil/UserAtom';
 import { useMutation } from 'react-query';
 import Kakao from './components/Kakao';
 import Google from './components/Google';
+import { toast } from 'sonner';
+import { getCookie, setTokenCookie } from '../../auth/cookie';
 
 type JoinProps = {};
 
 const Join: React.FC<JoinProps> = () => {
   const navigate = useNavigate();
+  const token = getCookie('token');
 
   const [user, setUser] = useRecoilState(UserAtom);
 
@@ -140,6 +143,13 @@ const Join: React.FC<JoinProps> = () => {
   };
 
   useEffect(() => {
+    if (token) {
+      toast.error('이미 로그인이 되어있습니다.');
+      navigate('/');
+    }
+  }, []);
+
+  useEffect(() => {
     return () => {
       setUser({
         email: '',
@@ -188,7 +198,7 @@ const Join: React.FC<JoinProps> = () => {
           <InputBox focused={focusedInput === 'password'}>
             <JoinInput
               type="password"
-              placeholder="영어 대소문자,숫자,특수문자 포함 8~16자"
+              placeholder="영어 대소문자,숫자,특수문자 포함 8자 이상"
               onChange={e => setUser({ ...user, password: e.target.value })}
               onFocus={() => handleFocusInput('password')}
               onBlur={() => {
@@ -251,7 +261,7 @@ const Join: React.FC<JoinProps> = () => {
           <InputBox focused={focusedInput === 'nickname'}>
             <JoinInput
               type="text"
-              placeholder="4~12자"
+              placeholder="2자 이상 5자 이하"
               onFocus={() => handleFocusInput('nickname')}
               onChange={e => setUser({ ...user, nickname: e.target.value })}
               onBlur={() => {

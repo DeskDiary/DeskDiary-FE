@@ -100,20 +100,12 @@ const SetMediaModal: React.FC<SetMediaModal> = ({ setIsOpen, room }) => {
     setIsOpen(false);
   };
 
-  const socketJoinError = async (message: string) => {
-    toast.error(message);
-    navigate('/');
-    window.location.reload();
-  };
-
   useEffect(() => {
     socket.on('joinError', (message: string) => {
-      socketJoinError(message);
+      toast.error(message);
+      navigate('/');
+      window.onbeforeunload = null;
     });
-
-    // return () => {
-    //   socket.off('joinError');
-    // };
   }, [socket]);
 
   return (

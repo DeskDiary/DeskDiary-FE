@@ -65,7 +65,7 @@ const RoomModal: React.FC<RoomModalProps> = () => {
       sessionStorage.removeItem('checkIn');
       setOutModalState(false);
       navigate('/');
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       // console.error(error);
     }

@@ -349,7 +349,7 @@ const EditNickname = styled.form`
   border-radius: 5px;
 
   > input {
-    background-color: #e8f1ff;
+    background-color: var(--background-01);
   }
 
   width: 100%;
@@ -455,6 +455,6 @@ const Container = styled.div`
   align-items: center;
 
   width: 400px;
-  height: 100vh;
+  height: 100%;
 `;
 export default Mypage;

@@ -6,7 +6,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 import { getCookie } from '../../../auth/cookie';
 import { fetchUser } from '../../../axios/api';
 import { hobby, home, mydesk, study } from '../../../images/main';
-import logo from '../../../images/logo.svg';
+import logo from '../../../images/logo-2.svg';
 import profile from '../.././../images/main/profile.svg';
 
 type SideBarProps = {};
@@ -37,7 +37,7 @@ const SideBar: React.FC<SideBarProps> = () => {
   const navigate = useNavigate();
   const [isClicked, setIsClicked] = useState(false);
 
-  const { data, refetch } = useQuery<user>('sidebar-user', fetchUser, {
+  const { data, refetch } = useQuery<user>('mypageUser', fetchUser, {
     refetchOnWindowFocus: false,
   });
 
@@ -120,12 +120,13 @@ const SidebarButton = styled(NavLink)`
   transition: width 0.4s, background-color 0.3s; // width와 background-color에 대한 transition 추가
 
   font-size: 16px;
-  text-transform: capitalize;
+  /* text-transform: capitalize; */
   line-height: 1;
   border-radius: 50px;
   /* opacity: 0.8; */
   margin-left: 5px;
   position: relative;
+  z-index: 50;
 
   ::before {
     content: '';
@@ -157,11 +158,12 @@ const SidebarButton = styled(NavLink)`
     > img {
       filter: grayscale(0);
     }
+
     > p {
       color: white;
       font-weight: 500;
-      overflow: hidden;
     }
+
     &.mypage {
       background-color: rgba(255, 255, 255, 0);
     }
@@ -274,7 +276,7 @@ const Sidebar = styled.div`
   left: 0;
   width: 80px;
   height: 100vh;
-  background: #0054a8;
+  background: #004891;
   transition: width 0.4s;
   z-index: 1000;
 
