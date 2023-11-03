@@ -11,7 +11,7 @@ import { useClient } from './config';
 import { useQuery } from 'react-query';
 import { fetchUser } from '../../../../axios/api';
 import { useRecoilState } from 'recoil';
-import { RoomInfo, RoomUserList } from '../../../../recoil/RoomAtom';
+import { RoomInfo, RoomUserList, ConnectCamAtom } from '../../../../recoil/RoomAtom';
 import styled from 'styled-components';
 
 import socket from '../../socketInstance';
@@ -27,6 +27,7 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
   const token = getCookie('token');
   const getUUID = window.location.pathname.split('/room/')[1];
   const [recoilRoomInfo, setRecoilRoomInfo] = useRecoilState(RoomInfo);
+  const [isCamConnect, setIsCamConnect] = useRecoilState(ConnectCamAtom);
   const [roomInfo, setRoomInfo] = useState({
     agoraAppId: '',
     agoraToken: '',
@@ -56,6 +57,8 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
 
   const { ready, tracks } = useMicrophoneAndCameraTracks();
 
+
+
   /**
    * get room방 정보 가져옴
    */
@@ -76,12 +79,6 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
       // console.error(error);
     }
   };
-
-  // console.log('😭확인', recoilRoomInfo);
-  useEffect(() => {
-    getRoomInfo();
-  }, []);
-
 
   /**
    * 유저 방에서 떠남
@@ -105,6 +102,7 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
   };
 
   useEffect(() => {
+    
     const init = async (name: string) => {
       client.on('user-published', async (user, mediaType) => {
         await client.subscribe(user, mediaType);
@@ -147,6 +145,7 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
   }, [CHANNEL, client, ready, tracks]);
 
   useEffect(() => {
+    getRoomInfo();
     window.onbeforeunload = null;
   }, [])
 

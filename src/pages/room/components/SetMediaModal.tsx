@@ -4,7 +4,11 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { getCookie } from '../../../auth/cookie';
-import { RoomAtom, RoomUUIDAtom } from '../../../recoil/RoomAtom';
+import {
+  ConnectCamAtom,
+  RoomAtom,
+  RoomUUIDAtom,
+} from '../../../recoil/RoomAtom';
 import MediaSetup from '../../home/components/MediaSetup';
 import BasicPrecautions from '../../home/components/BasicPrecautions';
 import { useQuery } from 'react-query';
@@ -38,6 +42,7 @@ const SetMediaModal: React.FC<SetMediaModal> = ({ setIsOpen, room }) => {
   const [joinUUID, setJoinUUID] = useRecoilState<string>(RoomUUIDAtom);
   const [roomInfo, setRoomInfo] = useRecoilState(RoomAtom);
   const [isClicked, setIsClicked] = useState(false);
+  const [isCamConnect, setIsCamConnect] = useRecoilState(ConnectCamAtom);
 
   const { data } = useQuery<user>('joinRoomUserInfo', fetchUser);
   const token = getCookie('token');
@@ -94,6 +99,7 @@ const SetMediaModal: React.FC<SetMediaModal> = ({ setIsOpen, room }) => {
         (response: any) => {},
       );
       setIsClicked(false);
+      setIsCamConnect(true);
     } catch (error) {
       // console.error(error);
     }
@@ -104,9 +110,12 @@ const SetMediaModal: React.FC<SetMediaModal> = ({ setIsOpen, room }) => {
     socket.on('joinError', (message: string) => {
       toast.error(message);
       navigate('/');
-      window.onbeforeunload = null;
     });
   }, [socket]);
+
+  useEffect(() => {
+    window.onbeforeunload = null;
+  });
 
   return (
     <Container>
