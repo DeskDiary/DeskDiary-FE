@@ -71,6 +71,14 @@ const Container = styled.div`
   border-radius: 5px;
   padding: 15px;
   background-color: white;
+
+  @media (max-width: 1400px) {
+    width: 1000px;
+  }
+
+  @media (max-width: 1200px) {
+    width: 800px;
+  }
 `;
 
 const GoalDiv = styled.div`
