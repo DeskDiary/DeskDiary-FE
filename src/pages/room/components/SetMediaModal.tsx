@@ -143,15 +143,15 @@ const Note = styled.div`
 const Content = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: start;
   gap: 15px;
   display: flex;
   width: 400px;
   margin-top: 14px;
-  max-height: 700px;
+  max-height: 500px;
 
-  overflow: scroll;
+  overflow-y: auto;
 `;
 
 const Label = styled.div`

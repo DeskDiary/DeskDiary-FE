@@ -15,6 +15,7 @@ import SetMediaModal from './components/SetMediaModal';
 import VideoContainer from './components/media/VideoContainer';
 import arrow from '../../images/red-arrow.png';
 import { toast } from 'sonner';
+import { createGlobalStyle } from 'styled-components';
 
 type RoomProps = {
   children?: React.ReactNode;
@@ -49,7 +50,7 @@ const Room: React.FC<RoomProps> = () => {
       toast.error(
         `왼쪽 하단의 방 나가기 버튼을 이용 해 주세요.
       `,
-      {duration: 2000},
+        { duration: 2000 },
       );
       navigate(`/room/${roomUUID}`);
     };
@@ -105,7 +106,8 @@ const Room: React.FC<RoomProps> = () => {
   }, []);
 
   return (
-    <>
+    <Main>
+      <GlobalStyle />
       <Container>
         <RoomSideBar />
         <Content>
@@ -133,9 +135,23 @@ const Room: React.FC<RoomProps> = () => {
           <Arrow src={arrow} alt="arrow" />
         </ArrowModal>
       )}
-    </>
+    </Main>
   );
 };
+
+const GlobalStyle = createGlobalStyle`
+  * {
+    /* &::-webkit-scrollbar {
+    display: none; // 스크롤바를 숨기고 싶으면 이렇게 할 수 있어. */
+  /* } */
+  }
+  `;
+
+const Main = styled.div`
+  width: calc(100vw);
+  height: calc(100vh);
+  box-sizing: border-box; 
+`;
 
 const Background = styled.div`
   position: fixed;

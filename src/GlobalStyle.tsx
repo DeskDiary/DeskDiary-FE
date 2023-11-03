@@ -44,7 +44,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     width: 95vw;
     scroll-behavior: smooth;
-    overflow-y: scroll;
+    overflow: auto;
 
     font-family: Pretendard;
     font-style: normal;

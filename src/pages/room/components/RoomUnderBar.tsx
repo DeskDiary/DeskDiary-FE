@@ -66,7 +66,7 @@ const RoomUnderBar: React.FC<RoomUnderBarProps> = ({ roomId, note }) => {
 const Note = styled.div`
   background-color: var(--gray-03);
   border-radius: 10px;
-  opacity: 0.6;
+  opacity: 0.8;
   position: fixed;
   bottom: 70px;
   left: 30px;
@@ -79,6 +79,7 @@ const Note = styled.div`
   justify-content: start;
   width: 500px;
   text-align: left;
+  z-index: 5000;
 
   > span {
     margin: 10px auto;

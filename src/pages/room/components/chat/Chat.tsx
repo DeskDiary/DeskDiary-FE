@@ -94,6 +94,6 @@ const Container = styled.div`
   gap: 8px;
   /* overflow: wrap; */
 
-  width: 310px;
+  width: 100%;
 `;
 export default Chat;

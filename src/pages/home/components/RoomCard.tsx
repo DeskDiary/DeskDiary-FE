@@ -61,10 +61,8 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
   };
 
   const deleteRoomHandler = async () => {
-    console.log('삭제버튼');
     await setIsOpenDeleteRoomModal(true)
     await setJoinUUID(room.uuid);
-    console.log(joinUUID, isOpenDeleteRoomModal)
   }
 
   const onClickCard = async () => {
@@ -86,8 +84,6 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
       navigate('/login');
     }
   };
-
-  console.log(room)
 
   return (
     <Container>
