@@ -4,7 +4,7 @@ import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { fetchUser } from '../../../../axios/api';
 import { chat, send } from '../../../../images/room';
-import { blue } from '../../../../images/character';
+import { orange, yellow } from '../../../../images/character';
 import { RoomUserList } from '../../../../recoil/RoomAtom';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -121,6 +121,8 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
       ]);
       // console.log('😭나간 유저', byeUser);
     });
+
+    
   }, [socket]);
 
   const chatListRef = useRef<HTMLDivElement>(null); // ref 생성
@@ -131,6 +133,10 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
       chatListRef.current.scrollTop = chatListRef.current.scrollHeight; // 스크롤을 아래로 이동
     }
   }, [allChatList]); // allChatList가 업데이트될 때마다 실행
+
+  useEffect(() => {
+    window.onbeforeunload = null;
+  }, [])
 
   return (
     <Container>
@@ -162,7 +168,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
             placeholder="메세지를 입력 해 주세요"
           ></UserInput>
           <SendButton type="submit">
-            <img src={blue} />
+            <img src={yellow} alt="send"/>
           </SendButton>
         </ChatForm>
       </ChatUnder>
@@ -210,11 +216,11 @@ const SendButton = styled.button`
   width: 35px;
   height: 35px;
   border: none;
-  margin: 10px;
   background-color: transparent;
+  margin-right: 20px;
   cursor: pointer;
   > img {
-    width: 30px;
+    width: 35px;
   }
 `;
 
@@ -229,6 +235,10 @@ const UserInput = styled.input`
   }
   background-color: transparent;
   color: var(--gray-01);
+
+  ::placeholder {
+    color: var(--gray-01);
+  }
 `;
 
 const ChatForm = styled.form`
@@ -239,9 +249,10 @@ const ChatForm = styled.form`
   height: 42px;
   width: 100%;
   margin: 12px;
-  border: 1px solid var(--primary-01);
+  border: 1px solid rgba(0, 0, 0, 0.3);
   border-radius: 5px;
-  background-color: transparent;
+  /* background-color: var(--gray-05); */
+  box-shadow: inset 2px -2px 4px 2px rgba(0, 0, 0, 0.2);
 `;
 
 const ChatList = styled.div`

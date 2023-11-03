@@ -16,6 +16,7 @@ import VideoContainer from './components/media/VideoContainer';
 import arrow from '../../images/red-arrow.png';
 import { toast } from 'sonner';
 import { createGlobalStyle } from 'styled-components';
+import socket from './socketInstance';
 
 type RoomProps = {
   children?: React.ReactNode;
@@ -74,6 +75,10 @@ const Room: React.FC<RoomProps> = () => {
     return unlistenHistoryEvent;
   }, [roomUUID]);
 
+  useEffect(() => {
+    window.onbeforeunload = null;
+  }, [])
+
   const getRoomInfo = async () => {
     const url = `${serverUrl}/room/${location.pathname.split('/')[2]}`;
     // console.log('url', url);
@@ -107,6 +112,7 @@ const Room: React.FC<RoomProps> = () => {
 
   useEffect(() => {
     setIsOpenModal(true);
+    window.onbeforeunload = null;
   }, []);
 
   return (

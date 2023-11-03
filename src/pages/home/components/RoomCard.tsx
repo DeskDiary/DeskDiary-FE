@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import MaxUser from '../../../images/room/MaxUser.svg';
 import sample from '../../../images/sample.svg';
 import ConfirmModal from '../../../components/ConfirmModal';
-import { useQuery } from 'react-query';
+import { useQuery  } from 'react-query';
 import { fetchUser } from '../../../axios/api';
 import { getCookie } from '../../../auth/cookie';
 import { useNavigate } from 'react-router-dom';
@@ -45,7 +45,7 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
   const navigate = useNavigate();
 
   const { data } = useQuery<user, Error>('userCreatedRoom', fetchUser, {
-    staleTime: Infinity, // 캐시 시간을 무한대로 설정
+    refetchOnWindowFocus: false,
   });
 
   const handleImageLoaded = () => {
@@ -67,9 +67,10 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
 
   const onClickCard = async () => {
     if (room.nowHeadcount === room.maxHeadcount) {
-      alert('가득 찬 방');
+      toast.error('방이 꽉찼어요🥲');
       return;
     }
+
     if (token) {
       // setIsOpen(true);
       JoinRoomModal(token);
@@ -84,6 +85,7 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
       navigate('/login');
     }
   };
+
 
   return (
     <Container>

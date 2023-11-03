@@ -6,7 +6,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 import { getCookie } from '../../../auth/cookie';
 import { fetchUser } from '../../../axios/api';
 import { hobby, home, mydesk, study } from '../../../images/main';
-import logo from '../../../images/logo.svg';
+import logo from '../../../images/logo-2.svg';
 import profile from '../.././../images/main/profile.svg';
 
 type SideBarProps = {};
@@ -37,7 +37,7 @@ const SideBar: React.FC<SideBarProps> = () => {
   const navigate = useNavigate();
   const [isClicked, setIsClicked] = useState(false);
 
-  const { data, refetch } = useQuery<user>('sidebar-user', fetchUser, {
+  const { data, refetch } = useQuery<user>('mypageUser', fetchUser, {
     refetchOnWindowFocus: false,
   });
 
@@ -274,7 +274,7 @@ const Sidebar = styled.div`
   left: 0;
   width: 80px;
   height: 100vh;
-  background: #0054a8;
+  background: #004891;
   transition: width 0.4s;
   z-index: 1000;
 

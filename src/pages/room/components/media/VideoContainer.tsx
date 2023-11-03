@@ -56,8 +56,9 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
 
   const { ready, tracks } = useMicrophoneAndCameraTracks();
 
-  console.log(roomUserList);
-
+  /**
+   * get room방 정보 가져옴
+   */
   const getRoomInfo = async () => {
     try {
       const response = await axios.get(
@@ -75,15 +76,18 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
       // console.error(error);
     }
   };
+
   // console.log('😭확인', recoilRoomInfo);
   useEffect(() => {
     getRoomInfo();
   }, []);
 
-  console.log(roomInfo)
 
+  /**
+   * 유저 방에서 떠남
+   * @param currentTracks
+   */
   const handleUserLeft = async (currentTracks: any) => {
-    // console.log('✨아고라 연결 끊기');
 
     if (currentTracks) {
       for (const track of currentTracks) {
@@ -91,33 +95,24 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
           try {
             await track.stop();
             await track.close();
-            // console.log(`✨Track 멈춤`);
+            await client.leave();
           } catch (error) {
             // console.error('Error stopping or closing track:', error);
           }
         }
       }
     }
-
-    if (client && currentTracks) {
-      await client.unpublish(currentTracks);
-      // console.log('✨unpublish 완료');
-    }
-
-    await client.leave();
-    // console.log('✨✨✨✨✨');
   };
 
   useEffect(() => {
     const init = async (name: string) => {
       client.on('user-published', async (user, mediaType) => {
         await client.subscribe(user, mediaType);
-        
+
         if (mediaType === 'video') {
           setUsers(prevUsers => {
             return [...prevUsers, user];
           });
-          
         }
         if (mediaType === 'audio') {
           user.audioTrack?.play();
@@ -150,6 +145,10 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
       handleUserLeft(tracks);
     };
   }, [CHANNEL, client, ready, tracks]);
+
+  useEffect(() => {
+    window.onbeforeunload = null;
+  }, [])
 
   return (
     <Container>

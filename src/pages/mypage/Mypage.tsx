@@ -455,6 +455,6 @@ const Container = styled.div`
   align-items: center;
 
   width: 400px;
-  height: 100vh;
+  height: 100%;
 `;
 export default Mypage;

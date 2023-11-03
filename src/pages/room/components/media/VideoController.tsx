@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ICameraVideoTrack, IMicrophoneAudioTrack } from 'agora-rtc-react';
 import { useClient } from './config';
 import {
@@ -16,8 +16,6 @@ type VideoControllerProps = {
   setStart: React.Dispatch<React.SetStateAction<boolean>>;
   setInCall: React.Dispatch<React.SetStateAction<boolean>>;
 };
-
-
 
 const VideoController: React.FC<VideoControllerProps> = ({
   tracks,
@@ -51,7 +49,15 @@ const VideoController: React.FC<VideoControllerProps> = ({
     setInCall(false);
   };
 
-  const {data} = useQuery('cam-user', fetchUser)
+  const { data, isLoading, isError } = useQuery('cam-user', fetchUser);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error loading data...</div>;
+  }
 
   return (
     <Controller>
@@ -82,7 +88,7 @@ const Controller = styled.div`
   gap: 10px;
   margin-left: 10px;
 
-  >div{
+  > div {
     margin: 0 20px 0 auto;
     display: flex;
     align-items: center;
@@ -104,7 +110,7 @@ const Controller = styled.div`
     border: none;
     font-size: 20px;
     border-radius: 10px;
-    &:hover{
+    &:hover {
       background-color: var(--gray-06);
     }
   }

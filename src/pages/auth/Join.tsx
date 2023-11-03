@@ -13,11 +13,14 @@ import { UserAtom } from '../../recoil/UserAtom';
 import { useMutation } from 'react-query';
 import Kakao from './components/Kakao';
 import Google from './components/Google';
+import { toast } from 'sonner';
+import { getCookie, setTokenCookie } from '../../auth/cookie';
 
 type JoinProps = {};
 
 const Join: React.FC<JoinProps> = () => {
   const navigate = useNavigate();
+  const token = getCookie('token');
 
   const [user, setUser] = useRecoilState(UserAtom);
 
@@ -138,6 +141,13 @@ const Join: React.FC<JoinProps> = () => {
 
     joinMutation.mutate(user);
   };
+
+  useEffect(() => {
+    if (token) {
+      toast.error('이미 로그인이 되어있습니다.');
+      navigate('/');
+    }
+  }, []);
 
   useEffect(() => {
     return () => {
