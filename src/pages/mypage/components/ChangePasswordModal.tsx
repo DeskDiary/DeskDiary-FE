@@ -125,13 +125,15 @@ const Group = styled.div`
   flex-direction: column;
   gap: 5px;
   width: 100%;
+  
   > input {
-    border: 1px solid var(--gray-07);
+    border: 1px solid var(--gray-06);
     width: 100%;
     height: 40px;
     padding: 10px;
     border-radius: 5px;
     font-size: 15px;
+    background-color: #E8F1FF;
     &:focus {
       outline: none;
     }
