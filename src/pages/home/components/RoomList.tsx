@@ -45,10 +45,8 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
   let fetchName = show + sort;
 
   const { data } = useQuery<room[], Error>(
-    
     [fetchName, show, sort], // 쿼리 키를 배열로 만들어 fetchName, show, sort 추가
     async () => {
-      
       const fetchFunc =
         fetchFunctions[fetchName as keyof typeof fetchFunctions];
       if (fetchFunc) {
@@ -60,7 +58,7 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
     },
     {
       refetchOnWindowFocus: false,
-    }
+    },
   );
 
   useEffect(() => {
@@ -71,17 +69,27 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
     }
   }, [isPopular]);
 
-  useEffect(() => {
-
-  }, [data])
+  useEffect(() => {}, [data]);
 
   return (
     <List>
       <ListInfo>
         <ListTitle>{label}</ListTitle>
         <Categorys>
-          <Category cute={`${sort}`} me={'Popular'} onClick={() => changePopular(true)}>인기순</Category>
-          <Category cute={`${sort}`} me={'Latest'} onClick={() => changePopular(false)}>최신순</Category>
+          <Category
+            cute={`${sort}`}
+            me={'Popular'}
+            onClick={() => changePopular(true)}
+          >
+            인기순
+          </Category>
+          <Category
+            cute={`${sort}`}
+            me={'Latest'}
+            onClick={() => changePopular(false)}
+          >
+            최신순
+          </Category>
         </Categorys>
       </ListInfo>
 
@@ -111,33 +119,41 @@ const Categorys = styled.div`
   margin-bottom: 10px;
 `;
 
-const Category = styled.button<{cute: string, me:string}>`
+const Category = styled.button<{ cute: string; me: string }>`
   font-size: 14px;
   font-weight: 500;
   width: 50px;
-  
+
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   padding-bottom: 2px;
 
-  color: ${props => props.cute === props.me ? 'var(--primary-01)' : 'var(--gray-07)'};
-  border-bottom: 1px solid ${props => props.cute === props.me ? 'var(--primary-01)' : 'none' };
+  color: ${props =>
+    props.cute === props.me ? 'var(--primary-01)' : 'var(--gray-07)'};
+  border-bottom: 1px solid
+    ${props => (props.cute === props.me ? 'var(--primary-01)' : 'none')};
 
-  &:hover{
-   color: var(--primary-01); 
+  &:hover {
+    color: var(--primary-01);
   }
-  
-`
+`;
 
 const List = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: start;
-  align-items: start;
+  align-items: center;
 
   margin-top: 60px;
   height: 100%;
   width: 100%;
+
+  @media (max-width: 1400px) {
+    width: 1000px;
+  }
+  @media (max-width: 1200px) {
+    width: 800px;
+  }
 `;
 
 const ListTitle = styled.div`
@@ -151,11 +167,13 @@ const JoinedRooms = styled.div`
   gap: 12px;
   width: 1200px;
 
-  @media (max-width: 1000px) {
+  @media (max-width: 1400px) {
+    width: 1000px;
     grid-template-columns: repeat(4, 1fr);
   }
 
-  @media (max-width: 800px) {
+  @media (max-width: 1200px) {
+    width: 800px;
     grid-template-columns: repeat(3, 1fr);
   }
 `;

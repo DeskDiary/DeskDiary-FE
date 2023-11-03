@@ -17,7 +17,6 @@ const MyDesk: React.FC<MyDeskProps> = () => {
   useRecoilState(DeleteRoomAtom);
 const [roomUUID, setRoomUUID] = useRecoilState(RoomUUIDAtom);
   const [GoalModal, setGoalModal] = useRecoilState<boolean>(GoalTimeModalState);
-  console.log('💙',roomUUID)
   return (
     <Container>
       <MyDeskTop>

@@ -20,24 +20,24 @@ const Home = () => {
     }
   }, []);
 
-  useEffect(() => {
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <Container>
-
-        <Info>
-          {token ? (
-            <User>
-              <Goal />
+      <Info>
+        {token ? (
+          <User>
+            <Goal />
+            <Img>
               <img src={userIntro} alt="user " />
-            </User>
-          ) : (
-            <NonUserIntro />
-          )}
-        </Info>
+            </Img>
+          </User>
+        ) : (
+          <NonUserIntro />
+        )}
+      </Info>
 
-        <RoomList label="엉덩이들이 많이 찾는 TOP 10" show="fetchRoomTop" />
+      <RoomList label="엉덩이들이 많이 찾는 TOP 10" show="fetchRoomTop" />
     </Container>
   );
 };
@@ -53,27 +53,64 @@ const Container = styled.div`
   background-color: #e8f1ff;
 `;
 
-const User = styled.div`
+const Img = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
   align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 165px;
+  background-color: var(--primary-01);
+  border-radius: 10px;
+  box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.25);
+
+  @media (max-width: 1400px) {
+    width: 1000px;
+  }
+
+  @media (max-width: 1200px) {
+    width: 800px;
+  }
+
+  > Img {
+    height: 165px;
+  }
+`;
+
+const User = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 
   height: 100%;
   width: 100%;
-  > Img {
-    width: 50%;
+
+  @media (max-width: 1400px) {
+    width: 1000px;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 0px;
   }
 `;
 
 const Info = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+
 
   width: 100%;
   height: 190px;
+
+  @media (max-width: 1400px) {
+    width: 1000px;
+    height: 400px;
+  }
+
+  @media (max-width: 1200px) {
+    width: 800px;
+  }
 `;
 
 export default Home;
