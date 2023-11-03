@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useReducer } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { pause, timerImg } from '../../../images/room';
 import { timerState } from '../../../recoil/TimeAtom';
+
 type TimerProps = {};
 
 export function formatTime(seconds: number) {
@@ -19,22 +20,98 @@ export function formatTime(seconds: number) {
 
   return formattedTime;
 }
+
 export const getKoreanTime = () => {
   const now = new Date();
-  // 한국 시간대로 변환
-  now.setHours(now.getHours() + 9);
-  return now;
+  let [dayOfWeek, month, day, year, time, time2] =`${now}`.split(' ');
+  if (month === 'Jan') {
+    month = '01';
+  } else if (month === 'Feb') {
+    month = '02';
+  } else if (month === 'Mar') {
+    month = '03';
+  } else if (month === 'Apr') {
+    month = '04';
+  } else if (month === 'May') {
+    month = '05';
+  } else if (month === 'Jun') {
+    month = '06';
+  } else if (month === 'Jul') {
+    month = '07';
+  } else if (month === 'Aug') {
+    month = '08';
+  } else if (month === 'Sep') {
+    month = '09';
+  } else if (month === 'Oct') {
+    month = '10';
+  } else if (month === 'Nov') {
+    month = '11';
+  } else if (month === 'Dec') {
+    month = '12';
+  }
+  return [`${year}-${month}-${day}T${time}.000Z`, `${month}월 ${day}일 ${time}`];
 };
 
 const Timer: React.FC<TimerProps> = () => {
-  
   const [timerButtonState, setTimerButtonState] = useState<boolean>(false);
+  const sessionData_checkIn = JSON.parse(sessionStorage.getItem('checkIn') || '[]');
+  const [checkIn, setCheckIn] = useState<string[]>(sessionData_checkIn);
+
+  useEffect(() => {
+    // 'checkIn' 배열에 현재 시간 문자열을 추가
+    setCheckIn([...checkIn, getKoreanTime().toString()]);
+    
+  }, []);
+
+  useEffect(() => {
+  sessionStorage.setItem('checkIn', JSON.stringify(checkIn));
+  }, [checkIn])
+
+  const countReducer = (oldCount: any, action: any) => {
+    if (action === 'START') {
+      return oldCount + 1;
+    } else if (action === 'STOP') {
+      return oldCount;
+    }
+  };
+  const [count, countDispatch] = useReducer(countReducer, 0);
+
+  const start = () => {
+    countDispatch('START');
+  };
+  const stop = () => {
+    countDispatch('STOP');
+  };
+
+  let intervalId: NodeJS.Timeout | null = null; // Initialize intervalId as null
+
+  const startButtonOnclickHandler = () => {
+    setTimerButtonState(!timerButtonState);
+  };
+
+  useEffect(() => {
+    if (timerButtonState) {
+      intervalId = setInterval(() => start(), 1000);
+    } else {
+      if (intervalId) {
+        clearInterval(intervalId); // Clear the interval if it exists
+        intervalId = null; // Reset intervalId to null
+      }
+    }
+
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId); // Cleanup the interval if it exists
+      }
+    };
+  }, [timerButtonState]);
 
   return (
     <Container>
-      <p>{`00:00:00`}</p>
+      <p>{formatTime(count)}</p>
       <StartButton
         timerbuttonstate={`${timerButtonState}`}
+        onClick={startButtonOnclickHandler}
       >
         <img src={timerButtonState ? pause : timerImg} alt="" />
         <p>{timerButtonState ? '일시정지' : '기록시작'}</p>
@@ -60,7 +137,7 @@ const StartButton = styled.button<{ timerbuttonstate: string }>`
   justify-content: center;
   align-items: center;
   gap: 10px;
-  background: ${props =>
+  background: ${(props) =>
     props.timerbuttonstate === 'true' ? 'none' : 'var(--primary-01)'};
   p {
     color: var(--gray-01);
@@ -68,4 +145,5 @@ const StartButton = styled.button<{ timerbuttonstate: string }>`
   }
   border-radius: 24px;
 `;
+
 export default Timer;
