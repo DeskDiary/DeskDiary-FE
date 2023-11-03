@@ -148,7 +148,7 @@ const GlobalStyle = createGlobalStyle`
   `;
 
 const Main = styled.div`
-  width: calc(100vw - 10px);
+  width: calc(100vw);
   height: calc(100vh);
   box-sizing: border-box; 
 `;
