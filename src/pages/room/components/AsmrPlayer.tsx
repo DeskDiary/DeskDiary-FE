@@ -32,6 +32,7 @@ const AsmrPlayer: React.FC<AsmrPlayerProps> = () => {
   const [volume, setVolume] = useState(1); // 초기 볼륨을 1로 설정 (최대 볼륨)
   const audioRef = React.createRef<HTMLAudioElement>();
   const [current, setCurrent] = useState<number>(0);
+  console.log(volume, audioRef, current)
 
   const togglePlay = () => {
     if (audioRef.current) {
@@ -60,6 +61,7 @@ const AsmrPlayer: React.FC<AsmrPlayerProps> = () => {
     }
   };
 
+
   const handleVolumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newVolume = parseFloat(event.target.value);
     setVolume(newVolume);
@@ -67,6 +69,20 @@ const AsmrPlayer: React.FC<AsmrPlayerProps> = () => {
       audioRef.current.volume = newVolume;
     }
   };
+
+  const setMaxVolume = () => {
+    setVolume(1);
+    if (audioRef.current) {
+      audioRef.current.volume = 1; // 최대 볼륨인 1로 설정
+    }
+  };
+
+  const isMuted = () => {
+    setVolume(0);
+    if (audioRef.current) {
+      audioRef.current.volume = 0; // 최대 볼륨인 1로 설정
+    }
+  }; // 볼륨이 0이면 음소거 상태로 간주
 
   useEffect(() => {
     if (isPlaying) {
@@ -90,7 +106,7 @@ const AsmrPlayer: React.FC<AsmrPlayerProps> = () => {
         <FrontButton onClick={nextCurrentHandler} img={front_button} />
       </PlayBox>
       <VolumeBox>
-        <MuteButton img={volume_off} />
+        <MuteButton img={volume_off} onClick={isMuted} />
         <VolumeSlider
           type="range"
           min="0"
@@ -99,7 +115,7 @@ const AsmrPlayer: React.FC<AsmrPlayerProps> = () => {
           value={volume}
           onChange={handleVolumeChange}
         />
-        <MaxSoundButton img={volume_up} />
+        <MaxSoundButton img={volume_up} onClick={setMaxVolume} />
       </VolumeBox>
     </Body>
   );
@@ -107,7 +123,6 @@ const AsmrPlayer: React.FC<AsmrPlayerProps> = () => {
 
 const Body = styled.div`
   width: 97%;
-  /* border: 1px solid var(--gray-07); */
   display: flex;
   flex-direction: column;
   align-items: center;

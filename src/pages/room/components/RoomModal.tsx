@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { getCookie } from '../../../auth/cookie';
-import {checkin, checkout} from '../../../images/room';
+import { checkin, checkout } from '../../../images/room';
 import {
   RoomInfo,
   RoomModalAtom,
@@ -12,7 +12,7 @@ import {
 } from '../../../recoil/RoomAtom';
 import { timerState } from '../../../recoil/TimeAtom';
 import socket from '../socketInstance';
-import { getKoreanTime } from './Timer';
+import { formatTime, getKoreanTime } from './Timer';
 type RoomModalProps = {};
 
 const RoomModal: React.FC<RoomModalProps> = () => {
@@ -24,29 +24,17 @@ const RoomModal: React.FC<RoomModalProps> = () => {
   const [joinUUID, setJoinUUID] = useRecoilState<string>(RoomUUIDAtom);
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const [storageStartData, setStorageStartData] = useState<string>('');
-  const [storageEndData, setStorageEndData] = useState<string>('');
-  const [timer, setTimer] = useRecoilState<string>(timerState);
+  const [checkOut, setCheckOut] = useState<string>('');
+  const [timer, setTimer] = useRecoilState<number>(timerState);
 
   useEffect(() => {
-    const storageStartData = localStorage.getItem('startTime');
+    const storageStartData = sessionStorage.getItem('checkIn');
     if (storageStartData) {
-      setStorageStartData(
-        JSON.parse(storageStartData)[0].replaceAll(/["/]/g, ''),
-      );
+      setStorageStartData(JSON.parse(storageStartData)[0].split(','));
     } else {
-      setStorageStartData('기록이 없습니다.');
+      setStorageStartData(getKoreanTime()[1].toString());
     }
-
-    const storageEndData = localStorage.getItem('endTime');
-    if (storageEndData) {
-      setStorageEndData(
-        JSON.parse(storageEndData)[
-          JSON.parse(storageEndData).length - 1
-        ].replaceAll(/["/]/g, ''),
-      );
-    } else {
-      setStorageEndData('기록이 없습니다.');
-    }
+    setCheckOut(getKoreanTime()[1].toString());
   }, []);
 
   const roomOutHandler = async () => {
@@ -55,13 +43,10 @@ const RoomModal: React.FC<RoomModalProps> = () => {
       const data = {
         checkIn:
           storageStartData !== '기록이 없습니다.'
-            ? storageStartData
-            : JSON.stringify(getKoreanTime()).replaceAll(/["/]/g, ''),
-        checkOut:
-          storageEndData !== '기록이 없습니다.'
-            ? storageEndData
-            : JSON.stringify(getKoreanTime()).replaceAll(/["/]/g, ''),
-        totalHours: timer,
+            ? storageStartData[0]
+            : getKoreanTime()[0],
+        checkOut: getKoreanTime()[0],
+        totalHours: formatTime(timer),
         historyType: roomInfo.category, // study, hobby
       };
       // console.log('❤️roomInfo.category', roomInfo);
@@ -76,9 +61,8 @@ const RoomModal: React.FC<RoomModalProps> = () => {
         },
       );
 
-      setTimer('00:00:00');
-      localStorage.removeItem('startTime');
-      localStorage.removeItem('endTime');
+      setTimer(0);
+      sessionStorage.removeItem('checkIn');
       setOutModalState(false);
       navigate('/');
       window.location.reload();
@@ -103,19 +87,6 @@ const RoomModal: React.FC<RoomModalProps> = () => {
     localStorage.removeItem('room');
   };
 
-  const TimeFormatter = (str: string) => {
-    if(str === '기록이 없습니다.') {
-      return `기록이 없습니다.`
-    }
-    if(str == '') {
-      return `0시 0분 0초`;
-    }
-    const formattedStr = str.replace('T', ' ').replace('Z', '');
-    const [date, time] = formattedStr.split(' ');
-    const [hour, minute, second] = time.split('.')[0].split(':');
-    return `${hour}시 ${minute}분 ${second}초`;
-  };
-
   return (
     <Container>
       <ModalBox>
@@ -128,7 +99,7 @@ const RoomModal: React.FC<RoomModalProps> = () => {
               CHECK IN
             </p>
             <img src={checkin} alt="checkin" />
-            <p>{TimeFormatter(storageStartData)}</p>
+            <p>{storageStartData[1]}</p>
           </div>
           <div>
             <p
@@ -137,14 +108,14 @@ const RoomModal: React.FC<RoomModalProps> = () => {
               CHECK OUT
             </p>
             <img src={checkout} alt="checkout" />
-            <p>{TimeFormatter(storageEndData)}</p>
+            <p>{checkOut}</p>
           </div>
         </TimeBox>
         <TimerText>
-          <span>{timer}</span>
+          <span>{formatTime(timer)}</span>
           <span> 앉아 있었어요</span>
         </TimerText>
-        <p style={{color: '#757575', fontWeight: '500'}}>퇴장하시겠어요?</p>
+        <p style={{ color: '#757575', fontWeight: '500' }}>퇴장하시겠어요?</p>
         <ButtonBox>
           <button onClick={roomOutHandler}>저장 후 퇴장</button>
           <button

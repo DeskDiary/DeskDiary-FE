@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useReducer } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { pause, timerImg } from '../../../images/room';
 import { timerState } from '../../../recoil/TimeAtom';
+
 type TimerProps = {};
 
 export function formatTime(seconds: number) {
@@ -19,262 +20,98 @@ export function formatTime(seconds: number) {
 
   return formattedTime;
 }
+
 export const getKoreanTime = () => {
   const now = new Date();
-  // 한국 시간대로 변환
-  now.setHours(now.getHours() + 9);
-  return now;
+  let [dayOfWeek, month, day, year, time, time2] =`${now}`.split(' ');
+  if (month === 'Jan') {
+    month = '01';
+  } else if (month === 'Feb') {
+    month = '02';
+  } else if (month === 'Mar') {
+    month = '03';
+  } else if (month === 'Apr') {
+    month = '04';
+  } else if (month === 'May') {
+    month = '05';
+  } else if (month === 'Jun') {
+    month = '06';
+  } else if (month === 'Jul') {
+    month = '07';
+  } else if (month === 'Aug') {
+    month = '08';
+  } else if (month === 'Sep') {
+    month = '09';
+  } else if (month === 'Oct') {
+    month = '10';
+  } else if (month === 'Nov') {
+    month = '11';
+  } else if (month === 'Dec') {
+    month = '12';
+  }
+  return [`${year}-${month}-${day}T${time}.000Z`, `${month}월 ${day}일 ${time}`];
 };
+
 const Timer: React.FC<TimerProps> = () => {
-  const [timer, setTimer] = useRecoilState<string>(timerState);
-  const [buttonDisabled, setButtonDisabled] = useState<boolean>(false);
   const [timerButtonState, setTimerButtonState] = useState<boolean>(false);
-  const timerIntervalRef = useRef<any>(null);
-  const [startLocalStorageData, setStartLocalStorageData] = useState<any[]>([]);
-
-  const [endLocalStorageData, setEndLocalStorageData] = useState<any[]>([]);
-  const [누적시간State, set누적시간State] = useState(0);
-
+  const sessionData_checkIn = JSON.parse(sessionStorage.getItem('checkIn') || '[]');
+  const [checkIn, setCheckIn] = useState<string[]>(sessionData_checkIn);
+  const [timer, setTimer] = useRecoilState<number>(timerState);
+  
   useEffect(() => {
-    const existingStartTime = localStorage.getItem('startTime');
-    const existingEndTime = localStorage.getItem('endTime');
-
-    
-    if (existingStartTime && existingEndTime) {
-      if (
-        JSON.parse(existingStartTime).length !==
-        JSON.parse(existingEndTime).length
-      ) {
-        if (
-          JSON.parse(existingStartTime).length > JSON.parse(existingEndTime).length
-        ) {
-          const a = JSON.parse(existingStartTime)
-            .map((x: string) => {
-              return x.replaceAll(/["/]/g, '');
-            })
-            .slice(0, -1);
-          localStorage.setItem('startTime', JSON.stringify(a));
-        } else if (
-          JSON.parse(existingStartTime).length < JSON.parse(existingEndTime).length
-        ) {
-          const a = JSON.parse(existingEndTime)
-            .map((x: string) => {
-              return x.replaceAll(/["/]/g, '');
-            })
-            .slice(0, -1);
-          localStorage.setItem('endTime', JSON.stringify(a));
-        }
-      }
-    } else if (existingStartTime) {
-      localStorage.removeItem('startTime');
-    }
-    if (existingStartTime) {
-      setStartLocalStorageData(
-        JSON.parse(existingStartTime).map((x: string) => {
-          return x.replaceAll(/["/]/g, '');
-        }),
-      );
-    }
-    if (existingEndTime) {
-      setEndLocalStorageData(
-        JSON.parse(existingEndTime).map((x: string) => {
-          return x.replaceAll(/["/]/g, '');
-        }),
-      );
-    }
-    let 누적시간 = 0;
-      for (let i = 0; i < startLocalStorageData.length - 1; i++) {
-        let 시작시간 = startLocalStorageData[i]
-          .split('T')[1]
-          .slice(0, 8)
-          .split(':');
-        let 종료시간 = endLocalStorageData[i]
-          .split('T')[1]
-          .slice(0, 8)
-          .split(':');
-        시작시간 =
-          Number(시작시간[0]) * 3600 +
-          Number(시작시간[1]) * 60 +
-          Number(시작시간[2]);
-        종료시간 =
-          Number(종료시간[0]) * 3600 +
-          Number(종료시간[1]) * 60 +
-          Number(종료시간[2]);
-
-        누적시간 += 종료시간 - 시작시간;
-      }
-      set누적시간State(누적시간);
+    setCheckIn([...checkIn, getKoreanTime().toString()]);
   }, []);
 
-  const timerButtonHandler = () => {
-    setButtonDisabled(true);
+  useEffect(() => {
+  sessionStorage.setItem('checkIn', JSON.stringify(checkIn));
+  }, [checkIn])
 
-    // 1초 뒤에 버튼 다시 활성화
-    setTimeout(() => {
-      setButtonDisabled(false);
-    }, 1000);
+  const countReducer = (oldCount: any, action: any) => {
+    if (action === 'START') {
+      setTimer(oldCount + 1)
+      return oldCount + 1;
+    } else if (action === 'STOP') {
+      return oldCount;
+    }
+  };
+  const [count, countDispatch] = useReducer(countReducer, 0);
+
+  const start = () => {
+    countDispatch('START');
+  };
+  const stop = () => {
+    countDispatch('STOP');
+  };
+
+  let intervalId: NodeJS.Timeout | null = null; // Initialize intervalId as null
+
+  const startButtonOnclickHandler = () => {
     setTimerButtonState(!timerButtonState);
   };
 
-  // 시작, 일시정시 기록을 로컬스토리지에 저장
   useEffect(() => {
-    const existingStartTime = localStorage.getItem('startTime');
-    const existingEndTime = localStorage.getItem('endTime');
     if (timerButtonState) {
-      const startTime = getKoreanTime();
-
-      if (existingStartTime) {
-        let startTimeArray = JSON.parse(existingStartTime);
-        startTimeArray.push(JSON.stringify(startTime));
-        startTimeArray = startTimeArray.map((x: any) => {
-          return x.replaceAll(/["/]/g, '');
-        });
-        setStartLocalStorageData(startTimeArray);
-        localStorage.setItem('startTime', JSON.stringify(startTimeArray));
-      } else {
-        setStartLocalStorageData([JSON.stringify(startTime)]);
-        localStorage.setItem('startTime', JSON.stringify([startTime]));
-      }
+      intervalId = setInterval(() => start(), 1000);
     } else {
-      if (timer !== '00:00:00' && existingStartTime !== null) {
-        const endTime = getKoreanTime();
-
-        if (existingEndTime) {
-          // 이미 저장된 데이터가 있는 경우, 배열로 변환
-          let endTimeArray = JSON.parse(existingEndTime);
-          endTimeArray.push(JSON.stringify(endTime));
-          endTimeArray = endTimeArray.map((x: any) => {
-            return x.replaceAll(/["/]/g, '');
-          });
-          // 다시 로컬 스토리지에 배열로 저장
-          setEndLocalStorageData(endTimeArray);
-          localStorage.setItem('endTime', JSON.stringify(endTimeArray));
-        } else {
-          // 저장된 데이터가 없는 경우, 새 배열로 시작
-          setEndLocalStorageData([JSON.stringify(endTime)]);
-          localStorage.setItem('endTime', JSON.stringify([endTime]));
-        }
+      if (intervalId) {
+        clearInterval(intervalId); // Clear the interval if it exists
+        intervalId = null; // Reset intervalId to null
       }
     }
-  }, [timerButtonState]);
 
-  useEffect(() => {
-    if (startLocalStorageData.length > 1) {
-      let 누적시간 = 0;
-      for (let i = 0; i < startLocalStorageData.length - 1; i++) {
-        let 시작시간 = startLocalStorageData[i]
-          .split('T')[1]
-          .slice(0, 8)
-          .split(':');
-        let 종료시간 = endLocalStorageData[i]
-          .split('T')[1]
-          .slice(0, 8)
-          .split(':');
-        시작시간 =
-          Number(시작시간[0]) * 3600 +
-          Number(시작시간[1]) * 60 +
-          Number(시작시간[2]);
-        종료시간 =
-          Number(종료시간[0]) * 3600 +
-          Number(종료시간[1]) * 60 +
-          Number(종료시간[2]);
-
-        누적시간 += 종료시간 - 시작시간;
-      }
-      set누적시간State(0);
-      set누적시간State(누적시간);
-    } else if (
-      startLocalStorageData.length === 1 &&
-      endLocalStorageData.length === 1
-    ) {
-      let 누적시간 = 0;
-      let 시작시간 = startLocalStorageData[0]
-        .split('T')[1]
-        .slice(0, 8)
-        .split(':');
-      let 종료시간 = endLocalStorageData[0]
-        .split('T')[1]
-        .slice(0, 8)
-        .split(':');
-      시작시간 =
-        Number(시작시간[0]) * 3600 +
-        Number(시작시간[1]) * 60 +
-        Number(시작시간[2]);
-      종료시간 =
-        Number(종료시간[0]) * 3600 +
-        Number(종료시간[1]) * 60 +
-        Number(종료시간[2]);
-
-      누적시간 += 종료시간 - 시작시간;
-      set누적시간State(0);
-      set누적시간State(누적시간);
-    }
-
-    const updateTimer = () => {
-      if (timerButtonState) {
-        // 타이머시작상태
-        const 마지막시간 = startLocalStorageData[
-          startLocalStorageData.length - 1
-        ]
-          .split('T')[1]
-          .slice(0, 8);
-        const 현재시간 = JSON.stringify(getKoreanTime())
-          .split('T')[1]
-          .slice(0, 8);
-        const 마지막시간초 = 마지막시간
-          .split(':')
-          .reduce((acc: number, currentValue: string, index: number) => {
-            if (index === 0) {
-              // 첫 번째 요소는 시간
-              return acc + parseInt(currentValue) * 3600; // 시간을 초로 변환
-            } else if (index === 1) {
-              // 두 번째 요소는 분
-              return acc + parseInt(currentValue) * 60; // 분을 초로 변환
-            } else if (index === 2) {
-              // 세 번째 요소는 초
-              return acc + parseInt(currentValue); // 그대로 더합니다
-            }
-            return acc;
-          }, 0);
-        const 현재시간초 = 현재시간
-          .split(':')
-          .reduce((acc: number, currentValue: string, index: number) => {
-            if (index === 0) {
-              // 첫 번째 요소는 시간
-              return acc + parseInt(currentValue) * 3600; // 시간을 초로 변환
-            } else if (index === 1) {
-              // 두 번째 요소는 분
-              return acc + parseInt(currentValue) * 60; // 분을 초로 변환
-            } else if (index === 2) {
-              // 세 번째 요소는 초
-              return acc + parseInt(currentValue); // 그대로 더합니다
-            }
-            return acc;
-          }, 0);
-        const 누적시간 = 현재시간초 - 마지막시간초 + 누적시간State;
-        setTimer(formatTime(누적시간));
-      } else {
-        // 일시정지상태
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId); // Cleanup the interval if it exists
       }
     };
-    // 1초마다 updateTimer 함수 실행
-    if (timerButtonState) {
-      timerIntervalRef.current = setInterval(updateTimer, 500);
-    } else {
-      if (timerIntervalRef.current) {
-        clearInterval(timerIntervalRef.current);
-        timerIntervalRef.current = null;
-      }
-    }
-  }, [startLocalStorageData, endLocalStorageData]);
+  }, [timerButtonState]);
 
   return (
     <Container>
-      <p>{timer}</p>
+      <p>{formatTime(count)}</p>
       <StartButton
-        timerbuttonstate={timerButtonState.toString()}
-        disabled={buttonDisabled}
-        onClick={timerButtonHandler}
+        timerbuttonstate={`${timerButtonState}`}
+        onClick={startButtonOnclickHandler}
       >
         <img src={timerButtonState ? pause : timerImg} alt="" />
         <p>{timerButtonState ? '일시정지' : '기록시작'}</p>
@@ -300,7 +137,7 @@ const StartButton = styled.button<{ timerbuttonstate: string }>`
   justify-content: center;
   align-items: center;
   gap: 10px;
-  background: ${props =>
+  background: ${(props) =>
     props.timerbuttonstate === 'true' ? 'none' : 'var(--primary-01)'};
   p {
     color: var(--gray-01);
@@ -308,4 +145,5 @@ const StartButton = styled.button<{ timerbuttonstate: string }>`
   }
   border-radius: 24px;
 `;
+
 export default Timer;
