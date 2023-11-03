@@ -162,6 +162,10 @@ const Title = styled.div`
   font-size: 24px;
   font-weight: 500;
   margin-bottom: 25px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 400px;
 `;
 
 const EnterRoomButton = styled.button`
