@@ -249,11 +249,9 @@ const ChatList = styled.div`
   justify-content: start;
   align-items: start;
   gap: 15px;
-
-  min-height: calc(100% - 145px);
+  height: 100%;
   width: calc(100% - 40px);
-  padding: 20px;
-  /* border-bottom: 1px solid var(--gray-05); */
+  padding: 10px;
   overflow: scroll;
 `;
 
@@ -269,28 +267,6 @@ const Container = styled.div`
   /* border-left: 1px solid var(--gray-07); */
   position: relative;
   box-shadow: 2px 2px 6px 2px rgba(0, 0, 0, 0.3);
-
-  /* 스크롤바 트랙(배경) 디자인 */
-  ::-webkit-scrollbar-track {
-    background: rgba(0, 197, 255, 0);
-  }
-
-  /* 스크롤바 핸들 디자인 */
-  ::-webkit-scrollbar-thumb {
-    background: var(--gray-07);
-    border-radius: 10px;
-  }
-
-  /* 스크롤바 핸들 호버 상태 */
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--gray-06);
-  }
-
-  /* 스크롤바의 넓이 */
-  ::-webkit-scrollbar {
-    width: 7px;
-    height: 5px;
-  }
 `;
 
 export default ChatBox;

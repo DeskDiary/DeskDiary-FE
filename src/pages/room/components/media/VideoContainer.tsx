@@ -74,7 +74,6 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
   useEffect(() => {
     getRoomInfo();
   }, []);
-  console.log(users)
   const handleUserLeft = async (currentTracks: any) => {
     // console.log('✨아고라 연결 끊기');
 
@@ -100,8 +99,6 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
     await client.leave();
     // console.log('✨✨✨✨✨');
   };
-
-  console.log(users)
 
   useEffect(() => {
     const init = async (name: string) => {
