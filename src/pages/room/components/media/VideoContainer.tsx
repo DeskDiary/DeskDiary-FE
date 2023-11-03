@@ -18,16 +18,6 @@ import socket from '../../socketInstance';
 
 type RoomSideBarProps = {};
 
-type UserListPayload = {
-  nickname: string;
-  userListArr: { nickname: string; img: string; userId: number }[];
-};
-
-// 아고라 사용자 정보를 확장하여 시스템 사용자 정보를 포함시키는 타입
-interface ExtendedAgoraUser extends IAgoraRTCRemoteUser {
-  systemUser?: user; // 시스템 사용자 정보를 추가한다.
-}
-
 type VideoContainerProps = {
   setInCall: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -37,7 +27,6 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
   const token = getCookie('token');
   const getUUID = window.location.pathname.split('/room/')[1];
   const [recoilRoomInfo, setRecoilRoomInfo] = useRecoilState(RoomInfo);
-  const [extendedUsers, setExtendedUsers] = useState<ExtendedAgoraUser[]>([]);
   const [roomInfo, setRoomInfo] = useState({
     agoraAppId: '',
     agoraToken: '',
@@ -65,21 +54,7 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
 
   const client = useClient();
 
-  const { data } = useQuery('cam-user', fetchUser);
-
   const { ready, tracks } = useMicrophoneAndCameraTracks();
-
-  // 들어온 유저 리스트
-  useEffect(() => {
-    socket.on('new-user', (payload: UserListPayload) => {
-      const { nickname, userListArr } = payload;
-      setRoomUserList(userListArr);
-    });
-
-    return () => {
-      socket.off('new-user');
-    };
-  }, [socket]);
 
   console.log(roomUserList);
 
@@ -104,6 +79,9 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
   useEffect(() => {
     getRoomInfo();
   }, []);
+
+  console.log(roomInfo)
+
   const handleUserLeft = async (currentTracks: any) => {
     // console.log('✨아고라 연결 끊기');
 
@@ -134,29 +112,15 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
     const init = async (name: string) => {
       client.on('user-published', async (user, mediaType) => {
         await client.subscribe(user, mediaType);
-        // console.log('subscribe success');
-        const systemUserInfo = roomUserList.find(u => u.userId === user.uid);
-        
         
         if (mediaType === 'video') {
           setUsers(prevUsers => {
             return [...prevUsers, user];
           });
+          
         }
         if (mediaType === 'audio') {
           user.audioTrack?.play();
-        }
-      });
-
-      client.on('user-unpublished', (user, type) => {
-        // console.log('unpublished', user, type);
-        if (type === 'audio') {
-          user.audioTrack?.stop();
-        }
-        if (type === 'video') {
-          setUsers(prevUsers => {
-            return prevUsers.filter(User => User.uid !== user.uid);
-          });
         }
       });
 

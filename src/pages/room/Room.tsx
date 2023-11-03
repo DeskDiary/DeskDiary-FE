@@ -32,6 +32,10 @@ const Room: React.FC<RoomProps> = () => {
   const location = useLocation();
   const token = getCookie('token');
   useEffect(() => {
+    if(!token) {
+      navigate('/')
+      return;
+    }
     setRoomUUID(location.pathname.split('/')[2]);
     getRoomInfo();
   }, []);
