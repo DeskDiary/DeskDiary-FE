@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import styled from 'styled-components';
 import { getCookie } from '../../../auth/cookie';
@@ -40,8 +40,9 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = () => {
       },
       onError: (error: any) => {
         if (error.response) {
-          const message = error.response.data.message;
-          // console.log(message);
+          const messages = error.response.data.message;
+
+          const message = Array.isArray(messages) ? messages[0] : messages;
 
           switch (true) {
             case message.includes('비밀번호가 비어 있으면 안됩니다.'):
@@ -51,7 +52,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = () => {
               '비밀번호는 대문자, 소문자, 숫자, 특수문자를 각각 하나 이상 포함해야 합니다',
             ):
               setErrorMessage(
-                '비밀번호는 대문자, 소문자, 숫자, 특수문자를 각각 하나 이상 포함한 8자 이상 이어야 합니다',
+                '*비밀번호는 대문자, 소문자, 숫자, 특수문자를 각각 하나 이상 포함한 8자 이상 이어야 합니다',
               );
               break;
             case message.includes('비밀번호는 8자 이상이어야 합니다'):
@@ -108,11 +109,16 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = () => {
           onBlur={onBlur}
         />
       </Group>
-      {errorMessage && errorMessage}
+      {errorMessage && <Error>{errorMessage}</Error>}
       <button type="submit">비밀번호 저장</button>
     </Container>
   );
 };
+
+const Error = styled.div`
+  color: red;
+  font-size: 13px;
+`
 
 const Group = styled.div`
   display: flex;
