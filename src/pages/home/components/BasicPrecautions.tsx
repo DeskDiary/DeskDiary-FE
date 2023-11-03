@@ -9,7 +9,7 @@ const BasicPrecautions: React.FC<BasicPrecautionsProps> = () => {
       <BoxGroup>
         <Number>1.</Number>
         <span>
-          화상 채팅 중에도 개인 정보를 보호해야 해. 화상 채팅 중에
+          화상 채팅 중에도 개인 정보를 보호해야 합니다. 화상 채팅 중에
           화면을 녹화하거나 스크린샷을 찍지 않도록 주의 해 주세요.
         </span>
       </BoxGroup>
@@ -32,19 +32,20 @@ const BasicPrecautions: React.FC<BasicPrecautionsProps> = () => {
 };
 
 const Number = styled.div`
-  font-size: 12px;
+  font-size: 15px;
   color: var(--gray-07);
   width: 15px;
   height: 100%;
+  margin-right: 2px;
 `;
 
 const BoxGroup = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center;
+  align-items: start;
   > span {
-    font-size: 12px;
+    font-size: 15px;
     color: var(--gray-07);
   }
 `;

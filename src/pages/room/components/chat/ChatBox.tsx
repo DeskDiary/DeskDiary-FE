@@ -57,18 +57,18 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
       uuid: roomId,
     };
 
-    console.log('전송전', messageData);
+    // console.log('전송전', messageData);
     newMessage !== ''
       ? socket.emit('msgToServer', messageData)
       : toast.error('메세지를 입력해주세요');
     setNewMessage('');
-    console.log('전송후');
+    // console.log('전송후');
   };
 
   // 서버에서 유저애개 메세지를 보냄
   useEffect(() => {
     socket.on('msgToClient', (message: MessageData) => {
-      console.log('받은 메시지:', message); // 이 부분을 추가해줘!
+      // console.log('받은 메시지:', message); // 이 부분을 추가해줘!
       setAllChatList(prevAllChatList => [
         ...prevAllChatList,
         { type: 'message', data: message },
@@ -76,7 +76,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
     });
 
     return () => {
-      console.log('off');
+      // console.log('off');
       socket.off('msgToClient');
     };
   }, [socket]);
@@ -90,9 +90,9 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
         { type: 'new-user', data: nickname },
       ]);
       setRoomUserList(userListArr);
-      console.log('🥰새로 들어온 유저', nickname);
-      console.log('🥰유저리스트', userListArr);
-      console.log('리코일', roomUserList);
+      // console.log('🥰새로 들어온 유저', nickname);
+      // console.log('🥰유저리스트', userListArr);
+      // console.log('리코일', roomUserList);
     });
 
     socket.on('leave-user', (payload: UserListPayload) => {
@@ -102,8 +102,8 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
         { type: 'left-user', data: nickname },
       ]);
       setRoomUserList(userListArr);
-      console.log('😭나간 유저', nickname);
-      console.log('😭유저리스트', userListArr);
+      // console.log('😭나간 유저', nickname);
+      // console.log('😭유저리스트', userListArr);
     });
 
     return () => {
@@ -118,7 +118,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
         ...prevAllChatList,
         { type: 'left-user', data: byeUser },
       ]);
-      console.log('😭나간 유저', byeUser);
+      // console.log('😭나간 유저', byeUser);
     });
   }, [socket]);
 
@@ -262,9 +262,10 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: start;
   align-items: center;
+  border-radius: 10px;
 
-  width: 100%;
-  min-height: calc(100% - 145px);
+  width: 97%;
+  min-height: calc(100% - 160px);
   /* border-left: 1px solid var(--gray-07); */
   position: relative;
   box-shadow: 2px 2px 6px 2px rgba(0, 0, 0, 0.3);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useQuery } from 'react-query';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -37,7 +37,7 @@ const SideBar: React.FC<SideBarProps> = () => {
   const token = getCookie('token');
   const navigate = useNavigate();
 
-  const { data } = useQuery<user>('sidebar-user', fetchUser, {
+  const { data, refetch } = useQuery<user>('sidebar-user', fetchUser, {
     refetchOnWindowFocus: false,
   });
 
@@ -103,7 +103,6 @@ const SideBar: React.FC<SideBarProps> = () => {
     </Sidebar>
   );
 };
-
 const SidebarButton = styled(NavLink)`
   display: flex;
   align-items: center;
@@ -118,6 +117,16 @@ const SidebarButton = styled(NavLink)`
   border-radius: 50px;
   /* opacity: 0.8; */
   margin-left: 5px;
+  position: relative;
+
+  ::before {
+    content: "";
+    position: absolute;
+    top: -0px;
+    left: -100px;
+    right: -100px;
+    bottom: -0px;
+  }
 
   color: white;
   opacity: 0.5;

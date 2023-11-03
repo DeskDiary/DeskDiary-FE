@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { build, help_outline, logout } from '../../../images/room';
 import { RoomModalAtom } from '../../../recoil/RoomAtom';
 import RoomModal from './RoomModal';
+import BasicPrecautions from '../../home/components/BasicPrecautions';
 
-type RoomUnderBarProps = { roomId: string };
+type RoomUnderBarProps = { roomId: string; note: string };
 
-const RoomUnderBar: React.FC<RoomUnderBarProps> = ({ roomId }) => {
-
+const RoomUnderBar: React.FC<RoomUnderBarProps> = ({ roomId, note }) => {
+  const [showNote, setShowNote] = useState(false);
   const [outModalState, setOutModalState] =
     useRecoilState<boolean>(RoomModalAtom);
 
@@ -22,6 +23,19 @@ const RoomUnderBar: React.FC<RoomUnderBarProps> = ({ roomId }) => {
     setOutModalState(true);
   };
 
+  const showNoteHandler = () => {
+    setShowNote(!showNote);
+  };
+
+  const renderNoteWithBreaks = (text: string) => {
+    return text.split('\n').map((line, index) => (
+      <React.Fragment key={index}>
+        {line}
+        <br />
+      </React.Fragment>
+    ));
+  };
+
   return (
     <>
       {outModalState && <RoomModal />}
@@ -31,16 +45,48 @@ const RoomUnderBar: React.FC<RoomUnderBarProps> = ({ roomId }) => {
           <img src={logout} alt="방나가기" />
           <p>방 나가기</p>
         </OutRoomButton>
-        <SettingList>
-          <img src={build} alt="" />
-          <p>환경설정</p>
+        <SettingList onClick={showNoteHandler}>
+          {/* <img src={build} alt="" />
+          <p>환경설정</p> */}
           <img src={help_outline} alt="" />
-          <p>도움말</p>
+          <p>유의사항</p>
+          {showNote && (
+            <Note>
+              <span>📢 유의사항  　</span>
+              <BasicPrecautions />
+              {renderNoteWithBreaks(note)}
+            </Note>
+          )}
         </SettingList>
       </Body>
     </>
   );
 };
+
+const Note = styled.div`
+  background-color: var(--gray-03);
+  border-radius: 10px;
+  opacity: 0.6;
+  position: fixed;
+  bottom: 70px;
+  left: 30px;
+  padding: 10px;
+  font-size: 15px;
+  color: var(--gray-07);
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+  width: 500px;
+  text-align: left;
+
+  > span {
+    margin: 10px auto;
+    color:  var(--gray-09);
+    font-size: 15px;
+    font-weight: 700;
+  }
+`;
 
 const Body = styled.div`
   width: 100%;
@@ -76,8 +122,11 @@ const OutRoomButton = styled.button`
 const SettingList = styled.div`
   margin-left: 50px;
   display: flex;
-  gap: 16px;
+  gap: 5px;
   align-items: center;
+  position: relative;
+  cursor: pointer;
+  
   img {
     width: 24px;
     height: 24px;

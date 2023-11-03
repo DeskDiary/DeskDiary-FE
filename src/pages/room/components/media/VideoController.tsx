@@ -8,12 +8,16 @@ import {
   FaVideoSlash,
 } from 'react-icons/fa';
 import styled from 'styled-components';
+import { useQuery } from 'react-query';
+import { fetchUser } from '../../../../axios/api';
 
 type VideoControllerProps = {
   tracks: [IMicrophoneAudioTrack, ICameraVideoTrack];
   setStart: React.Dispatch<React.SetStateAction<boolean>>;
   setInCall: React.Dispatch<React.SetStateAction<boolean>>;
 };
+
+
 
 const VideoController: React.FC<VideoControllerProps> = ({
   tracks,
@@ -47,6 +51,8 @@ const VideoController: React.FC<VideoControllerProps> = ({
     setInCall(false);
   };
 
+  const {data} = useQuery('cam-user', fetchUser)
+
   return (
     <Controller>
       <button
@@ -61,19 +67,30 @@ const VideoController: React.FC<VideoControllerProps> = ({
       >
         {trackState.video ? <FaVideo /> : <FaVideoSlash />}
       </button>
+      <div>{data.nickname}</div>
       {/* <button onClick={() => leaveChannel()}>나가기</button> */}
     </Controller>
   );
 };
 
 const Controller = styled.div`
-  width: 600px;
+  width: 400px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: start;
   gap: 10px;
   margin-left: 10px;
+
+  >div{
+    margin: 0 20px 0 auto;
+    display: flex;
+    align-items: center;
+    height: 35px;
+    background-color: #ffffff4c;
+    padding: 2px 5px;
+    border-radius: 10px;
+  }
 
   > button {
     display: flex;

@@ -11,7 +11,7 @@ const App: React.FC<AppProps> = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Toaster position="top-center" />
+      <Toaster position="top-center"/>
       <GlobalStyle />
       <Router />
     </QueryClientProvider>

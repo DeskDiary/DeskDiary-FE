@@ -42,9 +42,9 @@ const GlobalStyle = createGlobalStyle`
 
     }
   body {
-    width: 100vw;
+    width: 95vw;
     scroll-behavior: smooth;
-    /* overflow-x: hidden; */
+    overflow-y: scroll;
 
     font-family: Pretendard;
     font-style: normal;
@@ -66,19 +66,23 @@ const GlobalStyle = createGlobalStyle`
 
    /* 스크롤바 트랙(배경) 디자인 */
    ::-webkit-scrollbar-track {
-    background: rgba(0, 197, 255, 0.0);
+    background-color: transparent;
   }
 
   /* 스크롤바 핸들 디자인 */
   ::-webkit-scrollbar-thumb {
-    background: var(--gray-04);
+    background: var(--gray-05);
     border-radius: 10px;
     
   }
 
   /* 스크롤바 핸들 호버 상태 */
   ::-webkit-scrollbar-thumb:hover {
-    background: #555;
+    background: var(--gray-07);
+  }
+  
+  ::-webkit-scrollbar-corner {
+    background-color: transparent;
   }
 
   /* 스크롤바의 넓이 */

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { getCookie } from '../auth/cookie';
 import { Link } from 'react-router-dom';
 import CreateRoomModal from '../pages/home/components/CreateRoomModal';
@@ -19,7 +19,7 @@ const CreateRoomButton2: React.FC<CreateRoomButtonProps> = () => {
   };
 
   return (
-    <>
+    <Container>
       {token ? (
         <Button>
           <div onClick={onClickCreateRoomButton}>
@@ -36,9 +36,28 @@ const CreateRoomButton2: React.FC<CreateRoomButtonProps> = () => {
       {openCreateRoom && (
         <CreateRoomModal setOpenCreateRoom={setOpenCreateRoom} />
       )}
-    </>
+    </Container>
   );
 };
+
+const bounce = keyframes`
+  0%, 30%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  20% {
+    transform: translateY(-25px);
+  }
+  40% {
+    transform: translateY(-15px);
+  }
+  60% {
+    transform: translateY(-10px);
+  }
+`;
+
+const Container = styled.div`
+  z-index: 50;
+`;
 
 const Login = styled(Link)`
   font-size: 17px;
@@ -85,7 +104,6 @@ const Img = styled.img`
   width: 180px;
   height: 120px;
   opacity: 1;
-  transition: opacity 0.3s;
   position: absolute;
   bottom: 0;
   right: 0;
@@ -95,8 +113,8 @@ const Button = styled.div`
   width: 100px;
   height: 100px;
   position: fixed;
-  bottom: 80px;
-  right: 80px;
+  bottom: 30px;
+  right: 30px;
   cursor: pointer;
 
   display: flex;
@@ -107,11 +125,17 @@ const Button = styled.div`
   &:hover {
     > div {
       ${Img} {
-        opacity: 0;
+        animation: ${bounce} 2s infinite;
+        /* opacity: 0; */
       }
-      ${HoverImg} {
+      /* ${HoverImg} {
+        transform: translateY(-10px);
         opacity: 1;
-      }
+      } */
+    }
+    > p {
+      transform: translateY(-15px);
+      animation: ${bounce} 2s infinite;
     }
   }
 
@@ -130,6 +154,8 @@ const Button = styled.div`
       font-weight: 500;
       width: 120px;
       text-align: center;
+      background-color: #e8f1ffae;
+      border-radius: 10px;
     }
   }
 `;

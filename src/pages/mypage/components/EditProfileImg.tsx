@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useState, useEffect } from 'react';
 import MainTop from '../../../components/layout/main/MainTop';
 import { edit } from '../../../images/mypage';
 import { Button } from '@mui/material';
@@ -13,6 +13,7 @@ import { RoomAtom } from '../../../recoil/RoomAtom';
 import { fetchUser } from '../../../axios/api';
 import { getCookie, setTokenCookie } from '../../../auth/cookie';
 import { toast } from 'sonner';
+import { profile } from '../../../images';
 
 type EditProfileImgProps = {};
 
@@ -42,6 +43,10 @@ const EditProfileImg: React.FC<EditProfileImgProps> = () => {
       [field]: value,
     });
   };
+
+  const { data, refetch } = useQuery<user, Error>('mypageUser', fetchUser, {
+    refetchOnWindowFocus: false,
+  });
 
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const image = e.target.files?.[0];
@@ -83,7 +88,6 @@ const EditProfileImg: React.FC<EditProfileImgProps> = () => {
         formData,
         config,
       );
-
       // console.log('프로필 수정 서버로 전송', response.data);
 
       // 성공시 로직
@@ -100,24 +104,36 @@ const EditProfileImg: React.FC<EditProfileImgProps> = () => {
 
 
   return (
-    <Button
-      component="label"
-      sx={{
-        color: 'var(--primary-01)',
-        '&:hover': {
-          backgroundColor: 'initial',
-          boxShadow: 'none',
-        },
-      }}
-    >
-      사진 수정
-      <EditIcon src={edit} alt='edit profile image'/>
-      <VisuallyHiddenInput type="file" onChange={handleFileChange} />
-    </Button>
+    <>
+      <ProfileImg
+        src={data?.profileImage ? image : profile}
+        alt="profile image"
+      ></ProfileImg>
+      <Button
+        component="label"
+        sx={{
+          color: 'var(--primary-01)',
+          '&:hover': {
+            backgroundColor: 'initial',
+            boxShadow: 'none',
+          },
+        }}
+      >
+        사진 수정
+        <EditIcon src={edit} alt="edit profile image" />
+        <VisuallyHiddenInput type="file" onChange={handleFileChange} />
+      </Button>
+    </>
   );
 };
 
+const ProfileImg = styled.img`
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+`;
+
 const EditIcon = styled.img`
   width: 18px;
-`
+`;
 export default EditProfileImg;

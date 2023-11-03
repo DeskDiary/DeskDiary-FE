@@ -52,8 +52,10 @@ const Time = styled.div`
 const Message = styled.div`
   font-size: 15px;
   word-wrap: break-word;
+  word-break: break-word;
   width: 100%;
   color: white;
+
   /* @media (min-width: 768px) {
     width: 300px;
   } */
@@ -88,8 +90,10 @@ const Container = styled.div`
   flex-direction: row;
   justify-content: start;
   align-items: start;
+  width: 95%;
   gap: 8px;
+  /* overflow: wrap; */
 
-  width: 100%;
+  width: 310px;
 `;
 export default Chat;
