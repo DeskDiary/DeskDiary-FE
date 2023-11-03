@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { kakao, google } from '../../images/main';
@@ -21,7 +21,7 @@ const Join: React.FC<JoinProps> = () => {
 
   const [user, setUser] = useRecoilState(UserAtom);
 
-  const [confirmPassword, setconfirmPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [isAgreeChecked, setIsAgreeChecked] = useState(false);
 
   const [emailError, setEmailError] = useState<string | null>(null);
@@ -46,7 +46,7 @@ const Join: React.FC<JoinProps> = () => {
         setUser(prevUser => ({ ...prevUser, password: '' }));
         break;
       case 'confirmPassword':
-        setconfirmPassword('');
+        setConfirmPassword('');
         break;
       case 'nickname':
         setUser(prevUser => ({ ...prevUser, nickname: '' }));
@@ -86,8 +86,9 @@ const Join: React.FC<JoinProps> = () => {
       },
       onError: (error: any) => {
         if (error.response) {
-          const message = error.response.data.message;
-          // console.log(message);
+          const messages = error.response.data.message;
+
+          const message = Array.isArray(messages) ? messages[0] : messages;
 
           switch (true) {
             case message.includes('이메일이 이미'):
@@ -107,10 +108,10 @@ const Join: React.FC<JoinProps> = () => {
             ):
               setNicknameError('닉네임은 특수문자가 포함될 수 없습니다.');
               break;
-            case message.includes(
-              'nickname must be',
-            ):
-              setNicknameError('닉네임은 2개 이상 5개 이하의 문자로 이루어져야 합니다.');
+            case message.includes('nickname must be'):
+              setNicknameError(
+                '닉네임은 2개 이상 5개 이하의 문자로 이루어져야 합니다.',
+              );
               break;
             case message.includes('비밀번호가 비어 있으면 안됩니다.'):
               setPasswordError('비밀번호가 비어 있으면 안됩니다.');
@@ -126,7 +127,6 @@ const Join: React.FC<JoinProps> = () => {
               setPasswordError('비밀번호는 8자 이상이어야 합니다');
               break;
             default:
-
           }
         }
       },
@@ -138,6 +138,18 @@ const Join: React.FC<JoinProps> = () => {
 
     joinMutation.mutate(user);
   };
+
+  useEffect(() => {
+    return () => {
+      setUser({
+        email: '',
+        password: '',
+        nickname: '',
+        file: '',
+      });
+      setConfirmPassword('');
+    }
+  }, [])
 
   return (
     <JoinForm onSubmit={onSubmitJoin}>
@@ -210,7 +222,7 @@ const Join: React.FC<JoinProps> = () => {
               type="password"
               placeholder="비밀번호를 한 번 더 입력해주세요"
               value={confirmPassword}
-              onChange={e => setconfirmPassword(e.target.value)}
+              onChange={e => setConfirmPassword(e.target.value)}
               onFocus={() => handleFocusInput('confirmPassword')}
               onBlur={() => {
                 blurConfirmHandler();
