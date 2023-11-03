@@ -12,7 +12,7 @@ import {
 } from '../../../recoil/RoomAtom';
 import { timerState } from '../../../recoil/TimeAtom';
 import socket from '../socketInstance';
-import { getKoreanTime } from './Timer';
+import { formatTime, getKoreanTime } from './Timer';
 type RoomModalProps = {};
 
 const RoomModal: React.FC<RoomModalProps> = () => {
@@ -25,7 +25,7 @@ const RoomModal: React.FC<RoomModalProps> = () => {
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const [storageStartData, setStorageStartData] = useState<string>('');
   const [checkOut, setCheckOut] = useState<string>('');
-  const [timer, setTimer] = useRecoilState<string>(timerState);
+  const [timer, setTimer] = useRecoilState<number>(timerState);
 
   useEffect(() => {
     const storageStartData = sessionStorage.getItem('checkIn');
@@ -46,7 +46,7 @@ const RoomModal: React.FC<RoomModalProps> = () => {
             ? storageStartData[0]
             : getKoreanTime()[0],
         checkOut: getKoreanTime()[0],
-        totalHours: timer,
+        totalHours: formatTime(timer),
         historyType: roomInfo.category, // study, hobby
       };
       // console.log('❤️roomInfo.category', roomInfo);
@@ -61,9 +61,8 @@ const RoomModal: React.FC<RoomModalProps> = () => {
         },
       );
 
-      setTimer('00:00:00');
-      localStorage.removeItem('startTime');
-      localStorage.removeItem('endTime');
+      setTimer(0);
+      sessionStorage.removeItem('checkIn');
       setOutModalState(false);
       navigate('/');
       window.location.reload();
@@ -113,7 +112,7 @@ const RoomModal: React.FC<RoomModalProps> = () => {
           </div>
         </TimeBox>
         <TimerText>
-          <span>{timer}</span>
+          <span>{formatTime(timer)}</span>
           <span> 앉아 있었어요</span>
         </TimerText>
         <p style={{ color: '#757575', fontWeight: '500' }}>퇴장하시겠어요?</p>

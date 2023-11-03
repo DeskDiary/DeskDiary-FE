@@ -56,11 +56,10 @@ const Timer: React.FC<TimerProps> = () => {
   const [timerButtonState, setTimerButtonState] = useState<boolean>(false);
   const sessionData_checkIn = JSON.parse(sessionStorage.getItem('checkIn') || '[]');
   const [checkIn, setCheckIn] = useState<string[]>(sessionData_checkIn);
-
+  const [timer, setTimer] = useRecoilState<number>(timerState);
+  
   useEffect(() => {
-    // 'checkIn' 배열에 현재 시간 문자열을 추가
     setCheckIn([...checkIn, getKoreanTime().toString()]);
-    
   }, []);
 
   useEffect(() => {
@@ -69,6 +68,7 @@ const Timer: React.FC<TimerProps> = () => {
 
   const countReducer = (oldCount: any, action: any) => {
     if (action === 'START') {
+      setTimer(oldCount + 1)
       return oldCount + 1;
     } else if (action === 'STOP') {
       return oldCount;
