@@ -276,7 +276,7 @@ const Join: React.FC<JoinProps> = () => {
 
         <AgreeBox>
           <AgreeCheck type="checkbox" onClick={onClickAgree}></AgreeCheck>
-          <AgreeLink to="/">
+          <AgreeLink>
             <span>(필수)</span>통합서비스 이용약관 및 개인정보 처리방침에 동의
             합니다.
           </AgreeLink>
@@ -399,7 +399,7 @@ const JoinButton = styled.button<{ disabled: boolean }>`
   cursor: ${props => (props.disabled ? 'auto' : 'pointer')};
 `;
 
-const AgreeLink = styled(Link)`
+const AgreeLink = styled.div`
   font-size: 14px;
   width: 100%;
   color: var(--primary-01);

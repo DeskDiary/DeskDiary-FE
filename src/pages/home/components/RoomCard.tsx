@@ -172,6 +172,9 @@ const RoomTitle = styled.div`
   font-size: 14px;
   font-weight: 500;
   text-overflow: ellipsis;
+  white-space: nowrap;
+  height: 20px;
+  width: 95%;
 `;
 
 const Img = styled.div`
@@ -198,12 +201,6 @@ const Thumbmail = styled.img`
   overflow: hidden;
   object-fit: cover;
   transition: transform 0.3s ease-in-out; // <-- 이 부분 추가
-  /* z-index: 10;
-
-  &:hover {
-    transform: translateY(-10px); // <-- 이 부분 추가
-    box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.3);
-  } */
 `;
 
 const Container = styled.div`
