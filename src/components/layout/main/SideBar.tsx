@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -8,7 +8,6 @@ import { fetchUser } from '../../../axios/api';
 import { hobby, home, mydesk, study } from '../../../images/main';
 import logo from '../../../images/logo.svg';
 import profile from '../.././../images/main/profile.svg';
-
 
 type SideBarProps = {};
 
@@ -36,6 +35,7 @@ const navItems = [
 const SideBar: React.FC<SideBarProps> = () => {
   const token = getCookie('token');
   const navigate = useNavigate();
+  const [isClicked, setIsClicked] = useState(false);
 
   const { data, refetch } = useQuery<user>('sidebar-user', fetchUser, {
     refetchOnWindowFocus: false,
@@ -44,6 +44,26 @@ const SideBar: React.FC<SideBarProps> = () => {
   const delayedRedirect = (path: string) => {
     setTimeout(() => {
       navigate(path);
+    }, 1000);
+  };
+
+  const mydeskHandler = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (isClicked) return;
+    setIsClicked(true);
+    if (!token) {
+      e.preventDefault(); // NavLink의 기본 이동을 막아줌
+
+      toast.error('로그인이 필요합니다.', {
+        style: {
+          backgroundColor: '#ffdcdc',
+          opacity: 0.6,
+          color: 'white',
+        },
+      });
+      delayedRedirect('/login');
+    }
+    setTimeout(() => {
+      setIsClicked(false);
     }, 1000);
   };
 
@@ -64,19 +84,7 @@ const SideBar: React.FC<SideBarProps> = () => {
             ))}
             <SidebarButton
               to={token ? '/mydesk' : '/login'}
-              onClick={e => {
-                if (!token) {
-                  e.preventDefault(); // NavLink의 기본 이동을 막아줌
-                  toast.error('로그인이 필요합니다.', {
-                    style: {
-                      backgroundColor: '#ffdcdc',
-                      opacity: 0.6,
-                      color: 'white',
-                    },
-                  });
-                  delayedRedirect('/login');
-                }
-              }}
+              onClick={e => mydeskHandler(e)}
             >
               <img src={mydesk} alt="menu icon" />
               <p>책상 기록</p>
@@ -120,7 +128,7 @@ const SidebarButton = styled(NavLink)`
   position: relative;
 
   ::before {
-    content: "";
+    content: '';
     position: absolute;
     top: -0px;
     left: -100px;
@@ -155,7 +163,7 @@ const SidebarButton = styled(NavLink)`
       overflow: hidden;
     }
     &.mypage {
-      background-color: rgba(255, 255, 255, 0.0);
+      background-color: rgba(255, 255, 255, 0);
     }
   }
 

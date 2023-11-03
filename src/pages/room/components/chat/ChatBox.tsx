@@ -4,7 +4,7 @@ import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { fetchUser } from '../../../../axios/api';
 import { chat, send } from '../../../../images/room';
-import { blue } from '../../../../images/character'
+import { blue } from '../../../../images/character';
 import { RoomUserList } from '../../../../recoil/RoomAtom';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -25,7 +25,7 @@ type MessageData = {
 
 type UserListPayload = {
   nickname: string;
-  userListArr: { nickname: string; img: string }[];
+  userListArr: { nickname: string; img: string; userId: number }[];
 };
 
 type AllChatItem =
@@ -37,7 +37,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
   const [newMessage, setNewMessage] = useState('');
   const [allChatList, setAllChatList] = useState<AllChatItem[]>([]);
   const [roomUserList, setRoomUserList] = useRecoilState(RoomUserList);
-  const navigate =useNavigate();
+  const navigate = useNavigate();
   const token = getCookie('token');
 
   const { data } = useQuery<user>('chat-user', fetchUser, {
@@ -107,10 +107,11 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
     });
 
     return () => {
-      socket.off('user-list');
-      socket.off('left-user');
+      socket.off('new-user');
+      socket.off('leave-user');
     };
   }, [socket]);
+
 
   useEffect(() => {
     socket.on('disconnect_user', (byeUser: string) => {
@@ -158,7 +159,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
           <UserInput
             value={newMessage}
             onChange={e => setNewMessage(e.target.value)}
-            placeholder='메세지를 입력 해 주세요'
+            placeholder="메세지를 입력 해 주세요"
           ></UserInput>
           <SendButton type="submit">
             <img src={blue} />
@@ -212,7 +213,7 @@ const SendButton = styled.button`
   margin: 10px;
   background-color: transparent;
   cursor: pointer;
-  >img{
+  > img {
     width: 30px;
   }
 `;

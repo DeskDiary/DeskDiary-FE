@@ -11,8 +11,22 @@ import { useClient } from './config';
 import { useQuery } from 'react-query';
 import { fetchUser } from '../../../../axios/api';
 import { useRecoilState } from 'recoil';
-import { RoomInfo } from '../../../../recoil/RoomAtom';
+import { RoomInfo, RoomUserList } from '../../../../recoil/RoomAtom';
 import styled from 'styled-components';
+
+import socket from '../../socketInstance';
+
+type RoomSideBarProps = {};
+
+type UserListPayload = {
+  nickname: string;
+  userListArr: { nickname: string; img: string; userId: number }[];
+};
+
+// 아고라 사용자 정보를 확장하여 시스템 사용자 정보를 포함시키는 타입
+interface ExtendedAgoraUser extends IAgoraRTCRemoteUser {
+  systemUser?: user; // 시스템 사용자 정보를 추가한다.
+}
 
 type VideoContainerProps = {
   setInCall: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,6 +37,7 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
   const token = getCookie('token');
   const getUUID = window.location.pathname.split('/room/')[1];
   const [recoilRoomInfo, setRecoilRoomInfo] = useRecoilState(RoomInfo);
+  const [extendedUsers, setExtendedUsers] = useState<ExtendedAgoraUser[]>([]);
   const [roomInfo, setRoomInfo] = useState({
     agoraAppId: '',
     agoraToken: '',
@@ -42,6 +57,7 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
 
   const [users, setUsers] = useState<IAgoraRTCRemoteUser[]>([]);
   const [start, setStart] = useState<boolean>(false);
+  const [roomUserList, setRoomUserList] = useRecoilState(RoomUserList);
 
   const APP_ID = roomInfo.agoraAppId;
   const TOKEN = roomInfo.agoraToken;
@@ -52,6 +68,20 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
   const { data } = useQuery('cam-user', fetchUser);
 
   const { ready, tracks } = useMicrophoneAndCameraTracks();
+
+  // 들어온 유저 리스트
+  useEffect(() => {
+    socket.on('new-user', (payload: UserListPayload) => {
+      const { nickname, userListArr } = payload;
+      setRoomUserList(userListArr);
+    });
+
+    return () => {
+      socket.off('new-user');
+    };
+  }, [socket]);
+
+  console.log(roomUserList);
 
   const getRoomInfo = async () => {
     try {
@@ -105,6 +135,9 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
       client.on('user-published', async (user, mediaType) => {
         await client.subscribe(user, mediaType);
         // console.log('subscribe success');
+        const systemUserInfo = roomUserList.find(u => u.userId === user.uid);
+        
+        
         if (mediaType === 'video') {
           setUsers(prevUsers => {
             return [...prevUsers, user];
@@ -157,15 +190,15 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
   return (
     <Container>
       <Controller>
-      {ready && tracks && (
-        <VideoController
-          tracks={tracks}
-          setStart={setStart}
-          setInCall={setInCall}
-        />
-      )}
+        {ready && tracks && (
+          <VideoController
+            tracks={tracks}
+            setStart={setStart}
+            setInCall={setInCall}
+          />
+        )}
       </Controller>
-      
+
       {start && tracks && <Videos users={users} tracks={tracks} />}
     </Container>
   );
@@ -173,12 +206,12 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
 
 const Container = styled.div`
   position: relative;
-`
+`;
 
 const Controller = styled.div`
   position: absolute;
   top: 260px;
   left: 10px;
   z-index: 10;
-`
+`;
 export default VideoContainer;

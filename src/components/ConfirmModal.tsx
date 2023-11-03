@@ -107,7 +107,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
           <Button type="button" onClick={() => handleButton(title)}>
             {title}
           </Button>
-          {isDeleteUser && <ConfirmInput setIsDeleteUser={setIsDeleteUser}/>}
+          {isDeleteUser && <ConfirmInput setIsOpen={setIsOpen} setIsDeleteUser={setIsDeleteUser}/>}
           <Button
             type="button"
             buttontype="cancel"
