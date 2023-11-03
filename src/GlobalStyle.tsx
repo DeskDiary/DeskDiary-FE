@@ -32,6 +32,9 @@ const GlobalStyle = createGlobalStyle`
       --primary-09: #668D99;
       --primary-10: #73868C;
 
+      --background-01: #E8F1FF;
+      --background-02: #f0f5fd;
+
       --bw-whtie: #FEFEFE;
 
       --bw-back: #212121;
@@ -52,7 +55,7 @@ const GlobalStyle = createGlobalStyle`
     line-height: 123.5%; /* 29.64px */
     letter-spacing: 0.25px;
     font-feature-settings: 'clig' off, 'liga' off;
-    background-color: #E8F1FF;
+    background-color: var(--background-01);
   }
 
   *{

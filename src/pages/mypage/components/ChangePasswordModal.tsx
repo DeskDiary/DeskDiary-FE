@@ -133,7 +133,7 @@ const Group = styled.div`
     padding: 10px;
     border-radius: 5px;
     font-size: 15px;
-    background-color: #E8F1FF;
+    background-color: var(--background-01);
     &:focus {
       outline: none;
     }
