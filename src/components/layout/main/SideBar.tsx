@@ -120,12 +120,13 @@ const SidebarButton = styled(NavLink)`
   transition: width 0.4s, background-color 0.3s; // width와 background-color에 대한 transition 추가
 
   font-size: 16px;
-  text-transform: capitalize;
+  /* text-transform: capitalize; */
   line-height: 1;
   border-radius: 50px;
   /* opacity: 0.8; */
   margin-left: 5px;
   position: relative;
+  z-index: 50;
 
   ::before {
     content: '';
@@ -157,11 +158,12 @@ const SidebarButton = styled(NavLink)`
     > img {
       filter: grayscale(0);
     }
+
     > p {
       color: white;
       font-weight: 500;
-      overflow: hidden;
     }
+
     &.mypage {
       background-color: rgba(255, 255, 255, 0);
     }
