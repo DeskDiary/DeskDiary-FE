@@ -16,7 +16,7 @@ type RoomSideBarProps = {};
 
 type UserListPayload = {
   nickname: string;
-  userListArr: { nickname: string; img: string }[];
+  userListArr: { nickname: string; img: string; userId: number }[];
 };
 
 const RoomSideBar: React.FC<RoomSideBarProps> = () => {

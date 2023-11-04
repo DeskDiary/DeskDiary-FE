@@ -93,7 +93,6 @@ const Container = styled.div`
   align-items: center;
   width: 1200px;
   height: 100%;
-  background-color: #e8f1ff;
 `;
 
 const Info = styled.div`

@@ -11,8 +11,12 @@ import { useClient } from './config';
 import { useQuery } from 'react-query';
 import { fetchUser } from '../../../../axios/api';
 import { useRecoilState } from 'recoil';
-import { RoomInfo } from '../../../../recoil/RoomAtom';
+import { RoomInfo, RoomUserList } from '../../../../recoil/RoomAtom';
 import styled from 'styled-components';
+
+import socket from '../../socketInstance';
+
+type RoomSideBarProps = {};
 
 type VideoContainerProps = {
   setInCall: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,6 +27,7 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
   const token = getCookie('token');
   const getUUID = window.location.pathname.split('/room/')[1];
   const [recoilRoomInfo, setRecoilRoomInfo] = useRecoilState(RoomInfo);
+  const [userVolumes, setUserVolumes] = useState<{ [uid: number]: number }>({});
   const [roomInfo, setRoomInfo] = useState({
     agoraAppId: '',
     agoraToken: '',
@@ -42,6 +47,7 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
 
   const [users, setUsers] = useState<IAgoraRTCRemoteUser[]>([]);
   const [start, setStart] = useState<boolean>(false);
+  const [roomUserList, setRoomUserList] = useRecoilState(RoomUserList);
 
   const APP_ID = roomInfo.agoraAppId;
   const TOKEN = roomInfo.agoraToken;
@@ -49,10 +55,11 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
 
   const client = useClient();
 
-  const { data } = useQuery('cam-user', fetchUser);
-
   const { ready, tracks } = useMicrophoneAndCameraTracks();
 
+  /**
+   * get room방 정보 가져옴
+   */
   const getRoomInfo = async () => {
     try {
       const response = await axios.get(
@@ -70,41 +77,32 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
       // console.error(error);
     }
   };
-  // console.log('😭확인', recoilRoomInfo);
-  useEffect(() => {
-    getRoomInfo();
-  }, []);
-  const handleUserLeft = async (currentTracks: any) => {
-    // console.log('✨아고라 연결 끊기');
 
+  /**
+   * 유저 방에서 떠남
+   * @param currentTracks
+   */
+  const handleUserLeft = async (currentTracks: any) => {
     if (currentTracks) {
       for (const track of currentTracks) {
         if (track) {
           try {
             await track.stop();
             await track.close();
-            // console.log(`✨Track 멈춤`);
+            await client.leave();
           } catch (error) {
             // console.error('Error stopping or closing track:', error);
           }
         }
       }
     }
-
-    if (client && currentTracks) {
-      await client.unpublish(currentTracks);
-      // console.log('✨unpublish 완료');
-    }
-
-    await client.leave();
-    // console.log('✨✨✨✨✨');
   };
 
   useEffect(() => {
     const init = async (name: string) => {
       client.on('user-published', async (user, mediaType) => {
         await client.subscribe(user, mediaType);
-        // console.log('subscribe success');
+
         if (mediaType === 'video') {
           setUsers(prevUsers => {
             return [...prevUsers, user];
@@ -112,17 +110,19 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
         }
         if (mediaType === 'audio') {
           user.audioTrack?.play();
-        }
-      });
 
-      client.on('user-unpublished', (user, type) => {
-        // console.log('unpublished', user, type);
-        if (type === 'audio') {
-          user.audioTrack?.stop();
-        }
-        if (type === 'video') {
-          setUsers(prevUsers => {
-            return prevUsers.filter(User => User.uid !== user.uid);
+          client.enableAudioVolumeIndicator();
+          
+          client.on('volume-indicator', (volumes) => {
+            setUserVolumes((prevVolumes) => {
+              const newUserVolumes = { ...prevVolumes };
+          
+              volumes.forEach((volume:any) => {
+                newUserVolumes[volume.uid] = volume.level;
+              });
+          
+              return newUserVolumes;
+            });
           });
         }
       });
@@ -140,45 +140,48 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
     };
     const currentTracks = tracks;
 
+    // 초기화 함수
     if (ready && tracks) {
       // console.log('init ready');
       init(CHANNEL);
     }
 
     return () => {
-      // 아고라 연결 끊기 로직
-      // console.log('===Tracks:', tracks);
-      // console.log('===Current Tracks:', currentTracks);
 
       handleUserLeft(tracks);
     };
   }, [CHANNEL, client, ready, tracks]);
 
+  useEffect(() => {
+    getRoomInfo();
+    window.onbeforeunload = null;
+  }, []);
+
   return (
     <Container>
       <Controller>
-      {ready && tracks && (
-        <VideoController
-          tracks={tracks}
-          setStart={setStart}
-          setInCall={setInCall}
-        />
-      )}
+        {ready && tracks && (
+          <VideoController
+            tracks={tracks}
+            setStart={setStart}
+            setInCall={setInCall}
+          />
+        )}
       </Controller>
-      
-      {start && tracks && <Videos users={users} tracks={tracks} />}
+
+      {start && tracks && <Videos users={users} tracks={tracks} volumes={userVolumes}/>}
     </Container>
   );
 };
 
 const Container = styled.div`
   position: relative;
-`
+`;
 
 const Controller = styled.div`
   position: absolute;
   top: 260px;
   left: 10px;
   z-index: 10;
-`
+`;
 export default VideoContainer;

@@ -4,7 +4,10 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { getCookie } from '../../../auth/cookie';
-import { RoomAtom, RoomUUIDAtom } from '../../../recoil/RoomAtom';
+import {
+  RoomAtom,
+  RoomUUIDAtom,
+} from '../../../recoil/RoomAtom';
 import MediaSetup from '../../home/components/MediaSetup';
 import BasicPrecautions from '../../home/components/BasicPrecautions';
 import { useQuery } from 'react-query';
@@ -100,21 +103,16 @@ const SetMediaModal: React.FC<SetMediaModal> = ({ setIsOpen, room }) => {
     setIsOpen(false);
   };
 
-  const socketJoinError = async (message: string) => {
-    toast.error(message);
-    navigate('/');
-    window.location.reload();
-  };
-
   useEffect(() => {
     socket.on('joinError', (message: string) => {
-      socketJoinError(message);
+      toast.error(message);
+      navigate('/');
     });
-
-    // return () => {
-    //   socket.off('joinError');
-    // };
   }, [socket]);
+
+  useEffect(() => {
+    window.onbeforeunload = null;
+  });
 
   return (
     <Container>
@@ -162,6 +160,10 @@ const Title = styled.div`
   font-size: 24px;
   font-weight: 500;
   margin-bottom: 25px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 400px;
 `;
 
 const EnterRoomButton = styled.button`

@@ -4,9 +4,10 @@ import styled from 'styled-components';
 
 type ConfirmInputProps = {
   setIsDeleteUser:React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const ConfirmInput: React.FC<ConfirmInputProps> = ({setIsDeleteUser}) => {
+const ConfirmInput: React.FC<ConfirmInputProps> = ({setIsDeleteUser, setIsOpen}) => {
   const [inputText, setConfirm] = useState('');
 
   const confirmHandler = () => {
@@ -16,6 +17,11 @@ const ConfirmInput: React.FC<ConfirmInputProps> = ({setIsDeleteUser}) => {
       toast.error("공백 없이 '회원탈퇴' 를 올바르게 입력 해 주세요")
       setConfirm('')
     }
+  }
+
+  const confirmCancelHandler = () => {
+    setIsDeleteUser(false);
+    setIsOpen(false);
   }
 
   return (
@@ -29,10 +35,38 @@ const ConfirmInput: React.FC<ConfirmInputProps> = ({setIsDeleteUser}) => {
         value={inputText}
         onChange={e => setConfirm(e.target.value)}
       />
+      <ButtonGroup>
       <button onClick={confirmHandler}>입력 완료</button>
+      <button onClick={confirmCancelHandler}>취소</button>
+      </ButtonGroup>
+      
     </Container>
   );
 };
+
+const ButtonGroup = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  
+  >button{
+    width: 100%;
+    background-color: var(--primary-01);
+    height: 40px;
+    color: white;
+    font-size: 17px;
+    font-weight: 500;
+    margin-top: 10px;
+    border-radius: 10px;
+  }
+  >button:last-child{
+    background-color: white;
+    color: var(--primary-01);
+    border: 1px solid var(--primary-01);
+  }
+`
 
 const Container = styled.div`
   z-index: 5000;
@@ -62,15 +96,6 @@ const Container = styled.div`
     }
   }
 
-  >button{
-    width: 100%;
-    background-color: var(--primary-01);
-    height: 40px;
-    color: white;
-    font-size: 17px;
-    font-weight: 500;
-    margin-top: 10px;
-  }
 `;
 
 export default ConfirmInput;

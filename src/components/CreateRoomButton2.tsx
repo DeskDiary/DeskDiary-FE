@@ -123,20 +123,15 @@ const Button = styled.div`
   align-items: center;
 
   &:hover {
+    animation: ${bounce} 2s infinite;
     > div {
       ${Img} {
         animation: ${bounce} 2s infinite;
-        /* opacity: 0; */
       }
-      /* ${HoverImg} {
-        transform: translateY(-10px);
-        opacity: 1;
-      } */
     }
-    > p {
-      transform: translateY(-15px);
+    /* > p {
       animation: ${bounce} 2s infinite;
-    }
+    } */
   }
 
   > img {
@@ -144,18 +139,31 @@ const Button = styled.div`
     margin-left: 5px;
   }
   > div {
-    position: relative;
     > p {
-      position: absolute;
-      bottom: -50px;
-      left: -150px;
+      bottom: 120px;
+      left: -35px;
       color: black;
       font-size: 17px;
       font-weight: 500;
-      width: 120px;
+      width: 140px;
       text-align: center;
-      background-color: #e8f1ffae;
-      border-radius: 10px;
+      background-color: #ffffffc0;
+      border-radius: 20px;
+      position: relative;
+      padding: 10px;
+      &:after {
+        content: '';
+        position: absolute;
+        bottom: 0px;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border: 10px solid transparent;
+        border-top-color: #ffffffc0;
+        border-bottom: 0;
+        margin-left: -10px;
+        margin-bottom: -10px;
+      }
     }
   }
 `;

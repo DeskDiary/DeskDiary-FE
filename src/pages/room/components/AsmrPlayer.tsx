@@ -32,7 +32,7 @@ const AsmrPlayer: React.FC<AsmrPlayerProps> = () => {
   const [volume, setVolume] = useState(1); // 초기 볼륨을 1로 설정 (최대 볼륨)
   const audioRef = React.createRef<HTMLAudioElement>();
   const [current, setCurrent] = useState<number>(0);
-  console.log(volume, audioRef, current)
+  // console.log(volume, audioRef, current)
 
   const togglePlay = () => {
     if (audioRef.current) {

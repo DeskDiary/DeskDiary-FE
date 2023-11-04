@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -6,9 +6,8 @@ import styled, { createGlobalStyle } from 'styled-components';
 import { getCookie } from '../../../auth/cookie';
 import { fetchUser } from '../../../axios/api';
 import { hobby, home, mydesk, study } from '../../../images/main';
-import logo from '../../../images/logo.svg';
+import logo from '../../../images/logo-2.svg';
 import profile from '../.././../images/main/profile.svg';
-
 
 type SideBarProps = {};
 
@@ -36,14 +35,35 @@ const navItems = [
 const SideBar: React.FC<SideBarProps> = () => {
   const token = getCookie('token');
   const navigate = useNavigate();
+  const [isClicked, setIsClicked] = useState(false);
 
-  const { data, refetch } = useQuery<user>('sidebar-user', fetchUser, {
+  const { data, refetch } = useQuery<user>('mypageUser', fetchUser, {
     refetchOnWindowFocus: false,
   });
 
   const delayedRedirect = (path: string) => {
     setTimeout(() => {
       navigate(path);
+    }, 1000);
+  };
+
+  const mydeskHandler = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (isClicked) return;
+    setIsClicked(true);
+    if (!token) {
+      e.preventDefault(); // NavLink의 기본 이동을 막아줌
+
+      toast.error('로그인이 필요합니다.', {
+        style: {
+          backgroundColor: '#ffdcdc',
+          opacity: 0.6,
+          color: 'white',
+        },
+      });
+      delayedRedirect('/login');
+    }
+    setTimeout(() => {
+      setIsClicked(false);
     }, 1000);
   };
 
@@ -64,19 +84,7 @@ const SideBar: React.FC<SideBarProps> = () => {
             ))}
             <SidebarButton
               to={token ? '/mydesk' : '/login'}
-              onClick={e => {
-                if (!token) {
-                  e.preventDefault(); // NavLink의 기본 이동을 막아줌
-                  toast.error('로그인이 필요합니다.', {
-                    style: {
-                      backgroundColor: '#ffdcdc',
-                      opacity: 0.6,
-                      color: 'white',
-                    },
-                  });
-                  delayedRedirect('/login');
-                }
-              }}
+              onClick={e => mydeskHandler(e)}
             >
               <img src={mydesk} alt="menu icon" />
               <p>책상 기록</p>
@@ -112,15 +120,16 @@ const SidebarButton = styled(NavLink)`
   transition: width 0.4s, background-color 0.3s; // width와 background-color에 대한 transition 추가
 
   font-size: 16px;
-  text-transform: capitalize;
+  /* text-transform: capitalize; */
   line-height: 1;
   border-radius: 50px;
   /* opacity: 0.8; */
   margin-left: 5px;
   position: relative;
+  z-index: 50;
 
   ::before {
-    content: "";
+    content: '';
     position: absolute;
     top: -0px;
     left: -100px;
@@ -149,13 +158,14 @@ const SidebarButton = styled(NavLink)`
     > img {
       filter: grayscale(0);
     }
+
     > p {
       color: white;
       font-weight: 500;
-      overflow: hidden;
     }
+
     &.mypage {
-      background-color: rgba(255, 255, 255, 0.0);
+      background-color: rgba(255, 255, 255, 0);
     }
   }
 
@@ -266,7 +276,7 @@ const Sidebar = styled.div`
   left: 0;
   width: 80px;
   height: 100vh;
-  background: #0054a8;
+  background: #004891;
   transition: width 0.4s;
   z-index: 1000;
 

@@ -49,10 +49,12 @@ const RoomName = styled.p`
   text-align: left;
   margin-left: 70px;
   margin-right: auto;
-  width: 400px;
+  width: 1000px;
   color: white;
   white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 

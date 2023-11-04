@@ -10,6 +10,7 @@ import {
   fetchRoomTopPopular,
   fetchStudyLatest,
   fetchStudyPopular,
+  fetchUser,
 } from '../../../axios/api';
 import RoomCard from './RoomCard';
 
@@ -58,6 +59,9 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
     },
     {
       refetchOnWindowFocus: false,
+      refetchInterval: 10000,
+      refetchIntervalInBackground: true,
+      retry: false, // 새로고침이 필요 없을 때 에러를 던지므로, 재시도하지 않게 함
     },
   );
 
