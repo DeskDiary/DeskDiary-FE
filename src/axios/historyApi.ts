@@ -5,34 +5,33 @@ const token = getCookie('token');
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 const headers = {
   headers: {
-    Authorization: `Bearer ${token}`, // 여기서 토큰을 헤더에 추가해줘
+    Authorization: `Bearer ${token}`,
   },
 };
-
-const 초를시분으로 = (time: number) => {
+// 초를 [시, 분]으로 계산
+const secToHourMinute = (time: number) => {
   const hour = Math.floor(time / 3600);
   const minute = Math.floor((time % 3600) / 60);
   return [hour, minute];
 };
 
 // 1일 학습 기록 조회
-export const todayLerningHistoryHome = async () => {
+const todayLerningHistoryHome = async () => {
   try {
     const response = await axios.get(
       `${serverUrl}/learning-history/today`,
       headers,
     );
-    // console.log('api 1일 학습 기록 조회', response.data);
     const data = response.data;
     if (data.message === '등록된 목표시간이 없습니다.') {
-      return [0, 0, 0, 0, 0, 0];
+      return [0, 0, 0, 0, 0, 0]; // 목표시, 목표분, 총 시, 총 분, 목표시간, 총 초
     } else {
       const goalTime = Number(data.goaltime);
       const hobbyTotalHours = Number(data.hobbyTotalHours);
       const studyTotalHours = Number(data.studyTotalHours);
-      const [goalTimeHour, goalTimeMinute] = 초를시분으로(goalTime);
+      const [goalTimeHour, goalTimeMinute] = secToHourMinute(goalTime);
       const totalSecond = hobbyTotalHours + studyTotalHours;
-      const [totalHours, totalMinute] = 초를시분으로(totalSecond);
+      const [totalHours, totalMinute] = secToHourMinute(totalSecond);
       return [
         goalTimeHour,
         goalTimeMinute,
@@ -43,7 +42,29 @@ export const todayLerningHistoryHome = async () => {
       ];
     }
   } catch (error) {
-    // console.error(error);
     return [0, 0, 0, 0, 0, 0];
   }
 };
+// 책상 기록 - 한달 기록 보기
+const getMonthData = async () => {
+  const response = await axios.get(`${serverUrl}/learning-history/monthly`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const data = response.data;
+  return data;
+};
+
+// 책상 기록 - 일주일 기록 보기
+const getSevenData = async () => {
+  const response = await axios.get(`${serverUrl}/learning-history/weekly`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const data = response.data;
+  return data;
+};
+
+export { todayLerningHistoryHome, getMonthData, getSevenData };
