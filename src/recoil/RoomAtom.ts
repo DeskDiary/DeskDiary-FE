@@ -71,8 +71,3 @@ export const DeleteRoomAtom = atom({
   key: 'DeleteRoomAtom',
   default: false,
 })
-
-export const ConnectCamAtom = atom({
-  key: 'ConnectCamAtom',
-  default: false,
-})

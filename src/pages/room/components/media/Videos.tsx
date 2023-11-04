@@ -11,14 +11,26 @@ import styled from 'styled-components';
 type VideosProps = {
   users: IAgoraRTCRemoteUser[];
   tracks: [IMicrophoneAudioTrack, ICameraVideoTrack];
+  volumes: any;
 };
 
-const Videos: React.FC<VideosProps> = ({ users, tracks }) => {
+const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
+  // 볼륨 레벨에 따라서 색상을 결정하는 함수
+  const getBorderColorByVolume = (volume: number) => {
+    if (volume > 40) return 'red'; // 볼륨이 5 이상이면 빨간색
+    if (volume > 30) return 'blue'; // 볼륨이 3 이상이면 주황색
+    return 'none'; // 그 외는 녹색
+  };
+
+  // 본인의 오디오 트랙 ID를 가져옴
+  const myAudioTrackId = tracks[0].getTrackId();
+  
+
   return (
     <Container>
-      <Video>
+      <Video border={getBorderColorByVolume(volumes[myAudioTrackId] || 0)}>
         <AgoraVideoPlayer
-          style={{ height: '360px', width: '600px' , backgroundColor: 'black',}}
+          style={{ height: '360px', width: '600px', backgroundColor: 'black' }}
           className="video"
           videoTrack={tracks[1]}
         />
@@ -27,8 +39,10 @@ const Videos: React.FC<VideosProps> = ({ users, tracks }) => {
       {users.length > 0 &&
         users.map(user => {
           if (user.videoTrack) {
+            const volumeLevel = volumes[user.uid] || 0; // 기본 볼륨 값은 0으로 설정
+            const borderColor = getBorderColorByVolume(volumeLevel);
             return (
-              <Video>
+              <Video key={user.uid} border={borderColor}>
                 <AgoraVideoPlayer
                   style={{
                     height: '360px',
@@ -48,13 +62,14 @@ const Videos: React.FC<VideosProps> = ({ users, tracks }) => {
   );
 };
 
-const Video = styled.div`
+const Video = styled.div<{ border: string }>`
   width: 400px;
   height: 300px;
   border-radius: 10px;
   overflow: hidden;
   margin: 10px;
-`
+  border: 3px solid ${({ border }) => border};
+`;
 
 const Container = styled.div`
   display: grid;

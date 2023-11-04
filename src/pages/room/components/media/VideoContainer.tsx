@@ -11,7 +11,7 @@ import { useClient } from './config';
 import { useQuery } from 'react-query';
 import { fetchUser } from '../../../../axios/api';
 import { useRecoilState } from 'recoil';
-import { RoomInfo, RoomUserList, ConnectCamAtom } from '../../../../recoil/RoomAtom';
+import { RoomInfo, RoomUserList } from '../../../../recoil/RoomAtom';
 import styled from 'styled-components';
 
 import socket from '../../socketInstance';
@@ -27,7 +27,7 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
   const token = getCookie('token');
   const getUUID = window.location.pathname.split('/room/')[1];
   const [recoilRoomInfo, setRecoilRoomInfo] = useRecoilState(RoomInfo);
-  const [isCamConnect, setIsCamConnect] = useRecoilState(ConnectCamAtom);
+  const [userVolumes, setUserVolumes] = useState<{ [uid: number]: number }>({});
   const [roomInfo, setRoomInfo] = useState({
     agoraAppId: '',
     agoraToken: '',
@@ -57,8 +57,6 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
 
   const { ready, tracks } = useMicrophoneAndCameraTracks();
 
-
-
   /**
    * get room방 정보 가져옴
    */
@@ -85,7 +83,6 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
    * @param currentTracks
    */
   const handleUserLeft = async (currentTracks: any) => {
-
     if (currentTracks) {
       for (const track of currentTracks) {
         if (track) {
@@ -102,7 +99,6 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
   };
 
   useEffect(() => {
-    
     const init = async (name: string) => {
       client.on('user-published', async (user, mediaType) => {
         await client.subscribe(user, mediaType);
@@ -114,6 +110,20 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
         }
         if (mediaType === 'audio') {
           user.audioTrack?.play();
+
+          client.enableAudioVolumeIndicator();
+          
+          client.on('volume-indicator', (volumes) => {
+            setUserVolumes((prevVolumes) => {
+              const newUserVolumes = { ...prevVolumes };
+          
+              volumes.forEach((volume:any) => {
+                newUserVolumes[volume.uid] = volume.level;
+              });
+          
+              return newUserVolumes;
+            });
+          });
         }
       });
 
@@ -130,15 +140,13 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
     };
     const currentTracks = tracks;
 
+    // 초기화 함수
     if (ready && tracks) {
       // console.log('init ready');
       init(CHANNEL);
     }
 
     return () => {
-      // 아고라 연결 끊기 로직
-      // console.log('===Tracks:', tracks);
-      // console.log('===Current Tracks:', currentTracks);
 
       handleUserLeft(tracks);
     };
@@ -147,7 +155,7 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
   useEffect(() => {
     getRoomInfo();
     window.onbeforeunload = null;
-  }, [])
+  }, []);
 
   return (
     <Container>
@@ -161,7 +169,7 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
         )}
       </Controller>
 
-      {start && tracks && <Videos users={users} tracks={tracks} />}
+      {start && tracks && <Videos users={users} tracks={tracks} volumes={userVolumes}/>}
     </Container>
   );
 };

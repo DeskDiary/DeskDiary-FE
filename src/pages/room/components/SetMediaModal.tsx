@@ -5,7 +5,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { getCookie } from '../../../auth/cookie';
 import {
-  ConnectCamAtom,
   RoomAtom,
   RoomUUIDAtom,
 } from '../../../recoil/RoomAtom';
@@ -42,7 +41,6 @@ const SetMediaModal: React.FC<SetMediaModal> = ({ setIsOpen, room }) => {
   const [joinUUID, setJoinUUID] = useRecoilState<string>(RoomUUIDAtom);
   const [roomInfo, setRoomInfo] = useRecoilState(RoomAtom);
   const [isClicked, setIsClicked] = useState(false);
-  const [isCamConnect, setIsCamConnect] = useRecoilState(ConnectCamAtom);
 
   const { data } = useQuery<user>('joinRoomUserInfo', fetchUser);
   const token = getCookie('token');
@@ -99,7 +97,6 @@ const SetMediaModal: React.FC<SetMediaModal> = ({ setIsOpen, room }) => {
         (response: any) => {},
       );
       setIsClicked(false);
-      setIsCamConnect(true);
     } catch (error) {
       // console.error(error);
     }
