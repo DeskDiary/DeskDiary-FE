@@ -10,14 +10,19 @@ type AppProps = {};
 
 const queryClient = new QueryClient();
 const App: React.FC<AppProps> = () => {
-
   return (
     <QueryClientProvider client={queryClient}>
-      
-      <Toaster position="top-center"/>
+      <Toaster position="top-center" />
       <GlobalStyle />
       <Router />
-      <ReactQueryDevtools initialIsOpen={false} />
+      <ReactQueryDevtools
+        initialIsOpen={false}
+        panelProps={{
+          style: {
+            backgroundColor: 'white',
+          },
+        }}
+      />
     </QueryClientProvider>
   );
 };
