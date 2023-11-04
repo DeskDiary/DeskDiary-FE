@@ -8,6 +8,7 @@ import Lending from '../pages/auth/Lending';
 import HobbyCategory from '../pages/category/HobbyCategory';
 import StudyCategory from '../pages/category/StudyCategory';
 import MyRecord from '../pages/myRecord/MyDesk';
+import SideBar from '../components/layout/main/SideBar';
 
 const Router = () => {
   return (

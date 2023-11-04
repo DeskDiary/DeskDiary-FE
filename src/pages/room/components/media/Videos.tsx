@@ -17,10 +17,10 @@ type VideosProps = {
 const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
   // 볼륨 레벨에 따라서 색상을 결정하는 함수
   const getBorderColorByVolume = (volume: number) => {
-    if (volume > 70) return 'red';
-    if (volume > 50) return 'orange'; // 볼륨이 5 이상이면 빨간색
-    if (volume > 30) return 'blue'; // 볼륨이 3 이상이면 주황색
-    return 'black'; // 그 외는 녹색
+    // if (volume > 70) return 'red';
+    // if (volume > 50) return 'orange'; // 볼륨이 5 이상이면 빨간색
+    if (volume > 18) return 'green'; // 볼륨이 3 이상이면 주황색
+    return 'var(--gray-09)'; // 그 외는 녹색
   };
 
   // 본인의 오디오 트랙 ID를 가져옴
