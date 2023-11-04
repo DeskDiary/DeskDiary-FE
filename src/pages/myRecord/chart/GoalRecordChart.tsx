@@ -14,6 +14,8 @@ import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { getCookie } from '../../../auth/cookie';
 import { GoalTime, MonthTime } from '../../../recoil/DeskAtom';
+import { useQuery } from 'react-query';
+import { getMonthData, getSevenData } from '../../../axios/historyApi';
 
 ChartJS.register(
   CategoryScale,
@@ -27,12 +29,6 @@ ChartJS.register(
 type GoalRecordChartProps = {
   view7: boolean;
   view30: boolean;
-};
-
-type GoalTimeProps = {
-  goaltime: number | string;
-  studyTotalHours: number | string;
-  hobbyTotalHours: number | string;
 };
 
 const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
@@ -63,15 +59,12 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
   const thirtyDaysAgo = new Date(year, month, day - 29);
   const dateArray30 = generateDateArray(thirtyDaysAgo, today);
 
-  const serverUrl = process.env.REACT_APP_SERVER_URL;
-  const token = getCookie('token');
   const [weeklyHobby, setWeeklyHobby] = useState<any[]>([]);
   const [weeklyStudy, setWeeklyStudy] = useState<any[]>([]);
   const [monthlyHobby, setMonthlyHobby] = useState<any[]>([]);
   const [monthlyStudy, setMonthlyStudy] = useState<any[]>([]);
   const [goalTime, setGoalTime] = useRecoilState(GoalTime); // 목표시간
   const [monthTime, setMonthTime] = useRecoilState(MonthTime);
-
   useEffect(() => {
     const a = monthlyHobby.map(x => +x.totalHours);
     const b = monthlyStudy.map(x => +x.totalHours);
@@ -81,58 +74,13 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
     setMonthTime(sumA + sumB);
   }, [monthlyHobby, monthlyStudy]);
 
-  const sevenData = async () => {
-    try {
-      const response = await axios.get(`${serverUrl}/learning-history/weekly`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const data = response.data;
-      setWeeklyStudy(
-        data.weeklyStudy.map((x: any) => {
-          const date = new Date(x.checkIn);
-          const dayOfWeek = date.getDay();
-          const days = ['일', '월', '화', '수', '목', '금', '토'];
-          const dayName = days[dayOfWeek];
-          return { ...x, dayName: dayName };
-        }),
-      );
-      setWeeklyHobby(
-        data.weeklyHobby.map((x: any) => {
-          const date = new Date(x.checkIn);
-          const dayOfWeek = date.getDay();
-          const days = ['일', '월', '화', '수', '목', '금', '토'];
-          const dayName = days[dayOfWeek];
-          return { ...x, dayName: dayName };
-        }),
-      );
-    } catch (error) {
-      // console.error(error);
-    }
-  };
+  const {
+    isLoading: loSevenData,
+    isError: erSevenData,
+    data: sevenData,
+  } = useQuery('weeklyData', getSevenData);
 
-  const monthData = async () => {
-    try {
-      const response = await axios.get(
-        `${serverUrl}/learning-history/monthly`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-      const data = response.data;
-      setMonthlyHobby(data.monthlyHobby);
-      setMonthlyStudy(data.monthlyStudy);
-    } catch (error) {
-      // console.error(error);
-    }
-  };
-  useEffect(() => {
-    sevenData();
-    monthData();
-  }, []);
+  const { isLoading: loMonthData, isError: erMonthData, data: monthData } = useQuery('monthData', getMonthData);
 
   const options = {
     responsive: true,
@@ -146,6 +94,7 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
       },
     },
   };
+
   const weeklyData = {
     labels: dateArray7.map(x => x.dayOfWeek),
     datasets: [
@@ -228,7 +177,50 @@ const GoalRecordChart: React.FC<GoalRecordChartProps> = ({ view7, view30 }) => {
       },
     ],
   };
-  // console.log(goalTime.goalTime);
+
+  useEffect(() => {
+    if (!loSevenData && !erSevenData) {
+      setWeeklyStudy(
+        sevenData.weeklyStudy.map((x: any) => {
+          const date = new Date(x.checkIn);
+          const dayOfWeek = date.getDay();
+          const days = ['일', '월', '화', '수', '목', '금', '토'];
+          const dayName = days[dayOfWeek];
+          return { ...x, dayName: dayName };
+        }),
+      );
+      setWeeklyHobby(
+        sevenData.weeklyHobby.map((x: any) => {
+          const date = new Date(x.checkIn);
+          const dayOfWeek = date.getDay();
+          const days = ['일', '월', '화', '수', '목', '금', '토'];
+          const dayName = days[dayOfWeek];
+          return { ...x, dayName: dayName };
+        }),
+      );
+    }
+  }, [loSevenData, erSevenData, sevenData]);
+
+  useEffect(() => {
+    if (!loMonthData && !erMonthData) {
+      setMonthlyHobby(monthData.monthlyHobby);
+      setMonthlyStudy(monthData.monthlyStudy);
+    }
+  }, [loMonthData, erMonthData, monthData]);
+
+  if (loMonthData) {
+    return <p>한달 기록을 불러오는 중입니다...</p>;
+  }
+  if (erMonthData) {
+    return <p>한달 기록을 불러오는 중 에러가 발생하였습니다.</p>;
+  }
+  if (loSevenData) {
+    return <p>일주일 기록을 불러오는 중입니다...</p>;
+  }
+  if (erSevenData) {
+    return <p>일주일 기록을 불러오는 중 에러가 발생하였습니다.</p>;
+  }
+
   return (
     <Body>
       {view7 && goalTime.goalTime !== undefined && (
