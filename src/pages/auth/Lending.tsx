@@ -254,10 +254,12 @@ const StartButton = styled(StyledButton)`
   transform-style: preserve-3d;
   transition: transform 150ms cubic-bezier(0, 0, 0.58, 1),
     background 150ms cubic-bezier(0, 0, 0.58, 1);
-  margin-top: 520px;
   position: fixed;
+  top:67%;
+  /* left: 45%; */
   font-size: 17px;
   font-weight: 600;
+  z-index: 1000;
 
   &:hover {
     background: ${colors.blue};

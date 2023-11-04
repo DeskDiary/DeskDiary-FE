@@ -161,6 +161,7 @@ const Main = styled.div`
   width: calc(100vw);
   height: calc(100vh);
   box-sizing: border-box; 
+  background-color: #424242;
 `;
 
 const Background = styled.div`
