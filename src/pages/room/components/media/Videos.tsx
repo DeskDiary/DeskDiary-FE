@@ -20,7 +20,7 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
     if (volume > 70) return 'red';
     if (volume > 50) return 'orange'; // 볼륨이 5 이상이면 빨간색
     if (volume > 30) return 'blue'; // 볼륨이 3 이상이면 주황색
-    return 'var(--gray-09)'; // 그 외는 녹색
+    return 'black'; // 그 외는 녹색
   };
 
   // 본인의 오디오 트랙 ID를 가져옴
@@ -46,8 +46,8 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
               <Video key={user.uid} border={borderColor}>
                 <AgoraVideoPlayer
                   style={{
-                    height: '360px',
-                    width: '600px',
+                    height: '300px',
+                    width: '400px',
                     display: 'inline',
                     backgroundColor: 'black',
                   }}
@@ -68,7 +68,6 @@ const Video = styled.div<{ border: string }>`
   height: 300px;
   border-radius: 10px;
   overflow: hidden;
-  margin: 10px;
   border: 3px solid ${({ border }) => border};
 `;
 
@@ -85,8 +84,9 @@ const Container = styled.div`
   overflow: scroll;
   overflow-y: hidden;
   align-items: center;
+  margin-bottom: 100px;
 
-  @media (max-width: 1600px) {
+  @media (max-width: 1700px) {
     grid-template-columns: repeat(2, 1fr);
   }
 
