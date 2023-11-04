@@ -33,6 +33,8 @@ const Router = () => {
         <Route path="/room/:id" element={<Room />} />
         <Route path="/auth" element={<Auth />} />
 
+        {/* <Route path="/sidebartest" element={<SideBar />} /> */}
+
         <Route path="*" element={<Error />} />
         
       </Routes>

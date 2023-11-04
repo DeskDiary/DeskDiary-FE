@@ -52,7 +52,7 @@ const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
       setGoalTime(response.data);
       const time = response.data.goalTime;
       set목표시간sec(time);
-      const hour = Math.floor(time / 3600);
+      const hour = Math.floor(time / 3600).toString().padStart(2, '0');
       const minute = ((time % 3600) / 60).toString().padStart(2, '0');
       // console.log('time', time);
       if (time >= 0) {
