@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { ICameraVideoTrack, IMicrophoneAudioTrack } from 'agora-rtc-react';
 import { useClient } from './config';
 import {
@@ -49,14 +49,14 @@ const VideoController: React.FC<VideoControllerProps> = ({
     setInCall(false);
   };
 
-  const { data, isLoading, isError } = useQuery('cam-user', fetchUser);
+  const { data, isLoading, error } = useQuery('cam-user', fetchUser);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div>로딩 중...</div>;
   }
 
-  if (isError) {
-    return <div>Error loading data...</div>;
+  if (error) {
+    return <div>오류 발생</div>;
   }
 
   return (
