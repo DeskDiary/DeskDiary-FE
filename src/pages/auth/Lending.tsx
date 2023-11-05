@@ -69,11 +69,17 @@ const Title = styled.div`
     font-size: 30px;
     font-weight: 700;
   }
+  @media (max-width: 768px) {
+    div {
+      font-size: 1.5em;
+    }
+    
+  }
 `;
 
 const LendingImg = styled.img`
   width: 800px;
-  position: absolute;
+  max-width: 80%;
   top: 150px;
 `;
 
@@ -82,11 +88,14 @@ const Logo = styled.img`
 `;
 
 const FooterBody = styled.div`
-  width: 1200px;
+  width: calc(100vw - 4rem);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: start;
+  margin-right: 2rem;
+  margin-left: 2rem;
+  flex-wrap: wrap;
   > hr {
     width: 100%;
     margin: 15px 0;
@@ -97,8 +106,12 @@ const FooterContents = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: start;
-  align-items: center;
+  flex-wrap: wrap;
   gap: 30px;
+  @media (max-width: 768px) {
+    flex-direction: column; /* 모바일 화면에서는 컬럼(col)로 변경 */
+    gap: 10px;
+  }
 `;
 
 const FooterContent = styled.div`
@@ -115,7 +128,7 @@ const FooterTitle = styled.div`
 `;
 
 const Container = styled.div`
-  width: calc(100vw - 10px);
+  width: 100vw; // calc(100vw - 10px);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -127,7 +140,7 @@ const Container = styled.div`
 `;
 
 const Footer = styled.div`
-  width: calc(100vw - 10px);
+  /* width: calc(100vw - 10px); */
   background-color: black;
   display: flex;
   justify-content: center;
@@ -135,8 +148,8 @@ const Footer = styled.div`
   padding: 20px 0;
   bottom: 0;
   left: 0;
-  height: 150px;
-  position: absolute;
+  /* height: 150px; */
+  /* position: absolute; */
 `;
 
 const BoxContents = styled.div`
@@ -254,12 +267,12 @@ const StartButton = styled(StyledButton)`
   transform-style: preserve-3d;
   transition: transform 150ms cubic-bezier(0, 0, 0.58, 1),
     background 150ms cubic-bezier(0, 0, 0.58, 1);
-  position: fixed;
-  top:67%;
+  /* position: fixed; */
+  /* top:67%; */
   /* left: 45%; */
   font-size: 17px;
   font-weight: 600;
-  z-index: 1000;
+  /* z-index: 1000; */
 
   &:hover {
     background: ${colors.blue};
