@@ -124,10 +124,8 @@ const Room: React.FC<RoomProps> = () => {
           <RoomHeader />
           <Area>
             <CamAreaDiv>
-              {/* <RoomCamArea /> */}
               <VideoContainer setInCall={setInCall} />
             </CamAreaDiv>
-            {/* 채팅이 들어갈 곳 */}
             <ChattingAreaDiv>
               <AsmrPlayer />
               <ChatBox roomId={roomInfo.uuid} />
@@ -158,10 +156,11 @@ const GlobalStyle = createGlobalStyle`
   `;
 
 const Main = styled.div`
-  width: calc(100vw);
-  height: calc(100vh);
-  box-sizing: border-box; 
+  width: 100vw;
+  min-height: 100vh;
+  /* box-sizing: border-box;  */
   background-color: #424242;
+  /* border: 3px solid tomato; */
 `;
 
 const Background = styled.div`
@@ -196,6 +195,10 @@ const Container = styled.div`
   width: 100%;
   height: calc(100vh - 60px);
   background: var(--gray-09);
+  @media (max-width: 768px) {
+    flex-direction: column;
+    height: calc(100vh - 160px);
+  }
 `;
 
 const Content = styled.div`
@@ -205,6 +208,13 @@ const Content = styled.div`
 const Area = styled.div`
   display: flex;
   height: calc(100vh - 156px);
+  justify-content: space-between;
+  @media (max-width: 768px) {
+    height: 300px;
+    /* border: 1px solid tomato; */
+    flex-direction: column;
+
+  }
 `;
 
 const CamAreaDiv = styled.div`
@@ -215,6 +225,11 @@ const CamAreaDiv = styled.div`
   margin-bottom: 61px;
   overflow: auto;
   overflow-x: hidden;
+  /* border: 1px solid tomato; */
+  @media (max-width: 768px) {
+    /* border: 2px solid green;
+     */
+  }
 
   &::-webkit-scrollbar {
     width: 0;
@@ -228,6 +243,10 @@ const ChattingAreaDiv = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  @media (max-width: 768px) {
+    margin-top: 250px;
+
+  }
 `;
 
 export default Room;

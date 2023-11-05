@@ -126,6 +126,9 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   gap: 8px;
+  @media (max-width: 768px) {
+    flex-direction: row;
+  }
 `;
 
 const StartButton = styled.button<{ timerbuttonstate: string }>`
@@ -142,8 +145,17 @@ const StartButton = styled.button<{ timerbuttonstate: string }>`
   p {
     color: var(--gray-01);
     font-size: 16px;
+    @media (max-width: 768px) {
+      display: none;
+    }
   }
   border-radius: 24px;
+  @media (max-width: 768px) {
+    flex-direction: row;
+    width: 30px;
+    height: 30px;
+    padding: 20px;
+}
 `;
 
 export default Timer;
