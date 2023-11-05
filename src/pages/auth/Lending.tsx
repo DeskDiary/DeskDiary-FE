@@ -281,7 +281,7 @@ const StartButton = styled(StyledButton)`
   /* left: 45%; */
   font-size: 17px;
   font-weight: 600;
-  /* z-index: 1000; */
+  z-index: 1000;
   margin-bottom: 40px;
   &:hover {
     background: ${colors.blue};
