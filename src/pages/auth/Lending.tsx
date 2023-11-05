@@ -262,6 +262,10 @@ const StyledButton = styled.button`
   text-decoration: none;
   font-size: inherit;
   font-family: inherit;
+
+  -webkit-appearance: none; // iOS에서 버튼의 기본 스타일을 제거
+  -moz-appearance: none;    // Firefox에서 버튼의 기본 스타일을 제거
+  touch-action: manipulation; // iOS에서 버튼 클릭 시 발생할 수 있는 300ms 지연 제거
 `;
 
 // Learn More 버튼에 특화된 스타일
@@ -283,6 +287,10 @@ const StartButton = styled(StyledButton)`
   font-weight: 600;
   /* z-index: 1000; */
   margin-bottom: 40px;
+
+  -webkit-transform-style: preserve-3d; // iOS에서 3D 변환 스타일 유지
+  -moz-transform-style: preserve-3d;    // Firefox에서 3D 변환 스타일 유지
+  
   &:hover {
     background: ${colors.blue};
     transform: translate(0, 0.25em);
