@@ -73,7 +73,11 @@ const Title = styled.div`
     div {
       font-size: 1.5em;
     }
-    
+  }
+  @media (max-width: 400px) {
+    div {
+      font-size: 1em;
+    }
   }
 `;
 
@@ -146,10 +150,9 @@ const Footer = styled.div`
   justify-content: center;
   align-items: center;
   padding: 20px 0;
+  position: absolute;
   bottom: 0;
   left: 0;
-  /* height: 150px; */
-  /* position: absolute; */
 `;
 
 const BoxContents = styled.div`
@@ -177,6 +180,12 @@ const Text = styled.div`
     font-size: 17px;
     font-weight: 500;
     color: white;
+  }
+  
+  @media (max-width: 400px) {
+    div {
+      font-size: 0.7em;
+    }
   }
 `;
 
@@ -273,7 +282,7 @@ const StartButton = styled(StyledButton)`
   font-size: 17px;
   font-weight: 600;
   /* z-index: 1000; */
-
+  margin-bottom: 40px;
   &:hover {
     background: ${colors.blue};
     transform: translate(0, 0.25em);
