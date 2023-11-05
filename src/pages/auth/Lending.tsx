@@ -189,135 +189,39 @@ const Text = styled.div`
   }
 `;
 
-// const StartButton = styled.div`
-//   width: 180px;
-//   height: 40px;
-//   font-size: 17px;
-//   font-weight: 500;
-//   color: white;
-//   border: 5px solid white;
-//   border-radius: 30px;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   transition: transform 0.2s ease-in-out; // 버튼이 움직이는 걸 부드럽게!
-//   background-color: #1a81e8;
-//   padding: 5px;
-//   margin-top: 280px;
-//   z-index: 100;
-
-//   cursor: pointer;
-
-//   &:hover {
-//     background-color: #4a9cee;
-//   }
-
-//   box-shadow: 0 0 0 1px #6698cb inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset,
-//     0 8px 0 0 rgba(110, 164, 219, 0.7), 0 8px 0 1px rgba(0, 0, 0, 0.4),
-//     0 8px 8px 1px rgba(0, 0, 0, 0.5);
-
-//   &:active {
-//     transform: translateY(4px); // 버튼을 아래로 4px 움직여
-//     box-shadow: 0 0 0 1px #6191c2 inset,
-//       0 0 0 2px rgba(255, 255, 255, 0.15) inset,
-//       0 4px 0 0 rgba(110, 164, 219, 0.7), 0 4px 0 1px rgba(0, 0, 0, 0.4),
-//       0 4px 8px 1px rgba(0, 0, 0, 0.5);
-//   }
-// `;
-
-// SCSS 변수를 JS 변수로 변환
-const colors = {
-  bg: '#fff',
-  text: '#004891',
-  lightPink: '#fff0f0',
-  pink: '#ffe9e9',
-  darkPink: '#f9c4d2',
-  pinkBorder: '#b18597',
-  pinkShadow: '#ffe3e2',
-  lightBlue: '#ddeeff',
-  darkBlue: '#83b5e4',
-  blueShadow: '#48657c73',
-  blueBorder: '#6887a0',
-  blue: '#c2e1ff',
-  lightYellow: '#fff9db', // 밝은 노란색
-  yellow: '#ffeecc', // 기본 파스텔 노란색
-  darkYellow: '#ffcc66', // 조금 더 진한 노란색
-  yellowBorder: '#ffb84d', // 노란색 테두리
-  yellowShadow: '#f3e5c0c7', // 노란색 그림자
-
-  mainButton: '#ffd580', // 주버튼 색상, 밝은 파스텔 오렌지
-  buttonHover: '#ffcc66', // 호버 시 색상, 조금 더 진한 오렌지
-  buttonActive: '#ffb84d', // 클릭 시 색상, 더 진한 오렌지
-  buttonText: '#382b22', // 버튼 텍스트 색상, 이미지에 있는 글씨색과 같은 색
-};
-
-// button의 공통 스타일
-const StyledButton = styled.button`
-  position: relative;
-  display: inline-block;
-  cursor: pointer;
-  outline: none;
-  border: 0;
-  vertical-align: middle;
-  text-decoration: none;
-  font-size: inherit;
-  font-family: inherit;
-`;
-
-// Learn More 버튼에 특화된 스타일
-const StartButton = styled(StyledButton)`
-  font-weight: 600;
-  color: ${colors.text};
-  text-transform: uppercase;
-  padding: 1.25em 2em;
-  background: ${colors.lightBlue};
-  border: 2px solid ${colors.blueBorder};
-  border-radius: 15px;
-  transform-style: preserve-3d;
-  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1),
-    background 150ms cubic-bezier(0, 0, 0.58, 1);
-  /* position: fixed; */
-  /* top:67%; */
-  /* left: 45%; */
+const StartButton = styled.div`
+  width: 180px;
+  height: 40px;
   font-size: 17px;
-  font-weight: 600;
-  /* z-index: 1000; */
-  margin-bottom: 40px;
+  font-weight: 500;
+  color: white;
+  border: 5px solid white;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease-in-out; // 버튼이 움직이는 걸 부드럽게!
+  background-color: #1a81e8;
+  padding: 5px;
+  margin-top: 280px;
+  z-index: 100;
+
+  cursor: pointer;
+
   &:hover {
-    background: ${colors.blue};
-    transform: translate(0, 0.25em);
-    &::before {
-      box-shadow: 0 0 0 2px ${colors.blueBorder},
-        0 0.5em 0 0 ${colors.blueShadow};
-      transform: translate3d(0, 0.5em, -1em);
-    }
+    background-color: #4a9cee;
   }
+
+  box-shadow: 0 0 0 1px #6698cb inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset,
+    0 8px 0 0 rgba(110, 164, 219, 0.7), 0 8px 0 1px rgba(0, 0, 0, 0.4),
+    0 8px 8px 1px rgba(0, 0, 0, 0.5);
 
   &:active {
-    background: ${colors.blue};
-    transform: translate(0em, 0.75em);
-    &::before {
-      box-shadow: 0 0 0 2px ${colors.blueBorder}, 0 0 ${colors.blueShadow};
-      transform: translate3d(0, 0, -1em);
-    }
-  }
-
-  &::before {
-    position: absolute;
-    content: '';
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: ${colors.darkBlue};
-    border-radius: inherit;
-    box-shadow: 0 0 0 2px ${colors.blueBorder},
-      0 0.625em 0 0 ${colors.blueShadow};
-    transform: translate3d(0, 0.75em, -1em);
-    transition: transform 150ms cubic-bezier(0, 0, 0.58, 1),
-      box-shadow 150ms cubic-bezier(0, 0, 0.58, 1);
+    transform: translateY(4px); // 버튼을 아래로 4px 움직여
+    box-shadow: 0 0 0 1px #6191c2 inset,
+      0 0 0 2px rgba(255, 255, 255, 0.15) inset,
+      0 4px 0 0 rgba(110, 164, 219, 0.7), 0 4px 0 1px rgba(0, 0, 0, 0.4),
+      0 4px 8px 1px rgba(0, 0, 0, 0.5);
   }
 `;
 
