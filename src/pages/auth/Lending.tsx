@@ -203,7 +203,6 @@ const StartButton = styled.div`
   transition: transform 0.2s ease-in-out; // 버튼이 움직이는 걸 부드럽게!
   background-color: #1a81e8;
   padding: 5px;
-  margin-top: 280px;
   z-index: 100;
 
   cursor: pointer;
