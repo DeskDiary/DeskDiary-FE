@@ -93,10 +93,19 @@ const Body = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: var(--gray-09);
   width: 200px;
   height: calc(100vh - 60);
   margin-left: 10px;
+
+  @media (max-width: 768px) {
+    flex-direction: row;
+    height: 40px;
+    width: 100vw;
+    margin-left: 0px;
+    flex-wrap: wrap;
+    align-items: start;
+    margin: 16px;
+  }
 `;
 
 const LogoImg = styled.img`
@@ -105,6 +114,13 @@ const LogoImg = styled.img`
   height: 73px;
   flex-shrink: 0;
   cursor: pointer;
+  @media (max-width: 768px) {
+    width: 30px;
+    height: 36.5px;
+    /* border: 2px solid tomato; */
+    margin: 0px 20px 0px 0px;
+    
+  }
 `;
 const UserInfoBox = styled.div`
   width: 152px;
@@ -126,6 +142,22 @@ const UserInfoBox = styled.div`
     height: 100px;
     border-radius: 50%;
   }
+  @media (max-width: 768px) {
+    margin: 0px;
+    /* border: 2px solid tomato; */
+    height: 36.5px;
+    flex-direction: row;
+    width: 50px;
+    
+    img {
+      margin: 0px;
+      width: 30px;
+      height: 30px;
+    }
+    p {
+      display: none;
+    }
+  }
 `;
 
 const TimerBox = styled.div`
@@ -139,40 +171,15 @@ const TimerBox = styled.div`
   justify-content: center;
   align-items: center;
   gap: 8px;
+  /* border: 2px solid tomato; */
   p {
     color: var(--bw-whtie);
     font-size: 24px;
   }
-`;
-
-const StartButton = styled.button<{ timerState: boolean }>`
-  width: 180px;
-  height: 48px;
-  border: none;
-  display: flex;
-  padding: 10px 5px;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  background: ${props => (props.timerState ? 'none' : 'var(--primary-01)')};
-  p {
-    color: var(--gray-01);
-    font-size: 16px;
-  }
-`;
-
-const CamAndMicSettingsBox = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  margin-left: 10px;
-  img {
-    border-radius: 50%;
-    border: 1px solid var(--primary-01);
-    padding: 10px;
-    width: 24px;
-    height: 24px;
+  @media (max-width: 768px) {
+    margin-top: 0px;
+    height: 36.5px;
+    width: 170px;
   }
 `;
 
@@ -186,6 +193,13 @@ const JoinPeopleBox = styled.div`
   gap: 8px;
   color: white;
   height: 400px;
+  /* border: 2px solid tomato; */
+  @media (max-width: 768px) {
+    width: 80px;
+    height: 36.5px;
+    margin-top: 0px;
+    flex-direction: row;
+  }
 `;
 
 const UserCount = styled.div`
@@ -208,6 +222,7 @@ const DetailCount = styled.div`
   p {
     font-size: 12px;
     color: white;
+    
   }
 `;
 
@@ -229,6 +244,9 @@ const UserList = styled.div`
     overflow: hidden;
     text-overflow: ellipsis;
   }
+  @media (max-width: 768px) {
+      display: none;
+    }
 `;
 
 export default RoomSideBar;

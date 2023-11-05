@@ -73,7 +73,7 @@ const SideBar: React.FC<SideBarProps> = () => {
       <SidebarInner>
         <div>
           <SidebarHeader>
-            <Logo src={logo} alt="Logo"></Logo>
+            <Logo src={logo} alt="Logo" />
           </SidebarHeader>
           <SidebarMenu>
             {navItems.map(item => (
@@ -267,6 +267,7 @@ const SidebarInner = styled.div`
   flex-direction: column;
   align-items: start;
   justify-content: space-between;
+
 `;
 
 const Sidebar = styled.div`
@@ -293,6 +294,13 @@ const Sidebar = styled.div`
 
     ${SidebarButton} p {
       opacity: 1;
+    }
+  }
+  @media (max-width: 768px) {
+    width: 100vw;
+    height: 100px;
+    &:hover {
+      width: 100vw;
     }
   }
 `;

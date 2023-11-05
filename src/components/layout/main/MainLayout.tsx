@@ -28,5 +28,8 @@ const Wrap = styled.div`
   margin-left: 80px;
   padding-top: 80px;
   padding-bottom: 80px;
+  @media (max-width: 768px) {
+    margin-top: 80px;
+  }
 `;
 export default MainLayout;

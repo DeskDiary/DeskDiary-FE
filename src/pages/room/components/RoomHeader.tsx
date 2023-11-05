@@ -25,10 +25,12 @@ function RoomHeader({}: Props) {
 }
 
 const HeaderBG = styled.div`
-  background: var(--gray-09, #424242);
   height: 96px;
   display: flex;
   align-items: center;
+  @media (max-width: 768px) {
+    height: 30px;
+  }
 `;
 
 const IconDiv = styled.div`
@@ -42,6 +44,9 @@ const IconDiv = styled.div`
     width: 50px;
     height: 50px;
   }
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const RoomName = styled.p`
@@ -49,12 +54,19 @@ const RoomName = styled.p`
   text-align: left;
   margin-left: 70px;
   margin-right: auto;
-  width: 1000px;
+  width: 50%;
+  /* border: 1px solid green; */
   color: white;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  @media (max-width: 768px) {
+    margin-right: 0px;
+    margin-left: 15px;
+    width: 100vw;
+
+  }
 `;
 
 
