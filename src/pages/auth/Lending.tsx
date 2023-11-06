@@ -9,6 +9,7 @@ const Lending: React.FC<LendingProps> = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    document.title = '책상일기 - 환영합니다'
     window.sessionStorage.setItem('visited', 'true');
   }, []);
 

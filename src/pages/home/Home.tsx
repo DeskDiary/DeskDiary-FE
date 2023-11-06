@@ -20,7 +20,9 @@ const Home = () => {
     }
   }, []);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    document.title = '책상일기'
+  }, []);
 
   return (
     <Container>

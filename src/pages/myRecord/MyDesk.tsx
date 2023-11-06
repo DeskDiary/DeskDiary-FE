@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import styled from 'styled-components';
 
@@ -13,6 +13,9 @@ import ConfirmModal from '../../components/ConfirmModal';
 type MyDeskProps = {};
 
 const MyDesk: React.FC<MyDeskProps> = () => {
+  useEffect(() => {
+    document.title = '책상일기 - 책상기록'
+  }, []);
   const [isOpenDeleteRoomModal, setIsOpenDeleteRoomModal] =
   useRecoilState(DeleteRoomAtom);
 const [roomUUID, setRoomUUID] = useRecoilState(RoomUUIDAtom);
