@@ -1,12 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import logo from '../../images/logo-2.svg';
+import goalGraphPercent from './image/goalGraphPercent.png'
 type HelpProps = {};
 
 const Help: React.FC<HelpProps> = () => {
+  const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
   useEffect(() => {
     document.title = '책상일기 - 문의';
   }, []);
+
+  const handleQuestionClick = (question: string) => {
+    if (selectedQuestion === question) {
+      setSelectedQuestion(null);
+    } else {
+      setSelectedQuestion(question);
+    }
+  };
 
   return (
     <Container>
@@ -36,32 +46,108 @@ const Help: React.FC<HelpProps> = () => {
       <Contents>
         <Questions>
           <p>자주 묻는 질문</p>
-          <QuestionList>
-            <QuestionTitle>
-              <p>이용방법</p>
-              <p>책상 기록의 레벨은 어떻게 측정되나요?</p>
-            </QuestionTitle>
-            <QuestionContent>
-              <p>책상 기록의 레벨 측정 방식은 다음과 같습니다.</p>
-              <p>Lv 0. 1달 기준 누적시간 기록이 없을 때</p>
-              <p>Lv 1. 1달 기준 누적시간 기록이 있을 때</p>
-              <p>Lv 2. 1달 기준 누적시간 기록이 24시간 이상일 때</p>
-              <p>Lv 3. 1달 기준 누적시간 기록이 168(7일)시간 이상일 때</p>
-              <p>Lv 4. 1달 기준 누적시간 기록이 336(14일)시간 이상일 때</p>
-            </QuestionContent>
-          </QuestionList>
+          {questions.map(question => (
+            <QuestionList key={question.title[1]}>
+              <QuestionTitle
+                onClick={() => handleQuestionClick(question.title[1])}
+              >
+                {question.title.map((x: string) => {
+                  return <p>{x}</p>;
+                })}
+              </QuestionTitle>
+              {selectedQuestion === question.title[1] && (
+                <QuestionContent>
+                  {question.content.map((x: any) => {
+                    return <p>{x}</p>;
+                  })}
+                </QuestionContent>
+              )}
+            </QuestionList>
+          ))}
+        </Questions>
+
+        <Questions>
+          <p>공지사항</p>
+          {notice.map(question => (
+            <QuestionList key={question.title[1]}>
+              <QuestionTitle
+                onClick={() => handleQuestionClick(question.title[1])}
+              >
+                {question.title.map((x: string) => {
+                  return <p>{x}</p>;
+                })}
+              </QuestionTitle>
+              {selectedQuestion === question.title[1] && (
+                <QuestionContent>
+                  {question.content.map((x: any) => {
+                    return <p>{x}</p>;
+                  })}
+                </QuestionContent>
+              )}
+            </QuestionList>
+          ))}
         </Questions>
       </Contents>
-      <Footer>푸터</Footer>
+      <Footer>
+        <FooterBody>
+          <FooterTitle>Site Map</FooterTitle>
+          <FooterContents>
+            <FooterContent>이용약관</FooterContent>
+            <FooterContent>개인정보처리방침</FooterContent>
+          </FooterContents>
+          <hr />
+          <FooterTitle>책상일기</FooterTitle>
+          <FooterContents>
+            <FooterContent>FE | 박서현 김성호</FooterContent>
+            <FooterContent>BE | 남현재 서민정 손현원</FooterContent>
+            <FooterContent>UIUX | 이다현</FooterContent>
+          </FooterContents>
+        </FooterBody>
+      </Footer>
     </Container>
   );
 };
+
+const questions = [
+  {
+    title: ['책상기록', '책상 기록의 레벨은 어떻게 측정되나요?'],
+    content: [
+      '책상 기록의 레벨 측정 방식은 다음과 같습니다.',
+      'Lv 0. 1달 기준 누적시간 기록이 없을 때',
+      'Lv 1. 1달 기준 누적시간 기록이 있을 때',
+      'Lv 2. 1달 기준 누적시간 기록이 24시간 이상일 때',
+      'Lv 3. 1달 기준 누적시간 기록이 168(7일)시간 이상일 때',
+      'Lv 4. 1달 기준 누적시간 기록이 336(14일)시간 이상일 때.',
+    ],
+  },
+  {
+    title: ['책상기록', '전 아직 서비스를 이용하지 않았는데 목표 달성이라는 글씨가 보여요'],
+    content: [
+      '서비스를 이용하지 않았는데 목표 달성이라는 글씨가 보이는 이유는 다음과 같습니다.',
+      '목표 달성이 0%이면 흰색 목표 달성 그림이 나오고 %가 올라가면 아래에서부터 노란색이 찹니다.',
+      <img src={goalGraphPercent} width={'300px'}/>
+    ],
+  },
+];
+
+const notice = [
+  {
+    title: ['이벤트', '책상일기 만족도 조사 당첨자 공지'],
+    content: [
+      '1등 : 미정',
+      '2등 : 미정',
+      ' ... '
+    ],
+  },
+  
+];
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   font-size: 14px;
   width: 100vw;
+  min-height: 100vh;
 `;
 const Header = styled.div`
   padding: 10px 50px;
@@ -131,11 +217,15 @@ const Search = styled.div`
 const Contents = styled.div`
   margin-right: 150px;
   margin-left: 150px;
+  @media (max-width: 768px) {
+    margin: 10px;
+  }
 `;
 const Questions = styled.div`
   display: flex;
   flex-direction: column;
   padding-top: 100px;
+  margin-bottom: 50px;
   > p {
     font-size: 24px;
     font-weight: 500;
@@ -167,5 +257,52 @@ const QuestionContent = styled.div`
     color: rgb(58, 62, 65);
   }
 `;
-const Footer = styled.div``;
+
+
+const Footer = styled.div`
+  margin-top: 50px;
+  background-color: black;
+  padding: 30px 0px;
+`;
+
+const FooterContents = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  flex-wrap: wrap;
+  gap: 30px;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 10px;
+  }
+`;
+
+const FooterContent = styled.div`
+  color: white;
+  font-size: 13px;
+  font-weight: 500;
+`;
+
+const FooterTitle = styled.div`
+  color: white;
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 10px;
+`;
+
+
+const FooterBody = styled.div`
+  width: calc(100vw - 4rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  margin-right: 2rem;
+  margin-left: 2rem;
+  flex-wrap: wrap;
+  > hr {
+    width: 100%;
+    margin: 15px 0;
+  }
+`;
 export default Help;
