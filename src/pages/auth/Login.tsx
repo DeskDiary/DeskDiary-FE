@@ -19,6 +19,9 @@ import { toast } from 'sonner';
 type LoginProps = {};
 
 const Login: React.FC<LoginProps> = () => {
+  useEffect(() => {
+    document.title = '책상일기 - 로그인'
+  }, []);
   const navigate = useNavigate();
   const token = getCookie('token');
   const [id, setId] = useState<string>('');
