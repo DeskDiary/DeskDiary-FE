@@ -29,17 +29,18 @@ const Login: React.FC<LoginProps> = () => {
   const [idSaveCheckButton, setIdSaveCheckButton] = useState<boolean>(false);
   useEffect(() => {
     if (token) {
-      // alert('이미 로그인했습니다.');
       toast.error('이미 로그인이 되어있습니다.');
       navigate(-1);
     }
   }, [token, navigate]);
   const getSavedIdFromLocalStorage = () => {
     const getId = localStorage.getItem('아이디저장');
-    return getId ? getId : '';
+    console.log(getId)
+    return getId ? atob(getId) : '';
   };
   useEffect(() => {
     const getId = getSavedIdFromLocalStorage();
+    console.log(getId)
     if (getId) {
       setId(getId);
       setIdSaveCheckButton(true);
@@ -62,14 +63,12 @@ const Login: React.FC<LoginProps> = () => {
       const response = await axios.post(url, requestBody);
       const token = response.headers.authorization.split(' ')[1];
       setErrorMessage([]);
-      // console.log(token);
       setTokenCookie(token);
       if (idSaveCheckButton === true) {
         saveIdLocalStorage(id);
       }
       navigate('/');
     } catch (error: any) {
-      // if (error.response && error.response.status === 400) {
       if (error.response) {
         setShowErrorMessage('* 이메일 혹은 비밀번호를 확인 해 주세요');
       } else if (
@@ -78,7 +77,6 @@ const Login: React.FC<LoginProps> = () => {
       ) {
         setShowErrorMessage('* 이메일 혹은 비밀번호를 확인 해 주세요');
       }
-      // console.error(error);
     }
   });
 
@@ -109,7 +107,7 @@ const Login: React.FC<LoginProps> = () => {
   };
 
   const saveIdLocalStorage = (id: string) => {
-    localStorage.setItem('아이디저장', id);
+    localStorage.setItem('아이디저장', btoa(id));
   };
 
   const handleCheckChange = () => {
