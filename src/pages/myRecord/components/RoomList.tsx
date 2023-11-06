@@ -54,11 +54,23 @@ const RoomList: React.FC<RoomListProps> = ({ label, mydesk }) => {
           {data.map(room => {
             return <RoomCard key={room.uuid} room={room} fetch={fetchName}/>;
           })}
+          {data.length === 0 && <Empty>방 목록이 비어있어요</Empty>}
         </JoinedRooms>
       )}
     </List>
   );
 };
+
+const Empty = styled.div`
+  width: 1200px;
+  height:150px;
+  display: flex;
+  align-items: center;
+  justify-content:center;
+  font-size: 30px;
+  background-color: white;
+  opacity: 0.5;
+`
 
 const ListTitle = styled.div`
   display: flex;

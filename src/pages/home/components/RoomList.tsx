@@ -73,8 +73,6 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
     }
   }, [isPopular]);
 
-  useEffect(() => {}, [data]);
-
   return (
     <List>
       <ListInfo>
@@ -99,7 +97,7 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
 
       <JoinedRooms>
         {data?.map(room => {
-          return <RoomCard key={room.uuid} room={room} />;
+          return <RoomCard key={room.uuid} room={room} fetch={fetchName}/>;
         })}
       </JoinedRooms>
     </List>
