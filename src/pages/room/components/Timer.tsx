@@ -83,7 +83,7 @@ const Timer: React.FC<TimerProps> = () => {
     countDispatch('STOP');
   };
 
-  let intervalId: NodeJS.Timeout | null = null; // Initialize intervalId as null
+  let intervalId: NodeJS.Timeout | null = null;
 
   const startButtonOnclickHandler = () => {
     setTimerButtonState(!timerButtonState);
@@ -94,14 +94,14 @@ const Timer: React.FC<TimerProps> = () => {
       intervalId = setInterval(() => start(), 1000);
     } else {
       if (intervalId) {
-        clearInterval(intervalId); // Clear the interval if it exists
-        intervalId = null; // Reset intervalId to null
+        clearInterval(intervalId);
+        intervalId = null;
       }
     }
 
     return () => {
       if (intervalId) {
-        clearInterval(intervalId); // Cleanup the interval if it exists
+        clearInterval(intervalId);
       }
     };
   }, [timerButtonState]);
