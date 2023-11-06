@@ -13,7 +13,7 @@ import ChangePasswordModal from './components/ChangePasswordModal';
 import ConfirmModal from '../../components/ConfirmModal';
 import EditProfileImg from './components/EditProfileImg';
 
-import { profile, logoColor } from '../../images';
+import { profile, logoColor, x } from '../../images';
 import { kakao, google } from '../../images/main';
 import { edit } from '../../images/mypage';
 import { toast } from 'sonner';
@@ -37,7 +37,7 @@ const VisuallyHiddenInput = styled('input')({
 
 const Mypage: React.FC<MypageProps> = () => {
   useEffect(() => {
-    document.title = '책상일기 - 마이페이지'
+    document.title = '책상일기 - 마이페이지';
   }, []);
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenNick, setIsOpenNick] = useState(false);
@@ -46,8 +46,6 @@ const Mypage: React.FC<MypageProps> = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [nickname, setNickname] = useState('');
   const [image, setImage] = useState('');
-  const [user, setUser] = useRecoilState(UserAtom);
-  const [test, setTest] = useState(false);
 
   const [formData, setFormData] = useRecoilState(RoomAtom);
 
@@ -96,21 +94,31 @@ const Mypage: React.FC<MypageProps> = () => {
       },
       onError: (error: any) => {
         if (error.response) {
-          const message = error.response.data.message;
-          setErrorMessage(
-            '닉네임은 2개 이상 5개 이하의 문자로 이루어져야 합니다.',
-          );
+          const message = error.response.data.error;
+          switch (true) {
+            case message.includes('nickname must be'):
+              setErrorMessage(
+                '닉네임은 2개 이상 5개 이하의 문자로 이루어져야 합니다.',
+              );
+              break;
+            case message.includes('닉네임이 이미'):
+              setErrorMessage(
+                '이미 사용중인 닉네임입니다.',
+              );
+              break;
+            default:
+          }
         }
       },
     },
   );
 
   useEffect(() => {
-    if(!token) {
-      toast.error('로그인 후 이용 가능합니다.')
+    if (!token) {
+      toast.error('로그인 후 이용 가능합니다.');
       navigate('/login');
     }
-  }, [])
+  }, []);
 
   const onSubmitNickname = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -128,6 +136,36 @@ const Mypage: React.FC<MypageProps> = () => {
       ...formData,
       [field]: value,
     });
+  };
+
+  const handleFileDelete = async () => {
+    try {
+      console.log('try');
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      console.log('===');
+      const response = await axios.post(
+        `${process.env.REACT_APP_SERVER_URL!}/me/profile/image`,
+        { image: 'profile' },
+        config,
+      );
+
+      // console.log('프로필 수정 서버로 전송', response.data);
+      refetch();
+      // 성공시 로직
+      if (response.data.success) {
+        // console.log('성공');
+        refetch();
+        toast.success('프로필 삭제 성공🤗');
+      } else {
+        console.log('실패ddzz', response.data);
+      }
+    } catch (error) {
+      // console.log('프로필 수정 실패', error);
+    }
   };
 
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -150,32 +188,25 @@ const Mypage: React.FC<MypageProps> = () => {
     const formData = new FormData();
 
     if (image) {
-      // console.log('이미지 있음');
       formData.append('image', image);
     }
 
-    // console.log('프로필 이미지 선택', formData.get('image'));
-
     try {
-      // console.log('try');
       const config = {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`, // JWT 토큰을 여기에 삽입해주세요
         },
       };
-      // console.log('===')
       const response = await axios.post(
         `${process.env.REACT_APP_SERVER_URL!}/me/profile/image`,
         formData,
         config,
       );
 
-      // console.log('프로필 수정 서버로 전송', response.data);
       refetch();
       // 성공시 로직
       if (response.data.success) {
-        // console.log('성공');
         refetch();
         toast.success('프로필 수정 성공🤗');
       } else {
@@ -184,7 +215,6 @@ const Mypage: React.FC<MypageProps> = () => {
     } catch (error) {
       // console.log('프로필 수정 실패', error);
     }
-    setTest(!test);
   };
   const openHelpPage = () => {
     window.open('/help', '_blank');
@@ -194,24 +224,42 @@ const Mypage: React.FC<MypageProps> = () => {
     <Container>
       <Contants>
         <UserProfile>
-          <ProfileImg
-            src={data?.profileImage ? data?.profileImage : profile}
-            alt="profile image"
-          ></ProfileImg>
-          <Button
-            component="label"
-            sx={{
-              color: 'var(--primary-01)',
-              '&:hover': {
-                backgroundColor: 'initial',
-                boxShadow: 'none',
-              },
-            }}
-          >
-            사진 수정
-            <EditIcon src={edit} alt="edit profile image" />
-            <VisuallyHiddenInput type="file" onChange={handleFileChange} />
-          </Button>
+          <Profile>
+            <ProfileImg
+              src={data?.profileImage ? data?.profileImage : profile}
+              alt="profile image"
+            />
+            <Button
+              component="label"
+              sx={{
+                color: 'var(--primary-01)',
+                '&:hover': {
+                  backgroundColor: 'initial',
+                  boxShadow: 'none',
+                },
+              }}
+            >
+              사진 수정
+              <EditIcon src={edit} alt="edit profile image" />
+              <VisuallyHiddenInput type="file" onChange={handleFileChange} />
+            </Button>
+            <Delete type="button" onClick={handleFileDelete}>
+              {/* <Button
+                component="label"
+                sx={{
+                  color: 'var(--gray-05)',
+                  '&:hover': {
+                    backgroundColor: 'initial',
+                    boxShadow: 'none',
+                  },
+                }}
+              > */}
+              <EditIcon src={x} alt="delete profile image" />
+              {/* <VisuallyHiddenInput type="button" onClick={handleFileDelete} /> */}
+              <button />
+              {/* </Button> */}
+            </Delete>
+          </Profile>
 
           <UserInfo>
             <Group>
@@ -287,6 +335,23 @@ const Mypage: React.FC<MypageProps> = () => {
     </Container>
   );
 };
+
+const Profile = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+`;
+
+const Delete = styled.button`
+  position: absolute;
+  top: 0;
+  right: -30px;
+`;
+
+const ButtonGroup = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
 
 const EditIcon = styled.img`
   width: 18px;

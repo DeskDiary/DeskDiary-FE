@@ -16,14 +16,14 @@ const BasicPrecautions: React.FC<BasicPrecautionsProps> = () => {
       <BoxGroup>
         <Number>2.</Number>
         <span>
-          다른 사용자를 존중하고예의를 갖춰 모욕, 비방, 또는 공격적인 언어
+          다른 사용자를 존중하고 예의를 갖춰 모욕, 비방, 또는 공격적인 언어
           사용을 피해주세요.
         </span>
       </BoxGroup>
       <BoxGroup>
         <Number>3.</Number>
         <span>
-          가능하다면 조용한 환경에서 화상 채팅을 하도록 노력하며, 배경 소음을
+          가능한 조용한 환경에서 화상 채팅을 하도록 노력하며, 배경 소음을
           최소화해주세요.
         </span>
       </BoxGroup>
