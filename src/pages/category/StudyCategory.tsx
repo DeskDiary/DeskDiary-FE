@@ -16,6 +16,9 @@ type RankingList = {
   profileImage: null | string;
 };
 const StudyCategory: React.FC<StudyCategoryProps> = () => {
+  useEffect(() => {
+    document.title = '책상일기 - 스터디룸'
+  }, []);
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const rankingImg = [
     { borderColor: 'rgba(253, 104, 4, 1)', img: first },

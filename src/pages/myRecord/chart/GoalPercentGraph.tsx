@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
@@ -52,7 +52,9 @@ const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
       setGoalTime(response.data);
       const time = response.data.goalTime;
       set목표시간sec(time);
-      const hour = Math.floor(time / 3600).toString().padStart(2, '0');
+      const hour = Math.floor(time / 3600)
+        .toString()
+        .padStart(2, '0');
       const minute = ((time % 3600) / 60).toString().padStart(2, '0');
       // console.log('time', time);
       if (time >= 0) {
@@ -118,8 +120,19 @@ const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
         </DetailTimeInfoPBox>
       </DetailTimeInfo>
 
-      <PageMoveButton onClick={goalModalOnclickHandler}>
-        목표시간 수정하기
+      <PageMoveButton
+        onClick={goalModalOnclickHandler}
+        goalnotset={`${목표시간sec > 0}`}
+      >
+        <span>목</span>
+        <span>표</span>
+        <span>시</span>
+        <span>간</span>
+        &nbsp;
+        <span>수</span>
+        <span>정</span>
+        <span>하</span>
+        <span>기</span>
       </PageMoveButton>
     </Body>
   );
@@ -199,12 +212,52 @@ const DetailTimeInfoPBox = styled.div`
   }
 `;
 
-const PageMoveButton = styled.button`
+const PageMoveButton = styled.button<{ goalnotset: string }>`
   margin-left: 221px;
   margin-top: 18px;
   border: none;
   font-size: 16px;
   align-self: flex-end;
   color: white;
+
+  span {
+    position: relative;
+    top: 2px;
+    display: inline-block;
+    animation: bounce 0.3s ease infinite alternate;
+    color: #fff;
+  }
+  span:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+  span:nth-child(3) {
+    animation-delay: 0.2s;
+  }
+  span:nth-child(4) {
+    animation-delay: 0.3s;
+  }
+  span:nth-child(5) {
+    animation-delay: 0.4s;
+  }
+  span:nth-child(6) {
+    animation-delay: 0.5s;
+  }
+  span:nth-child(7) {
+    animation-delay: 0.6s;
+  }
+
+  @keyframes bounce {
+    100% {
+      top: -2px;
+    }
+  }
+  ${props =>
+    props.goalnotset === 'true' &&
+    css`
+      animation: none;
+      span {
+        animation: none;
+      }
+    `}
 `;
 export default GoalPercentGraph;

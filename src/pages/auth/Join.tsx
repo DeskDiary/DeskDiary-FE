@@ -19,6 +19,9 @@ import { getCookie, setTokenCookie } from '../../auth/cookie';
 type JoinProps = {};
 
 const Join: React.FC<JoinProps> = () => {
+  useEffect(() => {
+    document.title = '책상일기 - 회원가입'
+  }, []);
   const navigate = useNavigate();
   const token = getCookie('token');
 

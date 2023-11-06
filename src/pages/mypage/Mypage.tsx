@@ -36,6 +36,9 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 const Mypage: React.FC<MypageProps> = () => {
+  useEffect(() => {
+    document.title = '책상일기 - 마이페이지'
+  }, []);
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenNick, setIsOpenNick] = useState(false);
   const [isOpenLogout, setIsOpenLogout] = useState(false);
