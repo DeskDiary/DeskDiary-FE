@@ -186,6 +186,9 @@ const Mypage: React.FC<MypageProps> = () => {
     }
     setTest(!test);
   };
+  const openHelpPage = () => {
+    window.open('/help', '_blank');
+  };
 
   return (
     <Container>
@@ -271,6 +274,7 @@ const Mypage: React.FC<MypageProps> = () => {
             <List onClick={() => setIsOpen(!isOpen)}>비밀번호 수정</List>
           )}
           <List onClick={handleLogout}>로그아웃</List>
+          <List onClick={openHelpPage}>도움말</List>
           <List onClick={handleDeleteUser}>회원탈퇴</List>
         </Lists>
         {isOpenLogout && (

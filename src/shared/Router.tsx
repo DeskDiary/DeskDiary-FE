@@ -9,6 +9,7 @@ import HobbyCategory from '../pages/category/HobbyCategory';
 import StudyCategory from '../pages/category/StudyCategory';
 import MyRecord from '../pages/myRecord/MyDesk';
 import SideBar from '../components/layout/main/SideBar';
+import Help from '../pages/help/Help';
 
 const Router = () => {
   return (
@@ -34,7 +35,7 @@ const Router = () => {
         <Route path="/auth" element={<Auth />} />
 
         {/* <Route path="/sidebartest" element={<SideBar />} /> */}
-
+        <Route path="/help" element={<Help />} />
         <Route path="*" element={<Error />} />
         
       </Routes>
