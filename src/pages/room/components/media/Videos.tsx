@@ -12,6 +12,7 @@ import { RoomUserList } from '../../../../recoil/RoomAtom';
 import { useRecoilState } from 'recoil';
 import { useQuery } from 'react-query';
 import { fetchUser } from '../../../../axios/api';
+import {yellow} from '../../../../images/character'
 
 type VideosProps = {
   users: IAgoraRTCRemoteUser[];
@@ -71,7 +72,7 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
     <Container>
       <Video border={getBorderColorByVolume(volumes[myAudioTrackId] || 0)}>
         <AgoraVideoPlayer
-          style={{ height: '300px', width: '400px', backgroundColor: 'black' }}
+          style={{ height: '300px', width: '400px', backgroundColor: 'blue' }}
           className="video"
           videoTrack={tracks[1]}
         />
@@ -100,7 +101,8 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
                 {nickname && <Nickname type="button">{nickname}</Nickname>}
               </Video>
             );
-          } else {
+          } 
+          else {
             const nickname = getNicknameByUserId(+user.uid);
             return (
               <Video border={''}>
@@ -137,6 +139,7 @@ const Video = styled.div<{ border: string }>`
   overflow: hidden;
   border: 3px solid ${({ border }) => border};
   position: relative;
+  background-color: black;
 `;
 
 const Container = styled.div`
