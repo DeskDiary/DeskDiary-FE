@@ -8,8 +8,6 @@ import {
   FaVideoSlash,
 } from 'react-icons/fa';
 import styled from 'styled-components';
-import { useQuery } from 'react-query';
-import { fetchUser } from '../../../../axios/api';
 
 type VideoControllerProps = {
   tracks: [IMicrophoneAudioTrack, ICameraVideoTrack];
@@ -49,32 +47,18 @@ const VideoController: React.FC<VideoControllerProps> = ({
     setInCall(false);
   };
 
-  const { data, isLoading, error } = useQuery('cam-user', fetchUser);
-
-  if (isLoading) {
-    return <div>로딩 중...</div>;
-  }
-
-  if (error) {
-    return <div>오류 발생</div>;
-  }
-
   return (
     <Controller>
       <button
-        className={trackState.audio ? 'on' : ''}
         onClick={() => mute('audio')}
       >
-        {trackState.audio ? <FaVolumeUp /> : <FaVolumeMute />}
+        {trackState.audio ? <FaVolumeUp /> : <FaVolumeMute style={{ color: "#ad0101"}}/>}
       </button>
       <button
-        className={trackState.video ? 'on' : ''}
         onClick={() => mute('video')}
       >
-        {trackState.video ? <FaVideo /> : <FaVideoSlash />}
+        {trackState.video ? <FaVideo /> : <FaVideoSlash style={{ color: "#ad0101"}}/>}
       </button>
-      <div>{data.nickname}</div>
-      {/* <button onClick={() => leaveChannel()}>나가기</button> */}
     </Controller>
   );
 };
@@ -86,17 +70,7 @@ const Controller = styled.div`
   align-items: center;
   justify-content: start;
   gap: 10px;
-  margin-left: 10px;
-
-  > div {
-    margin: 0 20px 0 auto;
-    display: flex;
-    align-items: center;
-    height: 35px;
-    background-color: #ffffff4c;
-    padding: 2px 5px;
-    border-radius: 10px;
-  }
+  margin-left: 0px;
 
   > button {
     display: flex;
@@ -105,14 +79,16 @@ const Controller = styled.div`
     border: 1px solid var(--gray-07);
     width: 50px;
     height: 40px;
-    background-color: var(--gray-07);
+    background-color: var(--gray-09);
     transition: 0.5;
     border: none;
     font-size: 20px;
     border-radius: 10px;
+    color: #007500;
     &:hover {
       background-color: var(--gray-06);
     }
+    
   }
 `;
 export default VideoController;
