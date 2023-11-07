@@ -97,27 +97,37 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
                   videoTrack={user.videoTrack}
                   key={user.uid}
                 />
-                {nickname && <Nickname>{nickname}</Nickname>}
+                {nickname && <Nickname type="button">{nickname}</Nickname>}
               </Video>
             );
-          } else return <DefaultScreen key={user.uid} />;
+          } else {
+            const nickname = getNicknameByUserId(+user.uid);
+            return (
+              <Video border={''}>
+                <DefaultScreen key={user.uid} />
+                {nickname && <Nickname type="button">{nickname}</Nickname>}
+              </Video>
+            );
+          }
         })}
     </Container>
   );
 };
 
-const Nickname = styled.div`
+const Nickname = styled.button`
   position: absolute;
   bottom: 10px;
   right: 10px;
   color: white;
   z-index: 10;
-  background-color: #ffffff4c;
-  padding: 0 5px;
+  background-color: var(--gray-09);
+  padding: 0 10px;
   display: flex;
   align-items: center;
   height: 35px;
   border-radius: 10px;
+  border: none;
+  cursor: auto;
 `;
 
 const Video = styled.div<{ border: string }>`

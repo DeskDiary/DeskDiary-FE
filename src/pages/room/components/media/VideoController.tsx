@@ -88,6 +88,7 @@ const Controller = styled.div`
     &:hover {
       background-color: var(--gray-06);
     }
+    
   }
 `;
 export default VideoController;
