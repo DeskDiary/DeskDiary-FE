@@ -193,11 +193,11 @@ const Arrow = styled.img`
 const Container = styled.div`
   display: flex;
   width: 100%;
-  height: calc(100vh - 60px);
+  min-height: calc(100vh - 60px);
   background: var(--gray-09);
   @media (max-width: 768px) {
     flex-direction: column;
-    height: calc(100vh - 160px);
+    height: 1000px;
   }
 `;
 
@@ -225,10 +225,10 @@ const CamAreaDiv = styled.div`
   margin-bottom: 61px;
   overflow: auto;
   overflow-x: hidden;
-  /* border: 1px solid tomato; */
   @media (max-width: 768px) {
-    /* border: 2px solid green;
-     */
+    margin: 0px;
+    width: 100vw;
+    min-height: 350px;
   }
 
   &::-webkit-scrollbar {
@@ -244,8 +244,8 @@ const ChattingAreaDiv = styled.div`
   flex-direction: column;
   gap: 10px;
   @media (max-width: 768px) {
-    margin-top: 250px;
-
+    margin-top: 10px;
+    width: 100vw;
   }
 `;
 

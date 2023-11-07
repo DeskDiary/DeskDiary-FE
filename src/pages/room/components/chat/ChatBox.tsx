@@ -279,6 +279,9 @@ const Container = styled.div`
   /* border-left: 1px solid var(--gray-07); */
   position: relative;
   box-shadow: 2px 2px 6px 2px rgba(0, 0, 0, 0.3);
+  @media (max-width: 768px) {
+    min-height: 300px;
+  }
 `;
 
 export default ChatBox;

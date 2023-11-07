@@ -77,7 +77,6 @@ const Container = styled.div`
   gap: 12px;
   flex-direction: row;
   flex-wrap: nowrap;
-  gap: 20px;
   align-items: center;
   justify-content: center;
 
@@ -85,13 +84,13 @@ const Container = styled.div`
   overflow-y: hidden;
   align-items: center;
   margin-bottom: 100px;
-
   @media (max-width: 1700px) {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1500px) {
     grid-template-columns: repeat(1, 1fr);
+    margin-bottom: 0px;
   }
 `;
 export default Videos;

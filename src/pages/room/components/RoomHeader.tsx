@@ -14,10 +14,10 @@ function RoomHeader({}: Props) {
     <HeaderBG>
       <RoomName>{roomInfo.title}</RoomName>
       <IconDiv>
-        <img src={yellow} alt="" />
-        <img src={orange} alt="" />
-        <img src={purple} alt="" />
-        <img src={blue} alt="" />
+        <img src={yellow} alt="yello" />
+        <img src={orange} alt="orange" />
+        <img src={purple} alt="purple" />
+        <img src={blue} alt="blue" />
 
       </IconDiv>
     </HeaderBG>
