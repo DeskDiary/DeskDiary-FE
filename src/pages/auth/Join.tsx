@@ -20,7 +20,7 @@ type JoinProps = {};
 
 const Join: React.FC<JoinProps> = () => {
   useEffect(() => {
-    document.title = '책상일기 - 회원가입'
+    document.title = '책상일기 - 회원가입';
   }, []);
   const navigate = useNavigate();
   const token = getCookie('token');
@@ -92,10 +92,7 @@ const Join: React.FC<JoinProps> = () => {
       },
       onError: (error: any) => {
         if (error.response) {
-          const messages = error.response.data.message;
-
-          const message = Array.isArray(messages) ? messages[0] : messages;
-
+          const message = error.response.data.error;
           switch (true) {
             case message.includes('이메일이 이미'):
               setEmailError('이메일이 이미 사용중입니다.');
@@ -117,6 +114,11 @@ const Join: React.FC<JoinProps> = () => {
             case message.includes('nickname must be'):
               setNicknameError(
                 '닉네임은 2개 이상 5개 이하의 문자로 이루어져야 합니다.',
+              );
+              break;
+            case message.includes('닉네임이 이미'):
+              setNicknameError(
+                '이미 사용중인 닉네임입니다.',
               );
               break;
             case message.includes('비밀번호가 비어 있으면 안됩니다.'):
@@ -161,8 +163,8 @@ const Join: React.FC<JoinProps> = () => {
         file: '',
       });
       setConfirmPassword('');
-    }
-  }, [])
+    };
+  }, []);
 
   return (
     <JoinForm onSubmit={onSubmitJoin}>

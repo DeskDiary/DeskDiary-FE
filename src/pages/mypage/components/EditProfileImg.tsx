@@ -13,7 +13,7 @@ import { RoomAtom } from '../../../recoil/RoomAtom';
 import { fetchUser } from '../../../axios/api';
 import { getCookie, setTokenCookie } from '../../../auth/cookie';
 import { toast } from 'sonner';
-import { profile } from '../../../images';
+import { profile } from '../../../images/main';
 
 type EditProfileImgProps = {};
 
@@ -72,27 +72,22 @@ const EditProfileImg: React.FC<EditProfileImgProps> = () => {
       formData.append('image', image);
     }
 
-    // console.log('프로필 이미지 선택', formData.get('image'));
-
     try {
-      // console.log('try');
       const config = {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`, // JWT 토큰을 여기에 삽입해주세요
         },
       };
-      // console.log('===')
+
       const response = await axios.post(
         `${process.env.REACT_APP_SERVER_URL!}/me/profile/image`,
         formData,
         config,
       );
-      // console.log('프로필 수정 서버로 전송', response.data);
 
       // 성공시 로직
       if (response.data.success) {
-        // console.log('성공');
         toast.success('프로필 수정 성공🤗');
       } else {
         // console.log('실패ddzz', response.data);
@@ -101,7 +96,6 @@ const EditProfileImg: React.FC<EditProfileImgProps> = () => {
       // console.log('프로필 수정 실패', error);
     }
   };
-
 
   return (
     <>
@@ -120,6 +114,20 @@ const EditProfileImg: React.FC<EditProfileImgProps> = () => {
         }}
       >
         사진 수정
+        <EditIcon src={edit} alt="edit profile image" />
+        <VisuallyHiddenInput type="file" onChange={handleFileChange} />
+      </Button>
+      <Button
+        component="label"
+        sx={{
+          color: 'var(--gray-05)',
+          '&:hover': {
+            backgroundColor: 'initial',
+            boxShadow: 'none',
+          },
+        }}
+      >
+        기본 이미지로 변경
         <EditIcon src={edit} alt="edit profile image" />
         <VisuallyHiddenInput type="file" onChange={handleFileChange} />
       </Button>

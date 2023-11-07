@@ -3,15 +3,19 @@ import styled from 'styled-components';
 import MaxUser from '../../../images/room/MaxUser.svg';
 import sample from '../../../images/sample.svg';
 import ConfirmModal from '../../../components/ConfirmModal';
-import { useQuery  } from 'react-query';
+import { useQuery } from 'react-query';
 import { fetchUser } from '../../../axios/api';
 import { getCookie } from '../../../auth/cookie';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { DeleteRoomAtom, RoomAtom, RoomUUIDAtom } from '../../../recoil/RoomAtom';
+import {
+  DeleteRoomAtom,
+  RoomAtom,
+  RoomUUIDAtom,
+} from '../../../recoil/RoomAtom';
 import { useRecoilState } from 'recoil';
 import { QueryObserverResult } from 'react-query';
-
+import { study_color, hobby_color } from '../../../images/main';
 
 type RoomCardProps = {
   room: {
@@ -37,7 +41,8 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
   const token = getCookie('token');
 
   const [isOpen, setIsOpen] = useState(false);
-  const [isOpenDeleteRoomModal, setIsOpenDeleteRoomModal] = useRecoilState(DeleteRoomAtom);
+  const [isOpenDeleteRoomModal, setIsOpenDeleteRoomModal] =
+    useRecoilState(DeleteRoomAtom);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [joinUUID, setJoinUUID] = useRecoilState<string>(RoomUUIDAtom);
   const [roomInfo, setRoomInfo] = useRecoilState(RoomAtom);
@@ -61,9 +66,9 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
   };
 
   const deleteRoomHandler = async () => {
-    await setIsOpenDeleteRoomModal(true)
+    await setIsOpenDeleteRoomModal(true);
     await setJoinUUID(room.uuid);
-  }
+  };
 
   const onClickCard = async () => {
     if (room.nowHeadcount === room.maxHeadcount) {
@@ -86,11 +91,9 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
     }
   };
 
-
   return (
     <Container>
       {!isImageLoaded && <img src={sample} alt="thumbnail" />}
-      <Black />
       <Thumbmail
         onLoad={handleImageLoaded}
         onError={handleImageError}
@@ -100,32 +103,42 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
         onClick={onClickCard}
       />
       <Contents onClick={onClickCard}>
-        {/* <Img></Img> */}
         <ContentText>
           <RoomTitle>{room.title}</RoomTitle>
-          <Tags>
+          <Tag>
             <img src={MaxUser} alt="user count" />
-            <Tag>
-              {room.nowHeadcount}/{room.maxHeadcount}
-            </Tag>
-          </Tags>
+            {room.nowHeadcount}/{room.maxHeadcount}
+          </Tag>
         </ContentText>
       </Contents>
       {data?.userId === room.ownerId && fetch === 'fetchCreatedRoom' && (
         <Delete onClick={deleteRoomHandler}>삭제</Delete>
       )}
+      <Cat>
+        {(fetch === 'fetchRoomTopLatest' ||
+          fetch === 'fetchRoomTopPopular') && (
+          <Category
+            src={room.category === 'study' ? study_color : hobby_color}
+            alt="category"
+          />
+        )}
+      </Cat>
     </Container>
   );
 };
 
-const Black = styled.div`
-  /* width: 223px;
-height: 148px;
-border-radius: 10px;
-position: absolute;
-top: 0;
+const Cat = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0px;
+  background-color: rgba(255, 255, 255, 0.3);
+  padding: 3px 5px;
+  border-radius: 10px;
+`;
 
-background-color: black; */
+const Category = styled.img`
+  filter: grayscale(100%);
+  opacity: 0.5;
 `;
 
 const ContentText = styled.div`
@@ -140,14 +153,10 @@ const ContentText = styled.div`
 const Tags = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: start;
+  justify-content: space-between;
   align-items: center;
   margin-right: auto;
   width: 100%;
-
-  > img {
-    width: 20px;
-  }
 `;
 
 const Delete = styled.button`
@@ -164,8 +173,16 @@ const Delete = styled.button`
 
 const Tag = styled.div`
   font-size: 14px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  width: 100%;
 
   margin-left: 5px;
+  > img {
+    width: 20px;
+  }
 `;
 
 const RoomTitle = styled.div`
@@ -177,6 +194,10 @@ const RoomTitle = styled.div`
   white-space: nowrap;
   height: 20px;
   width: 95%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 const Img = styled.div`
@@ -225,8 +246,8 @@ const Container = styled.div`
       background-color: #cfcfcf2d;
     } */
     transform: translateY(-10px); // <-- 이 부분 추가
-      transform: scale(1.07);
-      /* box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.1); */
+    transform: scale(1.07);
+    /* box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.1); */
   }
 
   > img {
