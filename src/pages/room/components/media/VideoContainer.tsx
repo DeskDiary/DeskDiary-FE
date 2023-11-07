@@ -57,11 +57,15 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
 
   const { ready, tracks } = useMicrophoneAndCameraTracks();
 
-  const {data, isLoading, isError} = useQuery('cam-user',fetchUser);
+  const { data, isLoading, isError } = useQuery('cam-user', fetchUser);
 
-  {isLoading && <>로딩중</>}
-  {isError && <>에러</>}
-  
+  {
+    isLoading && <>로딩중</>;
+  }
+  {
+    isError && <>에러</>;
+  }
+
   /**
    * get room방 정보 가져옴
    */
@@ -103,15 +107,13 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
     }
   };
 
-
   useEffect(() => {
     const init = async (name: string) => {
       client.on('user-published', async (user, mediaType) => {
         await client.subscribe(user, mediaType);
-        
 
         if (mediaType === 'video') {
-          setUsers((prevUsers) => [...new Set([...prevUsers, user])]);
+          setUsers(prevUsers => [...new Set([...prevUsers, user])]);
         }
         if (mediaType === 'audio') {
           user.audioTrack?.play();
@@ -149,10 +151,11 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
       });
 
       await client.join(APP_ID, name, TOKEN, data.userId);
+      // const uid = await client.join(APP_ID, name, TOKEN, data.userId);
+      // console.log(`User ID: ${uid}`);
       if (tracks) await client.publish([tracks[0], tracks[1]]);
       setStart(true);
     };
-    const currentTracks = tracks;
 
     // 초기화 함수
     if (ready && tracks) {
@@ -164,6 +167,8 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
       handleUserLeft(tracks);
     };
   }, [CHANNEL, client, ready, tracks]);
+
+  console.log(users);
 
   useEffect(() => {
     getRoomInfo();
