@@ -79,6 +79,9 @@ const Container = styled.div`
   @media (max-width: 1200px) {
     width: 800px;
   }
+  @media (max-width: 768px) {
+    width: 500px;
+  }
 `;
 
 const GoalDiv = styled.div`
