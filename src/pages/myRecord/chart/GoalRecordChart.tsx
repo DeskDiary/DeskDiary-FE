@@ -17,6 +17,7 @@ import { GoalTime, MonthTime } from '../../../recoil/DeskAtom';
 import { useQuery } from 'react-query';
 import { getMonthData, getSevenData } from '../../../axios/historyApi';
 
+
 ChartJS.register(
   CategoryScale,
   LinearScale,

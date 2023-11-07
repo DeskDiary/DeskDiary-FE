@@ -104,13 +104,7 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
         await client.subscribe(user, mediaType);
 
         if (mediaType === 'video') {
-          setUsers(prevUsers => {
-            const userExists = prevUsers.find((prevUser) => prevUser.uid === user.uid);
-            if (userExists) {
-              return prevUsers; // 이미 존재하는 유저라면 리스트 업데이트 없이 현재 상태 유지
-            }
-            return [...prevUsers, user]; // 새 유저라면 리스트에 추가
-          });
+          setUsers((prevUsers) => [...new Set([...prevUsers, user])]);
         }
         if (mediaType === 'audio') {
           user.audioTrack?.play();
@@ -160,7 +154,7 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
     getRoomInfo();
     window.onbeforeunload = null;
   }, []);
-
+  
   return (
     <Container>
       <Controller>
