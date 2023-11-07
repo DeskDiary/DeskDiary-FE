@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import styled, { createGlobalStyle } from 'styled-components';
 import { getCookie } from '../../../auth/cookie';
@@ -71,46 +71,45 @@ const SideBar: React.FC<SideBarProps> = () => {
     <Sidebar>
       <GlobalStyle />
       <SidebarInner>
-        <div>
-          <SidebarHeader>
-            <Logo src={logo} alt="Logo" />
-          </SidebarHeader>
-          <SidebarMenu>
-            {navItems.map(item => (
-              <SidebarButton key={item.id} to={item.url}>
-                <img src={item.icon} alt="menu icon" />
-                <p>{item.title}</p>
-              </SidebarButton>
-            ))}
-            <SidebarButton
-              to={token ? '/mydesk' : '/login'}
-              onClick={e => mydeskHandler(e)}
-            >
-              <img src={mydesk} alt="menu icon" />
-              <p>책상 기록</p>
+        <SidebarHeader to="/">
+          <Logo src={logo} alt="Logo" />
+        </SidebarHeader>
+        <SidebarMenu>
+          {navItems.map(item => (
+            <SidebarButton key={item.id} to={item.url}>
+              <img src={item.icon} alt="menu icon" />
+              <p>{item.title}</p>
             </SidebarButton>
-          </SidebarMenu>
-          <SidebarButton className="mypage" to={token ? '/mypage' : '/login'}>
-            {token ? (
-              <>
-                <img
-                  src={data?.profileImage ? data.profileImage : profile}
-                  alt="menu icon"
-                ></img>
-                <p>{data?.nickname}</p>
-              </>
-            ) : (
-              <>
-                <img src={profile} alt="menu icon"></img>
-                <p>로그인</p>
-              </>
-            )}
+          ))}
+          <SidebarButton
+            to={token ? '/mydesk' : '/login'}
+            onClick={e => mydeskHandler(e)}
+          >
+            <img src={mydesk} alt="menu icon" />
+            <p>책상 기록</p>
           </SidebarButton>
-        </div>
+        </SidebarMenu>
+        <SidebarButton className="mypage" to={token ? '/mypage' : '/login'}>
+          {token ? (
+            <>
+              <img
+                src={data?.profileImage ? data.profileImage : profile}
+                alt="menu icon"
+              ></img>
+              <p>{data?.nickname}</p>
+            </>
+          ) : (
+            <>
+              <img src={profile} alt="menu icon"></img>
+              <p>로그인</p>
+            </>
+          )}
+        </SidebarButton>
       </SidebarInner>
     </Sidebar>
   );
 };
+
 const SidebarButton = styled(NavLink)`
   display: flex;
   align-items: center;
@@ -156,22 +155,21 @@ const SidebarButton = styled(NavLink)`
   }
 
   &:hover {
-      opacity: 1;
+    opacity: 1;
 
-
-      > img {
-        filter: grayscale(0);
-      }
-
-      > p {
-        color: white;
-        font-weight: 500;
-      }
-
-      &.mypage {
-        background-color: rgba(255, 255, 255, 0);
-      }
+    > img {
+      filter: grayscale(0);
     }
+
+    > p {
+      color: white;
+      font-weight: 500;
+    }
+
+    &.mypage {
+      background-color: rgba(255, 255, 255, 0);
+    }
+  }
 
   > img {
     height: 25px;
@@ -242,22 +240,30 @@ const SidebarMenu = styled.div`
     gap: 0;
     flex-direction: row;
     margin: 0;
-
   }
 `;
 
 const Logo = styled.img`
   height: 70px;
   padding: 10px;
+  @media (max-width: 768px) {
+    margin-left: 20px;
+    width: 100%;
+    height: 100%;
+  }
 `;
 
-const SidebarHeader = styled.div`
+const SidebarHeader = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: center;
   height: 72px;
   width: 80px;
   margin-top: 10px;
+  @media (max-width: 768px) {
+    width: 50px;
+    height: 50px;
+  }
 `;
 
 const SidebarInner = styled.div`
@@ -270,12 +276,13 @@ const SidebarInner = styled.div`
   display: flex;
   flex-direction: column;
   align-items: start;
-  justify-content: space-between;
+  justify-content: start;
   @media (max-width: 768px) {
-    width: 100vw;
+    width: 100%;
+    display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: start;
+    justify-content: space-between;
   }
 `;
 
@@ -293,8 +300,8 @@ const Sidebar = styled.div`
   ${SidebarHeader} {
     transition: width 0.3s; // 이걸 추가해!
   }
-
-  &:hover {
+  @media (min-width: 768px) {
+    &:hover {
     width: 180px;
 
     ${SidebarHeader} {
@@ -305,16 +312,12 @@ const Sidebar = styled.div`
       opacity: 1;
     }
   }
+  }
+
 
   @media (max-width: 768px) {
     width: 100vw;
     height: 100px;
-    &:hover {
-      width: 100vw;
-      ${SidebarHeader} {
-        width: 80px;
-      }
-    }
   }
 `;
 

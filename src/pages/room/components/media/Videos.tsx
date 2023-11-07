@@ -50,7 +50,6 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
     socket.on('user-list', (payload: UserListPayload) => {
       const { nickname, userListArr } = payload;
       setRoomUserList(userListArr);
-      // console.log('리코일', roomUserList);
     });
 
     return () => {

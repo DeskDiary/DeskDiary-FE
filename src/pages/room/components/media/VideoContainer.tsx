@@ -168,8 +168,6 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
     };
   }, [CHANNEL, client, ready, tracks]);
 
-  console.log(users);
-
   useEffect(() => {
     getRoomInfo();
     window.onbeforeunload = null;

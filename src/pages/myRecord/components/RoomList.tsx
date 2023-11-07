@@ -24,7 +24,7 @@ const RoomList: React.FC<RoomListProps> = ({ label, mydesk }) => {
   let fetchName = mydesk;
 
   const { data, refetch } = useQuery<room[], Error>(
-    fetchName, // 쿼리 키를 배열로 만들어 fetchName, show, sort 추가
+    fetchName,
     async () => {
       const fetchFunc =
         fetchFunctions[fetchName as keyof typeof fetchFunctions];
@@ -86,11 +86,21 @@ const List = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: start;
-  align-items: start;
+  align-items: center;
 
   margin-top: 40px;
   height: 100%;
   width: 100%;
+
+  @media (max-width: 1400px) {
+    width: 1000px;
+  }
+  @media (max-width: 1200px) {
+    width: 800px;
+  }
+  @media (max-width: 768px) {
+    width: 500px;
+  }
 `;
 
 const JoinedRooms = styled.div`
@@ -100,12 +110,18 @@ const JoinedRooms = styled.div`
   width: 1200px;
 
 
-  @media (max-width: 1000px) {
+  @media (max-width: 1400px) {
+    width: 1000px;
     grid-template-columns: repeat(4, 1fr);
   }
 
-  @media (max-width: 800px) {
+  @media (max-width: 1200px) {
+    width: 800px;
     grid-template-columns: repeat(3, 1fr);
+  }
+  @media (max-width: 768px) {
+    width: 500px;
+    grid-template-columns: repeat(2, 1fr);
   }
 `;
 
