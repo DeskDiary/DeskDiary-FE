@@ -57,6 +57,15 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
 
   const { ready, tracks } = useMicrophoneAndCameraTracks();
 
+  const { data, isLoading, isError } = useQuery('cam-user', fetchUser);
+
+  {
+    isLoading && <>로딩중</>;
+  }
+  {
+    isError && <>에러</>;
+  }
+
   /**
    * get room방 정보 가져옴
    */
@@ -104,24 +113,33 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
         await client.subscribe(user, mediaType);
 
         if (mediaType === 'video') {
-          setUsers((prevUsers) => [...new Set([...prevUsers, user])]);
+          setUsers(prevUsers => [...new Set([...prevUsers, user])]);
         }
         if (mediaType === 'audio') {
           user.audioTrack?.play();
 
           client.enableAudioVolumeIndicator();
-          
-          client.on('volume-indicator', (volumes) => {
-            setUserVolumes((prevVolumes) => {
+
+          client.on('volume-indicator', volumes => {
+            setUserVolumes(prevVolumes => {
               const newUserVolumes = { ...prevVolumes };
-          
-              volumes.forEach((volume:any) => {
+
+              volumes.forEach((volume: any) => {
                 newUserVolumes[volume.uid] = volume.level;
               });
-          
+
               return newUserVolumes;
             });
           });
+        }
+      });
+
+      client.on('user-unpublished', (user, type) => {
+        if (type === 'audio') {
+          user.audioTrack?.stop();
+        }
+        if (type === 'video') {
+          user.videoTrack?.stop();
         }
       });
 
@@ -132,11 +150,12 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
         });
       });
 
-      await client.join(APP_ID, name, TOKEN, null);
+      await client.join(APP_ID, name, TOKEN, data.userId);
+      // const uid = await client.join(APP_ID, name, TOKEN, data.userId);
+      // console.log(`User ID: ${uid}`);
       if (tracks) await client.publish([tracks[0], tracks[1]]);
       setStart(true);
     };
-    const currentTracks = tracks;
 
     // 초기화 함수
     if (ready && tracks) {
@@ -145,16 +164,17 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
     }
 
     return () => {
-
       handleUserLeft(tracks);
     };
   }, [CHANNEL, client, ready, tracks]);
+
+  console.log(users);
 
   useEffect(() => {
     getRoomInfo();
     window.onbeforeunload = null;
   }, []);
-  
+
   return (
     <Container>
       <Controller>
@@ -167,7 +187,9 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
         )}
       </Controller>
 
-      {start && tracks && <Videos users={users} tracks={tracks} volumes={userVolumes}/>}
+      {start && tracks && (
+        <Videos users={users} tracks={tracks} volumes={userVolumes} />
+      )}
     </Container>
   );
 };
@@ -178,7 +200,7 @@ const Container = styled.div`
 
 const Controller = styled.div`
   position: absolute;
-  top: 260px;
+  top: 255px;
   left: 10px;
   z-index: 10;
 `;

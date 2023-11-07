@@ -140,20 +140,18 @@ const Mypage: React.FC<MypageProps> = () => {
 
   const handleFileDelete = async () => {
     try {
-      console.log('try');
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
       console.log('===');
-      const response = await axios.post(
+      const response = await axios.delete(
         `${process.env.REACT_APP_SERVER_URL!}/me/profile/image`,
-        { image: 'profile' },
-        config,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
+      
 
-      // console.log('프로필 수정 서버로 전송', response.data);
+      console.log('프로필 사진 삭제', response.data);
       refetch();
       // 성공시 로직
       if (response.data.success) {
@@ -164,7 +162,7 @@ const Mypage: React.FC<MypageProps> = () => {
         console.log('실패ddzz', response.data);
       }
     } catch (error) {
-      // console.log('프로필 수정 실패', error);
+      console.log('프로필 수정 실패', error);
     }
   };
 
