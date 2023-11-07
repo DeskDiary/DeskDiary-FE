@@ -62,19 +62,16 @@ const VideoController: React.FC<VideoControllerProps> = ({
   return (
     <Controller>
       <button
-        className={trackState.audio ? 'on' : ''}
         onClick={() => mute('audio')}
       >
-        {trackState.audio ? <FaVolumeUp /> : <FaVolumeMute />}
+        {trackState.audio ? <FaVolumeUp /> : <FaVolumeMute style={{ color: "#ad0101"}}/>}
       </button>
       <button
-        className={trackState.video ? 'on' : ''}
         onClick={() => mute('video')}
       >
-        {trackState.video ? <FaVideo /> : <FaVideoSlash />}
+        {trackState.video ? <FaVideo /> : <FaVideoSlash style={{ color: "#ad0101"}}/>}
       </button>
       <div>{data.nickname}</div>
-      {/* <button onClick={() => leaveChannel()}>나가기</button> */}
     </Controller>
   );
 };
@@ -86,10 +83,10 @@ const Controller = styled.div`
   align-items: center;
   justify-content: start;
   gap: 10px;
-  margin-left: 10px;
+  margin-left: 0px;
 
   > div {
-    margin: 0 20px 0 auto;
+    margin: 0 15px 0 auto;
     display: flex;
     align-items: center;
     height: 35px;
@@ -105,11 +102,12 @@ const Controller = styled.div`
     border: 1px solid var(--gray-07);
     width: 50px;
     height: 40px;
-    background-color: var(--gray-07);
+    background-color: var(--gray-09);
     transition: 0.5;
     border: none;
     font-size: 20px;
     border-radius: 10px;
+    color: #007500;
     &:hover {
       background-color: var(--gray-06);
     }

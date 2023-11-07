@@ -98,6 +98,7 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
     }
   };
 
+
   useEffect(() => {
     const init = async (name: string) => {
       client.on('user-published', async (user, mediaType) => {
@@ -105,7 +106,9 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
 
         if (mediaType === 'video') {
           setUsers(prevUsers => {
-            const userExists = prevUsers.find((prevUser) => prevUser.uid === user.uid);
+            const userExists = prevUsers.find(
+              prevUser => prevUser.uid === user.uid,
+            );
             if (userExists) {
               return prevUsers; // 이미 존재하는 유저라면 리스트 업데이트 없이 현재 상태 유지
             }
@@ -116,18 +119,27 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
           user.audioTrack?.play();
 
           client.enableAudioVolumeIndicator();
-          
-          client.on('volume-indicator', (volumes) => {
-            setUserVolumes((prevVolumes) => {
+
+          client.on('volume-indicator', volumes => {
+            setUserVolumes(prevVolumes => {
               const newUserVolumes = { ...prevVolumes };
-          
-              volumes.forEach((volume:any) => {
+
+              volumes.forEach((volume: any) => {
                 newUserVolumes[volume.uid] = volume.level;
               });
-          
+
               return newUserVolumes;
             });
           });
+        }
+      });
+
+      client.on('user-unpublished', (user, type) => {
+        if (type === 'audio') {
+          user.audioTrack?.stop();
+        }
+        if (type === 'video') {
+          user.videoTrack?.stop();
         }
       });
 
@@ -151,7 +163,6 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
     }
 
     return () => {
-
       handleUserLeft(tracks);
     };
   }, [CHANNEL, client, ready, tracks]);
@@ -173,7 +184,9 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
         )}
       </Controller>
 
-      {start && tracks && <Videos users={users} tracks={tracks} volumes={userVolumes}/>}
+      {start && tracks && (
+        <Videos users={users} tracks={tracks} volumes={userVolumes} />
+      )}
     </Container>
   );
 };
@@ -184,7 +197,7 @@ const Container = styled.div`
 
 const Controller = styled.div`
   position: absolute;
-  top: 260px;
+  top: 255px;
   left: 10px;
   z-index: 10;
 `;

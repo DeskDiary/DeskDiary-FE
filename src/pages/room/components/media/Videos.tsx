@@ -31,7 +31,7 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
     <Container>
       <Video border={getBorderColorByVolume(volumes[myAudioTrackId] || 0)}>
         <AgoraVideoPlayer
-          style={{ height: '360px', width: '600px', backgroundColor: 'black' }}
+          style={{ height: '300px', width: '400px', backgroundColor: 'black' }}
           className="video"
           videoTrack={tracks[1]}
         />
@@ -66,7 +66,7 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
 const Video = styled.div<{ border: string }>`
   width: 400px;
   height: 300px;
-  border-radius: 10px;
+  border-radius: 15px;
   overflow: hidden;
   border: 3px solid ${({ border }) => border};
 `;
