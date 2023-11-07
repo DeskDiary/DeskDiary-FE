@@ -57,6 +57,11 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
 
   const { ready, tracks } = useMicrophoneAndCameraTracks();
 
+  const {data, isLoading, isError} = useQuery('cam-user',fetchUser);
+
+  {isLoading && <>로딩중</>}
+  {isError && <>에러</>}
+
   /**
    * get room방 정보 가져옴
    */
@@ -103,6 +108,7 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
     const init = async (name: string) => {
       client.on('user-published', async (user, mediaType) => {
         await client.subscribe(user, mediaType);
+        
 
         if (mediaType === 'video') {
           setUsers(prevUsers => {
@@ -150,7 +156,7 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
         });
       });
 
-      await client.join(APP_ID, name, TOKEN, null);
+      await client.join(APP_ID, name, TOKEN, data.userId);
       if (tracks) await client.publish([tracks[0], tracks[1]]);
       setStart(true);
     };
@@ -171,6 +177,8 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
     getRoomInfo();
     window.onbeforeunload = null;
   }, []);
+
+  console.log(users);
 
   return (
     <Container>
