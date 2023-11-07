@@ -1,17 +1,13 @@
 import styled from 'styled-components';
-import {yellow} from '../../../../images/character'
-import {
-  FaVolumeMute,
-  FaVolumeUp,
-  FaVideo,
-  FaVideoSlash,
-} from 'react-icons/fa';
 
+import { FaVideoSlash } from 'react-icons/fa';
 
 const DefaultScreen = (): JSX.Element => {
-  return <Default>
-    <FaVideoSlash style={{ fontSize: '50px', color: "#ad0101"}}/>
-  </Default>;
+  return (
+    <Default>
+      <FaVideoSlash style={{ fontSize: '50px', color: '#ad0101' }} />
+    </Default>
+  );
 };
 
 const Default = styled.div`
@@ -23,9 +19,9 @@ const Default = styled.div`
   align-items: center;
   justify-content: center;
 
-  >img{
+  > img {
     margin: auto;
   }
-`
+`;
 
 export default DefaultScreen;

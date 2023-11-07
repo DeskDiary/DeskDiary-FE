@@ -12,7 +12,9 @@ import { RoomUserList } from '../../../../recoil/RoomAtom';
 import { useRecoilState } from 'recoil';
 import { useQuery } from 'react-query';
 import { fetchUser } from '../../../../axios/api';
-import {yellow} from '../../../../images/character'
+import { FaVideoSlash } from 'react-icons/fa';
+import { blue } from '../../../../images/character';
+import loading from '../../../../images/loading.gif'
 
 type VideosProps = {
   users: IAgoraRTCRemoteUser[];
@@ -32,6 +34,11 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
   const getNicknameByUserId = (userId: number) => {
     const user = roomUserList.find(user => user.userId === userId);
     return user ? user.nickname : null;
+  };
+
+  const getProfileByUserId = (userId: number) => {
+    const user = roomUserList.find(user => user.userId === userId);
+    return user ? loading : null;
   };
 
   // 볼륨 레벨에 따라서 색상을 결정하는 함수
@@ -71,7 +78,12 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
     <Container>
       <Video border={getBorderColorByVolume(volumes[myAudioTrackId] || 0)}>
         <AgoraVideoPlayer
-          style={{ height: '300px', width: '400px', backgroundColor: 'blue' }}
+          style={{
+            height: '300px',
+            width: '400px',
+            backgroundColor: 'blue',
+            zIndex: '5',
+          }}
           className="video"
           videoTrack={tracks[1]}
         />
@@ -84,14 +96,26 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
             const volumeLevel = volumes[user.uid] || 0; // 기본 볼륨 값은 0으로 설정
             const borderColor = getBorderColorByVolume(volumeLevel);
             const nickname = getNicknameByUserId(+user.uid);
+            const profileImage = getProfileByUserId(+user.uid)
             return (
               <Video key={user.uid} border={borderColor}>
+                <ClosedCam>
+                  <FaVideoSlash
+                    style={{ fontSize: '50px', color: '#ad0101' }}
+                  />
+                </ClosedCam>
+
                 <AgoraVideoPlayer
                   style={{
                     height: '300px',
                     width: '400px',
                     display: 'inline',
                     backgroundColor: 'black',
+                    zIndex: '5',
+                    backgroundImage: `url(${profileImage})`,
+                    backgroundSize: '200px', // 이미지가 div에 꽉 차도록
+                    backgroundPosition: 'center center', // 이미지가 div 중앙에 오도록
+                    backgroundRepeat: 'no-repeat',
                   }}
                   className="video"
                   videoTrack={user.videoTrack}
@@ -100,8 +124,7 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
                 {nickname && <Nickname type="button">{nickname}</Nickname>}
               </Video>
             );
-          } 
-          else {
+          } else {
             const nickname = getNicknameByUserId(+user.uid);
             return (
               <Video border={''}>
@@ -114,6 +137,14 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
     </Container>
   );
 };
+
+const ClosedCam = styled.div`
+  position: absolute;
+  z-index: 5;
+  color: white;
+  top: 125px;
+  left: 175px;
+`;
 
 const Nickname = styled.button`
   position: absolute;
@@ -135,10 +166,14 @@ const Video = styled.div<{ border: string }>`
   width: 400px;
   height: 300px;
   border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
   border: 3px solid ${({ border }) => border};
   position: relative;
-  background-color: black;
+  background-color: blue;
+  z-index: 0;
 `;
 
 const Container = styled.div`
@@ -147,7 +182,6 @@ const Container = styled.div`
   gap: 12px;
   flex-direction: row;
   flex-wrap: nowrap;
-  gap: 20px;
   align-items: center;
   justify-content: center;
 
@@ -155,13 +189,13 @@ const Container = styled.div`
   overflow-y: hidden;
   align-items: center;
   margin-bottom: 100px;
-
   @media (max-width: 1700px) {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1500px) {
     grid-template-columns: repeat(1, 1fr);
+    margin-bottom: 0px;
   }
 `;
 export default Videos;

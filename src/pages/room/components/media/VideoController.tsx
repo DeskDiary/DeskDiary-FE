@@ -49,19 +49,34 @@ const VideoController: React.FC<VideoControllerProps> = ({
 
   return (
     <Controller>
-      <button
-        onClick={() => mute('audio')}
-      >
-        {trackState.audio ? <FaVolumeUp /> : <FaVolumeMute style={{ color: "#ad0101"}}/>}
+      <button onClick={() => mute('audio')}>
+        {trackState.audio ? (
+          <FaVolumeUp />
+        ) : (
+          <FaVolumeMute style={{ color: '#ad0101' }} />
+        )}
       </button>
-      <button
-        onClick={() => mute('video')}
-      >
-        {trackState.video ? <FaVideo /> : <FaVideoSlash style={{ color: "#ad0101"}}/>}
+      <button onClick={() => mute('video')}>
+        {trackState.video ? (
+          <FaVideo />
+        ) : (
+          <FaVideoSlash style={{ color: '#ad0101' }} />
+        )}
       </button>
+      {!trackState.video && (
+        <NonCam>
+          <FaVideoSlash style={{ fontSize: '50px', color: '#ad0101' }} />
+        </NonCam>
+      )}
     </Controller>
   );
 };
+
+const NonCam = styled.div`
+  position: absolute;
+  top: -125px;
+  left: 170px;
+`
 
 const Controller = styled.div`
   width: 400px;
@@ -88,7 +103,6 @@ const Controller = styled.div`
     &:hover {
       background-color: var(--gray-06);
     }
-    
   }
 `;
 export default VideoController;
