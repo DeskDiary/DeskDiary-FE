@@ -116,14 +116,12 @@ const SidebarButton = styled(NavLink)`
   align-items: center;
   height: 60px;
   width: 60px;
-  background-color: transparent; // 기본 배경색을 투명으로 설정
-  transition: width 0.4s, background-color 0.3s; // width와 background-color에 대한 transition 추가
+  background-color: transparent;
+  transition: width 0.4s, background-color 0.3s;
 
   font-size: 16px;
-  /* text-transform: capitalize; */
   line-height: 1;
   border-radius: 50px;
-  /* opacity: 0.8; */
   margin-left: 5px;
   position: relative;
   z-index: 50;
@@ -150,24 +148,30 @@ const SidebarButton = styled(NavLink)`
     }
   }
 
-  &:hover {
-    opacity: 1;
-    width: 85%;
-    background-color: rgba(255, 255, 255, 0.2);
-
-    > img {
-      filter: grayscale(0);
-    }
-
-    > p {
-      color: white;
-      font-weight: 500;
-    }
-
-    &.mypage {
-      background-color: rgba(255, 255, 255, 0);
+  @media (min-width: 768px) {
+    &:hover {
+      width: 85%;
+      background-color: rgba(255, 255, 255, 0.2);
     }
   }
+
+  &:hover {
+      opacity: 1;
+
+
+      > img {
+        filter: grayscale(0);
+      }
+
+      > p {
+        color: white;
+        font-weight: 500;
+      }
+
+      &.mypage {
+        background-color: rgba(255, 255, 255, 0);
+      }
+    }
 
   > img {
     height: 25px;
@@ -184,27 +188,6 @@ const SidebarButton = styled(NavLink)`
     color: white;
   }
 
-  > div {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-
-    > img {
-      height: 35px;
-      border-radius: 50%;
-      filter: grayscale(100%);
-      padding: 0 10px;
-    }
-
-    > p {
-      width: 80px;
-      white-space: nowrap;
-      opacity: 0;
-      transition: opacity 0.4s ease-in-out;
-      color: var(--gray-03);
-    }
-  }
-
   &.mypage {
     margin-left: 15px;
     opacity: 1;
@@ -219,6 +202,23 @@ const SidebarButton = styled(NavLink)`
       filter: grayscale(0);
     }
   }
+
+  @media (max-width: 768px) {
+    flex-direction: row;
+    margin: 0;
+
+    ::before {
+      content: '';
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      right: 0px;
+      bottom: 0px;
+    }
+    > p {
+      display: none;
+    }
+  }
 `;
 
 const SidebarMenu = styled.div`
@@ -229,16 +229,20 @@ const SidebarMenu = styled.div`
   margin-top: 50px;
   margin-bottom: 50px;
 
-  ${SidebarButton} img {
-    transition: width 0.3s;
+  @media (min-width: 768px) {
+    &:hover {
+      width: 180px;
+      ${SidebarButton} img {
+        transition: 0.3s;
+      }
+    }
   }
 
-  &:hover {
-    width: 180px;
+  @media (max-width: 768px) {
+    gap: 0;
+    flex-direction: row;
+    margin: 0;
 
-    ${SidebarButton} img {
-      transition: 0.3s;
-    }
   }
 `;
 
@@ -267,7 +271,12 @@ const SidebarInner = styled.div`
   flex-direction: column;
   align-items: start;
   justify-content: space-between;
-
+  @media (max-width: 768px) {
+    width: 100vw;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+  }
 `;
 
 const Sidebar = styled.div`
@@ -296,11 +305,15 @@ const Sidebar = styled.div`
       opacity: 1;
     }
   }
+
   @media (max-width: 768px) {
     width: 100vw;
     height: 100px;
     &:hover {
       width: 100vw;
+      ${SidebarHeader} {
+        width: 80px;
+      }
     }
   }
 `;
