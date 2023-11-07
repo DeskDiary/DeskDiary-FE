@@ -48,7 +48,7 @@ const RoomSideBar: React.FC<RoomSideBarProps> = () => {
   }, [socket]);
 
   return (
-    <Body>
+    <Container>
       <LogoImg
         src={logo}
         alt="로고이미지"
@@ -66,10 +66,6 @@ const RoomSideBar: React.FC<RoomSideBarProps> = () => {
       <TimerBox>
         <Timer />
       </TimerBox>
-      {/* <CamAndMicSettingsBox>
-        <img src={micNone} alt="마이크" />
-        <img src={videocam} alt="카메라" />
-      </CamAndMicSettingsBox> */}
       <JoinPeopleBox>
         <UserCount>
           <p>참여인원</p>
@@ -85,11 +81,11 @@ const RoomSideBar: React.FC<RoomSideBarProps> = () => {
           </UserList>
         ))}
       </JoinPeopleBox>
-    </Body>
+    </Container>
   );
 };
 
-const Body = styled.div`
+const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -100,7 +96,7 @@ const Body = styled.div`
   @media (max-width: 768px) {
     flex-direction: row;
     height: 40px;
-    width: 100vw;
+    width: calc(100vw - 32px);
     margin-left: 0px;
     flex-wrap: wrap;
     align-items: start;
@@ -119,7 +115,9 @@ const LogoImg = styled.img`
     height: 36.5px;
     /* border: 2px solid tomato; */
     margin: 0px 20px 0px 0px;
-    
+  }
+  @media (max-width: 500px) {
+    margin: 0px 15px 0px 0px;
   }
 `;
 const UserInfoBox = styled.div`
@@ -144,10 +142,9 @@ const UserInfoBox = styled.div`
   }
   @media (max-width: 768px) {
     margin: 0px;
-    /* border: 2px solid tomato; */
     height: 36.5px;
     flex-direction: row;
-    width: 50px;
+    width: 30px;
     
     img {
       margin: 0px;

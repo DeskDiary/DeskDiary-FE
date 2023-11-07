@@ -95,6 +95,9 @@ const Body = styled.div`
   background-color: var(--gray-09);
   display: flex;
   align-items: center;
+  @media (max-width: 768px) {
+    width: 100vw;
+  }
 `;
 
 const OutRoomButton = styled.button`
