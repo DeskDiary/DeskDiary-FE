@@ -4,9 +4,9 @@ import styled, { css } from 'styled-components';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import { getCookie } from '../../../auth/cookie';
-import logo from '../../../images/logo.svg';
 import { GoalTime, GoalTimeModalState } from '../../../recoil/DeskAtom';
 import graph from '../../../images/desk/graph.png';
+import help from '../../../images/room/help_outline.svg'
 
 type GoalPercentGraphProps = {};
 const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
@@ -107,7 +107,7 @@ const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
         </Text>
       )}
 
-      <Image src={graph} alt="그래프" percent={percent} />
+      <Image src={graph} alt="그래프" percent={`${percent}`} />
 
       <DetailTimeInfo>
         <DetailTimeInfoPBox>
@@ -134,6 +134,11 @@ const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
         <span>하</span>
         <span>기</span>
       </PageMoveButton>
+      <Help>
+        <img src={help} alt="help" />
+        <p>목표시간을 설정하면 누적시간에 따라서 목표달성 이미지가 노란색으로 점점 차게 됩니다.</p>
+      </Help>
+      
     </Body>
   );
 };
@@ -174,7 +179,7 @@ const Text = styled.div`
   }
 `;
 
-const Image = styled.img<{ percent: number }>`
+const Image = styled.img<{ percent: string }>`
   margin-top: 24px;
   display: flex;
   width: 200px;
@@ -184,9 +189,9 @@ const Image = styled.img<{ percent: number }>`
   background-image: linear-gradient(
     to bottom,
     white,
-    white ${props => 100 - props.percent}%,
+    white ${props => 100 - Number(props.percent)}%,
     #ffbb00,
-    #ffbb00 ${props => 100 - props.percent}%
+    #ffbb00 ${props => 100 - Number(props.percent)}%
   );
 `;
 
@@ -260,4 +265,23 @@ const PageMoveButton = styled.button<{ goalnotset: string }>`
       }
     `}
 `;
+
+const Help = styled.div`
+  display: flex;
+  gap: 10px;
+  p {
+    font-size: 12px;
+    line-height: 100%;
+    color: white;
+    display: none;
+  }
+  &:hover {
+    p {
+      display: flex;
+    }
+  }
+  img {
+    margin-left: -12px;
+  }
+`
 export default GoalPercentGraph;
