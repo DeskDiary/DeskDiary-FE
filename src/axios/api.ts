@@ -111,10 +111,10 @@ export const fetchRoomTopLatest = async () => {
 export const fetchStudyPopular = async () => {
   try {
     const { data } = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL!}/study-rooms/popular`,
+      `${process.env.REACT_APP_SERVER_URL!}/study-rooms/popular?cursor=0`,
     );
     // console.log('❤️스터디 인기순')
-    return data;
+    return data.QueryResults;
   } catch (error) {
     // console.error('스터디 인기순 정보를 불러오는 데 실패했어요!', error);
     return null;
@@ -125,10 +125,10 @@ export const fetchStudyPopular = async () => {
 export const fetchHobbyPopular = async () => {
   try {
     const { data } = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL!}/hobby-rooms/popular`,
+      `${process.env.REACT_APP_SERVER_URL!}/hobby-rooms/popular?cursor=0`,
     );
     // console.log('❤️취미룸 인기순')
-    return data;
+    return data.QueryResults;
   } catch (error) {
     // console.error('취미 인기순 정보를 불러오는 데 실패했어요!', error);
     return null;
@@ -139,10 +139,10 @@ export const fetchHobbyPopular = async () => {
 export const fetchStudyLatest = async () => {
   try {
     const { data } = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL!}/study-rooms/latest`,
+      `${process.env.REACT_APP_SERVER_URL!}/study-rooms/latest?cursor=0`,
     );
     // console.log('❤️스터디 최신순')
-    return data;
+    return data.QueryResults;
   } catch (error) {
     // console.error('스터디 최신순 정보를 불러오는 데 실패했어요!', error);
     return null;
@@ -153,10 +153,10 @@ export const fetchStudyLatest = async () => {
 export const fetchHobbyLatest = async () => {
   try {
     const { data } = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL!}/hobby-rooms/latest`,
+      `${process.env.REACT_APP_SERVER_URL!}/hobby-rooms/latest?cursor=0`,
     );
     // console.log('❤️취미룸 최신순')
-    return data;
+    return data.QueryResults;
   } catch (error) {
     // console.error('취미 최신순 정보를 불러오는 데 실패했어요!', error);
     return null;
