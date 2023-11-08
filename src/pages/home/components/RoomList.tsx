@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 import {
   fetchHobbyLatest,
@@ -15,6 +15,7 @@ import {
 import RoomCard from './RoomCard';
 import { useRecoilState } from 'recoil';
 import axios from 'axios';
+import { act } from '@testing-library/react';
 
 type RoomListProps = {
   label: string;
@@ -35,37 +36,25 @@ const fetchFunctions = {
 const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
   const [isPopular, setIsPopular] = useState(true);
   const [sort, setSort] = useState('Popular');
-  const targetRef = useRef(null);
+  const target = useRef<HTMLElement | null>(null!);
 
   const [roomList, setRoomList] = useState<room[]>([]);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [count, setCount] = useState(roomList.length);
 
-  const handleIntersection = (entries: IntersectionObserverEntry[]) => {
-    if (entries[0].isIntersecting && !isLoading) {
-      // Target 엘리먼트가 화면에 나타나면 데이터를 추가로 불러오기
-      setIsLoading(true);
-
-      // 여기에서 추가 데이터를 불러오는 함수 호출 (예: fetchMoreData())
-    }
+  const options = {
+    threshold: 1.0,
   };
 
+  const callback = () => {
+    queryClient.invalidateQueries(fetchName);
+  };
+
+  const observer = new IntersectionObserver(callback, options);
+
   useEffect(() => {
-    // IntersectionObserver 초기화
-    const observer = new IntersectionObserver(handleIntersection, {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.1, // 엘리먼트가 화면에 10% 이상 나타날 때 콜백 호출
-    });
-
-    if (targetRef.current) {
-      observer.observe(targetRef.current);
-    }
-
-    // 컴포넌트 언마운트 시 Observer 해제
-    return () => observer.disconnect();
+    observer.observe(target.current!);
   }, []);
-
 
   const changePopular = (value: boolean) => {
     setIsPopular(value);
@@ -78,31 +67,40 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
 
   let fetchName = show + sort;
 
+  console.log('카운트1', count);
+  console.log(roomList.length);
+  const queryClient = useQueryClient();
   const { data } = useQuery<room[], Error>(
     fetchName, // 쿼리 키를 배열로 만들어 fetchName, show, sort 추가
     async () => {
       const fetchFunc =
         fetchFunctions[fetchName as keyof typeof fetchFunctions];
       if (fetchFunc) {
-        const result:room[] = await fetchFunc(roomList.length > 0 ? roomList[roomList.length -1].roomId : 0);
-        return result ;
+        console.log('카운트2', count);
+        console.log(count > 0 ? roomList[count - 1].roomId : 0);
+        const result: room[] = await fetchFunc(
+          count > 0 ? roomList[count - 1].roomId : 0,
+        );
+        return result;
       } else {
         throw new Error('Invalid fetchName');
       }
     },
     {
-      refetchOnWindowFocus: false,
-      refetchInterval: 10000,
-      refetchIntervalInBackground: true,
-      retry: false, // 새로고침이 필요 없을 때 에러를 던지므로, 재시도하지 않게 함
+      
     },
   );
+  useEffect(() => {
+    console.log('데이터', data);
+    // Set을 Array로 변환하고 중복을 제거한 후 다시 Set으로 변환
+    const uniqueRoomSet = new Set([...roomList, ...(data || [])]);
+    setRoomList(Array.from(uniqueRoomSet));
+  }, [data]);
 
   useEffect(() => {
-    console.log(data)
-    setRoomList([...roomList, ...(data || [])]);
-
-  }, [data])
+    console.log('****');
+    setCount(roomList.length);
+  }, [roomList]);
 
   useEffect(() => {
     if (isPopular) {
@@ -139,7 +137,7 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
           return <RoomCard key={room.uuid} room={room} fetch={fetchName} />;
         })}
       </JoinedRooms>
-      <Target ref={targetRef}></Target>
+      <Target ref={target} />
     </List>
   );
 };
@@ -228,9 +226,9 @@ const JoinedRooms = styled.div`
   }
 `;
 
-const Target = styled.div`
+const Target = styled.div<{ ref: any }>`
   width: 50vw;
-  height: 0px;
+  height: 100px;
   border: 1px solid tomato;
 `;
 
