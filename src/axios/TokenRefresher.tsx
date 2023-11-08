@@ -20,29 +20,28 @@ const TokenRefresher: React.FC<TokenRefresherProps> = () => {
         const status = error.response.status;
 
         if (status == 401) {
-          // if(mag === '') {
-          try {
-            // 환경 변수에서 서버 URL 가져오기 (REACT_APP_SERVER_URL 환경변수 필요)
-            const serverUrl = process.env.REACT_APP_SERVER_URL;
+          if (msg === '유효하지 않은') {
+            try {
+              const serverUrl = process.env.REACT_APP_SERVER_URL;
 
-            // 리프레시 토큰을 서버에 보내 새 엑세스 토큰 요청
-            const { data } = await axios.post(`${serverUrl}/refresh`, {
-              refreshToken,
-            });
+              // 리프레시 토큰을 서버에 보내 새 엑세스 토큰 요청
+              const { data } = await axios.post(`${serverUrl}/refresh`, {
+                refreshToken,
+              });
 
-            // 새 엑세스 토큰으로 원래 요청 재시도
-            originalConfig.headers[
-              'accessToken'
-            ] = `Bearer ${data.accessToken}`;
+              // 새 엑세스 토큰으로 원래 요청 재시도
+              originalConfig.headers[
+                'accessToken'
+              ] = `Bearer ${data.accessToken}`;
 
-            // axios 인스턴스를 사용하여 원래 요청 재시도
-            return axios(originalConfig);
-          } catch (_error) {
-            // 리프레시 토큰도 만료되었거나 유효하지 않을 때 로그인 페이지로 이동
-            navigate('/login');
-            return Promise.reject(_error);
+              // axios 인스턴스를 사용하여 원래 요청 재시도
+              return axios(originalConfig);
+            } catch (_error) {
+              // 리프레시 토큰도 만료되었거나 유효하지 않을 때 로그인 페이지로 이동
+              navigate('/login');
+              return Promise.reject(_error);
+            }
           }
-          // }
         }
         return Promise.reject(error);
       },

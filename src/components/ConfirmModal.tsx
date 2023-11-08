@@ -78,6 +78,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
   const handleLogoutUser = async () => {
     socket.emit('log-out', { userId: userId });
     document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    document.cookie = 'refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
     navigate('/');
   };
 
