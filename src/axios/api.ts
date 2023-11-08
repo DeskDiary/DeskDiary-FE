@@ -110,7 +110,6 @@ export const fetchRoomTopLatest = async () => {
 
 // 스터디 인기순
 export const fetchStudyPopular = async (num:number) => {
-  console.log('num', num)
   try {
     const { data } = await axios.get(
       `${process.env.REACT_APP_SERVER_URL!}/study-rooms/popular?cursor=${num}`, // cursor=div개수
