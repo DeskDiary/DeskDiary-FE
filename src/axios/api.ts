@@ -113,7 +113,7 @@ export const fetchStudyPopular = async (num:number) => {
   console.log(num)
   try {
     const { data } = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL!}/study-rooms/popular?cursor=${num}`, // cursor=div개수
+      `${process.env.REACT_APP_SERVER_URL!}/study-rooms/popular?page=${num}&perPage=10`, // cursor=div개수
     );
     return data;
   } catch (error) {
@@ -126,7 +126,7 @@ export const fetchStudyPopular = async (num:number) => {
 export const fetchHobbyPopular = async (num:number) => {
   try {
     const { data } = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL!}/hobby-rooms/popular?cursor=${num}`,
+      `${process.env.REACT_APP_SERVER_URL!}/hobby-rooms/popular?page=${num}&perPage=10`,
     );
     console.log(data);
     return data;
@@ -140,7 +140,7 @@ export const fetchHobbyPopular = async (num:number) => {
 export const fetchStudyLatest = async (num:number) => {
   try {
     const { data } = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL!}/study-rooms/latest?cursor=${num}`,
+      `${process.env.REACT_APP_SERVER_URL!}/study-rooms/latest?page=${num}&perPage=10`,
     );
     // console.log('❤️스터디 최신순')
     return data;
@@ -154,7 +154,7 @@ export const fetchStudyLatest = async (num:number) => {
 export const fetchHobbyLatest = async (num:number) => {
   try {
     const { data } = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL!}/hobby-rooms/latest?cursor=${num}`,
+      `${process.env.REACT_APP_SERVER_URL!}/hobby-rooms/latest?page=${num}&perPage=10`,
     );
     // console.log('❤️취미룸 최신순')
     return data;

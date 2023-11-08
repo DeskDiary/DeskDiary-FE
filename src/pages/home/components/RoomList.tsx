@@ -35,6 +35,30 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
   const [isPopular, setIsPopular] = useState(true);
   const [sort, setSort] = useState('Popular');
   const [roomList, setRoomList] = useState<any[]>([]);
+  const [num, setNum] = useState(1);
+  const queryClient = useQueryClient();
+
+  const target = useRef<HTMLDivElement | null>(null); // 타입 명시
+
+
+  useEffect(() => {
+    observer.observe(target.current!);
+  }, []);
+
+  const options = {
+    threshold: 1.0,
+  };
+
+  const callback = (entries: IntersectionObserverEntry[]) => {
+    if (target.current) {
+      target.current.innerText += "관측되었습니다";
+    }
+  };
+  
+
+  const observer = new IntersectionObserver(callback, options);
+
+  
   const changePopular = (value: boolean) => {
     setIsPopular(value);
     if (value) {
@@ -52,7 +76,8 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
       const fetchFunc =
         fetchFunctions[fetchName as keyof typeof fetchFunctions];
       if (fetchFunc) {
-        const result = await fetchFunc(0);
+        const result = await fetchFunc(num);
+        setNum(num + 1);
         return result;
       } else {
         throw new Error('Invalid fetchName');
@@ -62,9 +87,7 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
   );
   console.log(fetchName, data);
   useEffect(() => {
-    console.log(fetchName, data);
     if (!data) {
-      // data가 undefined인 경우
       setRoomList([]);
     } else if (
       fetchName === 'fetchRoomPopular' ||
@@ -74,7 +97,8 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
     ) {
       setRoomList(data as room[]); // data를 room[] 형식으로 형 변환
     } else if ('QueryResults' in data) {
-      setRoomList(data.QueryResults as room[]); // data.QueryResults를 room[] 형식으로 형 변환
+      const dataWithType = data as { myCursor?: number; QueryResults: room[] };
+      setRoomList([...roomList, ...(data.QueryResults as room[])]); // data.QueryResults를 room[] 형식으로 형 변환
     }
   }, [data]);
 
@@ -113,6 +137,9 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
           return <RoomCard key={room.uuid} room={room} fetch={fetchName} />;
         })}
       </JoinedRooms>
+      <div style={{ height: "100px", backgroundColor: "grey" }} ref={target}>
+        target
+      </div>
     </List>
   );
 };
