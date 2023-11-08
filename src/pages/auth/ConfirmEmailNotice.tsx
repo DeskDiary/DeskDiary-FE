@@ -10,18 +10,20 @@ const ConfirmEmailNotice: React.FC<ConfirmEmailNoticeProps> = () => {
     <Container>
       <img src={logo} alt="logo" />
       <Content>
-        <p>입력 해 주신 이메일 주소로</p>
-        <p>가입 확인 메일을 전송했습니다.</p>
+        <p>제출하신 이메일로 확인 메일을 발송했습니다.</p>
+        <p>메일을 확인하신 후,</p>
       </Content>
       <Content>
-        <p>메일을 확인하셨다면 아래의 <LoginText>로그인하기</LoginText> 버튼을 눌러주세요</p>
+        <p>
+          아래의 <LoginText>로그인하기</LoginText> 버튼을 클릭해 주세요.
+        </p>
       </Content>
 
       <ButtonGroup>
         <Button to="/login" buttonType="login">
           로그인하러가기
         </Button>
-        <Button to="join" buttonType="join">
+        <Button to="/join" buttonType="join">
           회원가입 다시하기
         </Button>
       </ButtonGroup>
@@ -34,16 +36,20 @@ const LoginText = styled.span`
   padding: 8px;
   font-size: 17px;
   width: 80px;
-  opacity: 0.5;
+  opacity: 0.7;
   color: white;
   border-radius: 10px;
-`
+  cursor: default;
+`;
 
 const Content = styled.div`
   text-align: center;
+  gap: 20px;
+  margin-bottom: 20px;
   > p {
     font-size: 24px;
-    height: 30px;
+    height: 35px;
+    cursor: default;
   }
 `;
 
@@ -68,7 +74,9 @@ const ButtonGroup = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 20px;
+  margin-top: 20px;
+  margin-bottom: 100px;
 `;
 
 const Container = styled.div`
@@ -79,10 +87,9 @@ const Container = styled.div`
   height: 100vh;
   width: 100vw;
 
-  gap: 50px;
-
   > img {
     width: 100px;
+    margin-bottom: 100px;
   }
 `;
 export default ConfirmEmailNotice;
