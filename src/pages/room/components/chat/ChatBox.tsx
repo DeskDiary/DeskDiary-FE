@@ -44,6 +44,12 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
     refetchOnWindowFocus: false,
   });
 
+  let serverUserId;
+
+  if (data) {
+    serverUserId = data?.userId;
+  }
+
   const historyRoom = localStorage.getItem('room');
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -90,9 +96,6 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
         { type: 'new-user', data: nickname },
       ]);
       setRoomUserList(userListArr);
-      // console.log('🥰새로 들어온 유저', nickname);
-      // console.log('🥰유저리스트', userListArr);
-      // console.log('리코일', roomUserList);
     });
 
     socket.on('leave-user', (payload: UserListPayload) => {
@@ -102,16 +105,40 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
         { type: 'left-user', data: nickname },
       ]);
       setRoomUserList(userListArr);
-      // console.log('😭나간 유저', nickname);
-      // console.log('😭유저리스트', userListArr);
+    });
+
+    socket.on('log-out', (userId: any) => {
+      const socketUser = userId.logoutUser;
+      const serverUserId = data?.userId;
+      console.log('socketUser 소켓', socketUser, '===', serverUserId);
+      if (socketUser === serverUserId) {
+        console.log('log-out 소켓', userId);
+        toast.message('로그아웃에 성공하였습니다.');
+        navigate('/');
+      }
+    });
+
+    socket.on('error-room', error => {
+      // 사용자에게 에러 메시지를 보여줌
+      alert(error.message);
+    });
+
+    socket.on('remove-users', () => {
+      // 사용자를 방 목록 페이지로 리다이렉트
+      navigate('/');
+      // 알림 메시지 표시
+      alert('방이 삭제되었습니다.');
     });
 
     return () => {
       socket.off('new-user');
       socket.off('leave-user');
+      socket.off('error-room');
+      socket.off('remove-users');
     };
-  }, [socket]);
+  }, [socket, data]);
 
+  console.log(data?.userId);
 
   useEffect(() => {
     socket.on('disconnect_user', (byeUser: string) => {
@@ -121,8 +148,6 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
       ]);
       // console.log('😭나간 유저', byeUser);
     });
-
-    
   }, [socket]);
 
   const chatListRef = useRef<HTMLDivElement>(null); // ref 생성
@@ -136,7 +161,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
 
   useEffect(() => {
     window.onbeforeunload = null;
-  }, [])
+  }, []);
 
   return (
     <Container>
@@ -168,7 +193,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
             placeholder="메세지를 입력 해 주세요"
           ></UserInput>
           <SendButton type="submit">
-            <img src={yellow} alt="send"/>
+            <img src={yellow} alt="send" />
           </SendButton>
         </ChatForm>
       </ChatUnder>
