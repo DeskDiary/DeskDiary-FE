@@ -88,7 +88,7 @@ const Join: React.FC<JoinProps> = () => {
       axios.post(`${process.env.REACT_APP_SERVER_URL!}/auth/join`, userData),
     {
       onSuccess: () => {
-        navigate('/login');
+        navigate('/confirm-email');
       },
       onError: (error: any) => {
         if (error.response) {
@@ -117,9 +117,7 @@ const Join: React.FC<JoinProps> = () => {
               );
               break;
             case message.includes('닉네임이 이미'):
-              setNicknameError(
-                '이미 사용중인 닉네임입니다.',
-              );
+              setNicknameError('이미 사용중인 닉네임입니다.');
               break;
             case message.includes('비밀번호가 비어 있으면 안됩니다.'):
               setPasswordError('비밀번호가 비어 있으면 안됩니다.');

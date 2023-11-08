@@ -53,6 +53,6 @@ const TokenRefresher: React.FC<TokenRefresherProps> = () => {
     };
   }, [navigate, refreshToken]);
 
-  return <div>Have a good coding</div>;
+  return <div></div>;
 };
 export default TokenRefresher;
