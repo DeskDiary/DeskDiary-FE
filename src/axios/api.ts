@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getCookie, setTokenCookie } from '../auth/cookie';
+import { useRecoilState } from 'recoil';
 
 
 const token = getCookie('token');
@@ -108,10 +109,11 @@ export const fetchRoomTopLatest = async () => {
 };
 
 // 스터디 인기순
-export const fetchStudyPopular = async () => {
+export const fetchStudyPopular = async (num:number) => {
+  console.log('num', num)
   try {
     const { data } = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL!}/study-rooms/popular?cursor=0`,
+      `${process.env.REACT_APP_SERVER_URL!}/study-rooms/popular?cursor=${num}`, // cursor=div개수
     );
     // console.log('❤️스터디 인기순')
     return data.QueryResults;
@@ -122,10 +124,10 @@ export const fetchStudyPopular = async () => {
 };
 
 // 취미룸 인기순
-export const fetchHobbyPopular = async () => {
+export const fetchHobbyPopular = async (num:number) => {
   try {
     const { data } = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL!}/hobby-rooms/popular?cursor=0`,
+      `${process.env.REACT_APP_SERVER_URL!}/hobby-rooms/popular?cursor=${num}`,
     );
     // console.log('❤️취미룸 인기순')
     return data.QueryResults;
@@ -136,10 +138,10 @@ export const fetchHobbyPopular = async () => {
 };
 
 // 스터디 최신순
-export const fetchStudyLatest = async () => {
+export const fetchStudyLatest = async (num:number) => {
   try {
     const { data } = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL!}/study-rooms/latest?cursor=0`,
+      `${process.env.REACT_APP_SERVER_URL!}/study-rooms/latest?cursor=${num}`,
     );
     // console.log('❤️스터디 최신순')
     return data.QueryResults;
@@ -150,10 +152,10 @@ export const fetchStudyLatest = async () => {
 };
 
 // 취미룸 최신순
-export const fetchHobbyLatest = async () => {
+export const fetchHobbyLatest = async (num:number) => {
   try {
     const { data } = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL!}/hobby-rooms/latest?cursor=0`,
+      `${process.env.REACT_APP_SERVER_URL!}/hobby-rooms/latest?cursor=${num}`,
     );
     // console.log('❤️취미룸 최신순')
     return data.QueryResults;
