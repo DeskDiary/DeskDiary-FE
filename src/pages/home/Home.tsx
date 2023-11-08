@@ -72,8 +72,16 @@ const Img = styled.div`
     width: 800px;
   }
 
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+  
+
   > Img {
     height: 165px;
+    @media (max-width: 768px) {
+    width: 100%;
+  }
   }
 `;
 
@@ -91,6 +99,9 @@ const User = styled.div`
     width: 1000px;
     grid-template-columns: repeat(1, 1fr);
     gap: 0px;
+  }
+  @media (max-width: 768px) {
+    width: 500px;
   }
 `;
 
@@ -111,6 +122,9 @@ const Info = styled.div`
 
   @media (max-width: 1200px) {
     width: 800px;
+  }
+  @media (max-width: 768px) {
+    width: 500px;
   }
 `;
 
