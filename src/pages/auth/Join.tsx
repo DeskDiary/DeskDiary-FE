@@ -14,7 +14,7 @@ import { useMutation } from 'react-query';
 import Kakao from './components/Kakao';
 import Google from './components/Google';
 import { toast } from 'sonner';
-import { getCookie, setTokenCookie } from '../../auth/cookie';
+import { getCookie } from '../../auth/cookie';
 
 type JoinProps = {};
 

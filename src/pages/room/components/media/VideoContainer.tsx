@@ -144,7 +144,6 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
       });
 
       client.on('user-left', user => {
-        // console.log('leaving', user);
         setUsers(prevUsers => {
           return prevUsers.filter(User => User.uid !== user.uid);
         });

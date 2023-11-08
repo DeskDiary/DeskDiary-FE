@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
-import { getCookie, setTokenCookie } from '../../auth/cookie';
+import { getCookie, setTokenCookie, setRefreshTokenCookie } from '../../auth/cookie';
 import { google } from '../../images/main';
 import {
   logoColor,
@@ -61,9 +61,12 @@ const Login: React.FC<LoginProps> = () => {
       };
 
       const response = await axios.post(url, requestBody);
-      const token = response.headers.authorization.split(' ')[1];
+      console.log('🤗🤗🤗🤗',response);
+      const token = response.data.accessToken;
+      const refreshToken = response.data.refreshToken;
       setErrorMessage([]);
       setTokenCookie(token);
+      setRefreshTokenCookie(refreshToken);
       if (idSaveCheckButton === true) {
         saveIdLocalStorage(id);
       }
