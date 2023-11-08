@@ -7,24 +7,32 @@ import { getCookie } from '../auth/cookie';
 import { useRecoilState } from 'recoil';
 import { RefetchAtom } from '../recoil/RoomAtom';
 import ConfirmInput from './ConfirmInput';
+import socket from '../pages/room/socketInstance';
+import { useQuery } from 'react-query';
+import { toast } from 'sonner';
 
 type ConfirmModalProps = {
   title: string;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   uuid?: string;
+  userId?: number;
 };
 
 const ConfirmModal: React.FC<ConfirmModalProps> = ({
   uuid,
   title,
   setIsOpen,
+  userId,
 }) => {
   const navigate = useNavigate();
   const [isRefetch, setIsRefetch] = useRecoilState(RefetchAtom);
   const [isDeleteUser, setIsDeleteUser] = useState(false);
 
+  // 방 삭제
   const handleDeleteRoom = async (uuid: string) => {
     try {
+      socket.emit('removeRoom', { uuid: uuid });
+      toast.error('방 삭제 클릭');
       const token = getCookie('token');
       const response = await axios.delete(
         `${process.env.REACT_APP_SERVER_URL!}/room/${uuid}`,
@@ -36,18 +44,12 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
       );
       setIsRefetch(true);
       setIsOpen(false);
-      // if(response.data.message)
     } catch (error: any) {
       // console.error(error);
-
-      // 에러 메시지에서 '방안에'가 포함되어 있는지 확인
-      if (error.response && error.response.data.message.includes('방안에')) {
-        alert('방안에 사용자가 존재하는 경우 삭제할 수 없습니다.');
-        setIsOpen(false);
-      }
     }
   };
 
+  // 회원탈퇴
   const handleDeleteUser = async () => {
     try {
       const token = getCookie('token');
@@ -72,6 +74,21 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
     }
   };
 
+  // 로그아웃
+  const handleLogoutUser = async () => {
+    socket.emit('log-out', { userId: userId });
+    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    navigate('/');
+  };
+
+  useEffect(() => {
+    socket.on('log-out', () => {
+      console.log('log-out 소켓');
+      toast.message('로그아웃에 성공하였습니다.');
+      navigate('/');
+    });
+  }, [socket]);
+
   useEffect(() => {
     if (title === '회원탈퇴') {
       setIsDeleteUser(true);
@@ -81,11 +98,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
   const handleButton = (title: string) => {
     switch (title) {
       case '로그아웃':
-        document.cookie =
-          'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-        // 여기서 추가로 로그아웃 처리 로직을 넣을 수 있어. 예를 들면 페이지 리디렉션 같은 것!
-        navigate('/');
-        window.location.reload();
+        handleLogoutUser();
 
         break;
       case '삭제':
@@ -107,7 +120,12 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
           <Button type="button" onClick={() => handleButton(title)}>
             {title}
           </Button>
-          {isDeleteUser && <ConfirmInput setIsOpen={setIsOpen} setIsDeleteUser={setIsDeleteUser}/>}
+          {isDeleteUser && (
+            <ConfirmInput
+              setIsOpen={setIsOpen}
+              setIsDeleteUser={setIsDeleteUser}
+            />
+          )}
           <Button
             type="button"
             buttontype="cancel"

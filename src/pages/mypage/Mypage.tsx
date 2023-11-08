@@ -214,6 +214,7 @@ const Mypage: React.FC<MypageProps> = () => {
       // console.log('프로필 수정 실패', error);
     }
   };
+
   const openHelpPage = () => {
     window.open('/help', '_blank');
   };
@@ -324,7 +325,7 @@ const Mypage: React.FC<MypageProps> = () => {
           <List onClick={handleDeleteUser}>회원탈퇴</List>
         </Lists>
         {isOpenLogout && (
-          <ConfirmModal title="로그아웃" setIsOpen={setIsOpenLogout} />
+          <ConfirmModal title="로그아웃" setIsOpen={setIsOpenLogout} userId={data?.userId} />
         )}
         {isOpenDeleteUser && (
           <ConfirmModal title="회원탈퇴" setIsOpen={setIsOpenDeleteUser} />
