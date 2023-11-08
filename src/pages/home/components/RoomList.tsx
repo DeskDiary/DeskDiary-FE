@@ -84,8 +84,8 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
       const fetchFunc =
         fetchFunctions[fetchName as keyof typeof fetchFunctions];
       if (fetchFunc) {
-        const result:room[] = await fetchFunc(0);
-        return result;
+        const result:room[] = await fetchFunc(roomList.length > 0 ? roomList[roomList.length -1].roomId : 0);
+        return result ;
       } else {
         throw new Error('Invalid fetchName');
       }
@@ -99,7 +99,9 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
   );
 
   useEffect(() => {
-    setRoomList(data!);
+    console.log(data)
+    setRoomList([...roomList, ...(data || [])]);
+
   }, [data])
 
   useEffect(() => {
