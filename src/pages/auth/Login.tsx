@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { getCookie, setTokenCookie, setRefreshTokenCookie } from '../../auth/cookie';
 import { google } from '../../images/main';
 import {
-  logoColor,
+  logo_colorful,
   x,
   radio_button_checked,
   radio_button_unchecked,
@@ -224,7 +224,8 @@ const Error = styled.div`
 `;
 
 const Logo = styled(Link)`
-  background: url(${logoColor}) no-repeat center;
+  background: url(${logo_colorful}) no-repeat center;
+  background-size: 60px;
   width: 62px;
   height: 73px;
 `;

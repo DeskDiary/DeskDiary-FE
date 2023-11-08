@@ -21,7 +21,7 @@ const Lending: React.FC<LendingProps> = () => {
   return (
     <Container>
       <BoxContents>
-        <Logo src={logo} alt={logo} />
+        <Logo src={logo} alt="logo" />
         <Title>
           <div>언제 어디든지</div>
           <div>나의 책상이 될 수 있는 곳에서 만나요</div>
