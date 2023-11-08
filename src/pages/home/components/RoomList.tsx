@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
+import React, { useEffect, useState, useRef } from 'react';
+import { useQuery, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 import {
   fetchHobbyLatest,
@@ -13,6 +13,9 @@ import {
   fetchUser,
 } from '../../../axios/api';
 import RoomCard from './RoomCard';
+import { useRecoilState } from 'recoil';
+import axios from 'axios';
+import { act } from '@testing-library/react';
 
 type RoomListProps = {
   label: string;
@@ -33,6 +36,25 @@ const fetchFunctions = {
 const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
   const [isPopular, setIsPopular] = useState(true);
   const [sort, setSort] = useState('Popular');
+  const target = useRef<HTMLElement | null>(null!);
+
+  const [roomList, setRoomList] = useState<room[]>([]);
+
+  const [count, setCount] = useState(roomList.length);
+
+  const options = {
+    threshold: 1.0,
+  };
+
+  const callback = () => {
+    queryClient.invalidateQueries(fetchName);
+  };
+
+  const observer = new IntersectionObserver(callback, options);
+
+  useEffect(() => {
+    observer.observe(target.current!);
+  }, []);
 
   const changePopular = (value: boolean) => {
     setIsPopular(value);
@@ -45,25 +67,40 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
 
   let fetchName = show + sort;
 
+  console.log('카운트1', count);
+  console.log(roomList.length);
+  const queryClient = useQueryClient();
   const { data } = useQuery<room[], Error>(
     fetchName, // 쿼리 키를 배열로 만들어 fetchName, show, sort 추가
     async () => {
       const fetchFunc =
         fetchFunctions[fetchName as keyof typeof fetchFunctions];
       if (fetchFunc) {
-        const result = await fetchFunc();
+        console.log('카운트2', count);
+        console.log(count > 0 ? roomList[count - 1].roomId : 0);
+        const result: room[] = await fetchFunc(
+          count > 0 ? roomList[count - 1].roomId : 0,
+        );
         return result;
       } else {
         throw new Error('Invalid fetchName');
       }
     },
     {
-      refetchOnWindowFocus: false,
-      refetchInterval: 10000,
-      refetchIntervalInBackground: true,
-      retry: false, // 새로고침이 필요 없을 때 에러를 던지므로, 재시도하지 않게 함
+      
     },
   );
+  useEffect(() => {
+    console.log('데이터', data);
+    // Set을 Array로 변환하고 중복을 제거한 후 다시 Set으로 변환
+    const uniqueRoomSet = new Set([...roomList, ...(data || [])]);
+    setRoomList(Array.from(uniqueRoomSet));
+  }, [data]);
+
+  useEffect(() => {
+    console.log('****');
+    setCount(roomList.length);
+  }, [roomList]);
 
   useEffect(() => {
     if (isPopular) {
@@ -96,10 +133,11 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
       </ListInfo>
 
       <JoinedRooms>
-        {data?.map(room => {
-          return <RoomCard key={room.uuid} room={room} fetch={fetchName}/>;
+        {roomList?.map(room => {
+          return <RoomCard key={room.uuid} room={room} fetch={fetchName} />;
         })}
       </JoinedRooms>
+      <Target ref={target} />
     </List>
   );
 };
@@ -186,6 +224,12 @@ const JoinedRooms = styled.div`
     width: 500px;
     grid-template-columns: repeat(2, 1fr);
   }
+`;
+
+const Target = styled.div<{ ref: any }>`
+  width: 50vw;
+  height: 100px;
+  border: 1px solid tomato;
 `;
 
 export default RoomList;
