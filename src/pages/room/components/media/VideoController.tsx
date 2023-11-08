@@ -1,6 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { ICameraVideoTrack, IMicrophoneAudioTrack } from 'agora-rtc-react';
 import { useClient } from './config';
+import {
+  MdOutlineExitToApp,
+  MdScreenShare,
+  MdStopScreenShare,
+} from 'react-icons/md';
 import {
   FaVolumeMute,
   FaVolumeUp,
@@ -8,6 +13,7 @@ import {
   FaVideoSlash,
 } from 'react-icons/fa';
 import styled from 'styled-components';
+import Screenshare from './Screenshare';
 
 type VideoControllerProps = {
   tracks: [IMicrophoneAudioTrack, ICameraVideoTrack];
@@ -22,6 +28,7 @@ const VideoController: React.FC<VideoControllerProps> = ({
 }) => {
   const client = useClient();
   const [trackState, setTrackState] = useState({ video: true, audio: true });
+  const [screenshare, setScreenshare] = useState(false);
 
   const mute = async (type: 'audio' | 'video') => {
     // 컴, 오디어 끄기
@@ -38,14 +45,9 @@ const VideoController: React.FC<VideoControllerProps> = ({
     }
   };
 
-  const leaveChannel = async () => {
-    await client.leave();
-    client.removeAllListeners();
-    tracks[0].close();
-    tracks[1].close();
-    setStart(false);
-    setInCall(false);
-  };
+  const handleScreenShare = useCallback(() => {
+    setScreenshare(prev => !prev);
+  }, []);
 
   return (
     <Controller>
@@ -63,20 +65,42 @@ const VideoController: React.FC<VideoControllerProps> = ({
           <FaVideoSlash style={{ color: '#ad0101' }} />
         )}
       </button>
+      {!trackState.audio && (
+        <NonAudio>
+          <FaVolumeMute style={{ fontSize: '50px', color: '#ad0101' }} />
+        </NonAudio>
+      )}
       {!trackState.video && (
         <NonCam>
           <FaVideoSlash style={{ fontSize: '50px', color: '#ad0101' }} />
         </NonCam>
       )}
+      <button onClick={handleScreenShare}></button>
+      {screenshare ? <MdScreenShare fill="white" /> : <MdStopScreenShare />}
+      {screenshare && (
+        <Screenshare
+          preTracks={tracks}
+          trackState={trackState}
+          screenshare={screenshare}
+          setStart={setStart}
+          setScreenshare={setScreenshare}
+        />
+      )}
     </Controller>
   );
 };
+
+const NonAudio = styled.div`
+    position: absolute;
+  bottom: 0px;
+  left: 0px;
+`
 
 const NonCam = styled.div`
   position: absolute;
   top: -125px;
   left: 170px;
-`
+`;
 
 const Controller = styled.div`
   width: 400px;

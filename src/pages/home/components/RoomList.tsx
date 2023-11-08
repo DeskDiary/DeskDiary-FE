@@ -90,6 +90,8 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
       
     },
   );
+
+  console.log(fetchName);
   useEffect(() => {
     console.log('데이터', data);
     // Set을 Array로 변환하고 중복을 제거한 후 다시 Set으로 변환

@@ -10,10 +10,12 @@ import StudyCategory from '../pages/category/StudyCategory';
 import MyRecord from '../pages/myRecord/MyDesk';
 import SideBar from '../components/layout/main/SideBar';
 import Help from '../pages/help/Help';
+import TokenRefresher from '../axios/TokenRefresher';
 
 const Router = () => {
   return (
     <BrowserRouter>
+    <TokenRefresher />
       <Routes>
 
         <Route path="/lending" element={<Lending />} />
