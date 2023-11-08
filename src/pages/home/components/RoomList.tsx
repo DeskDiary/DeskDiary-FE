@@ -34,7 +34,7 @@ const fetchFunctions = {
 const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
   const [isPopular, setIsPopular] = useState(true);
   const [sort, setSort] = useState('Popular');
-  const [roomList, setRoomList] = useState<room[]>([]);
+  const [roomList, setRoomList] = useState<any[]>([]);
   const changePopular = (value: boolean) => {
     setIsPopular(value);
     if (value) {
@@ -46,7 +46,6 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
 
   let fetchName = show + sort;
 
-
   const { data } = useQuery<room[], Error>(
     [fetchName, show, sort], // 쿼리 키를 배열로 만들어 fetchName, show, sort 추가
     async () => {
@@ -54,24 +53,29 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
         fetchFunctions[fetchName as keyof typeof fetchFunctions];
       if (fetchFunc) {
         const result = await fetchFunc(0);
-        return result.QueryResults || result;
+        return result;
       } else {
         throw new Error('Invalid fetchName');
       }
     },
     {},
   );
+  console.log(fetchName, data);
   useEffect(() => {
-    if(fetchName === 'fetchRoomPopular') {
-      setRoomList(data || []);
-    } else if(fetchName === 'fetchRoomLatest') {
-      setRoomList(data || []);
-    } else if(fetchName === 'fetchRoomTopPopular') {
-      setRoomList(data || []);
-    } else if(fetchName === 'fetchRoomTopLatest') {
-      setRoomList(data || []);
+    console.log(fetchName, data);
+    if (!data) {
+      // data가 undefined인 경우
+      setRoomList([]);
+    } else if (
+      fetchName === 'fetchRoomPopular' ||
+      fetchName === 'fetchRoomLatest' ||
+      fetchName === 'fetchRoomTopPopular' ||
+      fetchName === 'fetchRoomTopLatest'
+    ) {
+      setRoomList(data as room[]); // data를 room[] 형식으로 형 변환
+    } else if ('QueryResults' in data) {
+      setRoomList(data.QueryResults as room[]); // data.QueryResults를 room[] 형식으로 형 변환
     }
-    
   }, [data]);
 
   useEffect(() => {
@@ -196,6 +200,5 @@ const JoinedRooms = styled.div`
     grid-template-columns: repeat(2, 1fr);
   }
 `;
-
 
 export default RoomList;
