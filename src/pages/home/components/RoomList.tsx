@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import {
@@ -13,6 +13,8 @@ import {
   fetchUser,
 } from '../../../axios/api';
 import RoomCard from './RoomCard';
+import { useRecoilState } from 'recoil';
+import axios from 'axios';
 
 type RoomListProps = {
   label: string;
@@ -33,6 +35,37 @@ const fetchFunctions = {
 const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
   const [isPopular, setIsPopular] = useState(true);
   const [sort, setSort] = useState('Popular');
+  const targetRef = useRef(null);
+
+  const [roomList, setRoomList] = useState<room[]>([]);
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleIntersection = (entries: IntersectionObserverEntry[]) => {
+    if (entries[0].isIntersecting && !isLoading) {
+      // Target 엘리먼트가 화면에 나타나면 데이터를 추가로 불러오기
+      setIsLoading(true);
+
+      // 여기에서 추가 데이터를 불러오는 함수 호출 (예: fetchMoreData())
+    }
+  };
+
+  useEffect(() => {
+    // IntersectionObserver 초기화
+    const observer = new IntersectionObserver(handleIntersection, {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.1, // 엘리먼트가 화면에 10% 이상 나타날 때 콜백 호출
+    });
+
+    if (targetRef.current) {
+      observer.observe(targetRef.current);
+    }
+
+    // 컴포넌트 언마운트 시 Observer 해제
+    return () => observer.disconnect();
+  }, []);
+
 
   const changePopular = (value: boolean) => {
     setIsPopular(value);
@@ -51,7 +84,7 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
       const fetchFunc =
         fetchFunctions[fetchName as keyof typeof fetchFunctions];
       if (fetchFunc) {
-        const result = await fetchFunc();
+        const result:room[] = await fetchFunc(0);
         return result;
       } else {
         throw new Error('Invalid fetchName');
@@ -64,6 +97,10 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
       retry: false, // 새로고침이 필요 없을 때 에러를 던지므로, 재시도하지 않게 함
     },
   );
+
+  useEffect(() => {
+    setRoomList(data!);
+  }, [data])
 
   useEffect(() => {
     if (isPopular) {
@@ -96,10 +133,11 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
       </ListInfo>
 
       <JoinedRooms>
-        {data?.map(room => {
-          return <RoomCard key={room.uuid} room={room} fetch={fetchName}/>;
+        {roomList?.map(room => {
+          return <RoomCard key={room.uuid} room={room} fetch={fetchName} />;
         })}
       </JoinedRooms>
+      <Target ref={targetRef}></Target>
     </List>
   );
 };
@@ -186,6 +224,12 @@ const JoinedRooms = styled.div`
     width: 500px;
     grid-template-columns: repeat(2, 1fr);
   }
+`;
+
+const Target = styled.div`
+  width: 50vw;
+  height: 0px;
+  border: 1px solid tomato;
 `;
 
 export default RoomList;
