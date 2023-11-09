@@ -89,7 +89,7 @@ const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
     <Body>
       {목표시간sec > 0 ? (
         <Text>
-          <p>목표한 공부 시간 중</p>
+          <p>오늘 목표시간 중</p>
           <p>
             <span>{percent}%</span> 를
           </p>
