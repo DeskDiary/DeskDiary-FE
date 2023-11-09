@@ -13,7 +13,7 @@ import {
   fetchUser,
 } from '../../../axios/api';
 import RoomCard from './RoomCard';
-import { act } from '@testing-library/react';
+import { Pagination } from '@mui/material';
 
 type RoomListProps = {
   label: string;
@@ -36,29 +36,8 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
   const [sort, setSort] = useState('Popular');
   const [roomList, setRoomList] = useState<any[]>([]);
   const [num, setNum] = useState(1);
-  const queryClient = useQueryClient();
+  const [count, setCount] = useState(1);
 
-  const target = useRef<HTMLDivElement | null>(null); // 타입 명시
-
-
-  useEffect(() => {
-    observer.observe(target.current!);
-  }, []);
-
-  const options = {
-    threshold: 1.0,
-  };
-
-  const callback = (entries: IntersectionObserverEntry[]) => {
-    if (target.current) {
-      target.current.innerText += "관측되었습니다";
-    }
-  };
-  
-
-  const observer = new IntersectionObserver(callback, options);
-
-  
   const changePopular = (value: boolean) => {
     setIsPopular(value);
     if (value) {
@@ -69,38 +48,41 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
   };
 
   let fetchName = show + sort;
+  console.log(show)
+  const handlePageChange = (pageNumber: number) => {
+    setNum(pageNumber);
 
-  const { data } = useQuery<room[], Error>(
-    [fetchName, show, sort], // 쿼리 키를 배열로 만들어 fetchName, show, sort 추가
-    async () => {
+    const fetchData = async () => {
       const fetchFunc =
         fetchFunctions[fetchName as keyof typeof fetchFunctions];
-      if (fetchFunc) {
-        const result = await fetchFunc(num);
-        setNum(num + 1);
+      const result = await fetchFunc(pageNumber);
+      if (result.totalCount % 10 === 0) {
+        setCount(result.totalCount / 10);
+      } else {
+        setCount(Math.floor(result.totalCount / 10) + 1);
+      }
+      if (
+        fetchName === 'fetchRoomPopular' ||
+        fetchName === 'fetchRoomLatest' ||
+        fetchName === 'fetchRoomTopPopular' ||
+        fetchName === 'fetchRoomTopLatest'
+      ) {
+        setRoomList(result);
+        return result;
+      } else if ('QueryResults' in result) {
+        setRoomList(result.QueryResults);
         return result;
       } else {
         throw new Error('Invalid fetchName');
       }
-    },
-    {},
-  );
-  console.log(fetchName, data);
+    };
+
+    fetchData();
+  };
+
   useEffect(() => {
-    if (!data) {
-      setRoomList([]);
-    } else if (
-      fetchName === 'fetchRoomPopular' ||
-      fetchName === 'fetchRoomLatest' ||
-      fetchName === 'fetchRoomTopPopular' ||
-      fetchName === 'fetchRoomTopLatest'
-    ) {
-      setRoomList(data as room[]); // data를 room[] 형식으로 형 변환
-    } else if ('QueryResults' in data) {
-      const dataWithType = data as { myCursor?: number; QueryResults: room[] };
-      setRoomList([...roomList, ...(data.QueryResults as room[])]); // data.QueryResults를 room[] 형식으로 형 변환
-    }
-  }, [data]);
+    handlePageChange(1);
+  }, []);
 
   useEffect(() => {
     if (isPopular) {
@@ -137,9 +119,20 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
           return <RoomCard key={room.uuid} room={room} fetch={fetchName} />;
         })}
       </JoinedRooms>
-      <div style={{ height: "100px", backgroundColor: "grey" }} ref={target}>
-        target
-      </div>
+      {
+        fetchName !== 'fetchRoomPopular' &&
+        fetchName !== 'fetchRoomLatest' &&
+        fetchName !== 'fetchRoomTopPopular' &&
+        fetchName !== 'fetchRoomTopLatest' && <Pagination
+        count={count}
+        showFirstButton
+        showLastButton
+        page={num} // 현재 페이지를 num 상태 변수와 동기화
+        onChange={(event, page) => handlePageChange(page)} // 페이지 번호 변경 이벤트 핸들러
+      />
+      }
+
+      
     </List>
   );
 };
