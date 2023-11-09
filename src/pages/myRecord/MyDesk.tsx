@@ -20,7 +20,7 @@ const MyDesk: React.FC<MyDeskProps> = () => {
   }, []);
   const [isOpenDeleteRoomModal, setIsOpenDeleteRoomModal] =
   useRecoilState(DeleteRoomAtom);
-const [roomUUID, setRoomUUID] = useRecoilState(RoomUUIDAtom);
+  const [roomUUID, setRoomUUID] = useRecoilState(RoomUUIDAtom);
   const [GoalModal, setGoalModal] = useRecoilState<boolean>(GoalTimeModalState);
   return (
     <Container>

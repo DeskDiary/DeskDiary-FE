@@ -75,7 +75,7 @@ const VideoController: React.FC<VideoControllerProps> = ({
           <FaVideoSlash style={{ fontSize: '50px', color: '#ad0101' }} />
         </NonCam>
       )}
-      <button onClick={handleScreenShare}></button>
+      {/* <button onClick={handleScreenShare}></button>
       {screenshare ? <MdScreenShare fill="white" /> : <MdStopScreenShare />}
       {screenshare && (
         <Screenshare
@@ -85,7 +85,7 @@ const VideoController: React.FC<VideoControllerProps> = ({
           setStart={setStart}
           setScreenshare={setScreenshare}
         />
-      )}
+      )} */}
     </Controller>
   );
 };
