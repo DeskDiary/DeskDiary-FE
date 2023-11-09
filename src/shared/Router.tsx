@@ -10,12 +10,14 @@ import StudyCategory from '../pages/category/StudyCategory';
 import MyRecord from '../pages/myRecord/MyDesk';
 import SideBar from '../components/layout/main/SideBar';
 import Help from '../pages/help/Help';
+import TokenRefresher from '../axios/TokenRefresher';
+import ConfirmEmailNotice from '../pages/auth/ConfirmEmailNotice';
 
 const Router = () => {
   return (
     <BrowserRouter>
+      {/* <TokenRefresher /> */}
       <Routes>
-
         <Route path="/lending" element={<Lending />} />
 
         <Route element={<MainLayout />}>
@@ -35,9 +37,9 @@ const Router = () => {
         <Route path="/auth" element={<Auth />} />
 
         {/* <Route path="/sidebartest" element={<SideBar />} /> */}
+        <Route path="/confirm-email" element={<ConfirmEmailNotice />} />
         <Route path="/help" element={<Help />} />
         <Route path="*" element={<Error />} />
-        
       </Routes>
     </BrowserRouter>
   );
