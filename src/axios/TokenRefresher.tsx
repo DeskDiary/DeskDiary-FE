@@ -33,9 +33,11 @@ const TokenRefresher: React.FC<TokenRefresherProps> = () => {
               const serverUrl = process.env.REACT_APP_SERVER_URL;
 
               // 리프레시 토큰을 서버에 보내 새 엑세스 토큰 요청
-              const { data } = await axios.post(`${serverUrl}/refresh`,{refreshToken});
+              // const { data } = await axios.post(`${serverUrl}/refresh`, {refreshToken});
 
-              // const { data } = await axios.post(`${serverUrl}/refresh`, {}, { withCredentials: true });
+              const { data } = await axios.post(`${serverUrl}/refresh`, {}, {
+                withCredentials: true // 쿠키를 포함시키기 위해 withCredentials를 true로 설정
+              });
               console.log('data🤗🤗', data);
               // 새 엑세스 토큰으로 쿠키 업데이트
               setTokenCookie(data.accessToken);

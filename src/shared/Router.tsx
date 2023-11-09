@@ -16,7 +16,7 @@ import ConfirmEmailNotice from '../pages/auth/ConfirmEmailNotice';
 const Router = () => {
   return (
     <BrowserRouter>
-      <TokenRefresher />
+      {/* <TokenRefresher /> */}
       <Routes>
         <Route path="/lending" element={<Lending />} />
 
