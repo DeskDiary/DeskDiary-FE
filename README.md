@@ -67,7 +67,7 @@
 
 ### 기술 아키텍처
 
-![아키텍처](/src/images/Architecture.jpg)
+![아키텍처](/src/images/architecture.jpg)
 
 ## 🛠 Tools
 
