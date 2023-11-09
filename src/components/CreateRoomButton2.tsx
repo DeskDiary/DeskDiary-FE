@@ -3,10 +3,8 @@ import styled, { keyframes } from 'styled-components';
 import { getCookie } from '../auth/cookie';
 import { Link } from 'react-router-dom';
 import CreateRoomModal from '../pages/home/components/CreateRoomModal';
-import { MdOutlineAddHome, MdTrendingUp } from 'react-icons/md';
 import cute from '../images/ranking/2nd.svg';
 import cute2 from '../images/ranking/1st.svg';
-import { FaCuttlefish } from 'react-icons/fa';
 
 type CreateRoomButtonProps = {};
 
