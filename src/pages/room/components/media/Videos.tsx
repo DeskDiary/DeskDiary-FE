@@ -123,13 +123,13 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
                   key={user.uid}
                 />
                 {nickname && <Nickname type="button">{nickname}</Nickname>}
-                {/* {user.videoTrack && (
-                  // <NonCam>
-                  //   <FaVideoSlash
-                  //     style={{ fontSize: '50px', color: '#ad0101' }}
-                  //   />
-                  // </NonCam>
-                )} */}
+                {!user.audioTrack && (
+                  <NonAudio>
+                    <FaVolumeMute
+                      style={{ fontSize: '25px', color: '#ad0101' }}
+                    />
+                  </NonAudio>
+                )}
               </Video>
             );
           } else {
@@ -138,6 +138,13 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
               <Video border={''}>
                 <DefaultScreen key={user.uid} />
                 {nickname && <Nickname type="button">{nickname}</Nickname>}
+                {!user.audioTrack && (
+                  <NonAudio>
+                    <FaVolumeMute
+                      style={{ fontSize: '25px', color: '#ad0101' }}
+                    />
+                  </NonAudio>
+                )}
               </Video>
             );
           }
@@ -145,6 +152,13 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
     </Container>
   );
 };
+
+const NonAudio = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 10px;
+  z-index: 5000;
+`
 
 const ClosedCam = styled.div`
   position: absolute;

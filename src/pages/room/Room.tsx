@@ -119,7 +119,7 @@ const Room: React.FC<RoomProps> = () => {
     <Main>
       <GlobalStyle />
       <Container>
-        <RoomSideBar />
+        <RoomSideBar  maxUser={roomInfo.maxHeadcount}/>
         <Content>
           <RoomHeader />
           <Area>
@@ -133,7 +133,7 @@ const Room: React.FC<RoomProps> = () => {
           </Area>
         </Content>
       </Container>
-      <RoomUnderBar note={roomInfo.note} roomId={roomInfo.uuid} />
+      <RoomUnderBar note={roomInfo.note} roomId={roomInfo.uuid}/>
       {isOpenModal && (
         <SetMediaModal setIsOpen={setIsOpenModal} room={roomInfo} />
       )}
