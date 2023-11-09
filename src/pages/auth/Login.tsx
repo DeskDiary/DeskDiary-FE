@@ -3,10 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
-import { getCookie, setTokenCookie } from '../../auth/cookie';
+import {
+  getCookie,
+  setTokenCookie,
+  setRefreshTokenCookie,
+} from '../../auth/cookie';
 import { google } from '../../images/main';
 import {
-  logoColor,
+  logo_colorful,
   x,
   radio_button_checked,
   radio_button_unchecked,
@@ -20,27 +24,30 @@ type LoginProps = {};
 
 const Login: React.FC<LoginProps> = () => {
   useEffect(() => {
-    document.title = '책상일기 - 로그인'
+    document.title = '책상일기 - 로그인';
   }, []);
   const navigate = useNavigate();
   const token = getCookie('token');
   const [id, setId] = useState<string>('');
   const [pw, setPw] = useState<string>('');
   const [idSaveCheckButton, setIdSaveCheckButton] = useState<boolean>(false);
+
   useEffect(() => {
     if (token) {
       toast.error('이미 로그인이 되어있습니다.');
       navigate(-1);
     }
   }, [token, navigate]);
+
   const getSavedIdFromLocalStorage = () => {
     const getId = localStorage.getItem('아이디저장');
-    console.log(getId)
+    // console.log(getId);
     return getId ? atob(getId) : '';
   };
+
   useEffect(() => {
     const getId = getSavedIdFromLocalStorage();
-    console.log(getId)
+    // console.log(getId);
     if (getId) {
       setId(getId);
       setIdSaveCheckButton(true);
@@ -61,21 +68,32 @@ const Login: React.FC<LoginProps> = () => {
       };
 
       const response = await axios.post(url, requestBody);
-      const token = response.headers.authorization.split(' ')[1];
+
+      const token = response.data.accessToken;
+      const refreshToken = response.data.refreshToken;
       setErrorMessage([]);
       setTokenCookie(token);
+      setRefreshTokenCookie(refreshToken);
       if (idSaveCheckButton === true) {
         saveIdLocalStorage(id);
       }
       navigate('/');
     } catch (error: any) {
       if (error.response) {
-        setShowErrorMessage('* 이메일 혹은 비밀번호를 확인 해 주세요');
-      } else if (
-        error.response.message.includes('이메일 혹은') &&
-        error.response.status === 400
-      ) {
-        setShowErrorMessage('* 이메일 혹은 비밀번호를 확인 해 주세요');
+        // 이메일 인증이 필요한 에러인지 확인
+        if (
+          error.response.status === 401 &&
+          error.response.data?.error.includes('로그인 정보가')
+        ) {
+          // 사용자에게 이메일 인증이 필요하다는 메시지를 보여줌
+          setShowErrorMessage('* 이메일 인증을 완료해 주세요.');
+        } else if (error.response.status === 400) {
+          // 다른 인증 관련 에러 메시지를 처리
+          setShowErrorMessage('* 이메일 혹은 비밀번호를 확인 해 주세요');
+        } else {
+          // 그 외의 에러 메시지를 처리
+          setShowErrorMessage('* 로그인에 실패했습니다. 다시 시도해 주세요.');
+        }
       }
     }
   });
@@ -221,7 +239,8 @@ const Error = styled.div`
 `;
 
 const Logo = styled(Link)`
-  background: url(${logoColor}) no-repeat center;
+  background: url(${logo_colorful}) no-repeat center;
+  background-size: 60px;
   width: 62px;
   height: 73px;
 `;

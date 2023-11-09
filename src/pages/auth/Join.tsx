@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { kakao, google } from '../../images/main';
-import { logoColor, x } from '../../images';
+import { logo_colorful, x } from '../../images';
 import 아이디저장o from '../../images/radio_button_checked.svg';
 import 아이디저장x from '../../images/radio_button_unchecked.svg';
 
@@ -14,7 +14,7 @@ import { useMutation } from 'react-query';
 import Kakao from './components/Kakao';
 import Google from './components/Google';
 import { toast } from 'sonner';
-import { getCookie, setTokenCookie } from '../../auth/cookie';
+import { getCookie } from '../../auth/cookie';
 
 type JoinProps = {};
 
@@ -88,7 +88,7 @@ const Join: React.FC<JoinProps> = () => {
       axios.post(`${process.env.REACT_APP_SERVER_URL!}/auth/join`, userData),
     {
       onSuccess: () => {
-        navigate('/login');
+        navigate('/confirm-email');
       },
       onError: (error: any) => {
         if (error.response) {
@@ -117,9 +117,7 @@ const Join: React.FC<JoinProps> = () => {
               );
               break;
             case message.includes('닉네임이 이미'):
-              setNicknameError(
-                '이미 사용중인 닉네임입니다.',
-              );
+              setNicknameError('이미 사용중인 닉네임입니다.');
               break;
             case message.includes('비밀번호가 비어 있으면 안됩니다.'):
               setPasswordError('비밀번호가 비어 있으면 안됩니다.');
@@ -314,7 +312,8 @@ const LoginLink = styled(Link)`
 `;
 
 const Logo = styled(Link)`
-  background: url(${logoColor}) no-repeat center;
+  background: url(${logo_colorful}) no-repeat center;
+  background-size: 60px;
   width: 62px;
   height: 73px;
 `;

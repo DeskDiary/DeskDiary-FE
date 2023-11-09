@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   IAgoraRTCRemoteUser,
   IMicrophoneAudioTrack,
@@ -14,7 +14,7 @@ import { useQuery } from 'react-query';
 import { fetchUser } from '../../../../axios/api';
 import { FaVideoSlash } from 'react-icons/fa';
 import { blue } from '../../../../images/character';
-import loading from '../../../../images/loading.gif'
+import loading from '../../../../images/loading.gif';
 
 type VideosProps = {
   users: IAgoraRTCRemoteUser[];
@@ -29,6 +29,7 @@ type UserListPayload = {
 
 const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
   const [roomUserList, setRoomUserList] = useRecoilState(RoomUserList);
+  const [micsStatus, setMicsStatus] = useState<{ [uid: number]: boolean }>({});
 
   // userId를 사용해서 userList에서 닉네임 찾기
   const getNicknameByUserId = (userId: number) => {
@@ -65,6 +66,8 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
     };
   }, [socket]);
 
+  
+
   const { data, isLoading, error } = useQuery('cam-user', fetchUser);
   if (isLoading) {
     return <div>로딩 중...</div>;
@@ -96,7 +99,7 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
             const volumeLevel = volumes[user.uid] || 0; // 기본 볼륨 값은 0으로 설정
             const borderColor = getBorderColorByVolume(volumeLevel);
             const nickname = getNicknameByUserId(+user.uid);
-            const profileImage = getProfileByUserId(+user.uid)
+            const profileImage = getProfileByUserId(+user.uid);
             return (
               <Video key={user.uid} border={borderColor}>
                 <ClosedCam>
@@ -141,7 +144,6 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
 const ClosedCam = styled.div`
   position: absolute;
   z-index: 5;
-  color: white;
   top: 125px;
   left: 175px;
 `;
