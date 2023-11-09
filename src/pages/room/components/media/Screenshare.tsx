@@ -27,12 +27,28 @@ const Screenshare:React.FC<ScreenshareProps> = ({
 
   useEffect(() => {
     const pulishScreenShare = async () => {
-      await client.unpublish(preTracks[1]); // 현재 공유되고 있는 비디오 트랙을 비공개
-      await client.publish(tracks); // 새로운 화면 공유 트랙을 공개
+      // await client.unpublish(preTracks[1]) // 현재 공유되고 있는 비디오 트랙을 비공개
+      // await client.publish(tracks) // 새로운 화면 공유 트랙을 공개
+
+      try {
+        // 기존 비디오 트랙을 비공개하고 완료될 때까지 기다립니다.
+        await client.unpublish(preTracks[1]);
+        console.log('기존 트랙 비공개 성공');
+    
+        // 새로운 화면 공유 트랙을 공개합니다.
+        await client.publish(tracks);
+        console.log('새 화면 공유 트랙 공개 성공');
+      } catch (error) {
+        console.error('화면 공유 트랙 처리 중 오류 발생:', error);
+        // 에러 핸들링을 여기에서 해주세요.
+      }
+
+
       if (!Array.isArray(tracks)) {
         tracks.on('track-ended', async () => { // 화면 공유가 종료되면
           await client.unpublish(tracks); // 공유중인 트랙을 비공개
           tracks.close(); // 트랙을 닫는다
+
           if (trackState.video) { // video 가 참이면
             await client.publish(preTracks[1]); // 비디오 트랙 공개
           }
