@@ -68,6 +68,7 @@ const Login: React.FC<LoginProps> = () => {
       };
 
       const response = await axios.post(url, requestBody);
+      console.log(response);
 
       const token = response.data.accessToken;
       const refreshToken = response.data.refreshToken;
