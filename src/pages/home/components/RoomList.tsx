@@ -204,6 +204,7 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
             showLastButton
             page={num} // 현재 페이지를 num 상태 변수와 동기화
             onChange={(event, page) => handlePageChange(page)} // 페이지 번호 변경 이벤트 핸들러
+            style={{marginTop: '50px'}}
           />
         )}
     </List>
@@ -218,6 +219,7 @@ const Search = styled.div`
   height: 50px;
   border-radius: 25px;
   background-color: white;
+  margin-bottom: 20px;
   input {
     width: 85%;
     padding: 10px;
@@ -293,20 +295,23 @@ const JoinedRooms = styled.div`
   grid-template-columns: repeat(5, 1fr);
   gap: 12px;
   width: 1200px;
-
+  min-height: 420px;
   @media (max-width: 1400px) {
     width: 1000px;
     grid-template-columns: repeat(4, 1fr);
+    min-height: 630px;
   }
 
   @media (max-width: 1200px) {
     width: 800px;
     grid-template-columns: repeat(3, 1fr);
+    min-height: 830px;
   }
 
   @media (max-width: 768px) {
     width: 500px;
     grid-template-columns: repeat(2, 1fr);
+    min-height: 1030px;
   }
 `;
 
