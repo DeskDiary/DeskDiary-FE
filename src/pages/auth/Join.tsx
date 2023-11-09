@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { kakao, google } from '../../images/main';
-import { logoColor, x } from '../../images';
+import { logo_colorful, x } from '../../images';
 import 아이디저장o from '../../images/radio_button_checked.svg';
 import 아이디저장x from '../../images/radio_button_unchecked.svg';
 
@@ -312,7 +312,8 @@ const LoginLink = styled(Link)`
 `;
 
 const Logo = styled(Link)`
-  background: url(${logoColor}) no-repeat center;
+  background: url(${logo_colorful}) no-repeat center;
+  background-size: 60px;
   width: 62px;
   height: 73px;
 `;
