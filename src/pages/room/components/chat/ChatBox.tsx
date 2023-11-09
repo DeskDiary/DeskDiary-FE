@@ -138,8 +138,6 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
     };
   }, [socket, data]);
 
-  console.log(data?.userId);
-
   useEffect(() => {
     socket.on('disconnect_user', (byeUser: string) => {
       setAllChatList(prevAllChatList => [

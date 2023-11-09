@@ -12,14 +12,16 @@ import { micNone, MaxUser, videocam } from '../../../images/room';
 import { useQuery } from 'react-query';
 import { toast } from 'sonner';
 
-type RoomSideBarProps = {};
+type RoomSideBarProps = {
+  maxUser: number;
+};
 
 type UserListPayload = {
   nickname: string;
   userListArr: { nickname: string; img: string; userId: number }[];
 };
 
-const RoomSideBar: React.FC<RoomSideBarProps> = () => {
+const RoomSideBar: React.FC<RoomSideBarProps> = ({maxUser}) => {
   // const [timerState, setTimerState] = useState<boolean>(false);
 
   // const timerButtonHandler = () => {
@@ -71,7 +73,7 @@ const RoomSideBar: React.FC<RoomSideBarProps> = () => {
           <p>참여인원</p>
           <DetailCount>
             <img src={MaxUser} alt="인원수" />
-            <p>{roomUserList.length}</p>
+            <p>{roomUserList.length} / {maxUser}</p>
           </DetailCount>
         </UserCount>
         {roomUserList.map((user, index) => (
@@ -212,6 +214,7 @@ const UserCount = styled.div`
 const DetailCount = styled.div`
   display: flex;
   align-items: center;
+  gap: 5px;
   img {
     width: 24px;
     height: 24px;

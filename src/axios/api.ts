@@ -1,7 +1,6 @@
-import axios from "axios";
+import axios from 'axios';
 import { getCookie, setTokenCookie } from '../auth/cookie';
 import { useRecoilState } from 'recoil';
-
 
 const token = getCookie('token');
 
@@ -53,7 +52,7 @@ export const fetchCreatedRoom = async () => {
 };
 
 // 전체방 인기순
-export const fetchRoomPopular = async (num:number) => {
+export const fetchRoomPopular = async (num: number) => {
   try {
     const { data } = await axios.get(
       `${process.env.REACT_APP_SERVER_URL!}/rooms/popular`,
@@ -67,7 +66,7 @@ export const fetchRoomPopular = async (num:number) => {
 };
 
 // 전체방 최신순
-export const fetchRoomLatest = async (num:number) => {
+export const fetchRoomLatest = async (num: number) => {
   try {
     const { data } = await axios.get(
       `${process.env.REACT_APP_SERVER_URL!}/rooms/latest`,
@@ -81,7 +80,7 @@ export const fetchRoomLatest = async (num:number) => {
 };
 
 // 전체방 인기순 top10
-export const fetchRoomTopPopular = async (num:number) => {
+export const fetchRoomTopPopular = async (num: number) => {
   try {
     const { data } = await axios.get(
       `${process.env.REACT_APP_SERVER_URL!}/rooms/popular-top`,
@@ -95,7 +94,7 @@ export const fetchRoomTopPopular = async (num:number) => {
 };
 
 // 전체방 최신순 top10
-export const fetchRoomTopLatest = async (num:number) => {
+export const fetchRoomTopLatest = async (num: number) => {
   try {
     const { data } = await axios.get(
       `${process.env.REACT_APP_SERVER_URL!}/rooms/latest-top`,
@@ -109,11 +108,12 @@ export const fetchRoomTopLatest = async (num:number) => {
 };
 
 // 스터디 인기순
-export const fetchStudyPopular = async (num:number) => {
-  console.log(num)
+export const fetchStudyPopular = async (num: number) => {
+  console.log(num);
   try {
     const { data } = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL!}/study-rooms/popular?page=${num}&perPage=10`, // cursor=div개수
+      `${process.env
+        .REACT_APP_SERVER_URL!}/study-rooms/popular?page=${num}&perPage=10`, // cursor=div개수
     );
     return data;
   } catch (error) {
@@ -123,10 +123,11 @@ export const fetchStudyPopular = async (num:number) => {
 };
 
 // 취미룸 인기순
-export const fetchHobbyPopular = async (num:number) => {
+export const fetchHobbyPopular = async (num: number) => {
   try {
     const { data } = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL!}/hobby-rooms/popular?page=${num}&perPage=10`,
+      `${process.env
+        .REACT_APP_SERVER_URL!}/hobby-rooms/popular?page=${num}&perPage=10`,
     );
     console.log(data);
     return data;
@@ -137,10 +138,11 @@ export const fetchHobbyPopular = async (num:number) => {
 };
 
 // 스터디 최신순
-export const fetchStudyLatest = async (num:number) => {
+export const fetchStudyLatest = async (num: number) => {
   try {
     const { data } = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL!}/study-rooms/latest?page=${num}&perPage=10`,
+      `${process.env
+        .REACT_APP_SERVER_URL!}/study-rooms/latest?page=${num}&perPage=10`,
     );
     // console.log('❤️스터디 최신순')
     return data;
@@ -151,10 +153,11 @@ export const fetchStudyLatest = async (num:number) => {
 };
 
 // 취미룸 최신순
-export const fetchHobbyLatest = async (num:number) => {
+export const fetchHobbyLatest = async (num: number) => {
   try {
     const { data } = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL!}/hobby-rooms/latest?page=${num}&perPage=10`,
+      `${process.env
+        .REACT_APP_SERVER_URL!}/hobby-rooms/latest?page=${num}&perPage=10`,
     );
     // console.log('❤️취미룸 최신순')
     return data;
@@ -192,9 +195,53 @@ export const fetchTopHobby = async () => {
   }
 };
 
+// 스터디룸 인기순 검색
+export const fetchStudyPopularSearch = async (search: string, num: number) => {
+  try {
+    const { data } = await axios.get(
+      `${process.env
+        .REACT_APP_SERVER_URL!}/study-rooms/search?filter=popularity&search=${search}&page=${num}&perPage=10`,
+    );
+    return data;
+  } catch (error) {}
+};
+
+// 취미 인기순 검색
+export const fetchHobbyPopularSearch = async (search: string, num: number) => {
+  try {
+    const { data } = await axios.get(
+      `${process.env
+        .REACT_APP_SERVER_URL!}/hobby-rooms/search?filter=popularity&search=${search}&page=${num}&perPage=10`,
+    );
+    return data;
+  } catch (error) {}
+};
+
+// 스터디 최신순 검색
+export const fetchStudyLatestSearch = async (search: string, num: number) => {
+  try {
+    const { data } = await axios.get(
+      `${process.env
+        .REACT_APP_SERVER_URL!}/study-rooms/search?filter=latest&search=${search}&page=${num}&perPage=10`,
+    );
+    return data;
+  } catch (error) {}
+};
+
+// 취미 최신순 검색
+export const fetchHobbyLatestSearch = async (search: string, num: number) => {
+  try {
+    const { data } = await axios.get(
+      `${process.env
+        .REACT_APP_SERVER_URL!}/hobby-rooms/search?filter=latest&search=${search}&page=${num}&perPage=10`,
+    );
+    return data;
+  } catch (error) {}
+};
+
 const instance = axios.create({
   baseURL: process.env.REACT_APP_SERVER_URL,
-  withCredentials: true
+  withCredentials: true,
 });
 
 instance.interceptors.request.use(
@@ -207,7 +254,7 @@ instance.interceptors.request.use(
   function (error) {
     // console.log("인터셉터 요청 오류");
     return Promise.reject(error);
-  }
+  },
 );
 
 instance.interceptors.response.use(
@@ -220,7 +267,7 @@ instance.interceptors.response.use(
   function (error) {
     // console.log("인터셉터 응답 오류 발생");
     return Promise.reject(error);
-  }
+  },
 );
 
 export default instance;
