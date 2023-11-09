@@ -12,7 +12,7 @@ import { RoomUserList } from '../../../../recoil/RoomAtom';
 import { useRecoilState } from 'recoil';
 import { useQuery } from 'react-query';
 import { fetchUser } from '../../../../axios/api';
-import { FaVideoSlash } from 'react-icons/fa';
+import { FaVideoSlash, FaVolumeMute } from 'react-icons/fa';
 import { blue } from '../../../../images/character';
 import loading from '../../../../images/loading.gif';
 
@@ -65,8 +65,6 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
       socket.off('left-user');
     };
   }, [socket]);
-
-  
 
   const { data, isLoading, error } = useQuery('cam-user', fetchUser);
   if (isLoading) {
@@ -125,6 +123,13 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
                   key={user.uid}
                 />
                 {nickname && <Nickname type="button">{nickname}</Nickname>}
+                {/* {user.videoTrack && (
+                  // <NonCam>
+                  //   <FaVideoSlash
+                  //     style={{ fontSize: '50px', color: '#ad0101' }}
+                  //   />
+                  // </NonCam>
+                )} */}
               </Video>
             );
           } else {
