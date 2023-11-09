@@ -29,9 +29,9 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
   const [isDeleteUser, setIsDeleteUser] = useState(false);
 
   // 방 삭제
-  const handleDeleteRoom = async (uuid: string) => {
+  const handleDeleteRoom = async (uuid: string, userId:number) => {
     try {
-      socket.emit('removeRoom', { uuid: uuid });
+      socket.emit('removeRoom', { uuid: uuid, userId:userId });
       toast.error('방 삭제 클릭');
       const token = getCookie('token');
       const response = await axios.delete(
@@ -103,7 +103,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
 
         break;
       case '삭제':
-        handleDeleteRoom(uuid!);
+        handleDeleteRoom(uuid!, userId!);
         break;
       case '회원탈퇴':
         handleDeleteUser();

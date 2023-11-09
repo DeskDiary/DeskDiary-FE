@@ -11,13 +11,11 @@ type TokenRefresherProps = {};
 
 const TokenRefresher: React.FC<TokenRefresherProps> = () => {
   const navigate = useNavigate();
-  const refreshToken = getRefreshTokenCookie('refreshToken');
-
+  const refreshToken = `Bearer ${getRefreshTokenCookie('refreshToken')}`;
   useEffect(() => {
     console.log('리프레시토큰', refreshToken);
     const interceptor = axios.interceptors.response.use(
       response => {
-        console.log('response', response);
         return response;
       },
       async error => {
@@ -35,9 +33,9 @@ const TokenRefresher: React.FC<TokenRefresherProps> = () => {
               const serverUrl = process.env.REACT_APP_SERVER_URL;
 
               // 리프레시 토큰을 서버에 보내 새 엑세스 토큰 요청
-              // const { data } = await axios.post(`${serverUrl}/refresh`,refreshToken);
+              const { data } = await axios.post(`${serverUrl}/refresh`,{refreshToken});
 
-              const { data } = await axios.post(`${serverUrl}/refresh`, {}, { withCredentials: true });
+              // const { data } = await axios.post(`${serverUrl}/refresh`, {}, { withCredentials: true });
               console.log('data🤗🤗', data);
               // 새 엑세스 토큰으로 쿠키 업데이트
               setTokenCookie(data.accessToken);

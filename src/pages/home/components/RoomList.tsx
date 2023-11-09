@@ -48,7 +48,7 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
   };
 
   let fetchName = show + sort;
-  console.log(show)
+  // console.log(show)
   const handlePageChange = (pageNumber: number) => {
     setNum(pageNumber);
 
