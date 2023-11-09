@@ -131,14 +131,13 @@ const Cat = styled.div`
   position: absolute;
   top: 0;
   left: 0px;
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.8);
   padding: 3px 5px;
   border-radius: 10px;
 `;
 
 const Category = styled.img`
   filter: grayscale(100%);
-  opacity: 0.5;
 `;
 
 const ContentText = styled.div`
