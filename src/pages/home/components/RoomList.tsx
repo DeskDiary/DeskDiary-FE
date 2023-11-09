@@ -3,17 +3,23 @@ import { useQuery, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 import {
   fetchHobbyLatest,
+  fetchHobbyLatestSearch,
   fetchHobbyPopular,
+  fetchHobbyPopularSearch,
   fetchRoomLatest,
   fetchRoomPopular,
   fetchRoomTopLatest,
   fetchRoomTopPopular,
   fetchStudyLatest,
+  fetchStudyLatestSearch,
+  fetchStudyPopularSearch,
   fetchStudyPopular,
+
   fetchUser,
 } from '../../../axios/api';
 import RoomCard from './RoomCard';
 import { Pagination } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 
 type RoomListProps = {
   label: string;
@@ -29,6 +35,12 @@ const fetchFunctions = {
   fetchHobbyPopular: fetchHobbyPopular,
   fetchStudyLatest: fetchStudyLatest,
   fetchHobbyLatest: fetchHobbyLatest,
+};
+const fetchFunctions2 = {
+  fetchStudyPopularSearch: fetchStudyPopularSearch,
+  fetchHobbyPopularSearch: fetchHobbyPopularSearch,
+  fetchStudyLatestSearch: fetchStudyLatestSearch,
+  fetchHobbyLatestSearch: fetchHobbyLatestSearch,
 };
 
 const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
@@ -46,9 +58,10 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
       setSort('Latest');
     }
   };
-
+  const [searchText, setSearchText] = useState('');
   let fetchName = show + sort;
-  console.log(show)
+  console.log('show', fetchName);
+
   const handlePageChange = (pageNumber: number) => {
     setNum(pageNumber);
 
@@ -77,12 +90,40 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
       }
     };
 
-    fetchData();
+    const fetchData2 = async () => {
+      fetchName += 'Search';
+      console.log('이름',fetchName)
+      const fetchFunc =
+        fetchFunctions2[fetchName as keyof typeof fetchFunctions2];
+      const result = await fetchFunc(searchText, pageNumber);
+      
+      if (result.totalCount % 10 === 0) {
+        setCount(result.totalCount / 10);
+      } else {
+        setCount(Math.floor(result.totalCount / 10) + 1);
+      }
+      if (
+        fetchName === 'fetchRoomPopular' ||
+        fetchName === 'fetchRoomLatest' ||
+        fetchName === 'fetchRoomTopPopular' ||
+        fetchName === 'fetchRoomTopLatest'
+      ) {
+        setRoomList(result);
+        return result;
+      } else if ('QueryResults' in result) {
+        setRoomList(result.QueryResults);
+        
+        return result;
+      } else {
+        throw new Error('Invalid fetchName');
+      }
+    };
+    if (searchText.length > 0) {
+      fetchData2();
+    } else {
+      fetchData();
+    }
   };
-
-  useEffect(() => {
-    handlePageChange(1);
-  }, []);
 
   useEffect(() => {
     if (isPopular) {
@@ -90,10 +131,42 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
     } else {
       setSort('Latest');
     }
+    handlePageChange(1);
   }, [isPopular]);
+
+  const SearchHandler = () => {
+    handlePageChange(1);
+  };
+
+  const onChangeSearchHandler = (e: any) => {
+    setSearchText(e.target.value);
+  };
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault(); // 이벤트의 기본 동작을 중지합니다.
+      SearchHandler();
+    }
+  };
 
   return (
     <List>
+      {fetchName !== 'fetchRoomPopular' &&
+        fetchName !== 'fetchRoomLatest' &&
+        fetchName !== 'fetchRoomTopPopular' &&
+        fetchName !== 'fetchRoomTopLatest' && (
+          <Search>
+            <input
+              type="text"
+              placeholder="무엇이든 찾아보세요"
+              value={searchText}
+              onKeyPress={handleKeyPress}
+              onChange={onChangeSearchHandler}
+            />
+            <SearchIcon onClick={SearchHandler} />
+          </Search>
+        )}
+
       <ListInfo>
         <ListTitle>{label}</ListTitle>
         <Categorys>
@@ -118,24 +191,41 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
         {roomList?.map(room => {
           return <RoomCard key={room.uuid} room={room} fetch={fetchName} />;
         })}
+        {
+          roomList.length === 0 && <div>데이터가 없습니다.</div>
+        }
       </JoinedRooms>
-      {
-        fetchName !== 'fetchRoomPopular' &&
+      {fetchName !== 'fetchRoomPopular' &&
         fetchName !== 'fetchRoomLatest' &&
         fetchName !== 'fetchRoomTopPopular' &&
-        fetchName !== 'fetchRoomTopLatest' && <Pagination
-        count={count}
-        showFirstButton
-        showLastButton
-        page={num} // 현재 페이지를 num 상태 변수와 동기화
-        onChange={(event, page) => handlePageChange(page)} // 페이지 번호 변경 이벤트 핸들러
-      />
-      }
-
-      
+        fetchName !== 'fetchRoomTopLatest' && (
+          <Pagination
+            count={count}
+            showFirstButton
+            showLastButton
+            page={num} // 현재 페이지를 num 상태 변수와 동기화
+            onChange={(event, page) => handlePageChange(page)} // 페이지 번호 변경 이벤트 핸들러
+          />
+        )}
     </List>
   );
 };
+
+const Search = styled.div`
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  border-radius: 25px;
+  background-color: white;
+  input {
+    width: 85%;
+    padding: 10px;
+    border: none;
+    outline: none;
+  }
+`;
 
 const ListInfo = styled.div`
   display: flex;
