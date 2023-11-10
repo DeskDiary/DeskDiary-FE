@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 import { kakao } from '../../../images/main';
 import { Link } from 'react-router-dom';

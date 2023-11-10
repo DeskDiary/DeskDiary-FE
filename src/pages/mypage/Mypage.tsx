@@ -6,12 +6,10 @@ import { useRecoilState } from 'recoil';
 
 import { getCookie } from '../../auth/cookie';
 import { fetchUser } from '../../axios/api';
-import { UserAtom } from '../../recoil/UserAtom';
-import { RoomAtom, DeleteRoomAtom, RoomUUIDAtom } from '../../recoil/RoomAtom';
+import { RoomAtom } from '../../recoil/RoomAtom';
 
 import ChangePasswordModal from './components/ChangePasswordModal';
 import ConfirmModal from '../../components/ConfirmModal';
-import EditProfileImg from './components/EditProfileImg';
 
 import { profile, logoColor, x } from '../../images';
 import { kakao, google } from '../../images/main';

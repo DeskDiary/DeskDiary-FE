@@ -8,7 +8,6 @@ import {
   setTokenCookie,
   setRefreshTokenCookie,
 } from '../../auth/cookie';
-import { google } from '../../images/main';
 import {
   logo_colorful,
   x,

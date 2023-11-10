@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { build, help_outline, logout } from '../../../images/room';
+import { help_outline, logout } from '../../../images/room';
 import { RoomModalAtom } from '../../../recoil/RoomAtom';
 import RoomModal from './RoomModal';
 import BasicPrecautions from '../../home/components/BasicPrecautions';

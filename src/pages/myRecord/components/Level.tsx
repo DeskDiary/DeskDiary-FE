@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 import sample from '../../../images/ranking/3rd.svg';
 import { MonthTime } from '../../../recoil/DeskAtom';
-import { UserAtom } from '../../../recoil/UserAtom';
 import { useQuery } from 'react-query';
 import { fetchUser } from '../../../axios/api';
 import help from '../../../images/room/help_outline.svg';

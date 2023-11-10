@@ -20,11 +20,6 @@ export const RoomAtom = atom({
   },
 });
 
-export const SelectCateoryAtom = atom({
-  key: 'SelectCateoryAtom',
-  default: { category: '' },
-});
-
 export const RoomUUIDAtom = atom({
   key: 'RoomUUIDAtom',
   default: '',
@@ -35,7 +30,6 @@ export const RoomModalAtom = atom({
   key: 'RoomModalAtom',
   default: false,
 });
-
 
 export const RoomInfo = atom({
   key: 'RoomInfo',
@@ -59,15 +53,15 @@ export const RoomInfo = atom({
 
 export const RoomUserList = atom({
   key: 'RoomUserList',
-  default: [{nickname:'', img:'', userId:1}],
-})
+  default: [{ nickname: '', img: '', userId: 1 }],
+});
 
 export const RefetchAtom = atom({
   key: 'RefetchAtom',
   default: false,
-})
+});
 
 export const DeleteRoomAtom = atom({
   key: 'DeleteRoomAtom',
   default: false,
-})
+});

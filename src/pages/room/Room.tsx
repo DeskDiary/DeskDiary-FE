@@ -1,12 +1,12 @@
 import styled from '@emotion/styled';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, lazy, Suspense } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { getCookie } from '../../auth/cookie';
 import history from '../../history';
 import { RoomAtom, RoomUUIDAtom } from '../../recoil/RoomAtom';
-import AsmrPlayer from './components/AsmrPlayer';
+// import AsmrPlayer from './components/AsmrPlayer';
 import RoomHeader from './components/RoomHeader';
 import RoomSideBar from './components/RoomSideBar';
 import RoomUnderBar from './components/RoomUnderBar';
@@ -16,11 +16,12 @@ import VideoContainer from './components/media/VideoContainer';
 import arrow from '../../images/red-arrow.png';
 import { toast } from 'sonner';
 import { createGlobalStyle } from 'styled-components';
-import socket from './socketInstance';
 
 type RoomProps = {
   children?: React.ReactNode;
 };
+
+const AsmrPlayer = lazy(() => import('./components/AsmrPlayer'))
 
 const Room: React.FC<RoomProps> = () => {
   const [roomInfo, setRoomInfo] = useRecoilState(RoomAtom);
@@ -127,7 +128,9 @@ const Room: React.FC<RoomProps> = () => {
               <VideoContainer setInCall={setInCall} />
             </CamAreaDiv>
             <ChattingAreaDiv>
-              <AsmrPlayer />
+              <Suspense fallback={<div>Loading AsmrPlayer...</div>}>
+                <AsmrPlayer />
+              </Suspense>
               <ChatBox roomId={roomInfo.uuid} />
             </ChattingAreaDiv>
           </Area>

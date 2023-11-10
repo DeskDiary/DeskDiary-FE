@@ -7,7 +7,7 @@ import { GoalTimeModalState } from '../../recoil/DeskAtom';
 import GoalSetTimeModal from './chart/GoalSetTimeModal';
 import RecordGraph from './chart/RecordGraph';
 import RoomList from './components/RoomList';
-import { RoomAtom, DeleteRoomAtom, RoomUUIDAtom } from '../../recoil/RoomAtom';
+import { DeleteRoomAtom, RoomUUIDAtom } from '../../recoil/RoomAtom';
 import ConfirmModal from '../../components/ConfirmModal';
 
 type MyDeskProps = {
