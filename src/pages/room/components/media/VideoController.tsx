@@ -55,28 +55,24 @@ const VideoController: React.FC<VideoControllerProps> = ({
         {trackState.audio ? (
           <FaVolumeUp />
         ) : (
-          <FaVolumeMute style={{ color: '#ad0101' }} />
+          <FaVolumeMute style={{ color: '#e90000' }} />
         )}
       </button>
       <button onClick={() => mute('video')}>
         {trackState.video ? (
           <FaVideo />
         ) : (
-          <FaVideoSlash style={{ color: '#ad0101' }} />
+          <FaVideoSlash style={{ color: '#e90000' }} />
         )}
       </button>
-      {!trackState.audio && (
-        <NonAudio>
-          <FaVolumeMute style={{ fontSize: '50px', color: '#ad0101' }} />
-        </NonAudio>
-      )}
       {!trackState.video && (
         <NonCam>
-          <FaVideoSlash style={{ fontSize: '50px', color: '#ad0101' }} />
+          <FaVideoSlash style={{ fontSize: '50px', color: '#e90000' }} />
         </NonCam>
       )}
-      <button onClick={handleScreenShare}></button>
-      {screenshare ? <MdScreenShare fill="white" /> : <MdStopScreenShare />}
+      <button onClick={handleScreenShare}>
+        {screenshare ? <MdScreenShare fill="#337CCF" /> : <MdStopScreenShare fill="#D8D9DA" />}
+      </button>
       {screenshare && (
         <Screenshare
           preTracks={tracks}
@@ -91,10 +87,10 @@ const VideoController: React.FC<VideoControllerProps> = ({
 };
 
 const NonAudio = styled.div`
-    position: absolute;
+  position: absolute;
   bottom: 0px;
   left: 0px;
-`
+`;
 
 const NonCam = styled.div`
   position: absolute;
@@ -123,7 +119,7 @@ const Controller = styled.div`
     border: none;
     font-size: 20px;
     border-radius: 10px;
-    color: #007500;
+    color: #337CCF;
     &:hover {
       background-color: var(--gray-06);
     }

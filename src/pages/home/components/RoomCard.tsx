@@ -114,15 +114,15 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
       {data?.userId === room.ownerId && fetch === 'fetchCreatedRoom' && (
         <Delete onClick={deleteRoomHandler}>삭제</Delete>
       )}
-      <Cat>
-        {(fetch === 'fetchRoomTopLatest' ||
-          fetch === 'fetchRoomTopPopular') && (
+
+      {(fetch === 'fetchRoomTopLatest' || fetch === 'fetchRoomTopPopular') && (
+        <Cat>
           <Category
             src={room.category === 'study' ? study_color : hobby_color}
             alt="category"
           />
-        )}
-      </Cat>
+        </Cat>
+      )}
     </Container>
   );
 };
@@ -131,14 +131,13 @@ const Cat = styled.div`
   position: absolute;
   top: 0;
   left: 0px;
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.8);
   padding: 3px 5px;
   border-radius: 10px;
 `;
 
 const Category = styled.img`
   filter: grayscale(100%);
-  opacity: 0.5;
 `;
 
 const ContentText = styled.div`
@@ -222,7 +221,7 @@ const Thumbmail = styled.img`
   height: 100%;
   border-radius: 10px;
   overflow: hidden;
-  object-fit: cover;
+  object-fit: contain;
   transition: transform 0.3s ease-in-out; // <-- 이 부분 추가
 `;
 

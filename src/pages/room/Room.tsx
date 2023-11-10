@@ -68,16 +68,16 @@ const Room: React.FC<RoomProps> = () => {
       }
     });
 
-    window.onbeforeunload = function () {
-      return '이 페이지를 떠나시겠습니까?';
-    };
+    // window.onbeforeunload = function () {
+    //   return '이 페이지를 떠나시겠습니까?';
+    // };
 
     return unlistenHistoryEvent;
   }, [roomUUID]);
 
-  useEffect(() => {
-    window.onbeforeunload = null;
-  }, [])
+  // useEffect(() => {
+  //   window.onbeforeunload = null;
+  // }, [])
 
   const getRoomInfo = async () => {
     const url = `${serverUrl}/room/${location.pathname.split('/')[2]}`;
@@ -112,14 +112,14 @@ const Room: React.FC<RoomProps> = () => {
 
   useEffect(() => {
     setIsOpenModal(true);
-    window.onbeforeunload = null;
+    // window.onbeforeunload = null;
   }, []);
 
   return (
     <Main>
       <GlobalStyle />
       <Container>
-        <RoomSideBar />
+        <RoomSideBar  maxUser={roomInfo.maxHeadcount}/>
         <Content>
           <RoomHeader />
           <Area>
@@ -133,7 +133,7 @@ const Room: React.FC<RoomProps> = () => {
           </Area>
         </Content>
       </Container>
-      <RoomUnderBar note={roomInfo.note} roomId={roomInfo.uuid} />
+      <RoomUnderBar note={roomInfo.note} roomId={roomInfo.uuid}/>
       {isOpenModal && (
         <SetMediaModal setIsOpen={setIsOpenModal} room={roomInfo} />
       )}

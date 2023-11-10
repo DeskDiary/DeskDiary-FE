@@ -12,7 +12,7 @@ import { RoomUserList } from '../../../../recoil/RoomAtom';
 import { useRecoilState } from 'recoil';
 import { useQuery } from 'react-query';
 import { fetchUser } from '../../../../axios/api';
-import { FaVideoSlash } from 'react-icons/fa';
+import { FaVideoSlash, FaVolumeMute } from 'react-icons/fa';
 import { blue } from '../../../../images/character';
 import loading from '../../../../images/loading.gif';
 
@@ -66,8 +66,6 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
     };
   }, [socket]);
 
-  
-
   const { data, isLoading, error } = useQuery('cam-user', fetchUser);
   if (isLoading) {
     return <div>로딩 중...</div>;
@@ -104,7 +102,7 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
               <Video key={user.uid} border={borderColor}>
                 <ClosedCam>
                   <FaVideoSlash
-                    style={{ fontSize: '50px', color: '#ad0101' }}
+                    style={{ fontSize: '50px', color: '#e90000' }}
                   />
                 </ClosedCam>
 
@@ -125,6 +123,13 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
                   key={user.uid}
                 />
                 {nickname && <Nickname type="button">{nickname}</Nickname>}
+                {!user.audioTrack && (
+                  <NonAudio>
+                    <FaVolumeMute
+                      style={{ fontSize: '25px', color: '#e90000' }}
+                    />
+                  </NonAudio>
+                )}
               </Video>
             );
           } else {
@@ -133,6 +138,13 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
               <Video border={''}>
                 <DefaultScreen key={user.uid} />
                 {nickname && <Nickname type="button">{nickname}</Nickname>}
+                {!user.audioTrack && (
+                  <NonAudio>
+                    <FaVolumeMute
+                      style={{ fontSize: '25px', color: '#e90000' }}
+                    />
+                  </NonAudio>
+                )}
               </Video>
             );
           }
@@ -140,6 +152,13 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
     </Container>
   );
 };
+
+const NonAudio = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 10px;
+  z-index: 5000;
+`
 
 const ClosedCam = styled.div`
   position: absolute;

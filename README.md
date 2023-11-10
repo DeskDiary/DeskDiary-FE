@@ -39,26 +39,26 @@
 
 ## 프로젝트 기능 소개
 
-#### 카카오 로그인 / 구글 로그인 / 이메일 로그인
+#### 😺 카카오 로그인 / 구글 로그인 / 이메일 로그인
 - 카카오와 구글을 통한 소셜로그인으로 간단하게 가입할 수 있어요. 이메일 회원가입에서는 유효한 이메일만 가입할 수 있도록 중복확인과 더불어 이메일 인증 링크 방식을 도입했어요.
 
-#### 마이페이지
+#### 🦝 마이페이지
 - 마이페이지에서는 프로필사진, 닉네임을 조회 및 수정이 가능하고 로그인한 이메일 주소를 확인할 수 있고 비밀번호 수정도 가능해요.
 - 로그아웃과 회원탈퇴도 마이페이지에서 할 수 있습니다.
 
-#### 홈
+#### 🐸 홈
 - 홈 화면에서는 방 리스트를 인기순과 최신순으로 Top 10으로 확인할 수 있어요.
 - 로그인을 했을 때는 목표시간과 누적시간을 그래프로 추가 확인할 수 있어요.
 
-#### 스터디룸 / 취미룸
+#### 👀 스터디룸 / 취미룸
 - 스터디룸과 취미룸에서는 사용자 랭킹을 조회(Top 5) 할 수 있고 카테고리별 방을 인기순과 최신순으로 조회할 수 있어요.
 - 조회는 무한스크롤 기능이 탑제되어있어요.
 
-#### 책상기록
+#### 🐣 책상기록
 - 책상기록 페이지에서는 1일 누적시간과 7일, 30일 누적시간과 목표시간을 그래프로 확인할 수 있어요.
 - 최근에 들어간 방 목록과 내가 만든 방 목록도 확인이 가능해요.
 
-#### 방
+#### 🐢 방
 - 사용자의 카메라와 소리를 보고 들을 수 있어요.
 - 오디오 플레이어를 통해 ASMR를 들을 수 있어요.
 - 실시간으로 사용자들과 채팅도 가능해요.
@@ -95,9 +95,31 @@
   <img src="https://img.shields.io/badge/MUI-%230081CB.svg?style=for-the-badge&logo=mui&logoColor=white" >
   <img src="https://img.shields.io/badge/chart.js-%23FF6384?style=for-the-badge&logo=chart.js&logoColor=white">
   <br>
+  <img src="https://img.shields.io/badge/vercel-%23000000?style=for-the-badge&logo=vercel&logoColor=white">
+</p>
+
+
+#### Backend
+<p>
+  <img src="https://img.shields.io/badge/redis-DC382D?style=for-the-badge&logo=redis&logoColor=white">
+  <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
+  <img src="https://img.shields.io/badge/amazon%20rds-527FFF?style=for-the-badge&logo=amazon%20rds&logoColor=white">
+  <img src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white">
+  <img src="https://img.shields.io/badge/nestjs-E0234E?style=for-the-badge&logo=nestjs&logoColor=white">
+  <img src="https://img.shields.io/badge/prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white">
+  <img src="https://img.shields.io/badge/nginx-009639?style=for-the-badge&logo=nginx&logoColor=white">
+  <img src="https://img.shields.io/badge/amazon%20ec2-FF9900?style=for-the-badge&logo=amazon%20ec2&logoColor=white">
+  <img src="https://img.shields.io/badge/amazon%20s3-569A31?style=for-the-badge&logo=amazons3ec2&logoColor=white">
+  <img src="https://img.shields.io/badge/swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=white">
+  <img src="https://img.shields.io/badge/artillery-000000?style=for-the-badge&logo=artillery&logoColor=white">
+  <br/>
+  <img src="https://img.shields.io/badge/github%20actions-2088FF?style=for-the-badge&logo=github%20actions&logoColor=white">
+</p>
+
+#### Frontend & Backend
+<p>
   <img src="https://img.shields.io/badge/agora-%23099DFD?style=for-the-badge&logo=agora&logoColor=white">
   <img src="https://img.shields.io/badge/socket.io-%23010101?style=for-the-badge&logo=socket.io&logoColor=white"> 
-  <img src="https://img.shields.io/badge/vercel-%23000000?style=for-the-badge&logo=vercel&logoColor=white">
 </p>
 
 #### Dev tools
@@ -106,12 +128,7 @@
   <img src="https://img.shields.io/badge/Visual%20Studio%20Code-0078d7.svg?style=for-the-badge&logo=visual-studio-code&logoColor=white">
   <img src="https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white">
   <img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white">
+  
 </p>
 
-
-## 🔥 Trouble Shooting
-
-### Issue1
-
-### 해결순서
 

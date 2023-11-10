@@ -110,9 +110,9 @@ const SetMediaModal: React.FC<SetMediaModal> = ({ setIsOpen, room }) => {
     });
   }, [socket]);
 
-  useEffect(() => {
-    window.onbeforeunload = null;
-  });
+  // useEffect(() => {
+  //   window.onbeforeunload = null;
+  // });
 
   return (
     <Container>
