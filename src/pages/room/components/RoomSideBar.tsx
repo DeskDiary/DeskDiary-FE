@@ -33,7 +33,7 @@ const RoomSideBar: React.FC<RoomSideBarProps> = ({maxUser}) => {
   const [roomUserList, setRoomUserList] = useRecoilState(RoomUserList);
   // console.log('사이드바', roomUserList);
 
-  const { data } = useQuery<user>('user', fetchUser);
+  const { data } = useQuery<user>('room-user', fetchUser);
 
   // 나가고 들어온 유저 닉네임 받아오기
   useEffect(() => {

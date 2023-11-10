@@ -169,7 +169,7 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
 
   useEffect(() => {
     getRoomInfo();
-    window.onbeforeunload = null;
+    // window.onbeforeunload = null;
   }, []);
 
   return (
