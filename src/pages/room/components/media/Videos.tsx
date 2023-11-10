@@ -102,7 +102,7 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
               <Video key={user.uid} border={borderColor}>
                 <ClosedCam>
                   <FaVideoSlash
-                    style={{ fontSize: '50px', color: '#ad0101' }}
+                    style={{ fontSize: '50px', color: '#e90000' }}
                   />
                 </ClosedCam>
 
@@ -126,7 +126,7 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
                 {!user.audioTrack && (
                   <NonAudio>
                     <FaVolumeMute
-                      style={{ fontSize: '25px', color: '#ad0101' }}
+                      style={{ fontSize: '25px', color: '#e90000' }}
                     />
                   </NonAudio>
                 )}
@@ -141,7 +141,7 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
                 {!user.audioTrack && (
                   <NonAudio>
                     <FaVolumeMute
-                      style={{ fontSize: '25px', color: '#ad0101' }}
+                      style={{ fontSize: '25px', color: '#e90000' }}
                     />
                   </NonAudio>
                 )}

@@ -40,7 +40,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
   const navigate = useNavigate();
   const token = getCookie('token');
 
-  const { data } = useQuery<user>('chat-user', fetchUser, {
+  const { data } = useQuery<user>('room-user', fetchUser, {
     refetchOnWindowFocus: false,
   });
 
@@ -127,7 +127,14 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
       // 사용자를 방 목록 페이지로 리다이렉트
       navigate('/');
       // 알림 메시지 표시
-      alert('방이 삭제되었습니다.');
+      toast.message('방장이 방을 삭제하였습니다.');
+    });
+
+    socket.on('kick-room', (msg:string) => {
+      // 사용자를 방 목록 페이지로 리다이렉트
+      navigate('/');
+      // 알림 메시지 표시
+      toast.message(msg);
     });
 
     return () => {
@@ -135,6 +142,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
       socket.off('leave-user');
       socket.off('error-room');
       socket.off('remove-users');
+      socket.off('kick-room');
     };
   }, [socket, data]);
 
@@ -158,7 +166,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
   }, [allChatList]); // allChatList가 업데이트될 때마다 실행
 
   useEffect(() => {
-    window.onbeforeunload = null;
+    // window.onbeforeunload = null;
   }, []);
 
   return (
