@@ -94,14 +94,18 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
   return (
     <Container>
       {!isImageLoaded && <img src={sample} alt="thumbnail" />}
-      <Thumbmail
-        onLoad={handleImageLoaded}
-        onError={handleImageError}
-        style={{ display: isImageLoaded ? 'block' : 'none' }}
-        src={room.roomThumbnail ? room.roomThumbnail : sample}
-        alt="room thumbnail"
-        onClick={onClickCard}
-      />
+
+      <ThumbnailDiv>
+        <Thumbmail
+          onLoad={handleImageLoaded}
+          onError={handleImageError}
+          style={{ display: isImageLoaded ? 'block' : 'none' }}
+          src={room.roomThumbnail ? room.roomThumbnail : sample}
+          alt="room thumbnail"
+          onClick={onClickCard}
+        />
+        <ThumbnailShadow />
+      </ThumbnailDiv>
       <Contents onClick={onClickCard}>
         <ContentText>
           <RoomTitle>{room.title}</RoomTitle>
@@ -219,10 +223,37 @@ const Contents = styled.div`
 
 const Thumbmail = styled.img`
   height: 100%;
-  border-radius: 10px;
   overflow: hidden;
   object-fit: contain;
+  /* object-fit: cover; */
+  overflow: hidden;
   transition: transform 0.3s ease-in-out; // <-- 이 부분 추가
+`;
+
+const ThumbnailDiv = styled.div`
+  border-radius: 4px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  width: 225px;
+  height: 160px;
+  gap: 20px;
+`;
+
+const ThumbnailShadow = styled.div`
+  width: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 70%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  height: 100%;
 `;
 
 const Container = styled.div`
