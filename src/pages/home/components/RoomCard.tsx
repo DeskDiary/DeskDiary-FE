@@ -95,14 +95,14 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
     <Container>
       {!isImageLoaded && <img src={sample} alt="thumbnail" />}
 
-      <ThumbnailDiv>
+      <ThumbnailDiv onClick={onClickCard}>
         <Thumbmail
           onLoad={handleImageLoaded}
           onError={handleImageError}
           style={{ display: isImageLoaded ? 'block' : 'none' }}
           src={room.roomThumbnail ? room.roomThumbnail : sample}
           alt="room thumbnail"
-          onClick={onClickCard}
+          
         />
         <ThumbnailShadow />
       </ThumbnailDiv>
