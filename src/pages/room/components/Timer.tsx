@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useReducer } from 'react';
+import React, { useEffect, useState, useReducer } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { pause, timerImg } from '../../../images/room';

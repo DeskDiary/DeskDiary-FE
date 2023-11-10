@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { getCookie } from '../auth/cookie';
 import { Link } from 'react-router-dom';
 import CreateRoomModal from '../pages/home/components/CreateRoomModal';
-import { MdOutlineAddHome, MdTrendingUp } from 'react-icons/md';
+import { MdOutlineAddHome } from 'react-icons/md';
 
 type CreateRoomButtonProps = {};
 

@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
-import React, { ChangeEvent, useState, useEffect } from 'react';
-import MainTop from '../../../components/layout/main/MainTop';
+import React, { ChangeEvent, useState } from 'react';
 import { edit } from '../../../images/mypage';
 import { Button } from '@mui/material';
 import { useRecoilState } from 'recoil';
@@ -8,7 +7,6 @@ import { UserAtom } from '../../../recoil/UserAtom';
 
 import { useQuery } from 'react-query';
 import axios from 'axios';
-import { useRecoilValue } from 'recoil';
 import { RoomAtom } from '../../../recoil/RoomAtom';
 import { fetchUser } from '../../../axios/api';
 import { getCookie, setTokenCookie } from '../../../auth/cookie';

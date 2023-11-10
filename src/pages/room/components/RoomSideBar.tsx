@@ -8,7 +8,7 @@ import Timer from './Timer';
 import profile from '../../../images/profile.png';
 import { RoomUserList } from '../../../recoil/RoomAtom';
 import socket from '../socketInstance';
-import { micNone, MaxUser, videocam } from '../../../images/room';
+import { MaxUser } from '../../../images/room';
 import { useQuery } from 'react-query';
 import { toast } from 'sonner';
 

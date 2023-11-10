@@ -1,6 +1,5 @@
 import axios from 'axios';
-import { getCookie, setTokenCookie } from '../auth/cookie';
-import { useRecoilState } from 'recoil';
+import { getCookie } from '../auth/cookie';
 
 const token = getCookie('token');
 
