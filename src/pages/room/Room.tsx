@@ -68,16 +68,16 @@ const Room: React.FC<RoomProps> = () => {
       }
     });
 
-    window.onbeforeunload = function () {
-      return '이 페이지를 떠나시겠습니까?';
-    };
+    // window.onbeforeunload = function () {
+    //   return '이 페이지를 떠나시겠습니까?';
+    // };
 
     return unlistenHistoryEvent;
   }, [roomUUID]);
 
-  useEffect(() => {
-    window.onbeforeunload = null;
-  }, [])
+  // useEffect(() => {
+  //   window.onbeforeunload = null;
+  // }, [])
 
   const getRoomInfo = async () => {
     const url = `${serverUrl}/room/${location.pathname.split('/')[2]}`;
@@ -112,7 +112,7 @@ const Room: React.FC<RoomProps> = () => {
 
   useEffect(() => {
     setIsOpenModal(true);
-    window.onbeforeunload = null;
+    // window.onbeforeunload = null;
   }, []);
 
   return (

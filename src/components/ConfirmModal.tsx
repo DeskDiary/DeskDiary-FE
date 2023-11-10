@@ -32,7 +32,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
   const handleDeleteRoom = async (uuid: string, userId:number) => {
     try {
       socket.emit('removeRoom', { uuid: uuid, userId:userId });
-      toast.error('방 삭제 클릭');
+      toast.error('방 삭제 성공했습니다.');
       const token = getCookie('token');
       const response = await axios.delete(
         `${process.env.REACT_APP_SERVER_URL!}/room/${uuid}`,
@@ -50,8 +50,10 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
   };
 
   // 회원탈퇴
-  const handleDeleteUser = async () => {
+  const handleDeleteUser = async (userId:number) => {
     try {
+      socket.emit('withdrawal', { userId:userId });
+      toast.error('회원탈퇴에 성공하였습니다.');
       const token = getCookie('token');
       const response = await axios.delete(
         `${process.env.REACT_APP_SERVER_URL!}/me`,
@@ -106,7 +108,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
         handleDeleteRoom(uuid!, userId!);
         break;
       case '회원탈퇴':
-        handleDeleteUser();
+        handleDeleteUser(userId!);
         break;
     }
   };

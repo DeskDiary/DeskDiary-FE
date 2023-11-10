@@ -465,6 +465,7 @@ const Thumbnail = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  object-fit: contain;
 
   width: 150px;
   height: 100px;

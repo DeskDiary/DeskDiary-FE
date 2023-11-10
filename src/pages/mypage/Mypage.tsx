@@ -499,6 +499,7 @@ const ProfileImg = styled.img`
   width: 200px;
   height: 200px;
   border-radius: 50%;
+  object-fit: cover;
 `;
 
 const UserProfile = styled.div`

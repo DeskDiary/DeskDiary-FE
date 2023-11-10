@@ -198,6 +198,7 @@ const SidebarButton = styled(NavLink)`
       margin-right: 10px;
       border-radius: 50%;
       filter: grayscale(0);
+      object-fit: cover;
     }
   }
 

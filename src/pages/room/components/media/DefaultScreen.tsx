@@ -5,7 +5,7 @@ import { FaVideoSlash } from 'react-icons/fa';
 const DefaultScreen = (): JSX.Element => {
   return (
     <Default>
-      <FaVideoSlash style={{ fontSize: '50px', color: '#ad0101' }} />
+      <FaVideoSlash style={{ fontSize: '50px', color: '#e90000' }} />
     </Default>
   );
 };
