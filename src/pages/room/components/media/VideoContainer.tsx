@@ -156,6 +156,19 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
       setStart(true);
     };
 
+    // 리프레시토큰
+    try {
+      client.on('token-privilege-will-expire', async () => {
+        const response = await axios.get(
+          `${process.env.REACT_APP_SERVER_URL}/room/generate-aFreshToken/${getUUID}`,
+        );
+        const agoraToken = response.data.token;
+        await client.renewToken(agoraToken);
+      });
+    } catch (error) {
+      console.error('Error renewing Agora token:', error);
+    }
+
     // 초기화 함수
     if (ready && tracks) {
       // console.log('init ready');

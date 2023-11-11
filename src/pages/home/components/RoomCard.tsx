@@ -109,6 +109,7 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
       <Contents onClick={onClickCard}>
         <ContentText>
           <RoomTitle>{room.title}</RoomTitle>
+          {room.createdAt}
           <Tag>
             <img src={MaxUser} alt="user count" />
             {room.nowHeadcount}/{room.maxHeadcount}
@@ -231,7 +232,7 @@ const Thumbmail = styled.img`
 `;
 
 const ThumbnailDiv = styled.div`
-  border-radius: 4px;
+  border-radius: 10px;
   position: relative;
   display: flex;
   justify-content: center;
@@ -251,7 +252,7 @@ const ThumbnailShadow = styled.div`
   background: linear-gradient(
     180deg,
     rgba(0, 0, 0, 0) 70%,
-    rgba(0, 0, 0, 0.3) 100%
+    rgba(148, 183, 211, 0.3) 100%
   );
   height: 100%;
 `;

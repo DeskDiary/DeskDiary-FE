@@ -219,7 +219,7 @@ const Search = styled.div`
   height: 50px;
   border-radius: 25px;
   background-color: white;
-  margin-bottom: 20px;
+  margin-bottom: 50px;
   input {
     width: 85%;
     padding: 10px;

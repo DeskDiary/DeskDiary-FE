@@ -16,6 +16,7 @@ import VideoContainer from './components/media/VideoContainer';
 import arrow from '../../images/red-arrow.png';
 import { toast } from 'sonner';
 import { createGlobalStyle } from 'styled-components';
+import { RoomModalAtom } from '../../recoil/RoomAtom';
 
 type RoomProps = {
   children?: React.ReactNode;
@@ -29,6 +30,8 @@ const Room: React.FC<RoomProps> = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [inCall, setInCall] = useState(false);
   const [isArrow, setIsArrow] = useState(false);
+  const [outModalState, setOutModalState] =
+  useRecoilState<boolean>(RoomModalAtom);
 
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const location = useLocation();
@@ -51,13 +54,23 @@ const Room: React.FC<RoomProps> = () => {
   };
   // console.log('😢isArrow',isArrow);
   useEffect(() => {
+    const roomOutButtonHandler = () => {
+      // 에러 메시지 리스너 추가
+      // const errorHandler = (message: string) => {
+      //   console.error(message);
+      //   console.log('🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈', message);
+      // };
+  
+      setOutModalState(true);
+    };
     const listenBackEvent = () => {
-      showArrow();
-      toast.error(
-        `왼쪽 하단의 방 나가기 버튼을 이용 해 주세요.
-      `,
-        { duration: 2000 },
-      );
+      roomOutButtonHandler();
+      // showArrow();
+      // toast.error(
+      //   `왼쪽 하단의 방 나가기 버튼을 이용 해 주세요.
+      // `,
+      //   { duration: 2000 },
+      // );
       navigate(`/room/${roomUUID}`);
     };
 
@@ -66,19 +79,16 @@ const Room: React.FC<RoomProps> = () => {
 
       if (action === 'POP') {
         listenBackEvent();
+        
       }
     });
-
-    // window.onbeforeunload = function () {
-    //   return '이 페이지를 떠나시겠습니까?';
-    // };
 
     return unlistenHistoryEvent;
   }, [roomUUID]);
 
-  // useEffect(() => {
-  //   window.onbeforeunload = null;
-  // }, [])
+  useEffect(() => {
+    window.onbeforeunload = null;
+  }, [])
 
   const getRoomInfo = async () => {
     const url = `${serverUrl}/room/${location.pathname.split('/')[2]}`;
