@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { getCookie } from '../auth/cookie';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import CreateRoomModal from '../pages/home/components/CreateRoomModal';
 import cute from '../images/ranking/2nd.svg';
 import cute2 from '../images/ranking/1st.svg';
+import { checkin, checkout } from '../images/room';
 
 type CreateRoomButtonProps = {};
 
 const CreateRoomButton2: React.FC<CreateRoomButtonProps> = () => {
   const token = getCookie('token');
   const [openCreateRoom, setOpenCreateRoom] = useState(false);
+  const navigate = useNavigate();
 
   const onClickCreateRoomButton = () => {
     setOpenCreateRoom(true);
@@ -22,14 +24,18 @@ const CreateRoomButton2: React.FC<CreateRoomButtonProps> = () => {
         <Button>
           <div onClick={onClickCreateRoomButton}>
             <Img src={cute} alt="cute" />
-            <HoverImg src={cute2} alt="cute2" />
+            {/* <HoverImg src={cute2} alt="cute2" /> */}
             <p>나를 누르면 방을 만들 수 있어!</p>
           </div>
         </Button>
       ) : (
-        <Login to="/login">
-          <p>로그인</p>
-        </Login>
+        <Button>
+          <div onClick={() => navigate('/login')}>
+            <Img src={checkin} alt="cute" />
+            {/* <HoverImg src={cute2} alt="cute2" /> */}
+            <p>나를 클릭해~ <br />로그인 하러 가자!</p>
+          </div>
+        </Button>
       )}
       {openCreateRoom && (
         <CreateRoomModal setOpenCreateRoom={setOpenCreateRoom} />
@@ -103,6 +109,7 @@ const Img = styled.img`
   height: 120px;
   opacity: 1;
   position: absolute;
+  object-fit: contain;
   bottom: 0;
   right: 0;
 `;
@@ -143,7 +150,7 @@ const Button = styled.div`
       color: black;
       font-size: 17px;
       font-weight: 500;
-      width: 140px;
+      width: 150px;
       text-align: center;
       background-color: #ffffffc0;
       border-radius: 20px;

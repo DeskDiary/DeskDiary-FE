@@ -1,8 +1,6 @@
 import {
   createClient,
   ClientConfig,
-  createMicrophoneAndCameraTracks,
-  createMicrophoneAudioTrack,
   createScreenVideoTrack,
   ILocalAudioTrack,
   ILocalVideoTrack,

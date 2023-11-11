@@ -39,7 +39,7 @@ const Screenshare: React.FC<ScreenshareProps> = ({
         setTimeout(() => {
           client.publish(tracks);
           console.log('새 화면 공유 트랙 공개 성공');
-        }, 5000);
+        }, 3000);
       } catch (error) {
         console.error('화면 공유 트랙 처리 중 오류 발생:', error);
         // 에러 핸들링을 여기에서 해주세요.

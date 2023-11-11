@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import logo from '../../images/logo-2.svg';
 import goalGraphPercent from './image/goalGraphPercent.png';
-import event1 from './image/event1.png';
 type HelpProps = {};
 
 const Help: React.FC<HelpProps> = () => {

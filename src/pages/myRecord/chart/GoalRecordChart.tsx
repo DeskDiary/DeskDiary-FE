@@ -1,4 +1,3 @@
-import axios from 'axios';
 import {
   BarElement,
   CategoryScale,
@@ -12,7 +11,6 @@ import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { getCookie } from '../../../auth/cookie';
 import { GoalTime, MonthTime } from '../../../recoil/DeskAtom';
 import { useQuery } from 'react-query';
 import { getMonthData, getSevenData } from '../../../axios/historyApi';

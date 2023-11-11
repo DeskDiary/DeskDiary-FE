@@ -8,11 +8,11 @@ export const GoalTimeModalState = atom({
 export const GoalTime = atom({
   key: 'GoalTime',
   default: {
-    goalTime: 0
+    goalTime: 0,
   },
 });
 
 export const MonthTime = atom({
   key: 'MonthTime',
-  default : 0
-})
+  default: 0,
+});

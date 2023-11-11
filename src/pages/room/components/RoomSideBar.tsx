@@ -3,14 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { fetchUser } from '../../../axios/api';
-import logo from '../../../images/logo.svg';
+import logo from '../../../images/logo-2.svg';
 import Timer from './Timer';
 import profile from '../../../images/profile.png';
 import { RoomUserList } from '../../../recoil/RoomAtom';
 import socket from '../socketInstance';
-import { micNone, MaxUser, videocam } from '../../../images/room';
+import { MaxUser } from '../../../images/room';
 import { useQuery } from 'react-query';
 import { toast } from 'sonner';
+import { RoomModalAtom } from '../../../recoil/RoomAtom';
 
 type RoomSideBarProps = {
   maxUser: number;
@@ -32,6 +33,8 @@ const RoomSideBar: React.FC<RoomSideBarProps> = ({maxUser}) => {
 
   const [roomUserList, setRoomUserList] = useRecoilState(RoomUserList);
   // console.log('사이드바', roomUserList);
+  const [outModalState, setOutModalState] =
+  useRecoilState<boolean>(RoomModalAtom);
 
   const { data } = useQuery<user>('room-user', fetchUser);
 
@@ -55,7 +58,8 @@ const RoomSideBar: React.FC<RoomSideBarProps> = ({maxUser}) => {
         src={logo}
         alt="로고이미지"
         onClick={() => {
-          toast.error('방에 나갈 때는 방 나가기 버튼을 이용해주세요.');
+          // toast.error('방에 나갈 때는 방 나가기 버튼을 이용해주세요.');
+          setOutModalState(true);
         }}
       />
       <UserInfoBox>

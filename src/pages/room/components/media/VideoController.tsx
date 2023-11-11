@@ -2,7 +2,6 @@ import React, { useState, useCallback } from 'react';
 import { ICameraVideoTrack, IMicrophoneAudioTrack } from 'agora-rtc-react';
 import { useClient } from './config';
 import {
-  MdOutlineExitToApp,
   MdScreenShare,
   MdStopScreenShare,
 } from 'react-icons/md';
