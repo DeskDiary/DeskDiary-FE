@@ -12,6 +12,7 @@ import styled from 'styled-components';
 import Screenshare from './Screenshare';
 import { isScreenshare } from '../../../../recoil/CamAtom';
 import { useRecoilState } from 'recoil';
+import { toast } from 'sonner';
 
 type VideoControllerProps = {
   tracks: [IMicrophoneAudioTrack, ICameraVideoTrack];
@@ -29,8 +30,6 @@ const VideoController: React.FC<VideoControllerProps> = ({
   const [screenshare, setScreenshare] = useState(false);
   const [screenShareTrack, setScreenShareTrack] = useRecoilState(isScreenshare);
 
-  let count = 0;
-
   const mute = async (type: 'audio' | 'video') => {
     // 컴, 오디어 끄기
     if (type === 'audio') {
@@ -39,6 +38,14 @@ const VideoController: React.FC<VideoControllerProps> = ({
         return { ...ps, audio: !ps.audio };
       });
     } else if (type === 'video') {
+      if(screenshare) {
+        // setTrackState(ps => {
+        //   console.log(' 화면공유 되어있었음');
+        //   return { ...ps, video: false };
+        // });
+        toast.error('화면 공유 중에는 카메라를 설정할 수 없습니다.');
+        return ;
+      }
       await tracks[1].setEnabled(!trackState.video);
       setTrackState(ps => {
         console.log('비디오트랙 변경');
