@@ -156,18 +156,28 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
       setStart(true);
     };
 
-    // 리프레시토큰
     try {
+      console.log('try💙💙💙💙');
       client.on('token-privilege-will-expire', async () => {
         const response = await axios.get(
           `${process.env.REACT_APP_SERVER_URL}/room/generate-aFreshToken/${getUUID}`,
         );
+        console.log('토큰토큰큰💙💙💙💙',response.data.token);
         const agoraToken = response.data.token;
         await client.renewToken(agoraToken);
       });
     } catch (error) {
       console.error('Error renewing Agora token:', error);
     }
+
+    client.on('token-privilege-did-expire', async () => {
+      // 서버에 새 토큰 요청
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/room/generate-aFreshToken/${getUUID}`);
+      const newToken = response.data.token;
+      console.log('did-expire토큰토큰큰💙💙💙💙',response.data.token);
+      // SDK에 새 토큰 제공
+      await client.renewToken(newToken);
+    });
 
     // 초기화 함수
     if (ready && tracks) {
@@ -183,6 +193,28 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
   useEffect(() => {
     getRoomInfo();
     // window.onbeforeunload = null;
+    // 리프레시토큰
+    try {
+      client.on('token-privilege-will-expire', async () => {
+        const response = await axios.get(
+          `${process.env.REACT_APP_SERVER_URL}/room/generate-aFreshToken/${getUUID}`,
+        );
+        console.log('토큰토큰큰💙💙💙💙',response.data.token);
+        const agoraToken = response.data.token;
+        await client.renewToken(agoraToken);
+      });
+    } catch (error) {
+      console.error('Error renewing Agora token:', error);
+    }
+
+    client.on('token-privilege-did-expire', async () => {
+      // 서버에 새 토큰 요청
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/room/generate-aFreshToken/${getUUID}`);
+      const newToken = response.data.token;
+      console.log('did-expire토큰토큰큰💙💙💙💙',response.data.token);
+      // SDK에 새 토큰 제공
+      await client.renewToken(newToken);
+    });
   }, []);
 
   return (
