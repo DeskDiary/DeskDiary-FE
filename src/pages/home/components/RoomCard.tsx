@@ -237,6 +237,7 @@ const Contents = styled.div`
 `;
 
 const Thumbmail = styled.img`
+  width: 100%;
   height: 100%;
   overflow: hidden;
   object-fit: contain;
