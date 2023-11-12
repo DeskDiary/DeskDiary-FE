@@ -19,4 +19,7 @@ export const choiceMicState = atom<string>({
   key: 'choiceMicState',
   default: '',
 });
-
+export const isScreenshare = atom<boolean>({
+  key: 'isScreenshare',
+  default: false,
+});
