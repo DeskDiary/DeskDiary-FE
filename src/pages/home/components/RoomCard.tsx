@@ -125,7 +125,7 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
           <RoomTitle>
             {room.title}
           </RoomTitle>
-          <>만든지 {minutes}분 {seconds}초 지남</>
+          <Test hours={hours}>만든지 {minutes}분 {seconds}초 지남</Test>
           <Tag>
             <img src={MaxUser} alt="user count" />
             {room.nowHeadcount}/{room.maxHeadcount}
@@ -147,6 +147,11 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
     </Container>
   );
 };
+
+const Test = styled.div<{hours:number}>`
+  color: ${props => (props.hours > 1) && 'red'};
+
+`
 
 const Cat = styled.div`
   position: absolute;
