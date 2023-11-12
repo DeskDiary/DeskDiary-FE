@@ -338,26 +338,6 @@ const Precautions = styled.textarea`
   }
 `;
 
-const MaxUser = styled.button<{ isActive: boolean }>`
-  color: white;
-  border: ${props =>
-    props.isActive ? '2px solid var(--primary-01)' : '2px solid white'};
-  background-color: ${props =>
-    props.isActive ? 'var(--primary-01)' : 'var(--gray-05)'};
-  border-radius: 50px;
-  font-size: 16px;
-  font-weight: 500;
-
-  width: 60px;
-  padding: 4px;
-  &:hover {
-    border: ${props =>
-      props.isActive
-        ? '2px solid var(--primary-01)'
-        : '2px solid var(--gray-05)'};
-  }
-`;
-
 const CategoryGroup = styled.div`
   display: flex;
   flex-direction: row;
@@ -477,11 +457,6 @@ const Thumbnail = styled.div`
   }
 `;
 
-const SampleImg = styled.img`
-  width: 33px;
-  height: 33px;
-`;
-
 const Title = styled.div`
   font-size: 24px;
   font-weight: 500;
@@ -506,6 +481,7 @@ const CreateRoomButton = styled.button`
   color: white;
   font-size: 16px;
   font-weight: 600;
+  border-radius:  100px;
 `;
 
 const CancleButton = styled.button`
@@ -516,6 +492,7 @@ const CancleButton = styled.button`
   background-color: rgba(110, 110, 110, 0);
   font-size: 16px;
   font-weight: 600;
+  border-radius:  100px;
 `;
 
 const BackGround = styled.div`

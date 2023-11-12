@@ -59,7 +59,7 @@ const ButtonGroup = styled.div`
     font-size: 17px;
     font-weight: 500;
     margin-top: 10px;
-    border-radius: 10px;
+    border-radius:  100px;
   }
   >button:last-child{
     background-color: white;

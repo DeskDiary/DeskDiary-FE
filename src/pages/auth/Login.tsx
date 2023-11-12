@@ -340,6 +340,7 @@ const LogInButton = styled.button`
   font-weight: 500;
   line-height: 40px;
   letter-spacing: 0.25px;
+  border-radius:  100px;
 `;
 
 const Ptag2 = styled.div`
@@ -386,6 +387,7 @@ const JoinButton = styled.div`
   border: 1px solid var(--primary-01);
   background: var(--bw-whtie, #fefefe);
   cursor: pointer;
+  border-radius:  100px;
 `;
 
 export default Login;

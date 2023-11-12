@@ -88,7 +88,6 @@ const VideoController: React.FC<VideoControllerProps> = ({
           <MdStopScreenShare fill="#D8D9DA" />
         )}
       </button>
-      <Test>{screenshare ? 'true' : 'flase'}</Test>
       {screenshare && (
         <Screenshare
           preTracks={tracks}
