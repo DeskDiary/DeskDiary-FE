@@ -1,6 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ICameraVideoTrack, IMicrophoneAudioTrack } from 'agora-rtc-react';
 import { useClient, useScreenVideoTrack } from './config';
+import {isScreenshare} from '../../../../recoil/CamAtom'
+import { useRecoilState } from 'recoil';
 
 type ScreenshareProps = {
   preTracks: [IMicrophoneAudioTrack, ICameraVideoTrack];
@@ -19,6 +21,7 @@ const Screenshare: React.FC<ScreenshareProps> = ({
 }) => {
   const client = useClient();
   const { ready, tracks, error } = useScreenVideoTrack();
+  const [screenShareTrack, setScreenShareTrack] = useRecoilState(isScreenshare);
 
   /**
    * 첫 렌더링을 확인. 컴포넌트가 마운트된 후 첫 업데이트가 일어났는지 여부 추적
@@ -39,7 +42,8 @@ const Screenshare: React.FC<ScreenshareProps> = ({
         setTimeout(() => {
           client.publish(tracks);
           console.log('새 화면 공유 트랙 공개 성공');
-        }, 5000);
+          setScreenShareTrack(true);
+        }, 3000);
       } catch (error) {
         console.error('화면 공유 트랙 처리 중 오류 발생:', error);
         // 에러 핸들링을 여기에서 해주세요.

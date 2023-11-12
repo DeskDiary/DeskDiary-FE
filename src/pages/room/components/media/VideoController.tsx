@@ -13,6 +13,8 @@ import {
 } from 'react-icons/fa';
 import styled from 'styled-components';
 import Screenshare from './Screenshare';
+import {isScreenshare} from '../../../../recoil/CamAtom'
+import { useRecoilState } from 'recoil';
 
 type VideoControllerProps = {
   tracks: [IMicrophoneAudioTrack, ICameraVideoTrack];
@@ -28,6 +30,7 @@ const VideoController: React.FC<VideoControllerProps> = ({
   const client = useClient();
   const [trackState, setTrackState] = useState({ video: true, audio: true });
   const [screenshare, setScreenshare] = useState(false);
+  const [screenShareTrack, setScreenShareTrack] = useRecoilState(isScreenshare);
 
   const mute = async (type: 'audio' | 'video') => {
     // 컴, 오디어 끄기
@@ -47,6 +50,12 @@ const VideoController: React.FC<VideoControllerProps> = ({
   const handleScreenShare = useCallback(() => {
     setScreenshare(prev => !prev);
   }, []);
+
+  // if(screenShareTrack) {
+  //   setScreenShareTrack(false);
+  //   setTimeout(() => {console.log('🤗',screenShareTrack);}, 1000)
+    
+  // }
 
   return (
     <Controller>

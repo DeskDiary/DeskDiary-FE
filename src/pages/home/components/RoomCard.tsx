@@ -91,6 +91,21 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
     }
   };
 
+  const createdDate = room.createdAt.substring(8, 10);
+  const createdTime = room.createdAt.substring(11, 16);
+
+  const pastTime = new Date(room.createdAt);
+  const currentTime = new Date();
+  const differenceInMilliseconds = currentTime.getTime() - pastTime.getTime();
+
+  // 밀리초를 시간, 분, 초로 변환
+  let seconds = Math.floor(differenceInMilliseconds / 1000);
+  let minutes = Math.floor(seconds / 60);
+  let hours = Math.floor(minutes / 60);
+
+  seconds = seconds % 60;
+  minutes = minutes % 60;
+
   return (
     <Container>
       {!isImageLoaded && <img src={sample} alt="thumbnail" />}
@@ -102,13 +117,15 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
           style={{ display: isImageLoaded ? 'block' : 'none' }}
           src={room.roomThumbnail ? room.roomThumbnail : sample}
           alt="room thumbnail"
-          
         />
         <ThumbnailShadow />
       </ThumbnailDiv>
       <Contents onClick={onClickCard}>
         <ContentText>
-          <RoomTitle>{room.title}</RoomTitle>
+          <RoomTitle>
+            {room.title}
+          </RoomTitle>
+          <Test hours={hours}>만든지 {minutes}분 {seconds}초 지남</Test>
           <Tag>
             <img src={MaxUser} alt="user count" />
             {room.nowHeadcount}/{room.maxHeadcount}
@@ -130,6 +147,11 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
     </Container>
   );
 };
+
+const Test = styled.div<{hours:number}>`
+  color: ${props => (props.hours > 1) && 'red'};
+
+`
 
 const Cat = styled.div`
   position: absolute;
@@ -197,10 +219,6 @@ const RoomTitle = styled.div`
   white-space: nowrap;
   height: 20px;
   width: 95%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
 `;
 
 const Img = styled.div`
@@ -231,7 +249,7 @@ const Thumbmail = styled.img`
 `;
 
 const ThumbnailDiv = styled.div`
-  border-radius: 4px;
+  border-radius: 10px;
   position: relative;
   display: flex;
   justify-content: center;
@@ -251,7 +269,7 @@ const ThumbnailShadow = styled.div`
   background: linear-gradient(
     180deg,
     rgba(0, 0, 0, 0) 70%,
-    rgba(0, 0, 0, 0.3) 100%
+    rgba(148, 183, 211, 0.3) 100%
   );
   height: 100%;
 `;
