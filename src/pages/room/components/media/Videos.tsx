@@ -37,11 +37,6 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
     return user ? user.nickname : null;
   };
 
-  const getProfileByUserId = (userId: number) => {
-    const user = roomUserList.find(user => user.userId === userId);
-    return user ? loading : null;
-  };
-
   // 볼륨 레벨에 따라서 색상을 결정하는 함수
   const getBorderColorByVolume = (volume: number) => {
     // if (volume > 70) return 'red';
@@ -97,7 +92,6 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
             const volumeLevel = volumes[user.uid] || 0; // 기본 볼륨 값은 0으로 설정
             const borderColor = getBorderColorByVolume(volumeLevel);
             const nickname = getNicknameByUserId(+user.uid);
-            const profileImage = getProfileByUserId(+user.uid);
             return (
               <Video key={user.uid} border={borderColor}>
                 <ClosedCam>
@@ -113,7 +107,7 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
                     display: 'inline',
                     backgroundColor: 'black',
                     zIndex: '5',
-                    backgroundImage: `url(${profileImage})`,
+                    backgroundImage: `url(${loading})`,
                     backgroundSize: '200px', // 이미지가 div에 꽉 차도록
                     backgroundPosition: 'center center', // 이미지가 div 중앙에 오도록
                     backgroundRepeat: 'no-repeat',
@@ -134,8 +128,10 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
             );
           } else {
             const nickname = getNicknameByUserId(+user.uid);
+            const volumeLevel = volumes[user.uid] || 0; // 기본 볼륨 값은 0으로 설정
+            const borderColor = getBorderColorByVolume(volumeLevel);
             return (
-              <Video border={''}>
+              <Video border={borderColor}>
                 <DefaultScreen key={user.uid} />
                 {nickname && <Nickname type="button">{nickname}</Nickname>}
                 {!user.audioTrack && (
@@ -158,7 +154,7 @@ const NonAudio = styled.div`
   bottom: 0;
   left: 10px;
   z-index: 5000;
-`
+`;
 
 const ClosedCam = styled.div`
   position: absolute;

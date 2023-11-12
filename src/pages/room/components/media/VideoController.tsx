@@ -1,10 +1,7 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { ICameraVideoTrack, IMicrophoneAudioTrack } from 'agora-rtc-react';
 import { useClient } from './config';
-import {
-  MdScreenShare,
-  MdStopScreenShare,
-} from 'react-icons/md';
+import { MdScreenShare, MdStopScreenShare } from 'react-icons/md';
 import {
   FaVolumeMute,
   FaVolumeUp,
@@ -13,7 +10,7 @@ import {
 } from 'react-icons/fa';
 import styled from 'styled-components';
 import Screenshare from './Screenshare';
-import {isScreenshare} from '../../../../recoil/CamAtom'
+import { isScreenshare } from '../../../../recoil/CamAtom';
 import { useRecoilState } from 'recoil';
 
 type VideoControllerProps = {
@@ -32,6 +29,8 @@ const VideoController: React.FC<VideoControllerProps> = ({
   const [screenshare, setScreenshare] = useState(false);
   const [screenShareTrack, setScreenShareTrack] = useRecoilState(isScreenshare);
 
+  let count = 0;
+
   const mute = async (type: 'audio' | 'video') => {
     // 컴, 오디어 끄기
     if (type === 'audio') {
@@ -42,6 +41,7 @@ const VideoController: React.FC<VideoControllerProps> = ({
     } else if (type === 'video') {
       await tracks[1].setEnabled(!trackState.video);
       setTrackState(ps => {
+        console.log('비디오트랙 변경');
         return { ...ps, video: !ps.video };
       });
     }
@@ -49,13 +49,9 @@ const VideoController: React.FC<VideoControllerProps> = ({
 
   const handleScreenShare = useCallback(() => {
     setScreenshare(prev => !prev);
+    console.log('🐛🐛🐛setScreenshare');
   }, []);
 
-  // if(screenShareTrack) {
-  //   setScreenShareTrack(false);
-  //   setTimeout(() => {console.log('🤗',screenShareTrack);}, 1000)
-    
-  // }
 
   return (
     <Controller>
@@ -79,8 +75,13 @@ const VideoController: React.FC<VideoControllerProps> = ({
         </NonCam>
       )}
       <button onClick={handleScreenShare}>
-        {screenshare ? <MdScreenShare fill="#337CCF" /> : <MdStopScreenShare fill="#D8D9DA" />}
+        {screenshare ? (
+          <MdScreenShare fill="#337CCF" />
+        ) : (
+          <MdStopScreenShare fill="#D8D9DA" />
+        )}
       </button>
+      <Test>{screenshare ? 'true' : 'flase'}</Test>
       {screenshare && (
         <Screenshare
           preTracks={tracks}
@@ -93,6 +94,10 @@ const VideoController: React.FC<VideoControllerProps> = ({
     </Controller>
   );
 };
+
+const Test = styled.div`
+  color: white;
+`;
 
 const NonAudio = styled.div`
   position: absolute;
@@ -127,7 +132,7 @@ const Controller = styled.div`
     border: none;
     font-size: 20px;
     border-radius: 10px;
-    color: #337CCF;
+    color: #337ccf;
     &:hover {
       background-color: var(--gray-06);
     }

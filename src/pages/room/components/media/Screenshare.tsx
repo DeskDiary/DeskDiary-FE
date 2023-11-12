@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ICameraVideoTrack, IMicrophoneAudioTrack } from 'agora-rtc-react';
 import { useClient, useScreenVideoTrack } from './config';
-import {isScreenshare} from '../../../../recoil/CamAtom'
+import { isScreenshare } from '../../../../recoil/CamAtom';
 import { useRecoilState } from 'recoil';
 
 type ScreenshareProps = {
@@ -27,12 +27,12 @@ const Screenshare: React.FC<ScreenshareProps> = ({
    * 첫 렌더링을 확인. 컴포넌트가 마운트된 후 첫 업데이트가 일어났는지 여부 추적
    */
   const firstRenderRef = useRef(true);
-
+  console.log('🌐screenshare.tsx');
   useEffect(() => {
+    console.log('useEffect');
     const pulishScreenShare = async () => {
       // await client.unpublish(preTracks[1]) // 현재 공유되고 있는 비디오 트랙을 비공개
       // await client.publish(tracks) // 새로운 화면 공유 트랙을 공개
-
       try {
         // 기존 비디오 트랙을 비공개하고 완료될 때까지 기다립니다.
         await client.unpublish(preTracks[1]);
@@ -48,43 +48,48 @@ const Screenshare: React.FC<ScreenshareProps> = ({
         console.error('화면 공유 트랙 처리 중 오류 발생:', error);
         // 에러 핸들링을 여기에서 해주세요.
       }
+    };
 
-      if (!Array.isArray(tracks)) {
-        console.log('화면공유 if문');
-        tracks.on('track-ended', async () => {
-          console.log('agora on');
-          // 화면 공유가 종료되면
-          await client.unpublish(tracks); // 공유중인 트랙을 비공개
-          console.log('화면공유 꺼짐');
-          tracks.close(); // 트랙을 닫는다
-          console.log('화면공유 트랙닫힘 ');
+    if (!Array.isArray(tracks)) {
+      console.log('화면공유 if문');
+      tracks.on('track-ended', async () => {
+        console.log('agora on');
+        // 화면 공유가 종료되면
+        await client.unpublish(tracks); // 공유중인 트랙을 비공개
+        console.log('화면공유 꺼짐');
+        tracks.close(); // 트랙을 닫는다
+        console.log('화면공유 트랙닫힘 ');
 
+        setTimeout(() => {
+          client.publish(preTracks[1]);
+          console.log('캠 연결');
+        }, 3000);
+
+        if (trackState.video) {
+          // video 가 참이면
           setTimeout(() => {
             client.publish(preTracks[1]);
             console.log('캠 연결');
-          }, 5000);
+          }, 3000); // 비디오 트랙 공개
+        }
+        setScreenshare(false); // 화면 공유 상태 false
+      });
+    } else {
+      console.log('else');
+    }
 
-          if (trackState.video) {
-            // video 가 참이면
-            setTimeout(() => {
-              client.publish(preTracks[1]);
-              console.log('캠 연결');
-            }, 5000); // 비디오 트랙 공개
-          }
-          setScreenshare(false); // 화면 공유 상태 false
-        });
-      } else {
-        const videoTrack = tracks[0];
-        videoTrack.on('track-ended', async () => {
-          // 여기에 비디오 트랙이 종료될 때의 로직을 추가합니다.
-          console.log('else');
-        });
-      }
-    };
-    if (ready && tracks) pulishScreenShare(); // 화면공유의 ready, tracks가 준비되면 (트랙 사용이 가능하면) 함수 실행
-    if (error) setScreenshare(false);
+    if (ready && tracks) {
+      console.log('❗화면공유 함수실행');
+      pulishScreenShare(); // 화면공유의 ready, tracks가 준비되면 (트랙 사용이 가능하면) 함수 실행
+    }
+
+    if (error) {
+      console.log('useEffect 아래 에러');
+      setScreenshare(false);
+    }
 
     return () => {
+      console.log('클리어함수');
       if (firstRenderRef.current) {
         firstRenderRef.current = false;
         return;
@@ -105,8 +110,7 @@ const Screenshare: React.FC<ScreenshareProps> = ({
     ready,
     error,
   ]);
-
-  console.log('screenshare', screenshare);
+  console.log('screenshare: ' + screenshare);
 
   return <div></div>;
 };
