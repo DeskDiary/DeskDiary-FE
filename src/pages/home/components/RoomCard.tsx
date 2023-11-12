@@ -91,9 +91,6 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
     }
   };
 
-  // const createdDate = room.createdAt.substring(8, 10);
-  // const createdTime = room.createdAt.substring(11, 16);
-
   const pastTime = new Date(room.createdAt);
   const currentTime = new Date();
   const differenceInMilliseconds = currentTime.getTime() - pastTime.getTime();

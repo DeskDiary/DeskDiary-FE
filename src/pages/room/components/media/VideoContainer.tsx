@@ -151,12 +151,10 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
 
       await client.join(APP_ID, name, TOKEN, data.userId);
       try {
-        console.log('try💙💙💙💙');
         client.on('token-privilege-will-expire', async () => {
           const response = await axios.get(
             `${process.env.REACT_APP_SERVER_URL}/room/generate-aFreshToken/${getUUID}`,
           );
-          console.log('토큰토큰큰💙💙💙💙', response.data.token);
           const agoraToken = response.data.token;
           await client.renewToken(agoraToken);
         });
@@ -170,7 +168,6 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
           `${process.env.REACT_APP_SERVER_URL}/room/generate-aFreshToken/${getUUID}`,
         );
         const newToken = response.data.token;
-        console.log('did-expire토큰토큰큰💙💙💙💙', response.data.token);
         // SDK에 새 토큰 제공
         await client.renewToken(newToken);
       });
