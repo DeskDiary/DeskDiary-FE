@@ -140,10 +140,10 @@ const Container = styled.div`
   transform: translate(-50%, -50%);
   background: rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(7.5px);
-  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 1000;
 `;
 
 const ModalBox = styled.div`

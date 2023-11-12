@@ -37,7 +37,7 @@ const RoomUnderBar: React.FC<RoomUnderBarProps> = ({ roomId, note }) => {
   };
 
   return (
-    <>
+    <Container>
       {outModalState && <RoomModal />}
 
       <Body>
@@ -59,9 +59,16 @@ const RoomUnderBar: React.FC<RoomUnderBarProps> = ({ roomId, note }) => {
           )}
         </SettingList>
       </Body>
-    </>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+`
 
 const Note = styled.div`
   background-color: var(--gray-03);

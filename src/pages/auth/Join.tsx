@@ -403,6 +403,8 @@ const JoinButton = styled.button<{ disabled: boolean }>`
   font-weight: 500;
   line-height: 123.5%; /* 29.64px */
 
+  border-radius:  100px;
+
   background-color: rgba(
     26,
     129,
