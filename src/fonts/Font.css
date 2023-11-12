@@ -7,12 +7,12 @@ This license is copied below, and is also available with a FAQ at:
 http://scripts.sil.org/OFL
 */
 
-@font-face {
+/* @font-face {
 	font-family: 'Pretendard';
 	font-weight: 500;
 	font-display: swap;
 	src: url('./Pretendard-Medium.woff') format('woff');
-}
+} */
 
 @font-face {
 	font-family: 'Pretendard';
