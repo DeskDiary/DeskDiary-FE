@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ICameraVideoTrack, IMicrophoneAudioTrack } from 'agora-rtc-react';
 import { useClient, useScreenVideoTrack } from './config';
 
@@ -19,6 +19,7 @@ const Screenshare: React.FC<ScreenshareProps> = ({
 }) => {
   const client = useClient();
   const { ready, tracks, error } = useScreenVideoTrack();
+  const [screenShareTrack, setScreenShareTrack] = useState(null);
 
   /**
    * 첫 렌더링을 확인. 컴포넌트가 마운트된 후 첫 업데이트가 일어났는지 여부 추적
