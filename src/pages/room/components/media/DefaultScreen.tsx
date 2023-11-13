@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 
 import { FaVideoSlash } from 'react-icons/fa';
+import cute from '../../../../images/character/blue.png'
 
 const DefaultScreen = (): JSX.Element => {
   return (
     <Default>
-      <FaVideoSlash style={{ fontSize: '50px', color: '#e90000' }} />
+      {/* <FaVideoSlash style={{ fontSize: '50px', color: '#e90000' }} /> */}
+      <img src={cute} alt="non-cam" />
     </Default>
   );
 };

@@ -12,6 +12,8 @@ import styled from 'styled-components';
 import Screenshare from './Screenshare';
 import { isScreenshare } from '../../../../recoil/CamAtom';
 import { useRecoilState } from 'recoil';
+import { toast } from 'sonner';
+import {blue} from '../../../../images/character'
 
 type VideoControllerProps = {
   tracks: [IMicrophoneAudioTrack, ICameraVideoTrack];
@@ -29,8 +31,6 @@ const VideoController: React.FC<VideoControllerProps> = ({
   const [screenshare, setScreenshare] = useState(false);
   const [screenShareTrack, setScreenShareTrack] = useRecoilState(isScreenshare);
 
-  let count = 0;
-
   const mute = async (type: 'audio' | 'video') => {
     // 컴, 오디어 끄기
     if (type === 'audio') {
@@ -39,9 +39,12 @@ const VideoController: React.FC<VideoControllerProps> = ({
         return { ...ps, audio: !ps.audio };
       });
     } else if (type === 'video') {
+      if(screenshare) {
+        toast.error('화면 공유 중에는 카메라를 설정할 수 없습니다.');
+        return ;
+      }
       await tracks[1].setEnabled(!trackState.video);
       setTrackState(ps => {
-        console.log('비디오트랙 변경');
         return { ...ps, video: !ps.video };
       });
     }
@@ -49,7 +52,6 @@ const VideoController: React.FC<VideoControllerProps> = ({
 
   const handleScreenShare = useCallback(() => {
     setScreenshare(prev => !prev);
-    console.log('🐛🐛🐛setScreenshare');
   }, []);
 
 
@@ -71,7 +73,8 @@ const VideoController: React.FC<VideoControllerProps> = ({
       </button>
       {!trackState.video && (
         <NonCam>
-          <FaVideoSlash style={{ fontSize: '50px', color: '#e90000' }} />
+          {/* <FaVideoSlash style={{ fontSize: '50px', color: '#e90000' }} /> */}
+          <img src={blue} alt='' />
         </NonCam>
       )}
       <button onClick={handleScreenShare}>
@@ -81,7 +84,6 @@ const VideoController: React.FC<VideoControllerProps> = ({
           <MdStopScreenShare fill="#D8D9DA" />
         )}
       </button>
-      <Test>{screenshare ? 'true' : 'flase'}</Test>
       {screenshare && (
         <Screenshare
           preTracks={tracks}
@@ -107,8 +109,8 @@ const NonAudio = styled.div`
 
 const NonCam = styled.div`
   position: absolute;
-  top: -125px;
-  left: 170px;
+  top: -150px;
+  left: 148px;
 `;
 
 const Controller = styled.div`

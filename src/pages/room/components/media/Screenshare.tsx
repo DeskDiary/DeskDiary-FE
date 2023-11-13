@@ -27,7 +27,23 @@ const Screenshare: React.FC<ScreenshareProps> = ({
    * 첫 렌더링을 확인. 컴포넌트가 마운트된 후 첫 업데이트가 일어났는지 여부 추적
    */
   const firstRenderRef = useRef(true);
-  console.log('🌐screenshare.tsx');
+
+  const unpublish = async () => {
+    if (!Array.isArray(tracks) && tracks !== undefined) {
+      await client.unpublish(tracks);
+      tracks.close();
+
+      setTimeout(() => {
+        if (trackState.video) {
+          client.publish(preTracks[1]);
+        }
+      }, 3000);
+
+    } else {
+      console.log('else');
+    }
+  };
+
   useEffect(() => {
     console.log('useEffect');
     const pulishScreenShare = async () => {
@@ -36,47 +52,17 @@ const Screenshare: React.FC<ScreenshareProps> = ({
       try {
         // 기존 비디오 트랙을 비공개하고 완료될 때까지 기다립니다.
         await client.unpublish(preTracks[1]);
-        console.log('캠 비공개 성공');
 
         // 새로운 화면 공유 트랙을 공개합니다.
         setTimeout(() => {
           client.publish(tracks);
           console.log('새 화면 공유 트랙 공개 성공');
-          setScreenShareTrack(true);
         }, 3000);
       } catch (error) {
         console.error('화면 공유 트랙 처리 중 오류 발생:', error);
         // 에러 핸들링을 여기에서 해주세요.
       }
     };
-
-    if (!Array.isArray(tracks)) {
-      console.log('화면공유 if문');
-      tracks.on('track-ended', async () => {
-        console.log('agora on');
-        // 화면 공유가 종료되면
-        await client.unpublish(tracks); // 공유중인 트랙을 비공개
-        console.log('화면공유 꺼짐');
-        tracks.close(); // 트랙을 닫는다
-        console.log('화면공유 트랙닫힘 ');
-
-        setTimeout(() => {
-          client.publish(preTracks[1]);
-          console.log('캠 연결');
-        }, 3000);
-
-        if (trackState.video) {
-          // video 가 참이면
-          setTimeout(() => {
-            client.publish(preTracks[1]);
-            console.log('캠 연결');
-          }, 3000); // 비디오 트랙 공개
-        }
-        setScreenshare(false); // 화면 공유 상태 false
-      });
-    } else {
-      console.log('else');
-    }
 
     if (ready && tracks) {
       console.log('❗화면공유 함수실행');
@@ -90,6 +76,7 @@ const Screenshare: React.FC<ScreenshareProps> = ({
 
     return () => {
       console.log('클리어함수');
+      unpublish();
       if (firstRenderRef.current) {
         firstRenderRef.current = false;
         return;
@@ -110,7 +97,6 @@ const Screenshare: React.FC<ScreenshareProps> = ({
     ready,
     error,
   ]);
-  console.log('screenshare: ' + screenshare);
 
   return <div></div>;
 };
