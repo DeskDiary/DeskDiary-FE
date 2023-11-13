@@ -15,6 +15,7 @@ import { RoomInfo, RoomUserList } from '../../../../recoil/RoomAtom';
 import styled from 'styled-components';
 
 import socket from '../../socketInstance';
+import { useNavigate } from 'react-router-dom';
 
 type RoomSideBarProps = {};
 
@@ -48,7 +49,7 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
   const [users, setUsers] = useState<IAgoraRTCRemoteUser[]>([]);
   const [start, setStart] = useState<boolean>(false);
   const [roomUserList, setRoomUserList] = useRecoilState(RoomUserList);
-
+  const navigate = useNavigate();
   const APP_ID = roomInfo.agoraAppId;
   const TOKEN = roomInfo.agoraToken;
   const CHANNEL = roomInfo.uuid;
@@ -83,7 +84,10 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
       setRoomInfo(data);
       setRecoilRoomInfo(data);
     } catch (error) {
-      // console.error(error);
+      // alert('잘못된 경로입니다.');
+
+      navigate('/no-room');
+      window.location.reload();
     }
   };
 

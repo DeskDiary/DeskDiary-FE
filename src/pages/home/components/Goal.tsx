@@ -2,6 +2,7 @@ import OutlinedFlagSharpIcon from '@mui/icons-material/OutlinedFlagSharp';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { todayLerningHistoryHome } from '../../../axios/historyApi';
+import { useNavigate } from 'react-router-dom';
 
 type GoalProps = {};
 
@@ -10,7 +11,7 @@ const Goal: React.FC<GoalProps> = () => {
     0, 0, 0, 0, 100, 0,
   ]);
   const [goalPercent, setGoalPercent] = useState<number>(0);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -38,7 +39,7 @@ const Goal: React.FC<GoalProps> = () => {
 
   return (
     <>
-      <Container>
+      <Container onClick={() => navigate('/mydesk')}>
         <GoalDiv>
           <Title>오늘의 책상 목표</Title>
           <Content>
@@ -50,14 +51,13 @@ const Goal: React.FC<GoalProps> = () => {
           <CurrentGraph width={Math.min(goalPercent, 100)}></CurrentGraph>
           <IconDiv>
             <OutlinedFlagSharpIcon
-            style={{
-              fontSize: '35px',
-              color: '#337CCF',
-              transform: 'scaleX(-1)',
-            }}
-          />
+              style={{
+                fontSize: '35px',
+                color: '#337CCF',
+                transform: 'scaleX(-1)',
+              }}
+            />
           </IconDiv>
-          
         </GoalGraph>
       </Container>
     </>
@@ -78,7 +78,7 @@ const IconDiv = styled.div`
   @media (max-width: 768px) {
     margin-left: 440px;
   }
-`
+`;
 
 const Container = styled.div`
   display: flex;
