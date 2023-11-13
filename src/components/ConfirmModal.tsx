@@ -33,6 +33,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
     try {
       socket.emit('removeRoom', { uuid: uuid, userId:userId });
       toast.error('방 삭제 성공했습니다.');
+      console.log(uuid, '...', userId);
       const token = getCookie('token');
       const response = await axios.delete(
         `${process.env.REACT_APP_SERVER_URL!}/room/${uuid}`,
