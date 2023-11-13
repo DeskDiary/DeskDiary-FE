@@ -84,9 +84,10 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
       setRoomInfo(data);
       setRecoilRoomInfo(data);
     } catch (error) {
-      alert('잘못된 경로입니다.');
+      // alert('잘못된 경로입니다.');
 
-      navigate('/');
+      navigate('/no-room');
+      window.location.reload();
     }
   };
 
