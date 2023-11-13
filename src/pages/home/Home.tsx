@@ -30,7 +30,7 @@ const Home = () => {
         {token ? (
           <User>
             <Goal />
-            <Img>
+            <Img onClick={() => navigate('/lending')}>
               <img src={userIntro} alt="user " />
             </Img>
           </User>
