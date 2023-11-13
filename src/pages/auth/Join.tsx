@@ -288,7 +288,7 @@ const Join: React.FC<JoinProps> = () => {
 
         <AgreeBox>
           <AgreeCheck type="checkbox" onClick={onClickAgree}></AgreeCheck>
-          <AgreeLink>
+          <AgreeLink to='https://velog.velcdn.com/images/p_seo_hn/post/cf04de05-31e3-4d19-bb46-1df730bb62de/image.pdf' target="_blank">
             <span>(필수)</span>통합서비스 이용약관 및 개인정보 처리방침에 동의
             합니다.
           </AgreeLink>
@@ -414,7 +414,7 @@ const JoinButton = styled.button<{ disabled: boolean }>`
   cursor: ${props => (props.disabled ? 'auto' : 'pointer')};
 `;
 
-const AgreeLink = styled.div`
+const AgreeLink = styled(Link)`
   font-size: 14px;
   width: 100%;
   color: var(--primary-01);
