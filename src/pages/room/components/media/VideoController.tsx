@@ -34,6 +34,10 @@ const VideoController: React.FC<VideoControllerProps> = ({
   const mute = async (type: 'audio' | 'video') => {
     // 컴, 오디어 끄기
     if (type === 'audio') {
+      if(screenshare) {
+        toast.error('화면 공유 중에는 마이크를 설정할 수 없습니다.');
+        return ;
+      }
       await tracks[0].setEnabled(!trackState.audio);
       setTrackState(ps => {
         return { ...ps, audio: !ps.audio };
