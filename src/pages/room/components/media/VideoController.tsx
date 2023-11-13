@@ -13,6 +13,7 @@ import Screenshare from './Screenshare';
 import { isScreenshare } from '../../../../recoil/CamAtom';
 import { useRecoilState } from 'recoil';
 import { toast } from 'sonner';
+import {blue} from '../../../../images/character'
 
 type VideoControllerProps = {
   tracks: [IMicrophoneAudioTrack, ICameraVideoTrack];
@@ -78,7 +79,8 @@ const VideoController: React.FC<VideoControllerProps> = ({
       </button>
       {!trackState.video && (
         <NonCam>
-          <FaVideoSlash style={{ fontSize: '50px', color: '#e90000' }} />
+          {/* <FaVideoSlash style={{ fontSize: '50px', color: '#e90000' }} /> */}
+          <img src={blue} alt='' />
         </NonCam>
       )}
       <button onClick={handleScreenShare}>
@@ -113,8 +115,8 @@ const NonAudio = styled.div`
 
 const NonCam = styled.div`
   position: absolute;
-  top: -125px;
-  left: 170px;
+  top: -150px;
+  left: 148px;
 `;
 
 const Controller = styled.div`
