@@ -42,8 +42,8 @@ const RoomList: React.FC<RoomListProps> = ({ label, mydesk }) => {
 
   useEffect(()=> {
     refetch();
-    setIsRefetch(false);
-  }, [isRefetch])
+  }, [])
+
 
   return (
     <List>

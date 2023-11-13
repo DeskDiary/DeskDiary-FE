@@ -27,14 +27,9 @@ const Screenshare: React.FC<ScreenshareProps> = ({
    * 첫 렌더링을 확인. 컴포넌트가 마운트된 후 첫 업데이트가 일어났는지 여부 추적
    */
   const firstRenderRef = useRef(true);
-  console.log('🌐screenshare.tsx');
 
   const unpublish = async () => {
-    console.log('👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻');
-    // if (!screenshare) {
-    console.log('👻if1');
     if (!Array.isArray(tracks) && tracks !== undefined) {
-      console.log('👻if2', tracks);
       await client.unpublish(tracks);
       tracks.close();
 
@@ -47,7 +42,6 @@ const Screenshare: React.FC<ScreenshareProps> = ({
     } else {
       console.log('else');
     }
-    // }
   };
 
   useEffect(() => {

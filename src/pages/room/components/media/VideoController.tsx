@@ -40,16 +40,11 @@ const VideoController: React.FC<VideoControllerProps> = ({
       });
     } else if (type === 'video') {
       if(screenshare) {
-        // setTrackState(ps => {
-        //   console.log(' 화면공유 되어있었음');
-        //   return { ...ps, video: false };
-        // });
         toast.error('화면 공유 중에는 카메라를 설정할 수 없습니다.');
         return ;
       }
       await tracks[1].setEnabled(!trackState.video);
       setTrackState(ps => {
-        console.log('비디오트랙 변경');
         return { ...ps, video: !ps.video };
       });
     }
@@ -57,7 +52,6 @@ const VideoController: React.FC<VideoControllerProps> = ({
 
   const handleScreenShare = useCallback(() => {
     setScreenshare(prev => !prev);
-    console.log('🐛🐛🐛setScreenshare');
   }, []);
 
 
