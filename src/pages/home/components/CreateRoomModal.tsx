@@ -508,6 +508,7 @@ const BackGround = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 4000;
 `;
 
 const ModalContent = styled.div`
@@ -521,7 +522,7 @@ const ModalContent = styled.div`
   /* background-color: rgba(255, 255, 255, 0.8); */
   background-color: white;
   border-radius: 20px;
-  z-index: 50;
+  z-index: 5000;
   position: absolute;
   padding: 40px 0;
 `;
@@ -536,7 +537,7 @@ const Container = styled.form`
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 5000;
+  z-index: 7000;
 `;
 
 export default CreateRoomModal;

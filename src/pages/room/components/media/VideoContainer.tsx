@@ -172,11 +172,10 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
           `${process.env.REACT_APP_SERVER_URL}/room/generate-aFreshToken/${getUUID}`,
         );
         const newToken = response.data.token;
-        // SDK에 새 토큰 제공
+
         await client.renewToken(newToken);
       });
-      // const uid = await client.join(APP_ID, name, TOKEN, data.userId);
-      // console.log(`User ID: ${uid}`);
+
       if (tracks) await client.publish([tracks[0], tracks[1]]);
       setStart(true);
     };
