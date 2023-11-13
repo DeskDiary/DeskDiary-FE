@@ -27,7 +27,7 @@ const VideoController: React.FC<VideoControllerProps> = ({
   setInCall,
 }) => {
   const client = useClient();
-  const [trackState, setTrackState] = useState({ video: false, audio: false });
+  const [trackState, setTrackState] = useState({ video: true, audio: true });
   const [screenshare, setScreenshare] = useState(false);
   const [screenShareTrack, setScreenShareTrack] = useRecoilState(isScreenshare);
 
