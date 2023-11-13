@@ -91,7 +91,6 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
 
     const fetchData2 = async () => {
       fetchName += 'Search';
-      console.log('이름',fetchName)
       const fetchFunc =
         fetchFunctions2[fetchName as keyof typeof fetchFunctions2];
       const result = await fetchFunc(searchText, pageNumber);

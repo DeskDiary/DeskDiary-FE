@@ -170,7 +170,7 @@ const GlobalStyle = createGlobalStyle`
 
 const Main = styled.div`
   width: 100vw;
-  min-height: 100vh;
+  height: 100vh;
   /* box-sizing: border-box;  */
   background-color: #424242;
   /* border: 3px solid tomato; */
@@ -206,7 +206,7 @@ const Arrow = styled.img`
 const Container = styled.div`
   display: flex;
   width: 100%;
-  min-height: calc(100vh - 60px);
+  min-height: calc(100vh - 70px);
   background: var(--gray-09);
   @media (max-width: 768px) {
     flex-direction: column;

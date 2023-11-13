@@ -165,6 +165,7 @@ const Button = styled.button<{ buttontype?: string }>`
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius:  100px;
   background-color: ${props =>
     props.buttontype === 'cancel' ? '' : 'var(--primary-01)'};
   color: ${props =>

@@ -40,12 +40,10 @@ type RoomCardProps = {
 const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
   const token = getCookie('token');
 
-  const [isOpen, setIsOpen] = useState(false);
   const [isOpenDeleteRoomModal, setIsOpenDeleteRoomModal] =
     useRecoilState(DeleteRoomAtom);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [joinUUID, setJoinUUID] = useRecoilState<string>(RoomUUIDAtom);
-  const [roomInfo, setRoomInfo] = useRecoilState(RoomAtom);
 
   const navigate = useNavigate();
 
@@ -77,7 +75,6 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
     }
 
     if (token) {
-      // setIsOpen(true);
       JoinRoomModal(token);
     } else {
       toast.error('로그인이 필요합니다.', {
@@ -94,14 +91,6 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
   const pastTime = new Date(room.createdAt);
   const currentTime = new Date();
   const differenceInMilliseconds = currentTime.getTime() - pastTime.getTime();
-
-  // 밀리초를 시간, 분, 초로 변환
-  let seconds = Math.floor(differenceInMilliseconds / 1000);
-  let minutes = Math.floor(seconds / 60);
-  let hours = Math.floor(minutes / 60);
-
-  seconds = seconds % 60;
-  minutes = minutes % 60;
 
   return (
     <Container>
@@ -122,7 +111,6 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, fetch }) => {
           <RoomTitle>
             {room.title}
           </RoomTitle>
-          <Test hours={hours}>만든지 {minutes}분 {seconds}초 지남</Test>
           <Tag>
             <img src={MaxUser} alt="user count" />
             {room.nowHeadcount}/{room.maxHeadcount}

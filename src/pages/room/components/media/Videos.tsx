@@ -153,7 +153,7 @@ const NonAudio = styled.div`
   position: absolute;
   bottom: 0;
   left: 10px;
-  z-index: 5000;
+  z-index: 100;
 `;
 
 const ClosedCam = styled.div`

@@ -52,6 +52,7 @@ const RoomSideBar: React.FC<RoomSideBarProps> = ({maxUser}) => {
     };
   }, [socket]);
 
+  console.log('👻👻👻소켓에서 받아 온 유저리스트', roomUserList)
   return (
     <Container>
       <LogoImg
