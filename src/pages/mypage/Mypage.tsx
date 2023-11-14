@@ -240,22 +240,6 @@ const Mypage: React.FC<MypageProps> = () => {
               <EditIcon src={edit} alt="edit profile image" />
               <VisuallyHiddenInput type="file" onChange={handleFileChange} />
             </Button>
-            <Delete type="button" onClick={handleFileDelete}>
-              {/* <Button
-                component="label"
-                sx={{
-                  color: 'var(--gray-05)',
-                  '&:hover': {
-                    backgroundColor: 'initial',
-                    boxShadow: 'none',
-                  },
-                }}
-              > */}
-              <EditIcon src={x} alt="delete profile image" />
-              {/* <VisuallyHiddenInput type="button" onClick={handleFileDelete} /> */}
-              <button />
-              {/* </Button> */}
-            </Delete>
           </Profile>
 
           <UserInfo>
