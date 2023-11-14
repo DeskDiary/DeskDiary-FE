@@ -138,7 +138,7 @@ const Mypage: React.FC<MypageProps> = () => {
 
   const handleFileDelete = async () => {
     try {
-      console.log('===');
+      // console.log('===');
       const response = await axios.delete(
         `${process.env.REACT_APP_SERVER_URL!}/me/profile/image`,
         {
@@ -149,7 +149,7 @@ const Mypage: React.FC<MypageProps> = () => {
       );
       
 
-      console.log('프로필 사진 삭제', response.data);
+      // console.log('프로필 사진 삭제', response.data);
       refetch();
       // 성공시 로직
       if (response.data.success) {
@@ -157,10 +157,10 @@ const Mypage: React.FC<MypageProps> = () => {
         refetch();
         toast.success('프로필 삭제 성공🤗');
       } else {
-        console.log('실패ddzz', response.data);
+        // console.log('실패ddzz', response.data);
       }
     } catch (error) {
-      console.log('프로필 수정 실패', error);
+      // console.log('프로필 수정 실패', error);
     }
   };
 
