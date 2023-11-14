@@ -14,7 +14,6 @@ import { useRecoilState } from 'recoil';
 import { RoomInfo, RoomUserList } from '../../../../recoil/RoomAtom';
 import styled from 'styled-components';
 
-import socket from '../../socketInstance';
 import { useNavigate } from 'react-router-dom';
 
 type RoomSideBarProps = {};
@@ -48,7 +47,6 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
 
   const [users, setUsers] = useState<IAgoraRTCRemoteUser[]>([]);
   const [start, setStart] = useState<boolean>(false);
-  const [roomUserList, setRoomUserList] = useRecoilState(RoomUserList);
   const navigate = useNavigate();
   const APP_ID = roomInfo.agoraAppId;
   const TOKEN = roomInfo.agoraToken;
