@@ -11,7 +11,7 @@ import { RoomAtom } from '../../recoil/RoomAtom';
 import ChangePasswordModal from './components/ChangePasswordModal';
 import ConfirmModal from '../../components/ConfirmModal';
 
-import { profile, logoColor, x } from '../../images';
+import { profile, logo_colorful, x } from '../../images';
 import { kakao, google } from '../../images/main';
 import { edit } from '../../images/mypage';
 import { toast } from 'sonner';
@@ -279,7 +279,7 @@ const Mypage: React.FC<MypageProps> = () => {
               <img
                 src={
                   data?.provider === 'local'
-                    ? logoColor
+                    ? logo_colorful
                     : data?.provider === 'Kakao'
                     ? kakao
                     : google

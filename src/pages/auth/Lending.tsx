@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { logo, lendingImage } from '../../images';
+import { logo_colorful, lendingImage } from '../../images';
 
 type LendingProps = {};
 
@@ -21,7 +21,7 @@ const Lending: React.FC<LendingProps> = () => {
   return (
     <Container>
       <BoxContents>
-        <Logo src={logo} alt="logo" />
+        <Logo src={logo_colorful} alt="logo" />
         <Title>
           <div>언제 어디든지</div>
           <div>나의 책상이 될 수 있는 곳에서 만나요</div>
