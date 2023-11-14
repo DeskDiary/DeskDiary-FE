@@ -109,9 +109,9 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
     socket.on('log-out', (userId: any) => {
       const socketUser = userId.logoutUser;
       const serverUserId = data?.userId;
-      console.log('socketUser 소켓', socketUser, '===', serverUserId);
+      // console.log('socketUser 소켓', socketUser, '===', serverUserId);
       if (socketUser === serverUserId) {
-        console.log('log-out 소켓', userId);
+        // console.log('log-out 소켓', userId);
         toast.message('로그아웃에 성공하였습니다.');
         navigate('/');
       }

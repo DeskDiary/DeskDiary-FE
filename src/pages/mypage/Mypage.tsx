@@ -11,7 +11,7 @@ import { RoomAtom } from '../../recoil/RoomAtom';
 import ChangePasswordModal from './components/ChangePasswordModal';
 import ConfirmModal from '../../components/ConfirmModal';
 
-import { profile, logoColor, x } from '../../images';
+import { profile, logo_colorful, x } from '../../images';
 import { kakao, google } from '../../images/main';
 import { edit } from '../../images/mypage';
 import { toast } from 'sonner';
@@ -138,7 +138,7 @@ const Mypage: React.FC<MypageProps> = () => {
 
   const handleFileDelete = async () => {
     try {
-      console.log('===');
+      // console.log('===');
       const response = await axios.delete(
         `${process.env.REACT_APP_SERVER_URL!}/me/profile/image`,
         {
@@ -149,7 +149,7 @@ const Mypage: React.FC<MypageProps> = () => {
       );
       
 
-      console.log('프로필 사진 삭제', response.data);
+      // console.log('프로필 사진 삭제', response.data);
       refetch();
       // 성공시 로직
       if (response.data.success) {
@@ -157,10 +157,10 @@ const Mypage: React.FC<MypageProps> = () => {
         refetch();
         toast.success('프로필 삭제 성공🤗');
       } else {
-        console.log('실패ddzz', response.data);
+        // console.log('실패ddzz', response.data);
       }
     } catch (error) {
-      console.log('프로필 수정 실패', error);
+      // console.log('프로필 수정 실패', error);
     }
   };
 
@@ -240,22 +240,6 @@ const Mypage: React.FC<MypageProps> = () => {
               <EditIcon src={edit} alt="edit profile image" />
               <VisuallyHiddenInput type="file" onChange={handleFileChange} />
             </Button>
-            <Delete type="button" onClick={handleFileDelete}>
-              {/* <Button
-                component="label"
-                sx={{
-                  color: 'var(--gray-05)',
-                  '&:hover': {
-                    backgroundColor: 'initial',
-                    boxShadow: 'none',
-                  },
-                }}
-              > */}
-              <EditIcon src={x} alt="delete profile image" />
-              {/* <VisuallyHiddenInput type="button" onClick={handleFileDelete} /> */}
-              <button />
-              {/* </Button> */}
-            </Delete>
           </Profile>
 
           <UserInfo>
@@ -295,7 +279,7 @@ const Mypage: React.FC<MypageProps> = () => {
               <img
                 src={
                   data?.provider === 'local'
-                    ? logoColor
+                    ? logo_colorful
                     : data?.provider === 'Kakao'
                     ? kakao
                     : google

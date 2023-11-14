@@ -14,4 +14,4 @@ root.render(
   </RecoilRoot>,
 );
 
-reportWebVitals(console.log);
+reportWebVitals();

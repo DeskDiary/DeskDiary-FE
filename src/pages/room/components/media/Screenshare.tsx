@@ -40,12 +40,12 @@ const Screenshare: React.FC<ScreenshareProps> = ({
       }, 3000);
 
     } else {
-      console.log('else');
+      // console.log('else');
     }
   };
 
   useEffect(() => {
-    console.log('useEffect');
+    // console.log('useEffect');
     const pulishScreenShare = async () => {
       // await client.unpublish(preTracks[1]) // 현재 공유되고 있는 비디오 트랙을 비공개
       // await client.publish(tracks) // 새로운 화면 공유 트랙을 공개
@@ -56,26 +56,26 @@ const Screenshare: React.FC<ScreenshareProps> = ({
         // 새로운 화면 공유 트랙을 공개합니다.
         setTimeout(() => {
           client.publish(tracks);
-          console.log('새 화면 공유 트랙 공개 성공');
+          // console.log('새 화면 공유 트랙 공개 성공');
         }, 3000);
       } catch (error) {
-        console.error('화면 공유 트랙 처리 중 오류 발생:', error);
+        // console.error('화면 공유 트랙 처리 중 오류 발생:', error);
         // 에러 핸들링을 여기에서 해주세요.
       }
     };
 
     if (ready && tracks) {
-      console.log('❗화면공유 함수실행');
+      // console.log('❗화면공유 함수실행');
       pulishScreenShare(); // 화면공유의 ready, tracks가 준비되면 (트랙 사용이 가능하면) 함수 실행
     }
 
     if (error) {
-      console.log('useEffect 아래 에러');
+      // console.log('useEffect 아래 에러');
       setScreenshare(false);
     }
 
     return () => {
-      console.log('클리어함수');
+      // console.log('클리어함수');
       unpublish();
       if (firstRenderRef.current) {
         firstRenderRef.current = false;

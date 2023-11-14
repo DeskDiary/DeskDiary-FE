@@ -9,7 +9,6 @@ import {
   choiceMicState,
   micListState,
 } from '../../../recoil/CamAtom';
-import { mic, cam } from '../../../images/room';
 import { down } from '../../../images/mypage';
 
 type MediaSetupProps = {};
@@ -137,7 +136,7 @@ const MediaSetup: React.FC<MediaSetupProps> = () => {
             Camera
           </TestButton>
           <Media>
-            <img src={cam} alt="cam setting" />
+            {/* <img src={cam} alt="cam setting" /> */}
             <img src={down} alt="cam list" />
             <MediaSelect
               name="cameraSelect"
@@ -161,7 +160,7 @@ const MediaSetup: React.FC<MediaSetupProps> = () => {
             Microphone
           </TestButton>
           <Media>
-            <img src={mic} alt="mic setting" />
+            {/* <img src={mic} alt="mic setting" /> */}
             <img src={down} alt="mic list" />
             <MediaSelect
               name="micSelect"
