@@ -14,7 +14,6 @@ import {
   fetchStudyLatestSearch,
   fetchStudyPopularSearch,
   fetchStudyPopular,
-
   fetchUser,
 } from '../../../axios/api';
 import RoomCard from './RoomCard';
@@ -49,6 +48,7 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
   const [roomList, setRoomList] = useState<any[]>([]);
   const [num, setNum] = useState(1);
   const [count, setCount] = useState(1);
+  const [nowPage, setNowPage] = useState(1);
 
   const changePopular = (value: boolean) => {
     setIsPopular(value);
@@ -60,7 +60,7 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
   };
   const [searchText, setSearchText] = useState('');
   let fetchName = show + sort;
-  console.log(show)
+
   const handlePageChange = (pageNumber: number) => {
     setNum(pageNumber);
 
@@ -94,7 +94,7 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
       const fetchFunc =
         fetchFunctions2[fetchName as keyof typeof fetchFunctions2];
       const result = await fetchFunc(searchText, pageNumber);
-      
+
       if (result.totalCount % 10 === 0) {
         setCount(result.totalCount / 10);
       } else {
@@ -110,12 +110,13 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
         return result;
       } else if ('QueryResults' in result) {
         setRoomList(result.QueryResults);
-        
+
         return result;
       } else {
         throw new Error('Invalid fetchName');
       }
     };
+    setCount(pageNumber);
     if (searchText.length > 0) {
       fetchData2();
     } else {
@@ -189,9 +190,7 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
         {roomList?.map(room => {
           return <RoomCard key={room.uuid} room={room} fetch={fetchName} />;
         })}
-        {
-          roomList.length === 0 && <div>데이터가 없습니다.</div>
-        }
+        {roomList.length === 0 && <div>데이터가 없습니다.</div>}
       </JoinedRooms>
       {fetchName !== 'fetchRoomPopular' &&
         fetchName !== 'fetchRoomLatest' &&
@@ -203,7 +202,7 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
             showLastButton
             page={num} // 현재 페이지를 num 상태 변수와 동기화
             onChange={(event, page) => handlePageChange(page)} // 페이지 번호 변경 이벤트 핸들러
-            style={{marginTop: '50px'}}
+            style={{ marginTop: '50px' }}
           />
         )}
     </List>

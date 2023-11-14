@@ -229,7 +229,6 @@ const Thumbmail = styled.img`
   height: 100%;
   overflow: hidden;
   object-fit: contain;
-  /* object-fit: cover; */
   overflow: hidden;
   transition: transform 0.3s ease-in-out; // <-- 이 부분 추가
 `;
