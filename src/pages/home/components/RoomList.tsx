@@ -60,7 +60,7 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
   };
   const [searchText, setSearchText] = useState('');
   let fetchName = show + sort;
-  console.log(show)
+
   const handlePageChange = (pageNumber: number) => {
     setNum(pageNumber);
 
@@ -139,6 +139,13 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
   const onChangeSearchHandler = (e: any) => {
     setSearchText(e.target.value);
   };
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      handlePageChange(num);
+    }, 10000);
+    return () => clearInterval(intervalId);
+  }, [num]);
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
