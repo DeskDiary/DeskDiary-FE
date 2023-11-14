@@ -141,6 +141,13 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
     setSearchText(e.target.value);
   };
 
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      handlePageChange(num);
+    }, 10000);
+    return () => clearInterval(intervalId);
+  }, [num]);
+
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       event.preventDefault(); // 이벤트의 기본 동작을 중지합니다.
