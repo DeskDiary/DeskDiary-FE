@@ -113,7 +113,7 @@ const NonAudio = styled.div`
 
 const NonCam = styled.div`
   position: absolute;
-  top: -150px;
+  top: -113px;
   left: 148px;
 `;
 

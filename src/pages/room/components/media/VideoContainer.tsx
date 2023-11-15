@@ -219,7 +219,7 @@ const Container = styled.div`
 
 const Controller = styled.div`
   position: absolute;
-  top: 255px;
+  top: 180px;
   left: 10px;
   z-index: 10;
 `;

@@ -75,7 +75,7 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
       <Video border={getBorderColorByVolume(volumes[myAudioTrackId] || 0)}>
         <AgoraVideoPlayer
           style={{
-            height: '300px',
+            height: '225px',
             width: '400px',
             backgroundColor: 'blue',
             zIndex: '5',
@@ -102,7 +102,7 @@ const Videos: React.FC<VideosProps> = ({ users, tracks, volumes }) => {
 
                 <AgoraVideoPlayer
                   style={{
-                    height: '300px',
+                    height: '225px',
                     width: '400px',
                     display: 'inline',
                     backgroundColor: 'black',
@@ -181,7 +181,7 @@ const Nickname = styled.button`
 
 const Video = styled.div<{ border: string }>`
   width: 400px;
-  height: 300px;
+  height: 225px;
   border-radius: 15px;
   display: flex;
   align-items: center;
@@ -191,6 +191,7 @@ const Video = styled.div<{ border: string }>`
   position: relative;
   background-color: blue;
   z-index: 0;
+  object-fit: contain;
 `;
 
 const Container = styled.div`
