@@ -4,7 +4,7 @@ import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { fetchUser } from '../../../../axios/api';
 import { chat } from '../../../../images/room';
-import {  yellow } from '../../../../images/character';
+import { yellow } from '../../../../images/character';
 import { RoomUserList } from '../../../../recoil/RoomAtom';
 import { useNavigate } from 'react-router-dom';
 import { getCookie } from '../../../../auth/cookie';
@@ -37,7 +37,6 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
   const [allChatList, setAllChatList] = useState<AllChatItem[]>([]);
   const [roomUserList, setRoomUserList] = useRecoilState(RoomUserList);
   const navigate = useNavigate();
-  const token = getCookie('token');
 
   const { data } = useQuery<user>('room-user', fetchUser, {
     refetchOnWindowFocus: false,
