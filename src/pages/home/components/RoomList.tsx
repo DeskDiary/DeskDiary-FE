@@ -48,7 +48,7 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
   const [roomList, setRoomList] = useState<any[]>([]);
   const [num, setNum] = useState(1);
   const [count, setCount] = useState(1);
-  const [nowPage, setNowPage] = useState(1);
+  const [isSearch, setIsSearch] = useState(false);
 
   const changePopular = (value: boolean) => {
     setIsPopular(value);
@@ -90,6 +90,7 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
     };
 
     const fetchData2 = async () => {
+      setIsSearch(true)
       fetchName += 'Search';
       const fetchFunc =
         fetchFunctions2[fetchName as keyof typeof fetchFunctions2];
@@ -121,6 +122,7 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
       fetchData2();
     } else {
       fetchData();
+      setIsSearch(false);
     }
   };
 
@@ -142,11 +144,17 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
   };
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      handlePageChange(num);
-    }, 10000);
-    return () => clearInterval(intervalId);
-  }, [num]);
+    // 검색이 활성화되어 있지 않을 때만 인터벌을 설정합니다.
+    if (searchText.length === 0) {
+      const intervalId = setInterval(() => {
+        handlePageChange(num);
+      }, 5000);
+  
+      // 컴포넌트가 언마운트되거나 검색이 활성화될 때 인터벌을 해제합니다.
+      return () => clearInterval(intervalId);
+    }
+  }, [num, isSearch]);
+
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {

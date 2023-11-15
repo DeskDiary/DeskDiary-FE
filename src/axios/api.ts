@@ -24,6 +24,7 @@ export const fetchUser = async () => {
 
 // 내가 참여한 방 조회
 export const fetchJoinRoom = async () => {
+  const token = getCookie('token');
   const { data } = await axios.get(
     `${process.env.REACT_APP_SERVER_URL!}/my-rooms`,
     {
@@ -38,6 +39,7 @@ export const fetchJoinRoom = async () => {
 
 // 내가 만든 방 조회
 export const fetchCreatedRoom = async () => {
+  const token = getCookie('token');
   const { data } = await axios.get(
     `${process.env.REACT_APP_SERVER_URL!}/rooms/my-created`,
     {
