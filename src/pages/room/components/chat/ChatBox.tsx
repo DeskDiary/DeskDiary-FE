@@ -62,11 +62,19 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
     };
 
     // console.log('전송전', messageData);
+
+    const trimNewMessage = newMessage.trim();
+    if (!trimNewMessage) {
+      toast.error('메세지를 입력해주세요');
+      return;
+    }
+
     newMessage !== ''
       ? socket.emit('msgToServer', messageData)
       : toast.error('메세지를 입력해주세요');
     setNewMessage('');
-    // console.log('전송후');
+
+    setNewMessage('');
   };
 
   // 서버에서 유저애개 메세지를 보냄
@@ -128,7 +136,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
       toast.message('방장이 방을 삭제하였습니다.');
     });
 
-    socket.on('kick-room', (msg:string) => {
+    socket.on('kick-room', (msg: string) => {
       // 사용자를 방 목록 페이지로 리다이렉트
       navigate('/');
       // 알림 메시지 표시
