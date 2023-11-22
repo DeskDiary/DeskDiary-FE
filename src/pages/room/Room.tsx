@@ -17,12 +17,13 @@ import arrow from '../../images/red-arrow.png';
 import { toast } from 'sonner';
 import { createGlobalStyle } from 'styled-components';
 import { RoomModalAtom } from '../../recoil/RoomAtom';
+import RoomInfoModal from './components/info/RoomInfoModal';
 
 type RoomProps = {
   children?: React.ReactNode;
 };
 
-const AsmrPlayer = lazy(() => import('./components/AsmrPlayer'))
+const AsmrPlayer = lazy(() => import('./components/AsmrPlayer'));
 
 const Room: React.FC<RoomProps> = () => {
   const [roomInfo, setRoomInfo] = useRecoilState(RoomAtom);
@@ -31,14 +32,15 @@ const Room: React.FC<RoomProps> = () => {
   const [inCall, setInCall] = useState(false);
   const [isArrow, setIsArrow] = useState(false);
   const [outModalState, setOutModalState] =
-  useRecoilState<boolean>(RoomModalAtom);
+    useRecoilState<boolean>(RoomModalAtom);
+  const [IsOpenInfoModal, setIsOpenInfoModal] = useState(true);
 
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const location = useLocation();
   const token = getCookie('token');
   useEffect(() => {
-    if(!token) {
-      navigate('/')
+    if (!token) {
+      navigate('/');
       return;
     }
     setRoomUUID(location.pathname.split('/')[2]);
@@ -60,7 +62,7 @@ const Room: React.FC<RoomProps> = () => {
       //   console.error(message);
       //   console.log('🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈', message);
       // };
-  
+
       setOutModalState(true);
     };
     const listenBackEvent = () => {
@@ -79,7 +81,6 @@ const Room: React.FC<RoomProps> = () => {
 
       if (action === 'POP') {
         listenBackEvent();
-        
       }
     });
 
@@ -88,7 +89,7 @@ const Room: React.FC<RoomProps> = () => {
 
   useEffect(() => {
     window.onbeforeunload = null;
-  }, [])
+  }, []);
 
   const getRoomInfo = async () => {
     const url = `${serverUrl}/room/${location.pathname.split('/')[2]}`;
@@ -130,12 +131,12 @@ const Room: React.FC<RoomProps> = () => {
     <Main>
       <GlobalStyle />
       <Container>
-        <RoomSideBar  maxUser={roomInfo.maxHeadcount}/>
+        <RoomSideBar maxUser={roomInfo.maxHeadcount} />
         <Content>
           <RoomHeader />
           <Area>
             <CamAreaDiv>
-              <VideoContainer setInCall={setInCall} />
+              {/* <VideoContainer setInCall={setInCall} /> */}
             </CamAreaDiv>
             <ChattingAreaDiv>
               <Suspense fallback={<div>Loading AsmrPlayer...</div>}>
@@ -146,7 +147,7 @@ const Room: React.FC<RoomProps> = () => {
           </Area>
         </Content>
       </Container>
-      <RoomUnderBar note={roomInfo.note} roomId={roomInfo.uuid}/>
+      <RoomUnderBar note={roomInfo.note} roomId={roomInfo.uuid} />
       {isOpenModal && (
         <SetMediaModal setIsOpen={setIsOpenModal} room={roomInfo} />
       )}
@@ -156,6 +157,7 @@ const Room: React.FC<RoomProps> = () => {
           <Arrow src={arrow} alt="arrow" />
         </ArrowModal>
       )}
+      {IsOpenInfoModal && <RoomInfoModal />}
     </Main>
   );
 };
@@ -226,7 +228,6 @@ const Area = styled.div`
     height: 300px;
     /* border: 1px solid tomato; */
     flex-direction: column;
-
   }
 `;
 
