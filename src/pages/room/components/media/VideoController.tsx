@@ -100,17 +100,6 @@ const VideoController: React.FC<VideoControllerProps> = ({
     </Controller>
   );
 };
-
-const Test = styled.div`
-  color: white;
-`;
-
-const NonAudio = styled.div`
-  position: absolute;
-  bottom: 0px;
-  left: 0px;
-`;
-
 const NonCam = styled.div`
   position: absolute;
   top: -113px;
@@ -131,12 +120,12 @@ const Controller = styled.div`
     align-items: center;
     justify-content: center;
     border: 1px solid var(--gray-07);
-    width: 50px;
-    height: 40px;
+    width: 35px;
+    height: 30px;
     background-color: var(--gray-09);
     transition: 0.5;
     border: none;
-    font-size: 20px;
+    font-size: 17px;
     border-radius: 10px;
     color: #337ccf;
     &:hover {
