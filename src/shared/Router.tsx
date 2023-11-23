@@ -26,24 +26,24 @@ const Router = () => {
         <Route path="/lending" element={<Lending />} />
 
         <Route element={<MainLayout />}>
-          <Route path="/" element={ <Suspense fallback={ <div>Home Loading...</div>}><Home /></Suspense> } />
-          <Route path="/study" element={ <Suspense fallback={<div>Study Loading...</div>}><StudyCategory /></Suspense> } />
-          <Route path="/hobby" element={ <Suspense fallback={<div>Hobby Loading...</div>}><HobbyCategory /></Suspense> } />
-          <Route path="/mydesk" element={ <Suspense fallback={<div>MyRecord Loading...</div>}><MyRecord /></Suspense> } />
-          <Route path="/mypage" element={ <Suspense fallback={<div>Mypage Loading...</div>}><Mypage /></Suspense> } />
+          <Route path="/" element={ <Suspense fallback={ <div></div>}><Home /></Suspense> } />
+          <Route path="/study" element={ <Suspense fallback={<div></div>}><StudyCategory /></Suspense> } />
+          <Route path="/hobby" element={ <Suspense fallback={<div></div>}><HobbyCategory /></Suspense> } />
+          <Route path="/mydesk" element={ <Suspense fallback={<div></div>}><MyRecord /></Suspense> } />
+          <Route path="/mypage" element={ <Suspense fallback={<div></div>}><Mypage /></Suspense> } />
         </Route>
 
         <Route element={<SideLayout />}>
-          <Route path="/login" element={<Suspense fallback={<div>Login Loading...</div>}><Login /></Suspense> } />
-          <Route path="/join" element={<Suspense fallback={<div>Join Loading...</div>}><Join /></Suspense>} />
+          <Route path="/login" element={<Suspense fallback={<div></div>}><Login /></Suspense> } />
+          <Route path="/join" element={<Suspense fallback={<div></div>}><Join /></Suspense>} />
         </Route>
 
-        <Route path="/room/:id" element={ <Suspense fallback={<div>Room Loading...</div>}><Room /></Suspense>} />
-        <Route path="/auth" element={ <Suspense fallback={<div>Auth Loading...</div>}><Auth /></Suspense> } />
+        <Route path="/room/:id" element={ <Suspense fallback={<div style={{backgroundColor:'var(--gray-09)'}}></div>}><Room /></Suspense>} />
+        <Route path="/auth" element={ <Suspense fallback={<div></div>}><Auth /></Suspense> } />
 
-        <Route path="/confirm-email" element={ <Suspense fallback={<div>ConfirmEmailNotice Loading...</div>}><ConfirmEmailNotice /></Suspense>} />
-        <Route path="/help" element={ <Suspense fallback={<div>Help Loading...</div>}><Help /></Suspense>} />
-        <Route path="*" element={<Suspense fallback={<div>Error Loading...</div>}><Error /></Suspense>} />
+        <Route path="/confirm-email" element={ <Suspense fallback={<div></div>}><ConfirmEmailNotice /></Suspense>} />
+        <Route path="/help" element={ <Suspense fallback={<div></div>}><Help /></Suspense>} />
+        <Route path="*" element={<Suspense fallback={<div></div>}><Error /></Suspense>} />
       </Routes>
     </BrowserRouter>
   );

@@ -34,6 +34,10 @@ const VideoController: React.FC<VideoControllerProps> = ({
   const mute = async (type: 'audio' | 'video') => {
     // 컴, 오디어 끄기
     if (type === 'audio') {
+      if(screenshare) {
+        toast.error('화면 공유 중에는 마이크를 설정할 수 없습니다.');
+        return ;
+      }
       await tracks[0].setEnabled(!trackState.audio);
       setTrackState(ps => {
         return { ...ps, audio: !ps.audio };
@@ -96,20 +100,9 @@ const VideoController: React.FC<VideoControllerProps> = ({
     </Controller>
   );
 };
-
-const Test = styled.div`
-  color: white;
-`;
-
-const NonAudio = styled.div`
-  position: absolute;
-  bottom: 0px;
-  left: 0px;
-`;
-
 const NonCam = styled.div`
   position: absolute;
-  top: -150px;
+  top: -113px;
   left: 148px;
 `;
 
@@ -127,12 +120,12 @@ const Controller = styled.div`
     align-items: center;
     justify-content: center;
     border: 1px solid var(--gray-07);
-    width: 50px;
-    height: 40px;
+    width: 35px;
+    height: 30px;
     background-color: var(--gray-09);
     transition: 0.5;
     border: none;
-    font-size: 20px;
+    font-size: 17px;
     border-radius: 10px;
     color: #337ccf;
     &:hover {

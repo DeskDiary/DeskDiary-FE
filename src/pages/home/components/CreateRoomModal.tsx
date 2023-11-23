@@ -37,7 +37,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
   const [isStudyActive, setIsStudyActive] = useState(false);
   const [isHobbyActive, setIsHobbyActive] = useState(false);
   const [file, setFile] = useState<File | null>(null);
-
+  const [isClicked, setIsClicked] = useState(false);
   const categories = ['study', 'hobby'];
   const activeStates = { study: isStudyActive, hobby: isHobbyActive };
 
@@ -70,12 +70,6 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
     }
 
     updateFormData('category', category);
-  };
-
-  const handleUserCountClick = (count: number) => {
-    setSelectedUserCount(count);
-    setMaxUser(count);
-    updateFormData('count', count);
   };
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -113,6 +107,9 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
       return;
     }
 
+    if (isClicked) return;
+    setIsClicked(true);
+
     // FormData 객체 생성
     const formData = new FormData();
 
@@ -144,6 +141,7 @@ const CreateRoomModal: React.FC<CreateRoomProps> = ({ setOpenCreateRoom }) => {
         handleJoinRoom(response.data.createdRoom.uuid);
       } else {
       }
+      setIsClicked(false);
     } catch (error) {}
   };
 
@@ -445,15 +443,16 @@ const Thumbnail = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  object-fit: contain;
 
   width: 150px;
-  height: 100px;
+  height: 106px;
   border-radius: 10px;
   overflow: hidden;
-  background-color: var(--primary-01);
+  background-color: white;
+  box-shadow: 2px 2px  4px 0 rgba(124, 124, 124, 0.2);
   > img {
-    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
 `;
 
@@ -481,7 +480,7 @@ const CreateRoomButton = styled.button`
   color: white;
   font-size: 16px;
   font-weight: 600;
-  border-radius:  100px;
+  border-radius: 100px;
 `;
 
 const CancleButton = styled.button`
@@ -492,7 +491,7 @@ const CancleButton = styled.button`
   background-color: rgba(110, 110, 110, 0);
   font-size: 16px;
   font-weight: 600;
-  border-radius:  100px;
+  border-radius: 100px;
 `;
 
 const BackGround = styled.div`
@@ -508,6 +507,7 @@ const BackGround = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 4000;
 `;
 
 const ModalContent = styled.div`
@@ -521,7 +521,7 @@ const ModalContent = styled.div`
   /* background-color: rgba(255, 255, 255, 0.8); */
   background-color: white;
   border-radius: 20px;
-  z-index: 50;
+  z-index: 5000;
   position: absolute;
   padding: 40px 0;
 `;
@@ -536,7 +536,7 @@ const Container = styled.form`
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 5000;
+  z-index: 7000;
 `;
 
 export default CreateRoomModal;

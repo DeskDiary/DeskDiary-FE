@@ -1,6 +1,4 @@
 import lendingImage from './lending-image.png';
-import logoColor from './logo-color.svg';
-import logo from './logo.svg';
 import logo_colorful from './logo-2.svg';
 import Picture from './Picture.png';
 import profile from './profile.png';
@@ -12,8 +10,6 @@ import x from './x.svg';
 
 export {
   lendingImage,
-  logoColor,
-  logo,
   Picture,
   profile,
   radio_button_checked,

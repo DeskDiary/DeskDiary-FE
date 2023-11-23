@@ -4,7 +4,7 @@ import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { fetchUser } from '../../../../axios/api';
 import { chat } from '../../../../images/room';
-import {  yellow } from '../../../../images/character';
+import { yellow } from '../../../../images/character';
 import { RoomUserList } from '../../../../recoil/RoomAtom';
 import { useNavigate } from 'react-router-dom';
 import { getCookie } from '../../../../auth/cookie';
@@ -37,7 +37,6 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
   const [allChatList, setAllChatList] = useState<AllChatItem[]>([]);
   const [roomUserList, setRoomUserList] = useRecoilState(RoomUserList);
   const navigate = useNavigate();
-  const token = getCookie('token');
 
   const { data } = useQuery<user>('room-user', fetchUser, {
     refetchOnWindowFocus: false,
@@ -63,11 +62,19 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
     };
 
     // console.log('전송전', messageData);
+
+    const trimNewMessage = newMessage.trim();
+    if (!trimNewMessage) {
+      toast.error('메세지를 입력해주세요');
+      return;
+    }
+
     newMessage !== ''
       ? socket.emit('msgToServer', messageData)
       : toast.error('메세지를 입력해주세요');
     setNewMessage('');
-    // console.log('전송후');
+
+    setNewMessage('');
   };
 
   // 서버에서 유저애개 메세지를 보냄
@@ -109,9 +116,9 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
     socket.on('log-out', (userId: any) => {
       const socketUser = userId.logoutUser;
       const serverUserId = data?.userId;
-      console.log('socketUser 소켓', socketUser, '===', serverUserId);
+      // console.log('socketUser 소켓', socketUser, '===', serverUserId);
       if (socketUser === serverUserId) {
-        console.log('log-out 소켓', userId);
+        // console.log('log-out 소켓', userId);
         toast.message('로그아웃에 성공하였습니다.');
         navigate('/');
       }
@@ -129,7 +136,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ roomId }) => {
       toast.message('방장이 방을 삭제하였습니다.');
     });
 
-    socket.on('kick-room', (msg:string) => {
+    socket.on('kick-room', (msg: string) => {
       // 사용자를 방 목록 페이지로 리다이렉트
       navigate('/');
       // 알림 메시지 표시

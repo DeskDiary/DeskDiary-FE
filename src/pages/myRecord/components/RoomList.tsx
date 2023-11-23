@@ -36,13 +36,9 @@ const RoomList: React.FC<RoomListProps> = ({ label, mydesk }) => {
       }
     },
     {
-      refetchOnWindowFocus: false,
+      refetchInterval: 5000,
     }
   );
-
-  useEffect(()=> {
-    refetch();
-  }, [])
 
 
   return (

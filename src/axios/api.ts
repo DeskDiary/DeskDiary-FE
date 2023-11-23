@@ -24,6 +24,7 @@ export const fetchUser = async () => {
 
 // 내가 참여한 방 조회
 export const fetchJoinRoom = async () => {
+  const token = getCookie('token');
   const { data } = await axios.get(
     `${process.env.REACT_APP_SERVER_URL!}/my-rooms`,
     {
@@ -38,6 +39,7 @@ export const fetchJoinRoom = async () => {
 
 // 내가 만든 방 조회
 export const fetchCreatedRoom = async () => {
+  const token = getCookie('token');
   const { data } = await axios.get(
     `${process.env.REACT_APP_SERVER_URL!}/rooms/my-created`,
     {
@@ -108,7 +110,7 @@ export const fetchRoomTopLatest = async (num: number) => {
 
 // 스터디 인기순
 export const fetchStudyPopular = async (num: number) => {
-  console.log(num);
+  // console.log(num);
   try {
     const { data } = await axios.get(
       `${process.env
@@ -128,7 +130,7 @@ export const fetchHobbyPopular = async (num: number) => {
       `${process.env
         .REACT_APP_SERVER_URL!}/hobby-rooms/popular?page=${num}&perPage=10`,
     );
-    console.log(data);
+    // console.log(data);
     return data;
   } catch (error) {
     // console.error('취미 인기순 정보를 불러오는 데 실패했어요!', error);

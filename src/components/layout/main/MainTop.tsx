@@ -46,7 +46,7 @@ const MainTop: React.FC<MainTopProps> = () => {
   const { data } = useQuery<user>('user', fetchUser, {
     refetchOnWindowFocus: false,
   });
-  console.log('MainTop 렌더링');
+  // console.log('MainTop 렌더링');
 
   return (
     <NavHeader>

@@ -9,6 +9,8 @@ import RecordGraph from './chart/RecordGraph';
 import RoomList from './components/RoomList';
 import { DeleteRoomAtom, RoomUUIDAtom } from '../../recoil/RoomAtom';
 import ConfirmModal from '../../components/ConfirmModal';
+import { useQuery } from 'react-query';
+import { fetchUser } from '../../axios/api';
 
 type MyDeskProps = {
 
@@ -20,6 +22,9 @@ const MyDesk: React.FC<MyDeskProps> = () => {
   }, []);
   const [isOpenDeleteRoomModal, setIsOpenDeleteRoomModal] =
   useRecoilState(DeleteRoomAtom);
+  const { data } = useQuery<user, Error>('mypageUser', fetchUser, {
+    refetchOnWindowFocus: false,
+  });
   const [roomUUID, setRoomUUID] = useRecoilState(RoomUUIDAtom);
   const [GoalModal, setGoalModal] = useRecoilState<boolean>(GoalTimeModalState);
   return (
@@ -37,6 +42,7 @@ const MyDesk: React.FC<MyDeskProps> = () => {
         <ConfirmModal
           title="삭제"
           uuid={roomUUID}
+          userId={data?.userId}
           setIsOpen={setIsOpenDeleteRoomModal}
         />
       )}

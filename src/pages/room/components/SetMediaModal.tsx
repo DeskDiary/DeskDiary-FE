@@ -14,6 +14,7 @@ import { useQuery } from 'react-query';
 import { fetchUser } from '../../../axios/api';
 import socket from '../socketInstance';
 import { toast } from 'sonner';
+import ModalBackground from '../../../components/ModalBackground';
 
 type SetMediaModal = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -116,7 +117,8 @@ const SetMediaModal: React.FC<SetMediaModal> = ({ setIsOpen, room }) => {
 
   return (
     <Container>
-      <BackGround />
+      {/* <BackGround /> */}
+      <ModalBackground blur='5px'/>
       <ModalContent>
         <Title>{room.title}</Title>
 

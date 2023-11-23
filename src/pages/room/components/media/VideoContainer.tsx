@@ -14,7 +14,6 @@ import { useRecoilState } from 'recoil';
 import { RoomInfo, RoomUserList } from '../../../../recoil/RoomAtom';
 import styled from 'styled-components';
 
-import socket from '../../socketInstance';
 import { useNavigate } from 'react-router-dom';
 
 type RoomSideBarProps = {};
@@ -48,7 +47,6 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
 
   const [users, setUsers] = useState<IAgoraRTCRemoteUser[]>([]);
   const [start, setStart] = useState<boolean>(false);
-  const [roomUserList, setRoomUserList] = useRecoilState(RoomUserList);
   const navigate = useNavigate();
   const APP_ID = roomInfo.agoraAppId;
   const TOKEN = roomInfo.agoraToken;
@@ -84,9 +82,10 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
       setRoomInfo(data);
       setRecoilRoomInfo(data);
     } catch (error) {
-      alert('잘못된 경로입니다.');
+      // alert('잘못된 경로입니다.');
 
-      navigate('/');
+      navigate('/no-room');
+      window.location.reload();
     }
   };
 
@@ -171,11 +170,10 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ setInCall }) => {
           `${process.env.REACT_APP_SERVER_URL}/room/generate-aFreshToken/${getUUID}`,
         );
         const newToken = response.data.token;
-        // SDK에 새 토큰 제공
+
         await client.renewToken(newToken);
       });
-      // const uid = await client.join(APP_ID, name, TOKEN, data.userId);
-      // console.log(`User ID: ${uid}`);
+
       if (tracks) await client.publish([tracks[0], tracks[1]]);
       setStart(true);
     };
@@ -221,7 +219,7 @@ const Container = styled.div`
 
 const Controller = styled.div`
   position: absolute;
-  top: 255px;
+  top: 190px;
   left: 10px;
   z-index: 10;
 `;
