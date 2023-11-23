@@ -1,25 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
 import ModalBackground from '../../../../components/ModalBackground';
+import TimerInfoModal from './TimerInfoModal';
+import PrecautionsModal from './PrecautionsModal';
+import AsmrInfoModal from './AsmrInfoModal';
+import ChatInfoModal from './ChatInfoModal';
 
-type RoomInfoModalProps = {
-  
+type RoomInfoModalProps = {};
+
+const RoomInfoModal: React.FC<RoomInfoModalProps> = () => {
+  return (
+    <Container>
+      <ModalBackground blur="none"/>
+      <TimerInfoModal />
+      <AsmrInfoModal />
+      <ChatInfoModal />
+      <PrecautionsModal />
+    </Container>
+  );
 };
 
-const RoomInfoModal:React.FC<RoomInfoModalProps> = () => {
-  console.log('1231231231321231')
-  return <Container>
-    <ModalBackground blur='none'/>
-    <Content>
-    123
-    </Content>
-  </Container>
-}
-const Content = styled.div`
-
-`
-
-const Container = styled.div`
-
-`
+const Container = styled.div``;
 export default RoomInfoModal;
