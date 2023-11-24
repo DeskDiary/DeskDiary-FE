@@ -36,7 +36,7 @@ const RoomInfoModal: React.FC<RoomInfoModalProps> = () => {
 
   return (
     <Container onClick={onClickInfoModal}>
-      <ModalBackground blur="none"/>
+      <ModalBackground blur="none" height="calc(100vh - 60px)"/>
       {modalsOpen[0] && <TimerInfoModal />}
       {modalsOpen[1] && <AsmrInfoModal />}
       {modalsOpen[2] && <ChatInfoModal />}
