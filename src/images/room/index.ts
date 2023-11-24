@@ -15,6 +15,7 @@ import send from './send.svg';
 import timerImg from './timerImg.svg'
 import hand_arrow from './hand_arrow.svg';
 import mark from './mark.svg';
+import error_outline from './error_outline.svg';
 
 export {
   mark,
@@ -33,5 +34,6 @@ export {
   music,
   send,
   timerImg,
-  hand_arrow
+  hand_arrow,
+  error_outline
 };
