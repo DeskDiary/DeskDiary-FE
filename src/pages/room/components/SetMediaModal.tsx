@@ -118,7 +118,7 @@ const SetMediaModal: React.FC<SetMediaModal> = ({ setIsOpen, room }) => {
   return (
     <Container>
       {/* <BackGround /> */}
-      <ModalBackground />
+      <ModalBackground blur='5px'/>
       <ModalContent>
         <Title>{room.title}</Title>
 

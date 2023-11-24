@@ -13,8 +13,12 @@ import chat from './chat.svg';
 import music from './music.svg';
 import send from './send.svg';
 import timerImg from './timerImg.svg'
+import hand_arrow from './hand_arrow.svg';
+import mark from './mark.svg';
+import error_outline from './error_outline.svg';
 
 export {
+  mark,
   build,
   cam,
   checkin,
@@ -29,5 +33,7 @@ export {
   chat,
   music,
   send,
-  timerImg
+  timerImg,
+  hand_arrow,
+  error_outline
 };

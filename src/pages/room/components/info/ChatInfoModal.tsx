@@ -2,29 +2,37 @@ import React from 'react';
 import styled from 'styled-components';
 import SpeechBubble from './SpeechBubble';
 import blue from '../../../../images/ranking/4th.svg';
-import {hand_arrow, mark} from '../../../../images/room'
+import { hand_arrow, mark } from '../../../../images/room';
 
-type TimerInfoModalProps = {};
+type ChatInfoModalProps = {
+  
+};
 
-const TimerInfoModal: React.FC<TimerInfoModalProps> = () => {
+const ChatInfoModal:React.FC<ChatInfoModalProps> = () => {
+  
   return (
     <Container>
-      <SpeechBubble width='220px' text={`기록 시작, 일시정지를 이용하여\n나의 시간을 체크하고,\n책상기록에서 확인 해 보자!`} />
+      <SpeechBubble
+        width="250px"
+        text={`방 안의 사람들과 채팅을 할 수 있어!\n새로고침을 하거나 방에서 나가면\n지난 채팅 기록을 볼 수 없다는걸\n유의해!`}
+      />
       <Caracter src={blue} />
       <Arrow src={mark} />
     </Container>
   );
-};
+}
 
 const Arrow = styled.img`
   position: absolute;
   width: 100px;
   bottom: -20px;
-  left: -50px;
-`
+  right: -20px;
+  transform: scaleX(-1);
+`;
 
 const Caracter = styled.img`
   width: 100px;
+  transform: scaleX(-1);
 `;
 
 const Container = styled.div`
@@ -33,8 +41,8 @@ const Container = styled.div`
   align-items: center;
   gap: 20px;
   position: absolute;
-  top: 180px;
-  left: 250px;
+  bottom: 50px;
+  right: 380px;
   z-index: 100;
 `;
-export default TimerInfoModal;
+export default ChatInfoModal;
