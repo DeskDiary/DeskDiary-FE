@@ -65,3 +65,8 @@ export const DeleteRoomAtom = atom({
   key: 'DeleteRoomAtom',
   default: false,
 });
+
+export const RoomInfoModalAtom = atom({
+  key: 'RoomInfoModalAtom',
+  default: false,
+});

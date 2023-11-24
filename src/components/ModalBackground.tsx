@@ -14,7 +14,7 @@ const BackGroundColor = styled.div<{ blur: string}>`
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - 60px);
   background-color: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(blur);
   display: flex;

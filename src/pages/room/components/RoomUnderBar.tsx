@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { help_outline, logout } from '../../../images/room';
-import { RoomModalAtom } from '../../../recoil/RoomAtom';
+import { help_outline, error_outline, logout } from '../../../images/room';
+import { RoomModalAtom, RoomInfoModalAtom } from '../../../recoil/RoomAtom';
 import RoomModal from './RoomModal';
 import BasicPrecautions from '../../home/components/BasicPrecautions';
+import RoomInfoModal from './info/RoomInfoModal';
+
 
 type RoomUnderBarProps = { roomId: string; note: string };
 
 const RoomUnderBar: React.FC<RoomUnderBarProps> = ({ roomId, note }) => {
   const [showNote, setShowNote] = useState(false);
+  const [IsOpenInfoModal, setIsOpenInfoModal] = useRecoilState<boolean>(RoomInfoModalAtom);
   const [outModalState, setOutModalState] =
     useRecoilState<boolean>(RoomModalAtom);
 
@@ -36,39 +39,72 @@ const RoomUnderBar: React.FC<RoomUnderBarProps> = ({ roomId, note }) => {
     ));
   };
 
+  const onClickHelp = () => {
+    setIsOpenInfoModal(!IsOpenInfoModal)
+  }
+
   return (
     <Container>
       {outModalState && <RoomModal />}
+      {IsOpenInfoModal && <RoomInfoModal />}
 
       <Body>
         <OutRoomButton onClick={roomOutButtonHandler}>
           <img src={logout} alt="방나가기" />
           <p>방 나가기</p>
         </OutRoomButton>
-        <SettingList onClick={showNoteHandler}>
-          {/* <img src={build} alt="" />
-          <p>환경설정</p> */}
-          <img src={help_outline} alt="" />
-          <p>유의사항</p>
-          {showNote && (
-            <Note>
-              <span>📢 유의사항  　</span>
-              <BasicPrecautions />
-              {renderNoteWithBreaks(note)}
-            </Note>
-          )}
+        <SettingList>
+          <List onClick={showNoteHandler}>
+            <img src={error_outline} alt="" />
+            <p>유의사항</p>
+            {showNote && (
+              <Note>
+                <span>📢 유의사항 　</span>
+                <BasicPrecautions />
+                {renderNoteWithBreaks(note)}
+              </Note>
+            )}
+          </List>
+          <List onClick={onClickHelp}>
+            <img src={help_outline} alt="" />
+            <p>도움말</p>
+            {showNote && (
+              <Note>
+                <span>📢 유의사항 　</span>
+                <BasicPrecautions />
+                {renderNoteWithBreaks(note)}
+              </Note>
+            )}
+          </List>
         </SettingList>
       </Body>
     </Container>
   );
 };
 
+const List = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+
+  img {
+    width: 24px;
+    height: 24px;
+  }
+  p {
+    color: white;
+    font-size: 12px;
+  }
+`;
+
 const Container = styled.div`
   position: fixed;
   bottom: 0;
   left: 0;
   z-index: 10;
-`
+`;
 
 const Note = styled.div`
   background-color: var(--gray-03);
@@ -90,7 +126,7 @@ const Note = styled.div`
 
   > span {
     margin: 10px auto;
-    color:  var(--gray-09);
+    color: var(--gray-09);
     font-size: 15px;
     font-weight: 700;
   }
@@ -133,19 +169,10 @@ const OutRoomButton = styled.button`
 const SettingList = styled.div`
   margin-left: 50px;
   display: flex;
-  gap: 5px;
+  gap: 30px;
   align-items: center;
   position: relative;
   cursor: pointer;
-  
-  img {
-    width: 24px;
-    height: 24px;
-  }
-  p {
-    color: white;
-    font-size: 12px;
-  }
 `;
 
 export default RoomUnderBar;

@@ -33,7 +33,6 @@ const Room: React.FC<RoomProps> = () => {
   const [isArrow, setIsArrow] = useState(false);
   const [outModalState, setOutModalState] =
     useRecoilState<boolean>(RoomModalAtom);
-  const [IsOpenInfoModal, setIsOpenInfoModal] = useState(true);
 
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const location = useLocation();
@@ -157,7 +156,6 @@ const Room: React.FC<RoomProps> = () => {
           <Arrow src={arrow} alt="arrow" />
         </ArrowModal>
       )}
-      {IsOpenInfoModal && <RoomInfoModal />}
     </Main>
   );
 };
