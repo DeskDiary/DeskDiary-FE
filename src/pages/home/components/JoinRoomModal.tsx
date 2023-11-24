@@ -36,7 +36,6 @@ const JoinRoomModal: React.FC<JoinRoomModal> = ({ setIsOpen, room }) => {
   const navigate = useNavigate();
   const [joinUUID, setJoinUUID] = useRecoilState<string>(RoomUUIDAtom);
   const [roomInfo, setRoomInfo] = useRecoilState(RoomAtom);
-
   const { data } = useQuery<user>('joinRoomUserInfo', fetchUser);
 
   const renderNoteWithBreaks = (text: string) => {
