@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { getCookie } from '../../../auth/cookie';
 import { checkin, checkout } from '../../../images/room';
 import {
+  RoomAtom,
   RoomInfo,
   RoomModalAtom,
   RoomUUIDAtom,
@@ -16,7 +17,7 @@ import { formatTime, getKoreanTime } from './Timer';
 type RoomModalProps = {};
 
 const RoomModal: React.FC<RoomModalProps> = () => {
-  const [roomInfo, setRoomInfo] = useRecoilState(RoomInfo);
+  const [roomInfo, setRoomInfo] = useRecoilState(RoomAtom);
   const [outModalState, setOutModalState] =
     useRecoilState<boolean>(RoomModalAtom);
   const navigate = useNavigate();
@@ -50,7 +51,6 @@ const RoomModal: React.FC<RoomModalProps> = () => {
         historyType: roomInfo.category, // study, hobby
       };
       // console.log('❤️roomInfo.category', roomInfo);
-
       const response = await axios.post(
         `${serverUrl}/room/${joinUUID}/leave`,
         data,
