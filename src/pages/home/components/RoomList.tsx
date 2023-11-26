@@ -67,6 +67,7 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
     } else {
       setSort('Latest');
     }
+    setRoomList([]);
   };
   const [searchText, setSearchText] = useState('');
   let fetchName = show + sort;
