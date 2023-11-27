@@ -1,6 +1,6 @@
 import OutlinedFlagSharpIcon from '@mui/icons-material/OutlinedFlagSharp';
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { todayLerningHistoryHome } from '../../../axios/historyApi';
 import { useNavigate } from 'react-router-dom';
 
@@ -40,6 +40,7 @@ const Goal: React.FC<GoalProps> = () => {
   return (
     <>
       <Container onClick={() => navigate('/mydesk')}>
+        <GoalInfo>클릭하면 목표시간을 설정 할 수 있어!</GoalInfo>
         <GoalDiv>
           <Title>오늘의 책상 목표</Title>
           <Content>
@@ -63,6 +64,38 @@ const Goal: React.FC<GoalProps> = () => {
     </>
   );
 };
+
+const bounce = keyframes`
+  0%, 30%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  20% {
+    transform: translateY(-5px);
+  }
+  40% {
+    transform: translateY(-5px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+`;
+
+const GoalInfo = styled.div`
+  position: absolute;
+  bottom: -50px;
+  right: 0;
+  background-color: #ffffffa2;
+  color: var(--gray-07);
+  font-weight: 500;
+  width: 100%;
+  text-align: center;
+  box-shadow: 2px 2px 4px 2px rgba(207, 207, 207, 0.3);
+  border-radius: 10px;
+  padding: 5px;
+  opacity: 0;
+  transition: opacity 0.5s, visibility 0.5s;
+`;
+
 const IconDiv = styled.div`
   width: 35px;
   height: 35px;
@@ -87,6 +120,16 @@ const Container = styled.div`
   border-radius: 5px;
   padding: 15px;
   background-color: white;
+  cursor: pointer;
+  position: relative;
+
+  &:hover {
+    ${GoalInfo} {
+      display: block;
+      animation: ${bounce} 2s infinite;
+      opacity: 1;
+    }
+  }
 
   @media (max-width: 1400px) {
     width: 1000px;
