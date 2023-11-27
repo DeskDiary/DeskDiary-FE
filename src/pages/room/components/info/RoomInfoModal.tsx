@@ -12,12 +12,15 @@ import { RoomInfoModalAtom } from '../../../../recoil/RoomAtom';
 type RoomInfoModalProps = {};
 
 const RoomInfoModal: React.FC<RoomInfoModalProps> = () => {
-  const [modalsOpen, setModalsOpen] = useState([true, false, false, false, false]);
-  const [IsOpenInfoModal, setIsOpenInfoModal] = useRecoilState<boolean>(RoomInfoModalAtom);
-
-  let count = 0;
-
-  const setModal = 'setIsOpenModal' + count;
+  const [modalsOpen, setModalsOpen] = useState([
+    true,
+    false,
+    false,
+    false,
+    false,
+  ]);
+  const [IsOpenInfoModal, setIsOpenInfoModal] =
+    useRecoilState<boolean>(RoomInfoModalAtom);
 
   const onClickInfoModal = () => {
     setModalsOpen(prevModals => {
@@ -32,11 +35,11 @@ const RoomInfoModal: React.FC<RoomInfoModalProps> = () => {
       }
       return nextModals; // 새로운 모달 상태 배열 반환
     });
-  }
+  };
 
   return (
     <Container onClick={onClickInfoModal}>
-      <ModalBackground blur="none" height="calc(100vh - 60px)"/>
+      <ModalBackground blur="none" height="calc(100vh - 60px)" />
       {modalsOpen[0] && <TimerInfoModal />}
       {modalsOpen[1] && <AsmrInfoModal />}
       {modalsOpen[2] && <ChatInfoModal />}

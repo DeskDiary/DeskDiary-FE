@@ -43,9 +43,31 @@ const Level: React.FC<LevelProps> = () => {
         </Help>
       </TextBox>
       <img src={sample} alt="Level" />
+      <RankingInfo>
+        <p>Lv1 1달 누적시간 1초 이상</p>
+        <p>Lv2 1달 누적시간 86400초 이상</p>
+        <p>Lv3 1달 누적시간 604800초 이상</p>
+        <p>Lv4 1달 누적시간 128600초 이상</p>
+      </RankingInfo>
     </Container>
   );
 };
+
+const RankingInfo = styled.div`
+  position: absolute;
+  bottom: -40px;
+  right: 0;
+  background-color: #ffffffa2;
+  color: var(--gray-07);
+  font-weight: 500;
+  width: 100%;
+  text-align: center;
+  box-shadow: 2px 2px 4px 2px rgba(207, 207, 207, 0.3);
+  border-radius: 10px;
+  padding: 5px;
+  opacity: 0;
+  transition: opacity 0.5s, visibility 0.5s;
+`
 
 const Container = styled.div`
   box-shadow: 2px 4px 9px 0px rgba(0, 0, 0, 0.25);
@@ -56,6 +78,12 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: center;
   background-color: white;
+  position: relative;
+  &:hover {
+    ${RankingInfo} {
+      opacity: 1;
+    }
+  }
   img {
     width: 120px;
   }

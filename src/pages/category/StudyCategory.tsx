@@ -17,7 +17,7 @@ type RankingList = {
 };
 const StudyCategory: React.FC<StudyCategoryProps> = () => {
   useEffect(() => {
-    document.title = '책상일기 - 스터디룸'
+    document.title = '책상일기 - 스터디룸';
   }, []);
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const rankingImg = [
@@ -57,11 +57,15 @@ const StudyCategory: React.FC<StudyCategoryProps> = () => {
   return (
     <Container>
       <Info>
+        <RankingInfo>랭킹 순위는 일주일 누적시간 기준입니다.</RankingInfo>
         {rankingList.map((item, i: number) => {
           return (
-            <User key={`${i+1}위`}>
+            <User key={`${i + 1}위`}>
               <p>{i + 1}위</p>
-              <UserImage $bordercolor={rankingImg[i].borderColor} $imgsrc={item.profileImage}>
+              <UserImage
+                $bordercolor={rankingImg[i].borderColor}
+                $imgsrc={item.profileImage}
+              >
                 <RankingImg src={rankingImg[i].img} alt={`${i + 1}등이미지`} />
               </UserImage>
               <p>{item.nickname}</p>
@@ -77,6 +81,20 @@ const StudyCategory: React.FC<StudyCategoryProps> = () => {
     </Container>
   );
 };
+
+const RankingInfo = styled.div`
+  position: absolute;
+  top: -50px;
+  padding: 5px 20px;
+  background-color: white;
+  color: var(--gray-07);
+  font-weight: 500;
+  text-align: center;
+  box-shadow: 2px 2px 4px 2px rgba(207, 207, 207, 0.3);
+  border-radius: 10px;
+  opacity: 0;
+  transition: opacity 0.5s, visibility 0.5s;
+`;
 
 const Rooms = styled.div`
   display: flex;
@@ -102,6 +120,12 @@ const Info = styled.div`
   width: 100%;
   height: 190px;
   gap: 24px;
+  position: relative;
+  &:hover {
+    ${RankingInfo} {
+      opacity: 1;
+    }
+  }
 `;
 
 const User = styled.div`
@@ -128,12 +152,12 @@ const User = styled.div`
   }
 `;
 
-const UserImage = styled.div<{ $bordercolor: string,$imgsrc: null | string }>`
+const UserImage = styled.div<{ $bordercolor: string; $imgsrc: null | string }>`
   width: 100px;
   height: 100px;
   border: 2px solid ${props => props.$bordercolor};
   border-radius: 50%;
-  background-image: url(${(props) => (props.$imgsrc !== null) ? props.$imgsrc : profileDefaultImg});
+  background-image: url(${props => props.$imgsrc !== null ? props.$imgsrc : profileDefaultImg});
   background-size: cover;
   background-position: center;
 `;
