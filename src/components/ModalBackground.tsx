@@ -4,17 +4,18 @@ import { StringLiteralType } from 'typescript';
 
 type ModalBackgroundProps = {
   blur: string;
+  height: string;
 };
 
-const ModalBackground: React.FC<ModalBackgroundProps> = ({ blur }) => {
-  return <BackGroundColor blur={blur}/>;
+const ModalBackground: React.FC<ModalBackgroundProps> = ({ blur, height }) => {
+  return <BackGroundColor blur={blur} height={height}/>;
 };
-const BackGroundColor = styled.div<{ blur: string}>`
+const BackGroundColor = styled.div<{ blur: string, height:string}>`
   position: absolute;
   top: 0;
   left: 0;
   width: 100vw;
-  height: calc(100vh - 60px);
+  height: ${({ height }) => height};
   background-color: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(blur);
   display: flex;

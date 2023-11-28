@@ -114,7 +114,7 @@ export const fetchStudyPopular = async (num: number) => {
   try {
     const { data } = await axios.get(
       `${process.env
-        .REACT_APP_SERVER_URL!}/study-rooms/popular?page=${num}&perPage=10`, // cursor=div개수
+        .REACT_APP_SERVER_URL!}/study-rooms/popular?page=${num}&perPage=20`, // cursor=div개수
     );
     return data;
   } catch (error) {
@@ -128,7 +128,7 @@ export const fetchHobbyPopular = async (num: number) => {
   try {
     const { data } = await axios.get(
       `${process.env
-        .REACT_APP_SERVER_URL!}/hobby-rooms/popular?page=${num}&perPage=10`,
+        .REACT_APP_SERVER_URL!}/hobby-rooms/popular?page=${num}&perPage=20`,
     );
     // console.log(data);
     return data;
@@ -143,7 +143,7 @@ export const fetchStudyLatest = async (num: number) => {
   try {
     const { data } = await axios.get(
       `${process.env
-        .REACT_APP_SERVER_URL!}/study-rooms/latest?page=${num}&perPage=10`,
+        .REACT_APP_SERVER_URL!}/study-rooms/latest?page=${num}&perPage=20`,
     );
     // console.log('❤️스터디 최신순')
     return data;
@@ -158,7 +158,7 @@ export const fetchHobbyLatest = async (num: number) => {
   try {
     const { data } = await axios.get(
       `${process.env
-        .REACT_APP_SERVER_URL!}/hobby-rooms/latest?page=${num}&perPage=10`,
+        .REACT_APP_SERVER_URL!}/hobby-rooms/latest?page=${num}&perPage=20`,
     );
     // console.log('❤️취미룸 최신순')
     return data;
@@ -201,7 +201,7 @@ export const fetchStudyPopularSearch = async (search: string, num: number) => {
   try {
     const { data } = await axios.get(
       `${process.env
-        .REACT_APP_SERVER_URL!}/study-rooms/search?filter=popularity&search=${search}&page=${num}&perPage=10`,
+        .REACT_APP_SERVER_URL!}/study-rooms/search?filter=popularity&search=${search}&page=${num}&perPage=20`,
     );
     return data;
   } catch (error) {}
@@ -212,7 +212,7 @@ export const fetchHobbyPopularSearch = async (search: string, num: number) => {
   try {
     const { data } = await axios.get(
       `${process.env
-        .REACT_APP_SERVER_URL!}/hobby-rooms/search?filter=popularity&search=${search}&page=${num}&perPage=10`,
+        .REACT_APP_SERVER_URL!}/hobby-rooms/search?filter=popularity&search=${search}&page=${num}&perPage=20`,
     );
     return data;
   } catch (error) {}
@@ -223,7 +223,7 @@ export const fetchStudyLatestSearch = async (search: string, num: number) => {
   try {
     const { data } = await axios.get(
       `${process.env
-        .REACT_APP_SERVER_URL!}/study-rooms/search?filter=latest&search=${search}&page=${num}&perPage=10`,
+        .REACT_APP_SERVER_URL!}/study-rooms/search?filter=latest&search=${search}&page=${num}&perPage=20`,
     );
     return data;
   } catch (error) {}
@@ -234,7 +234,7 @@ export const fetchHobbyLatestSearch = async (search: string, num: number) => {
   try {
     const { data } = await axios.get(
       `${process.env
-        .REACT_APP_SERVER_URL!}/hobby-rooms/search?filter=latest&search=${search}&page=${num}&perPage=10`,
+        .REACT_APP_SERVER_URL!}/hobby-rooms/search?filter=latest&search=${search}&page=${num}&perPage=20`,
     );
     return data;
   } catch (error) {}
