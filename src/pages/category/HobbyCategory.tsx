@@ -139,10 +139,19 @@ const UserImage = styled.div<{ $bordercolor: string; $imgsrc: null | string }>`
   background-image: url(${props =>props.$imgsrc !== null ? props.$imgsrc : profileDefaultImg});
   background-size: cover;
   background-position: center;
+  @media (max-width: 768px) {
+    width: 60px;
+    height: 60px;
+  }
 `;
 const RankingImg = styled.img`
   margin-top: 50px;
   margin-left: 60px;
+  @media (max-width: 768px) {
+    width: 60%;
+    margin-top: 35px;
+    margin-left: 40px;
+  }
 `;
 
 export default HobbyCategory;

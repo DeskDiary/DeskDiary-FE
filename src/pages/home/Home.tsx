@@ -49,8 +49,6 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: start;
   align-items: center;
-
-  width: 1200px;
   min-height: calc(100vh - 120px);
 `;
 

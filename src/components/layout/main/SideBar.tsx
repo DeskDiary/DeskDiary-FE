@@ -147,7 +147,7 @@ const SidebarButton = styled(NavLink)`
     }
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 900px) {
     &:hover {
       width: 85%;
       background-color: rgba(255, 255, 255, 0.2);
@@ -202,7 +202,7 @@ const SidebarButton = styled(NavLink)`
     }
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
     flex-direction: row;
     margin: 0;
 
@@ -228,7 +228,7 @@ const SidebarMenu = styled.div`
   margin-top: 50px;
   margin-bottom: 50px;
 
-  @media (min-width: 768px) {
+  @media (min-width: 900px) {
     &:hover {
       width: 180px;
       ${SidebarButton} img {
@@ -237,7 +237,7 @@ const SidebarMenu = styled.div`
     }
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
     gap: 0;
     flex-direction: row;
     margin: 0;
@@ -247,10 +247,11 @@ const SidebarMenu = styled.div`
 const Logo = styled.img`
   height: 70px;
   padding: 10px;
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
     margin-left: 20px;
     width: 100%;
     height: 100%;
+    margin-top: -10px;
   }
 `;
 
@@ -261,7 +262,7 @@ const SidebarHeader = styled(Link)`
   height: 72px;
   width: 80px;
   margin-top: 10px;
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
     width: 50px;
     height: 50px;
   }
@@ -278,7 +279,7 @@ const SidebarInner = styled.div`
   flex-direction: column;
   align-items: start;
   justify-content: start;
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -301,7 +302,7 @@ const Sidebar = styled.div`
   ${SidebarHeader} {
     transition: width 0.3s; // 이걸 추가해!
   }
-  @media (min-width: 768px) {
+  @media (min-width: 900px) {
     &:hover {
     width: 180px;
 
@@ -316,9 +317,9 @@ const Sidebar = styled.div`
   }
 
 
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
     width: 100vw;
-    height: 100px;
+    height: 70px;
   }
 `;
 
