@@ -2,7 +2,9 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import SideLayout from '../components/layout/auth/AuthLayout';
 import MainLayout from '../components/layout/main/MainLayout';
 
+
 import { Suspense, lazy } from 'react';
+import TokenRefresher from '../axios/TokenRefresher';
 const Lending = lazy(() => import('../pages/auth/Lending'));
 const ConfirmEmailNotice = lazy(() => import('../pages/auth/ConfirmEmailNotice'));
 const Help = lazy(() => import('../pages/help/Help'));
@@ -21,7 +23,7 @@ const MyRecord = lazy(() => import('../pages/myRecord/MyDesk'));
 const Router = () => {
   return (
     <BrowserRouter>
-      {/* <TokenRefresher /> */}
+      <TokenRefresher />
       <Routes>
         <Route path="/lending" element={<Lending />} />
 

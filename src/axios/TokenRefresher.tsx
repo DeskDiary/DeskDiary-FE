@@ -5,14 +5,21 @@ import {
   getCookie,
   setTokenCookie,
   getRefreshTokenCookie,
+  setRefreshTokenCookie,
 } from '../auth/cookie';
 
 type TokenRefresherProps = {};
 
 const TokenRefresher: React.FC<TokenRefresherProps> = () => {
   const navigate = useNavigate();
-  const refreshToken = `Bearer ${getRefreshTokenCookie('refreshToken')}`;
+  // const refreshToken = `Bearer ${getRefreshTokenCookie('refreshToken')}`;
+  const refreshToken = getRefreshTokenCookie('refreshToken');
   useEffect(() => {
+    const refreshAPI = axios.create({
+      baseURL: process.env.REACT_APP_SERVER_URL,
+      headers: { 'Content-Type': 'application/json' }, // header의 Content-Type을 JSON 형식의 데이터를 전송한다
+    });
+
     // console.log('리프레시토큰', refreshToken);
     const interceptor = axios.interceptors.response.use(
       response => {
@@ -33,22 +40,31 @@ const TokenRefresher: React.FC<TokenRefresherProps> = () => {
               const serverUrl = process.env.REACT_APP_SERVER_URL;
 
               // 리프레시 토큰을 서버에 보내 새 엑세스 토큰 요청
-              // const { data } = await axios.post(`${serverUrl}/refresh`, {refreshToken});
+              // const { data } = await axios.post(`${serverUrl}/refresh`, refreshToken);
+              const response  = await axios.post(
+                `${serverUrl}/refresh`,
+                { refreshToken: refreshToken },
+                {
+                  headers: {
+                    Authorization: `Bearer ${refreshToken}`,
+                  },
+                },
+              );
 
-              const { data } = await axios.post(`${serverUrl}/refresh`, {}, {
-                withCredentials: true // 쿠키를 포함시키기 위해 withCredentials를 true로 설정
-              });
-              // console.log('data🤗🤗', data);
-              // 새 엑세스 토큰으로 쿠키 업데이트
-              setTokenCookie(data.accessToken);
+              console.log('data🤗🤗', response);
 
-              // 새 엑세스 토큰으로 원래 요청 재시도
-              originalConfig.headers[
-                'Authorization'
-              ] = `Bearer ${data.accessToken}`;
+              // 응답 헤더에서 새 엑세스 토큰 추출
+              const newAccessToken =
+                response.headers['authorization'] ||
+                response.headers['Authorization'];
+              if (newAccessToken) {
+                const token = newAccessToken.split(' ')[1];
+                setTokenCookie(token); // 새 토큰 저장
 
-              // axios 인스턴스를 사용하여 원래 요청 재시도
-              return axios(originalConfig);
+                // 새 엑세스 토큰으로 원래 요청 재시도
+                originalConfig.headers['Authorization'] = `Bearer ${token}`;
+                return refreshAPI(originalConfig);
+              }
             } catch (_error) {
               // 리프레시 토큰도 만료되었거나 유효하지 않을 때 로그인 페이지로 이동
               navigate('/login');

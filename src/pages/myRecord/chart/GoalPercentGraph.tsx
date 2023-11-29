@@ -134,14 +134,31 @@ const GoalPercentGraph: React.FC<GoalPercentGraphProps> = () => {
         <span>하</span>
         <span>기</span>
       </PageMoveButton>
-      <Help>
+      {/* <Help>
         <img src={help} alt="help" />
         <p>목표시간을 설정하면 누적시간에 따라서 목표달성 이미지가 노란색으로 점점 차게 됩니다.</p>
-      </Help>
+      </Help> */}
+      <GraphInfo>목표 시간을 설정하면 목표달성 글자에 색이 차올라요</GraphInfo>
       
     </Body>
   );
 };
+
+const GraphInfo = styled.div`
+  position: absolute;
+  bottom: -50px;
+  right: 0;
+  background-color: #ffffffa2;
+  color: var(--gray-07);
+  font-weight: 500;
+  width: 100%;
+  text-align: center;
+  box-shadow: 2px 2px 4px 2px rgba(207, 207, 207, 0.3);
+  border-radius: 10px;
+  padding: 5px;
+  opacity: 0;
+  transition: opacity 0.5s, visibility 0.5s;
+`;
 
 const Body = styled.div`
   width: 378px;
@@ -150,6 +167,12 @@ const Body = styled.div`
   background-color: #1a81e8;
   box-shadow: 2px 4px 9px 0px rgba(0, 0, 0, 0.25);
   padding: 20px;
+  position: relative;
+  &:hover {
+    ${GraphInfo} {
+      opacity: 1;
+    }
+  }
 `;
 
 const Title = styled.p`
@@ -193,6 +216,9 @@ const Image = styled.img<{ percent: string }>`
     #ffbb00,
     #ffbb00 ${props => 100 - Number(props.percent)}%
   );
+  background-color: ${props => 
+    isNaN(Number(props.percent)) && 'white'
+  };
 `;
 
 const DetailTimeInfo = styled.div`

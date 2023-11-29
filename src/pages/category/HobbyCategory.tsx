@@ -57,6 +57,7 @@ const HobbyCategory: React.FC<HobbyCategoryProps> = () => {
   return (
     <Container>
       <Info>
+        <RankingInfo>랭킹 순위는 일주일 누적시간 기준입니다.</RankingInfo>
         {rankingList.map((item, i: number) => {
           return (
             <User key={`${i + 1}위`}>
@@ -80,6 +81,19 @@ const HobbyCategory: React.FC<HobbyCategoryProps> = () => {
     </Container>
   );
 };
+const RankingInfo = styled.div`
+  position: absolute;
+  top: -50px;
+  padding: 5px 20px;
+  background-color: white;
+  color: var(--gray-07);
+  font-weight: 500;
+  text-align: center;
+  box-shadow: 2px 2px 4px 2px rgba(207, 207, 207, 0.3);
+  border-radius: 10px;
+  opacity: 0;
+  transition: opacity 0.5s, visibility 0.5s;
+`
 
 const Rooms = styled.div`
   display: flex;
@@ -105,6 +119,13 @@ const Info = styled.div`
   width: 100%;
   height: 190px;
   gap: 24px;
+  position: relative;
+
+  &:hover {
+    ${RankingInfo} {
+      opacity: 1;
+    }
+  }
 `;
 
 const User = styled.div`
