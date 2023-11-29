@@ -50,9 +50,7 @@ const TokenRefresher: React.FC<TokenRefresherProps> = () => {
                   },
                 },
               );
-
-              console.log('data🤗🤗', response);
-
+ 
               // 응답 헤더에서 새 엑세스 토큰 추출
               const newAccessToken =
                 response.headers['authorization'] ||
