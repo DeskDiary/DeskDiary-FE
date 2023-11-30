@@ -23,7 +23,7 @@ const CreateRoomButton2: React.FC<CreateRoomButtonProps> = () => {
       {token ? (
         <Button>
           <div onClick={onClickCreateRoomButton}>
-            <Img src={cute} alt="cute" />
+            <Img src={cute} alt="button" />
             {/* <HoverImg src={cute2} alt="cute2" /> */}
             <p>나를 누르면 방을 만들 수 있어!</p>
           </div>
@@ -31,7 +31,7 @@ const CreateRoomButton2: React.FC<CreateRoomButtonProps> = () => {
       ) : (
         <Button>
           <div onClick={() => navigate('/login')}>
-            <Img src={checkin} alt="cute" />
+            <Img src={checkin} alt="login-button" />
             {/* <HoverImg src={cute2} alt="cute2" /> */}
             <p>나를 클릭해~ <br />로그인 하러 가자!</p>
           </div>

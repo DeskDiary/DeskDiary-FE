@@ -22,9 +22,7 @@ const TokenRefresher: React.FC<TokenRefresherProps> = () => {
 
     // console.log('리프레시토큰', refreshToken);
     const interceptor = axios.interceptors.response.use(
-      response => {
-        return response;
-      },
+      response =>  response,
       async error => {
         // console.log('error🤗🤗', error);
         const originalConfig = error.config; // 기존에 수행하려고 했던 작업
@@ -32,15 +30,11 @@ const TokenRefresher: React.FC<TokenRefresherProps> = () => {
         const status = error.response.status;
 
         if (status == 401) {
-          // console.log('if1🤗🤗');
           if (msg.includes('Unauthorized')) {
-            // console.log('if2🤗🤗');
             try {
-              // console.log('try🤗🤗');
               const serverUrl = process.env.REACT_APP_SERVER_URL;
 
               // 리프레시 토큰을 서버에 보내 새 엑세스 토큰 요청
-              // const { data } = await axios.post(`${serverUrl}/refresh`, refreshToken);
               const response  = await axios.post(
                 `${serverUrl}/refresh`,
                 { refreshToken: refreshToken },
@@ -77,8 +71,8 @@ const TokenRefresher: React.FC<TokenRefresherProps> = () => {
     return () => {
       axios.interceptors.response.eject(interceptor);
     };
-  }, [refreshToken]);
+  }, [navigate, refreshToken]);
 
-  return <div></div>;
+  return null;
 };
 export default TokenRefresher;

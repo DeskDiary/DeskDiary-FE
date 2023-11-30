@@ -4,7 +4,9 @@ import { useEffect, useState, lazy, Suspense } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { getCookie } from '../../auth/cookie';
-import history from '../../history';
+// import history from '../../history';
+import { createBrowserHistory } from 'history';
+
 import { RoomAtom, RoomUUIDAtom } from '../../recoil/RoomAtom';
 // import AsmrPlayer from './components/AsmrPlayer';
 import RoomHeader from './components/RoomHeader';
@@ -18,6 +20,7 @@ import { toast } from 'sonner';
 import { createGlobalStyle } from 'styled-components';
 import { RoomModalAtom } from '../../recoil/RoomAtom';
 import RoomInfoModal from './components/info/RoomInfoModal';
+import RoomModal from './components/RoomModal';
 
 type RoomProps = {
   children?: React.ReactNode;
@@ -33,6 +36,7 @@ const Room: React.FC<RoomProps> = () => {
   const [isArrow, setIsArrow] = useState(false);
   const [outModalState, setOutModalState] =
     useRecoilState<boolean>(RoomModalAtom);
+  const [test, setTest] = useState(false);
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const location = useLocation();
   const token = getCookie('token');
@@ -45,14 +49,8 @@ const Room: React.FC<RoomProps> = () => {
     getRoomInfo();
   }, []);
   const navigate = useNavigate();
-  const showArrow = () => {
-    setIsArrow(true);
+  const history = createBrowserHistory();
 
-    setTimeout(() => {
-      setIsArrow(false);
-    }, 2000); // 5000 밀리초는 5초야
-  };
-  // console.log('😢isArrow',isArrow);
   useEffect(() => {
     const roomOutButtonHandler = () => {
       // 에러 메시지 리스너 추가
@@ -63,26 +61,31 @@ const Room: React.FC<RoomProps> = () => {
 
       setOutModalState(true);
     };
+
     const listenBackEvent = () => {
-      roomOutButtonHandler();
-      // showArrow();
+      setTest(true);
+      console.log('ㅎㅎㅎ');
+      console.log(test);
+      // roomOutButtonHandler();
       // toast.error(
       //   `왼쪽 하단의 방 나가기 버튼을 이용 해 주세요.
       // `,
       //   { duration: 2000 },
       // );
-      navigate(`/room/${roomUUID}`);
+      // navigate(`/room/${roomUUID}`);
     };
 
-    const unlistenHistoryEvent = history.listen(({ action }) => {
-      // console.log(action);
-
+    // const unlistenHistoryEvent = 
+    history.listen(({ action }) => {
       if (action === 'POP') {
+        console.log('===');
+        setTest(true);
         listenBackEvent();
+        console.log('+++');
       }
     });
 
-    return unlistenHistoryEvent;
+    // return unlistenHistoryEvent;
   }, [roomUUID]);
 
   useEffect(() => {
@@ -155,6 +158,7 @@ const Room: React.FC<RoomProps> = () => {
           <Arrow src={arrow} alt="arrow" />
         </ArrowModal>
       )}
+      {test && <RoomModal />}
     </Main>
   );
 };
