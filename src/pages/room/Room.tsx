@@ -4,8 +4,7 @@ import { useEffect, useState, lazy, Suspense } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { getCookie } from '../../auth/cookie';
-// import history from '../../history';
-import { createBrowserHistory } from 'history';
+import history from '../../history';
 
 import { RoomAtom, RoomUUIDAtom } from '../../recoil/RoomAtom';
 // import AsmrPlayer from './components/AsmrPlayer';
@@ -16,11 +15,10 @@ import ChatBox from './components/chat/ChatBox';
 import SetMediaModal from './components/SetMediaModal';
 import VideoContainer from './components/media/VideoContainer';
 import arrow from '../../images/red-arrow.png';
-import { toast } from 'sonner';
 import { createGlobalStyle } from 'styled-components';
 import { RoomModalAtom } from '../../recoil/RoomAtom';
-import RoomInfoModal from './components/info/RoomInfoModal';
 import RoomModal from './components/RoomModal';
+import socket from './socketInstance';
 
 type RoomProps = {
   children?: React.ReactNode;
@@ -36,7 +34,7 @@ const Room: React.FC<RoomProps> = () => {
   const [isArrow, setIsArrow] = useState(false);
   const [outModalState, setOutModalState] =
     useRecoilState<boolean>(RoomModalAtom);
-  const [test, setTest] = useState(false);
+  const [test, setTest] = useState(0);
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const location = useLocation();
   const token = getCookie('token');
@@ -49,48 +47,76 @@ const Room: React.FC<RoomProps> = () => {
     getRoomInfo();
   }, []);
   const navigate = useNavigate();
-  const history = createBrowserHistory();
 
-  useEffect(() => {
-    const roomOutButtonHandler = () => {
-      // 에러 메시지 리스너 추가
-      // const errorHandler = (message: string) => {
-      //   console.error(message);
-      //   console.log('🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈', message);
-      // };
+  const listenBackEvent = () => {
+    setOutModalState(true);
+    console.log(outModalState);
+  };
 
-      setOutModalState(true);
-    };
+  const roomOutHandler = async () => {
+    try {
+      const token = getCookie('token');
+      const data = {
+        checkIn: "0000-00-00T00:00:00.000Z",
+        checkOut: "0000-00-00T00:00:00.000Z",
+        totalHours: "00:00:00",
+        historyType: roomInfo.category, // study, hobby
+      };
+      // console.log('❤️roomInfo.category', roomInfo);
+      
+      const response = await axios.post(
+        `${serverUrl}/room/${roomUUID}/leave`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      sessionStorage.removeItem('checkIn');
+      setOutModalState(false);
+      alert(test)
+      navigate('/');
+      // window.location.reload();
+    } catch (error) {
+      // console.error(error);
+    }
 
+    socket.emit(
+      'leave-room',
+      {
+        uuid: roomUUID,
+      },
+      (response: any) => {
+        // 서버로부터의 응답을 여기서 처리
+        if (response.success) {
+          // console.log('방에서 나가기 성공!✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
+        } else {
+          // console.log('방 나가기 실패😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭');
+        }
+      },
+    );
+    localStorage.removeItem('room');
+  };
+
+  const unlistenHistoryEvent = history.listen((location) => {
     const listenBackEvent = () => {
-      setTest(true);
-      console.log('ㅎㅎㅎ');
-      console.log(test);
-      // roomOutButtonHandler();
-      // toast.error(
-      //   `왼쪽 하단의 방 나가기 버튼을 이용 해 주세요.
-      // `,
-      //   { duration: 2000 },
-      // );
-      // navigate(`/room/${roomUUID}`);
+      setOutModalState(true);
+      console.log('=+=+')
     };
+    
+    if (history.action === 'POP') {
+      listenBackEvent();
+    }
+  });
 
-    // const unlistenHistoryEvent = 
-    history.listen(({ action }) => {
-      if (action === 'POP') {
-        console.log('===');
-        setTest(true);
-        listenBackEvent();
-        console.log('+++');
-      }
-    });
-
-    // return unlistenHistoryEvent;
-  }, [roomUUID]);
+  console.log(test)
 
   useEffect(() => {
-    window.onbeforeunload = null;
-  }, []);
+    unlistenHistoryEvent();
+
+    return unlistenHistoryEvent();
+  }, [history]);
 
   const getRoomInfo = async () => {
     const url = `${serverUrl}/room/${location.pathname.split('/')[2]}`;
@@ -137,7 +163,7 @@ const Room: React.FC<RoomProps> = () => {
           <RoomHeader />
           <Area>
             <CamAreaDiv>
-              {/* <VideoContainer setInCall={setInCall} /> */}
+              <VideoContainer setInCall={setInCall} />
             </CamAreaDiv>
             <ChattingAreaDiv>
               <Suspense fallback={<div>Loading AsmrPlayer...</div>}>
@@ -158,7 +184,7 @@ const Room: React.FC<RoomProps> = () => {
           <Arrow src={arrow} alt="arrow" />
         </ArrowModal>
       )}
-      {test && <RoomModal />}
+      {outModalState && <RoomModal />}
     </Main>
   );
 };
