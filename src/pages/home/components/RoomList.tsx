@@ -203,15 +203,15 @@ const RoomList: React.FC<RoomListProps> = ({ label, show }) => {
         <ListTitle>{label}</ListTitle>
         <Categorys>
           <Category
-            cute={`${sort}`}
-            me={'Popular'}
+            $category={sort}
+            $me='Popular'
             onClick={() => changePopular(true)}
           >
             인기순
           </Category>
           <Category
-            cute={`${sort}`}
-            me={'Latest'}
+            $category={sort}
+            $me='Latest'
             onClick={() => changePopular(false)}
           >
             최신순
@@ -272,7 +272,8 @@ const Categorys = styled.div`
   gap: 15px;
   margin-bottom: 10px;
 `;
-const Category = styled.button<{ cute: string; me: string }>`
+
+const Category = styled.button<{ $category: string, $me: string }>`
   font-size: 14px;
   font-weight: 500;
   width: 50px;
@@ -280,9 +281,10 @@ const Category = styled.button<{ cute: string; me: string }>`
   border-top-right-radius: 10px;
   padding-bottom: 2px;
   color: ${props =>
-    props.cute === props.me ? 'var(--primary-01)' : 'var(--gray-07)'};
+    props.$category === props.$me ? 'var(--primary-01)' : 'var(--gray-07)'};
   border-bottom: 1px solid
-    ${props => (props.cute === props.me ? 'var(--primary-01)' : 'none')};
+    ${props => (props.$category === props.$me ? 'var(--primary-01)' : 'none')};
+
   &:hover {
     color: var(--primary-01);
   }

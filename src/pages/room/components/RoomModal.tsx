@@ -51,6 +51,7 @@ const RoomModal: React.FC<RoomModalProps> = () => {
         historyType: roomInfo.category, // study, hobby
       };
       // console.log('❤️roomInfo.category', roomInfo);
+      console.log(data);
       const response = await axios.post(
         `${serverUrl}/room/${joinUUID}/leave`,
         data,
